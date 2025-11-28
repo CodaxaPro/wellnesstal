@@ -1,0 +1,658 @@
+{
+  "id": "wellness-basic",
+  "name": "Wellness & Spa Management",
+  "industry": "wellness",
+  "version": "1.0.0",
+  "description": "Complete wellness and spa management system with services, categories, and customer management",
+  
+  "entities": {
+    "primary": {
+      "name": "Services",
+      "singular": "Service", 
+      "plural": "Services",
+      "icon": "Sparkles",
+      "color": "#10B981",
+      "fields": [
+        {
+          "key": "name",
+          "label": "Service Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter service name",
+          "helpText": "The display name for this service",
+          "group": "basic",
+          "order": 1,
+          "validation": [
+            {
+              "type": "length",
+              "value": { "min": 2, "max": 100 },
+              "message": "Service name must be 2-100 characters"
+            }
+          ]
+        },
+        {
+          "key": "description",
+          "label": "Description",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Describe your service...",
+          "helpText": "Detailed description of the service",
+          "group": "basic",
+          "order": 2,
+          "max": 500
+        },
+        {
+          "key": "category",
+          "label": "Category",
+          "type": "select",
+          "required": true,
+          "helpText": "Select the service category",
+          "group": "basic",
+          "order": 3,
+          "options": [
+            { "value": "massage", "label": "Massage Therapy" },
+            { "value": "facial", "label": "Facial Treatments" },
+            { "value": "body", "label": "Body Treatments" },
+            { "value": "wellness", "label": "Wellness Programs" },
+            { "value": "beauty", "label": "Beauty Services" },
+            { "value": "fitness", "label": "Fitness Classes" }
+          ]
+        },
+        {
+          "key": "price",
+          "label": "Price",
+          "type": "currency",
+          "required": true,
+          "placeholder": "0.00",
+          "helpText": "Service price in local currency",
+          "group": "pricing",
+          "order": 4,
+          "min": 0,
+          "max": 9999.99,
+          "format": "currency"
+        },
+        {
+          "key": "duration",
+          "label": "Duration (minutes)",
+          "type": "number",
+          "required": true,
+          "placeholder": "60",
+          "helpText": "Service duration in minutes",
+          "group": "pricing",
+          "order": 5,
+          "min": 15,
+          "max": 480
+        },
+        {
+          "key": "therapist",
+          "label": "Preferred Therapist",
+          "type": "select",
+          "required": false,
+          "helpText": "Assign a specific therapist if required",
+          "group": "assignment",
+          "order": 6,
+          "options": [
+            { "value": "any", "label": "Any Available" },
+            { "value": "sarah", "label": "Sarah Johnson" },
+            { "value": "mike", "label": "Mike Chen" },
+            { "value": "anna", "label": "Anna Williams" },
+            { "value": "david", "label": "David Thompson" }
+          ]
+        },
+        {
+          "key": "featured",
+          "label": "Featured Service",
+          "type": "toggle",
+          "required": false,
+          "helpText": "Show this service prominently",
+          "group": "visibility",
+          "order": 7
+        },
+        {
+          "key": "status",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "helpText": "Service availability status",
+          "group": "visibility",
+          "order": 8,
+          "options": [
+            { "value": "active", "label": "Active" },
+            { "value": "inactive", "label": "Inactive" },
+            { "value": "seasonal", "label": "Seasonal" },
+            { "value": "maintenance", "label": "Under Maintenance" }
+          ]
+        },
+        {
+          "key": "tags",
+          "label": "Tags",
+          "type": "multiselect",
+          "required": false,
+          "helpText": "Add relevant tags for better organization",
+          "group": "organization",
+          "order": 9,
+          "options": [
+            { "value": "relaxation", "label": "Relaxation" },
+            { "value": "therapeutic", "label": "Therapeutic" },
+            { "value": "anti-aging", "label": "Anti-Aging" },
+            { "value": "detox", "label": "Detoxifying" },
+            { "value": "couples", "label": "Couples" },
+            { "value": "prenatal", "label": "Prenatal" },
+            { "value": "hot-stone", "label": "Hot Stone" },
+            { "value": "aromatherapy", "label": "Aromatherapy" },
+            { "value": "deep-tissue", "label": "Deep Tissue" },
+            { "value": "luxury", "label": "Luxury" }
+          ]
+        },
+        {
+          "key": "requirements",
+          "label": "Special Requirements",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Any special requirements or preparations...",
+          "helpText": "Special preparations or requirements for this service",
+          "group": "details",
+          "order": 10,
+          "max": 300
+        },
+        {
+          "key": "contraindications",
+          "label": "Contraindications",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "List any contraindications...",
+          "helpText": "Medical conditions or situations where this service should be avoided",
+          "group": "details",
+          "order": 11,
+          "max": 300
+        },
+        {
+          "key": "image",
+          "label": "Service Image",
+          "type": "image",
+          "required": false,
+          "helpText": "Upload an image for this service",
+          "group": "media",
+          "order": 12
+        }
+      ],
+      "permissions": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true,
+        "bulk": true
+      },
+      "relationships": {
+        "belongsTo": ["categories"],
+        "hasMany": ["bookings", "reviews"]
+      }
+    },
+    
+    "secondary": {
+      "name": "Categories",
+      "singular": "Category",
+      "plural": "Categories", 
+      "icon": "FolderOpen",
+      "color": "#8B5CF6",
+      "fields": [
+        {
+          "key": "name",
+          "label": "Category Name",
+          "type": "text",
+          "required": true,
+          "placeholder": "Enter category name",
+          "helpText": "The display name for this category",
+          "group": "basic",
+          "order": 1,
+          "validation": [
+            {
+              "type": "length",
+              "value": { "min": 2, "max": 50 },
+              "message": "Category name must be 2-50 characters"
+            }
+          ]
+        },
+        {
+          "key": "description",
+          "label": "Description",
+          "type": "textarea",
+          "required": false,
+          "placeholder": "Describe this category...",
+          "helpText": "Brief description of the category",
+          "group": "basic",
+          "order": 2,
+          "max": 200
+        },
+        {
+          "key": "color",
+          "label": "Category Color",
+          "type": "color",
+          "required": true,
+          "helpText": "Choose a color for this category",
+          "group": "appearance",
+          "order": 3
+        },
+        {
+          "key": "icon",
+          "label": "Category Icon",
+          "type": "select",
+          "required": true,
+          "helpText": "Select an icon for this category",
+          "group": "appearance",
+          "order": 4,
+          "options": [
+            { "value": "Sparkles", "label": "✨ Sparkles (Spa)" },
+            { "value": "Heart", "label": "💖 Heart (Wellness)" },
+            { "value": "Flower", "label": "🌸 Flower (Beauty)" },
+            { "value": "Leaf", "label": "🍃 Leaf (Natural)" },
+            { "value": "Sun", "label": "☀️ Sun (Energy)" },
+            { "value": "Waves", "label": "🌊 Waves (Relaxation)" },
+            { "value": "Zap", "label": "⚡ Zap (Fitness)" },
+            { "value": "Star", "label": "⭐ Star (Premium)" }
+          ]
+        },
+        {
+          "key": "order",
+          "label": "Display Order",
+          "type": "number",
+          "required": true,
+          "placeholder": "1",
+          "helpText": "Order in which this category appears",
+          "group": "organization",
+          "order": 5,
+          "min": 1,
+          "max": 999
+        },
+        {
+          "key": "featured",
+          "label": "Featured Category",
+          "type": "toggle",
+          "required": false,
+          "helpText": "Show this category prominently",
+          "group": "visibility",
+          "order": 6
+        },
+        {
+          "key": "status",
+          "label": "Status",
+          "type": "select",
+          "required": true,
+          "helpText": "Category visibility status",
+          "group": "visibility",
+          "order": 7,
+          "options": [
+            { "value": "active", "label": "Active" },
+            { "value": "inactive", "label": "Inactive" },
+            { "value": "coming-soon", "label": "Coming Soon" }
+          ]
+        }
+      ],
+      "permissions": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true,
+        "bulk": true
+      },
+      "relationships": {
+        "hasMany": ["services"]
+      }
+    },
+
+    "additional": [
+      {
+        "name": "Therapists",
+        "singular": "Therapist",
+        "plural": "Therapists",
+        "icon": "Users",
+        "color": "#F59E0B",
+        "fields": [
+          {
+            "key": "name",
+            "label": "Full Name",
+            "type": "text",
+            "required": true,
+            "placeholder": "Enter therapist name",
+            "order": 1
+          },
+          {
+            "key": "email",
+            "label": "Email",
+            "type": "email",
+            "required": true,
+            "placeholder": "therapist@spa.com",
+            "order": 2
+          },
+          {
+            "key": "phone",
+            "label": "Phone",
+            "type": "phone",
+            "required": false,
+            "placeholder": "+1 (555) 123-4567",
+            "order": 3
+          },
+          {
+            "key": "specialties",
+            "label": "Specialties",
+            "type": "multiselect",
+            "required": true,
+            "helpText": "Select therapist specialties",
+            "order": 4,
+            "options": [
+              { "value": "massage", "label": "Massage Therapy" },
+              { "value": "facial", "label": "Facial Treatments" },
+              { "value": "body", "label": "Body Treatments" },
+              { "value": "reflexology", "label": "Reflexology" },
+              { "value": "aromatherapy", "label": "Aromatherapy" },
+              { "value": "prenatal", "label": "Prenatal Care" }
+            ]
+          },
+          {
+            "key": "experience",
+            "label": "Years of Experience",
+            "type": "number",
+            "required": true,
+            "min": 0,
+            "max": 50,
+            "order": 5
+          },
+          {
+            "key": "bio",
+            "label": "Biography",
+            "type": "textarea",
+            "required": false,
+            "placeholder": "Professional background and experience...",
+            "max": 500,
+            "order": 6
+          },
+          {
+            "key": "status",
+            "label": "Status",
+            "type": "select",
+            "required": true,
+            "order": 7,
+            "options": [
+              { "value": "active", "label": "Active" },
+              { "value": "on-leave", "label": "On Leave" },
+              { "value": "inactive", "label": "Inactive" }
+            ]
+          }
+        ],
+        "permissions": {
+          "create": true,
+          "read": true,
+          "update": true,
+          "delete": true,
+          "bulk": true
+        }
+      }
+    ]
+  },
+
+  "ui": {
+    "theme": {
+      "primaryColor": "#10B981",
+      "secondaryColor": "#6B7280", 
+      "accentColor": "#8B5CF6",
+      "logo": "/assets/wellness-logo.png",
+      "brandName": "Wellness Center",
+      "fontFamily": "Inter, -apple-system, BlinkMacSystemFont, sans-serif",
+      "fontSize": {
+        "sm": "0.875rem",
+        "base": "1rem", 
+        "lg": "1.125rem",
+        "xl": "1.25rem"
+      },
+      "borderRadius": "0.75rem",
+      "spacing": "comfortable",
+      "darkMode": false
+    },
+    
+    "components": {
+      "ServiceCard": {
+        "component": "wellness/ServiceCard",
+        "props": {
+          "showPrice": true,
+          "showDuration": true,
+          "showTherapist": true,
+          "imageAspectRatio": "4:3"
+        }
+      },
+      "CategoryCard": {
+        "component": "wellness/CategoryCard", 
+        "props": {
+          "showServiceCount": true,
+          "coloredBackground": true
+        }
+      }
+    },
+    
+    "layout": {
+      "sidebar": {
+        "position": "left",
+        "collapsible": true,
+        "defaultCollapsed": false
+      },
+      "navigation": {
+        "style": "sidebar",
+        "items": [
+          {
+            "key": "dashboard",
+            "label": "Dashboard",
+            "icon": "LayoutDashboard",
+            "href": "/admin/dashboard"
+          },
+          {
+            "key": "services",
+            "label": "Services",
+            "icon": "Sparkles", 
+            "href": "/admin/services",
+            "badge": "primary"
+          },
+          {
+            "key": "categories",
+            "label": "Categories",
+            "icon": "FolderOpen",
+            "href": "/admin/categories"
+          },
+          {
+            "key": "therapists",
+            "label": "Therapists",
+            "icon": "Users",
+            "href": "/admin/therapists"
+          },
+          {
+            "key": "bookings",
+            "label": "Bookings",
+            "icon": "Calendar",
+            "href": "/admin/bookings",
+            "badge": "success"
+          },
+          {
+            "key": "customers",
+            "label": "Customers",
+            "icon": "UserCheck",
+            "href": "/admin/customers"
+          },
+          {
+            "key": "reports",
+            "label": "Reports",
+            "icon": "BarChart3",
+            "href": "/admin/reports"
+          },
+          {
+            "key": "settings",
+            "label": "Settings",
+            "icon": "Settings",
+            "href": "/admin/settings"
+          }
+        ]
+      },
+      "dashboard": {
+        "widgets": [
+          {
+            "id": "services-stats",
+            "title": "Services Overview",
+            "type": "stats",
+            "size": "md",
+            "position": { "x": 0, "y": 0 },
+            "config": {
+              "entity": "services",
+              "metrics": ["total", "active", "featured"]
+            }
+          },
+          {
+            "id": "bookings-chart",
+            "title": "Monthly Bookings",
+            "type": "chart",
+            "size": "lg", 
+            "position": { "x": 1, "y": 0 },
+            "config": {
+              "chartType": "line",
+              "dataSource": "bookings",
+              "timeframe": "month"
+            }
+          },
+          {
+            "id": "popular-services",
+            "title": "Popular Services",
+            "type": "table",
+            "size": "md",
+            "position": { "x": 0, "y": 1 },
+            "config": {
+              "entity": "services", 
+              "sortBy": "bookings",
+              "limit": 5
+            }
+          },
+          {
+            "id": "therapist-schedule",
+            "title": "Therapist Availability",
+            "type": "custom",
+            "size": "md",
+            "position": { "x": 1, "y": 1 },
+            "config": {
+              "component": "TherapistScheduleWidget"
+            }
+          }
+        ],
+        "layout": "grid"
+      }
+    }
+  },
+
+  "business": {
+    "workflows": [
+      {
+        "id": "booking-confirmation",
+        "name": "Booking Confirmation",
+        "trigger": "booking_created",
+        "actions": [
+          {
+            "type": "email",
+            "config": {
+              "template": "booking-confirmation",
+              "to": "customer_email",
+              "subject": "Your booking is confirmed!"
+            }
+          },
+          {
+            "type": "sms",
+            "config": {
+              "template": "booking-sms",
+              "to": "customer_phone", 
+              "message": "Hi {customer_name}, your {service_name} appointment on {date} at {time} is confirmed."
+            }
+          }
+        ]
+      },
+      {
+        "id": "booking-reminder", 
+        "name": "Booking Reminder",
+        "trigger": "scheduled",
+        "actions": [
+          {
+            "type": "email",
+            "config": {
+              "template": "booking-reminder",
+              "to": "customer_email",
+              "subject": "Reminder: Your appointment tomorrow",
+              "delay": 86400
+            }
+          }
+        ]
+      }
+    ],
+    
+    "validations": {
+      "services": {
+        "price": [
+          {
+            "type": "range",
+            "value": { "min": 0, "max": 9999.99 },
+            "message": "Price must be between $0 and $9999.99"
+          }
+        ],
+        "duration": [
+          {
+            "type": "range", 
+            "value": { "min": 15, "max": 480 },
+            "message": "Duration must be between 15 and 480 minutes"
+          }
+        ]
+      }
+    },
+    
+    "automations": [
+      {
+        "id": "auto-featured",
+        "name": "Auto-feature Popular Services",
+        "condition": [
+          {
+            "field": "booking_count",
+            "operator": ">",
+            "value": 50
+          }
+        ],
+        "action": {
+          "type": "update_field",
+          "config": {
+            "field": "featured",
+            "value": true
+          }
+        },
+        "enabled": true
+      }
+    ]
+  },
+
+  "features": {
+    "enabled": [
+      "crud",
+      "search", 
+      "filters",
+      "bulk-actions",
+      "drag-drop",
+      "export-import",
+      "real-time-sync",
+      "booking-system",
+      "customer-management",
+      "therapist-scheduling", 
+      "email-notifications",
+      "sms-notifications",
+      "reporting-dashboard",
+      "multi-location"
+    ],
+    "disabled": [
+      "e-commerce-integration",
+      "inventory-management"
+    ],
+    "premium": [
+      "advanced-analytics",
+      "white-label-branding", 
+      "api-integrations",
+      "custom-workflows"
+    ]
+  }
+}

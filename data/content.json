@@ -1,0 +1,1574 @@
+[
+  {
+    "id": "1",
+    "section": "hero",
+    "title": "Ana Sayfa Hero Bölümü",
+    "description": "Ana sayfa üst bölümünün içeriği",
+    "content": {
+      "mainTitle": "Wellness & Entspannung in Baesweiler",
+      "subtitle": "Entdecken Sie professionelle Headspa-Behandlungen und Wellness-Therapien für Ihr körperliches und seelisches Wohlbefinden.",
+      "primaryButton": "Jetzt anrufen",
+      "primaryButtonLink": "tel:+491733828581",
+      "secondaryButton": "Leistungen entdecken",
+      "secondaryButtonLink": "#services",
+      "trustIndicator": "500+ zufriedene Kunden",
+      "badge": "🌿 Willkommen in Baesweiler",
+      "image": {
+        "url": "/uploads/hero/1764360287833-d9vohe.jpeg",
+        "alt": "Entspannende Spa-Behandlung bei Wellnesstal"
+      },
+      "imageStyles": {
+        "borderRadius": "24px",
+        "boxShadow": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        "opacity": "100",
+        "hoverScale": "105",
+        "brightness": "100",
+        "contrast": "100",
+        "saturation": "100",
+        "overlayOpacity": "20",
+        "overlayColor": "#2C2C2C"
+      },
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "mainTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "subtitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "24px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "primaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "secondaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88",
+          "borderColor": "#9CAF88"
+        },
+        "trustIndicator": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        }
+      }
+    },
+    "defaults": {
+      "mainTitle": "Wellness & Entspannung in Baesweiler",
+      "subtitle": "Entdecken Sie professionelle Headspa-Behandlungen und Wellness-Therapien für Ihr körperliches und seelisches Wohlbefinden.",
+      "primaryButton": "Jetzt anrufen",
+      "primaryButtonLink": "tel:+491733828581",
+      "secondaryButton": "Leistungen entdecken",
+      "secondaryButtonLink": "#services",
+      "trustIndicator": "500+ zufriedene Kunden",
+      "badge": "🌿 Willkommen in Baesweiler",
+      "image": {
+        "url": "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
+        "alt": "Entspannende Spa-Behandlung bei Wellnesstal"
+      },
+      "imageStyles": {
+        "borderRadius": "24px",
+        "boxShadow": "0 25px 50px -12px rgba(0, 0, 0, 0.25)",
+        "opacity": "100",
+        "hoverScale": "105",
+        "brightness": "100",
+        "contrast": "100",
+        "saturation": "100",
+        "overlayOpacity": "20",
+        "overlayColor": "#2C2C2C"
+      },
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "mainTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "subtitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "24px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "primaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "secondaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88",
+          "borderColor": "#9CAF88"
+        },
+        "trustIndicator": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T20:04:53.805Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "2",
+    "section": "about",
+    "title": "Über Uns Bölümü",
+    "description": "Hakkımızda bölümü içeriği",
+    "content": {
+      "badge": "Über Wellnesstal Studio",
+      "title": "Ihre Wellness-Oase im Herzen von Baesweiler",
+      "description": "Seit über 5 Jahren widmen wir uns mit Leidenschaft Ihrem Wohlbefinden. Unser erfahrenes Team aus zertifizierten Wellness-Therapeuten bietet Ihnen individuelle Behandlungen in entspannter Atmosphäre.",
+      "stats": [
+        {
+          "label": "Zufriedene Kunden",
+          "value": "500+"
+        },
+        {
+          "label": "Jahre Erfahrung",
+          "value": "5+"
+        }
+      ],
+      "primaryButton": "Persönliche Beratung",
+      "primaryButtonLink": "tel:+491733828581",
+      "secondaryButton": "Mehr erfahren",
+      "secondaryButtonLink": "#contact",
+      "images": [
+        {
+          "url": "/uploads/about/1764359833187-89d498.jpg",
+          "alt": "Wellness Studio Innenbereich"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Entspannende Behandlung"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Wellness Produkte"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Entspannte Kundin"
+        }
+      ],
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "title": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "statsValue": {
+          "fontFamily": "system-ui",
+          "fontSize": "30px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "statsLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "primaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "secondaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88",
+          "borderColor": "#9CAF88"
+        }
+      }
+    },
+    "defaults": {
+      "badge": "Über Wellnesstal Studio",
+      "title": "Ihre Wellness-Oase im Herzen von Baesweiler",
+      "description": "Seit über 5 Jahren widmen wir uns mit Leidenschaft Ihrem Wohlbefinden. Unser erfahrenes Team aus zertifizierten Wellness-Therapeuten bietet Ihnen individuelle Behandlungen in entspannter Atmosphäre.",
+      "stats": [
+        {
+          "label": "Zufriedene Kunden",
+          "value": "500+"
+        },
+        {
+          "label": "Jahre Erfahrung",
+          "value": "5+"
+        }
+      ],
+      "primaryButton": "Persönliche Beratung",
+      "primaryButtonLink": "tel:+491733828581",
+      "secondaryButton": "Mehr erfahren",
+      "secondaryButtonLink": "#contact",
+      "images": [
+        {
+          "url": "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Wellness Studio Innenbereich"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Entspannende Behandlung"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Wellness Produkte"
+        },
+        {
+          "url": "https://images.unsplash.com/photo-1515377905703-c4788e51af15?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80",
+          "alt": "Entspannte Kundin"
+        }
+      ],
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "title": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "statsValue": {
+          "fontFamily": "system-ui",
+          "fontSize": "30px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "statsLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "primaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "secondaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88",
+          "borderColor": "#9CAF88"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T19:57:16.234Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "3",
+    "section": "contact",
+    "title": "İletişim Bilgileri",
+    "description": "İletişim sayfası içeriği",
+    "content": {
+      "businessName": "Wellnesstal",
+      "phone": "+49 1733828581",
+      "email": "info@wellnesstal.de",
+      "address": {
+        "street": "Reyplatz 10",
+        "city": "Baesweiler",
+        "postalCode": "52499",
+        "country": "Almanya"
+      },
+      "openingHours": {
+        "monday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "tuesday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "wednesday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "thursday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "friday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "saturday": {
+          "open": "10:00",
+          "close": "16:00",
+          "closed": false
+        },
+        "sunday": {
+          "open": "",
+          "close": "",
+          "closed": true
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T20:36:16.346Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "4",
+    "section": "footer",
+    "title": "Footer Bölümü",
+    "description": "Alt bilgi bölümü içeriği",
+    "content": {
+      "description": "Ihre Oase der Entspannung im Herzen von Baesweiler. Professionelle Wellness-Behandlungen für Körper und Seele.",
+      "socialMedia": {
+        "instagram": "https://instagram.com/wellnesstal",
+        "facebook": "https://facebook.com/wellnesstal",
+        "whatsapp": "https://wa.me/491733828581"
+      },
+      "copyright": "© 2025 Wellnesstal. Alle Rechte vorbehalten."
+    },
+    "defaults": {
+      "brandName": "Wellnesstal",
+      "brandEmoji": "🌿",
+      "description": "Ihre Oase der Entspannung im Herzen von Köln. Professionelle Wellness-Behandlungen für Körper und Seele.",
+      "socialMedia": {
+        "instagram": "https://instagram.com/wellnesstal",
+        "facebook": "https://facebook.com/wellnesstal",
+        "whatsapp": "https://wa.me/491733828581"
+      },
+      "newsletter": {
+        "enabled": true,
+        "title": "Newsletter abonnieren",
+        "subtitle": "Bleiben Sie auf dem Laufenden über neue Behandlungen, Angebote und Wellness-Tipps.",
+        "placeholder": "Ihre E-Mail-Adresse",
+        "buttonText": "Anmelden",
+        "disclaimer": "Kein Spam. Jederzeit abmeldbar."
+      },
+      "quickLinks": [
+        {
+          "label": "Start",
+          "href": "#home"
+        },
+        {
+          "label": "Leistungen",
+          "href": "#services"
+        },
+        {
+          "label": "Über uns",
+          "href": "#about"
+        },
+        {
+          "label": "Kontakt",
+          "href": "#contact"
+        }
+      ],
+      "legalLinks": [
+        {
+          "label": "Impressum",
+          "href": "/impressum"
+        },
+        {
+          "label": "Datenschutz",
+          "href": "/datenschutz"
+        },
+        {
+          "label": "AGB",
+          "href": "/agb"
+        },
+        {
+          "label": "Widerrufsrecht",
+          "href": "/widerruf"
+        }
+      ],
+      "copyright": "© 2025 Wellnesstal. Alle Rechte vorbehalten.",
+      "styles": {
+        "brandName": {
+          "fontFamily": "system-ui",
+          "fontSize": "30px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#D1D5DB"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88"
+        },
+        "link": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#D1D5DB"
+        },
+        "newsletterTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#FFFFFF"
+        },
+        "copyright": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#9CA3AF"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T20:36:16.712Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "5",
+    "section": "meta",
+    "title": "SEO & Meta Bilgileri",
+    "description": "Site geneli SEO ayarları",
+    "content": {
+      "siteTitle": "Wellnesstal - Premium Wellness & Headspa in Baesweiler",
+      "siteDescription": "Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!",
+      "keywords": "wellness, headspa, massage, köln, entspannung, aromatherapie, spa",
+      "ogImage": "/images/og-wellnesstal.jpg"
+    },
+    "lastUpdated": "2025-11-28T20:36:17.127Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "6",
+    "section": "testimonials-section",
+    "title": "Kundenstimmen Bölümü",
+    "description": "Müşteri yorumları bölümü başlık ve stil ayarları",
+    "content": {
+      "badge": "💬 Kundenstimmen",
+      "sectionTitle": "Was unsere Kunden",
+      "highlightedText": "sagen",
+      "description": "Echte Bewertungen von zufriedenen Kunden - Ihre Meinung ist uns wichtig",
+      "autoSlideDelay": 5000,
+      "showRatings": true,
+      "maxDisplayCount": 5,
+      "stats": [
+        {
+          "value": "500+",
+          "label": "Zufriedene Kunden"
+        },
+        {
+          "value": "4.9",
+          "label": "⭐ Google Bewertung"
+        },
+        {
+          "value": "98%",
+          "label": "Weiterempfehlung"
+        },
+        {
+          "value": "5J",
+          "label": "Erfahrung"
+        }
+      ],
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "statsValue": {
+          "fontFamily": "system-ui",
+          "fontSize": "36px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "statsLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "color": "#666666"
+        }
+      }
+    },
+    "defaults": {
+      "badge": "💬 Kundenstimmen",
+      "sectionTitle": "Was unsere Kunden",
+      "highlightedText": "sagen",
+      "description": "Echte Bewertungen von zufriedenen Kunden - Ihre Meinung ist uns wichtig",
+      "autoSlideDelay": 5000,
+      "showRatings": true,
+      "maxDisplayCount": 5,
+      "stats": [
+        {
+          "value": "500+",
+          "label": "Zufriedene Kunden"
+        },
+        {
+          "value": "4.9",
+          "label": "⭐ Google Bewertung"
+        },
+        {
+          "value": "98%",
+          "label": "Weiterempfehlung"
+        },
+        {
+          "value": "5J",
+          "label": "Erfahrung"
+        }
+      ],
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "statsValue": {
+          "fontFamily": "system-ui",
+          "fontSize": "36px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "statsLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "color": "#666666"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T21:56:40.895Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "7",
+    "section": "contact-settings",
+    "title": "Kontakt Einstellungen",
+    "description": "Tüm iletişim ve işletme ayarları",
+    "content": {
+      "businessInfo": {
+        "name": "Wellnesstal",
+        "tagline": "Premium Wellness & Headspa in Baesweiler",
+        "description": "Ihre Oase der Entspannung im Herzen von Baesweiler. Professionelle Wellness-Behandlungen für Körper und Seele."
+      },
+      "contact": {
+        "phone": "+49 1733828581",
+        "email": "info@wellnesstal.de",
+        "whatsapp": "+49 1733828581"
+      },
+      "address": {
+        "street": "Reyplatz 10",
+        "city": "Baesweiler",
+        "postalCode": "52499",
+        "country": "Almanya",
+        "googleMapsUrl": "https://www.google.com/maps/place/Reypl.,+52499+Baesweiler/@50.9109442,6.1752562,17z/data=!3m1!4b1!4m6!3m5!1s0x47c0a16aa34b11f5:0xe602ee7f91870465!8m2!3d50.9109442!4d6.1778311!16s%2Fg%2F1v8307d9?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+      },
+      "openingHours": {
+        "monday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "tuesday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "wednesday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "thursday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "friday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "saturday": {
+          "open": "10:00",
+          "close": "16:00",
+          "closed": false
+        },
+        "sunday": {
+          "open": "",
+          "close": "",
+          "closed": true
+        }
+      },
+      "socialMedia": {
+        "instagram": "https://instagram.com/wellnesstal",
+        "facebook": "https://facebook.com/wellnesstal",
+        "whatsapp": "https://wa.me/491733828581",
+        "website": "https://wellnesstal.de"
+      },
+      "seo": {
+        "metaTitle": "Wellnesstal - Premium Wellness & Headspa in Baesweiler",
+        "metaDescription": "Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!",
+        "keywords": [
+          "wellness",
+          "headspa",
+          "massage",
+          "köln",
+          "entspannung",
+          "aromatherapie",
+          "spa"
+        ]
+      },
+      "notifications": {
+        "emailNotifications": true,
+        "smsNotifications": false,
+        "bookingConfirmations": true
+      },
+      "styles": {
+        "pageTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "24px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "tabActive": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "tabInactive": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#6B7280"
+        },
+        "label": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#2C2C2C"
+        },
+        "input": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#2C2C2C",
+          "borderColor": "#E5E7EB"
+        },
+        "saveButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "helpText": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#6B7280"
+        },
+        "businessName": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "tagline": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "color": "#2C2C2C"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        }
+      }
+    },
+    "defaults": {
+      "businessInfo": {
+        "name": "Wellnesstal",
+        "tagline": "Premium Wellness & Headspa in Baesweiler",
+        "description": "Ihre Oase der Entspannung im Herzen von Köln. Professionelle Wellness-Behandlungen für Körper und Seele."
+      },
+      "contact": {
+        "phone": "+49 1733828581",
+        "email": "info@wellnesstal.de",
+        "whatsapp": "+49 1733828581"
+      },
+      "address": {
+        "street": "Reyplatz 10",
+        "city": "Baesweiler",
+        "postalCode": "52499",
+        "country": "Almanya",
+        "googleMapsUrl": "https://www.google.com/maps/place/Reypl.,+52499+Baesweiler/@50.9109442,6.1752562,17z/data=!3m1!4b1!4m6!3m5!1s0x47c0a16aa34b11f5:0xe602ee7f91870465!8m2!3d50.9109442!4d6.1778311!16s%2Fg%2F1v8307d9?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D"
+      },
+      "openingHours": {
+        "monday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "tuesday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "wednesday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "thursday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "friday": {
+          "open": "09:00",
+          "close": "19:00",
+          "closed": false
+        },
+        "saturday": {
+          "open": "10:00",
+          "close": "16:00",
+          "closed": false
+        },
+        "sunday": {
+          "open": "",
+          "close": "",
+          "closed": true
+        }
+      },
+      "socialMedia": {
+        "instagram": "https://instagram.com/wellnesstal",
+        "facebook": "https://facebook.com/wellnesstal",
+        "whatsapp": "https://wa.me/491733828581",
+        "website": "https://wellnesstal.de"
+      },
+      "seo": {
+        "metaTitle": "Wellnesstal - Premium Wellness & Headspa in Baesweiler",
+        "metaDescription": "Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!",
+        "keywords": [
+          "wellness",
+          "headspa",
+          "massage",
+          "köln",
+          "entspannung",
+          "aromatherapie",
+          "spa"
+        ]
+      },
+      "notifications": {
+        "emailNotifications": true,
+        "smsNotifications": false,
+        "bookingConfirmations": true
+      },
+      "styles": {
+        "pageTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "24px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "tabActive": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "tabInactive": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#6B7280"
+        },
+        "label": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#2C2C2C"
+        },
+        "input": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#2C2C2C",
+          "borderColor": "#E5E7EB"
+        },
+        "saveButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "helpText": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "400",
+          "color": "#6B7280"
+        },
+        "businessName": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "tagline": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "color": "#2C2C2C"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T20:36:15.925Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "8",
+    "section": "whatsapp-settings",
+    "title": "WhatsApp Button Einstellungen",
+    "description": "WhatsApp butonu için enterprise ayarları",
+    "content": {
+      "basic": {
+        "enabled": true,
+        "phoneNumber": "+49 1733828581",
+        "useOriginalStyle": false,
+        "position": "bottom-right"
+      },
+      "appearance": {
+        "buttonColor": "#9CAF88",
+        "buttonHoverColor": "#d4d8cf",
+        "iconColor": "#FFFFFF",
+        "size": "large",
+        "shadow": true,
+        "pulseAnimation": true,
+        "borderRadius": "full"
+      },
+      "message": {
+        "defaultMessage": "Hallo, ich interessiere mich für eine Wellness-Behandlung bei Wellnesstal.",
+        "tooltipText": "WhatsApp Nachricht senden",
+        "tooltipDelay": 0,
+        "showTooltipOnLoad": false,
+        "autoShowTooltipAfter": 0
+      },
+      "display": {
+        "showOnMobile": true,
+        "showOnDesktop": true,
+        "showOnAllPages": true,
+        "excludedPages": [],
+        "showAfterDelay": 0,
+        "showAfterScroll": 0
+      },
+      "availability": {
+        "mode": "manual",
+        "manualStatus": true,
+        "showIndicator": true,
+        "onlineColor": "#22C55E",
+        "offlineColor": "#EF4444",
+        "offlineMessage": "Derzeit offline - Wir antworten so schnell wie möglich."
+      },
+      "ctaBubble": {
+        "enabled": true,
+        "title": "Haben Sie Fragen?",
+        "message": "Schreiben Sie uns auf WhatsApp - wir helfen Ihnen gerne!",
+        "backgroundColor": "#FFFFFF",
+        "textColor": "#1F2937",
+        "titleColor": "#9CAF88",
+        "showAfterDelay": 3000,
+        "dismissable": true
+      }
+    },
+    "lastUpdated": "2025-11-28T20:50:56.331Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "9",
+    "section": "landing-hero",
+    "title": "Landing Hero Bölümü",
+    "description": "Ana sayfanın en üst hero bölümü",
+    "content": {
+      "badge": "Wellnesstal Studio",
+      "mainTitle": "Ihre Wellness-Oase für",
+      "highlightedText": "Körper & Seele",
+      "description": "Entdecken Sie unsere exklusiven Wellness-Behandlungen und finden Sie Ihre innere Balance in entspannter Atmosphäre.",
+      "primaryButton": "Services entdecken",
+      "primaryButtonLink": "#services",
+      "secondaryButton": "Termin buchen",
+      "secondaryButtonLink": "#contact",
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "mainTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "24px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "primaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "secondaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88",
+          "borderColor": "#9CAF88"
+        }
+      }
+    },
+    "defaults": {
+      "badge": "Wellnesstal Studio",
+      "mainTitle": "Ihre Wellness-Oase für",
+      "highlightedText": "Körper & Seele",
+      "description": "Entdecken Sie unsere exklusiven Wellness-Behandlungen und finden Sie Ihre innere Balance in entspannter Atmosphäre.",
+      "primaryButton": "Services entdecken",
+      "primaryButtonLink": "#services",
+      "secondaryButton": "Termin buchen",
+      "secondaryButtonLink": "#contact",
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "mainTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "72px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "24px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "primaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "secondaryButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "600",
+          "color": "#9CAF88",
+          "borderColor": "#9CAF88"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T19:28:34.419Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "10",
+    "section": "contact-section",
+    "title": "Kontakt Bölümü (Ana Sayfa)",
+    "description": "Ana sayfadaki iletişim bölümü görsel stilleri",
+    "content": {
+      "badge": "📞 Kontakt",
+      "sectionTitle": "Bereit für Ihre",
+      "highlightedText": "Auszeit",
+      "description": "Vereinbaren Sie noch heute Ihren Termin oder lassen Sie sich unverbindlich beraten.",
+      "cards": {
+        "phone": {
+          "title": "Telefonisch",
+          "description": "Rufen Sie uns direkt an für eine schnelle Terminbuchung"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "description": "Schreiben Sie uns eine Nachricht - wir antworten schnell",
+          "linkText": "Nachricht senden"
+        },
+        "email": {
+          "title": "E-Mail",
+          "description": "Senden Sie uns Ihre Anfrage per E-Mail"
+        }
+      },
+      "map": {
+        "buttonText": "In Google Maps öffnen"
+      },
+      "openingHours": {
+        "title": "Öffnungszeiten",
+        "todayLabel": "Heute",
+        "closedLabel": "Geschlossen"
+      },
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "phoneCardTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "phoneCardDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "whatsappCardTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "whatsappCardDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "whatsappCardLink": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "600",
+          "color": "#9CAF88"
+        },
+        "emailCardTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "emailCardDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "phoneCardIcon": {
+          "backgroundColor": "#9CAF88",
+          "iconColor": "#FFFFFF"
+        },
+        "whatsappCardIcon": {
+          "backgroundColor": "#9CAF88",
+          "iconColor": "#FFFFFF"
+        },
+        "emailCardIcon": {
+          "backgroundColor": "#9CAF88",
+          "iconColor": "#FFFFFF"
+        },
+        "mapTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "mapAddress": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "mapButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "openingHoursTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "dayLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "color": "#2C2C2C"
+        },
+        "timeLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "todayBadge": {
+          "fontFamily": "system-ui",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "todayHighlight": {
+          "backgroundColor": "#eef1ea",
+          "borderColor": "#d4ddd0"
+        }
+      }
+    },
+    "defaults": {
+      "badge": "📞 Kontakt",
+      "sectionTitle": "Bereit für Ihre",
+      "highlightedText": "Auszeit",
+      "description": "Vereinbaren Sie noch heute Ihren Termin oder lassen Sie sich unverbindlich beraten.",
+      "cards": {
+        "phone": {
+          "title": "Telefonisch",
+          "description": "Rufen Sie uns direkt an für eine schnelle Terminbuchung"
+        },
+        "whatsapp": {
+          "title": "WhatsApp",
+          "description": "Schreiben Sie uns eine Nachricht - wir antworten schnell",
+          "linkText": "Nachricht senden"
+        },
+        "email": {
+          "title": "E-Mail",
+          "description": "Senden Sie uns Ihre Anfrage per E-Mail"
+        }
+      },
+      "map": {
+        "buttonText": "In Google Maps öffnen"
+      },
+      "openingHours": {
+        "title": "Öffnungszeiten",
+        "todayLabel": "Heute",
+        "closedLabel": "Geschlossen"
+      },
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "phoneCardTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "phoneCardDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "whatsappCardTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "whatsappCardDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "whatsappCardLink": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "600",
+          "color": "#9CAF88"
+        },
+        "emailCardTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "emailCardDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "phoneCardIcon": {
+          "backgroundColor": "#9CAF88",
+          "iconColor": "#FFFFFF"
+        },
+        "whatsappCardIcon": {
+          "backgroundColor": "#25D366",
+          "iconColor": "#FFFFFF"
+        },
+        "emailCardIcon": {
+          "backgroundColor": "#9CAF88",
+          "iconColor": "#FFFFFF"
+        },
+        "mapTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "mapAddress": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "mapButton": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "openingHoursTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "600",
+          "color": "#2C2C2C"
+        },
+        "dayLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "500",
+          "color": "#2C2C2C"
+        },
+        "timeLabel": {
+          "fontFamily": "system-ui",
+          "fontSize": "16px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "todayBadge": {
+          "fontFamily": "system-ui",
+          "fontSize": "12px",
+          "fontWeight": "500",
+          "color": "#FFFFFF",
+          "backgroundColor": "#9CAF88"
+        },
+        "todayHighlight": {
+          "backgroundColor": "#eef1ea",
+          "borderColor": "#d4ddd0"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T21:21:25.112Z",
+    "updatedBy": "Admin"
+  },
+  {
+    "id": "11",
+    "section": "services-section",
+    "title": "Leistungen Bölümü",
+    "description": "Leistungen bölümünün başlık ve açıklama metinleri",
+    "content": {
+      "badge": "✨ Unsere Expertise",
+      "sectionTitle": "Professionelle",
+      "highlightedText": "Wellness-Behandlungen",
+      "description": "Entdecken Sie unser vielfältiges Angebot an entspannenden und regenerierenden Behandlungen, individuell auf Ihre Bedürfnisse abgestimmt.",
+      "cta": {
+        "title": "Nicht sicher, welche Behandlung zu Ihnen passt?",
+        "description": "Unsere Wellness-Experten beraten Sie gerne kostenlos und unverbindlich. Gemeinsam finden wir die perfekte Behandlung für Ihre Bedürfnisse.",
+        "primaryButtonText": "Kostenlose Beratung",
+        "secondaryButtonText": "WhatsApp Nachricht"
+      },
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "ctaTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "32px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "ctaDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "400",
+          "color": "#666666"
+        }
+      }
+    },
+    "defaults": {
+      "badge": "✨ Unsere Expertise",
+      "sectionTitle": "Professionelle",
+      "highlightedText": "Wellness-Behandlungen",
+      "description": "Entdecken Sie unser vielfältiges Angebot an entspannenden und regenerierenden Behandlungen, individuell auf Ihre Bedürfnisse abgestimmt.",
+      "cta": {
+        "title": "Nicht sicher, welche Behandlung zu Ihnen passt?",
+        "description": "Unsere Wellness-Experten beraten Sie gerne kostenlos und unverbindlich. Gemeinsam finden wir die perfekte Behandlung für Ihre Bedürfnisse.",
+        "primaryButtonText": "Kostenlose Beratung",
+        "secondaryButtonText": "WhatsApp Nachricht"
+      },
+      "styles": {
+        "badge": {
+          "fontFamily": "system-ui",
+          "fontSize": "14px",
+          "fontWeight": "500",
+          "color": "#637554",
+          "backgroundColor": "#eef1ea"
+        },
+        "sectionTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "highlightedText": {
+          "fontFamily": "system-ui",
+          "fontSize": "48px",
+          "fontWeight": "700",
+          "color": "#9CAF88"
+        },
+        "description": {
+          "fontFamily": "system-ui",
+          "fontSize": "20px",
+          "fontWeight": "400",
+          "color": "#666666"
+        },
+        "ctaTitle": {
+          "fontFamily": "system-ui",
+          "fontSize": "32px",
+          "fontWeight": "700",
+          "color": "#2C2C2C"
+        },
+        "ctaDescription": {
+          "fontFamily": "system-ui",
+          "fontSize": "18px",
+          "fontWeight": "400",
+          "color": "#666666"
+        }
+      }
+    },
+    "lastUpdated": "2025-11-28T21:30:00.000Z",
+    "updatedBy": "Admin"
+  }
+]

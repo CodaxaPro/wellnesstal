@@ -1,26 +1,425 @@
-@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Original Wellness Theme */
+  --primary-sage: #9CAF88;
+  --secondary-earth: #D4B996;
+  --accent-forest: #6B8A3A;
+  --neutral-cream: #F7F5F3;
+  --text-charcoal: #2C2C2C;
+  --text-gray: #666666;
+  --white-pure: #FFFFFF;
+  --shadow-soft: 0 4px 20px rgba(0,0,0,0.08);
+  --shadow-medium: 0 8px 30px rgba(0,0,0,0.12);
+  --gradient-primary: linear-gradient(135deg, #9CAF88 0%, #6B8A3A 100%);
+  --gradient-secondary: linear-gradient(135deg, #F7F5F3 0%, #FFFFFF 100%);
+  
+  /* Template Engine Dynamic Variables */
+  --template-primary: var(--primary-sage);
+  --template-secondary: var(--secondary-earth);
+  --template-accent: var(--accent-forest);
+  --template-neutral: var(--neutral-cream);
+  --template-text: var(--text-charcoal);
+  --template-text-light: var(--text-gray);
+  
+  /* Template-specific industry colors */
+  --wellness-primary: #10B981;
+  --wellness-secondary: #6B7280;
+  --wellness-accent: #8B5CF6;
+  
+  --restaurant-primary: #FF6B35;
+  --restaurant-secondary: #FFA500;
+  --restaurant-accent: #DC2626;
+  
+  --healthcare-primary: #3B82F6;
+  --healthcare-secondary: #1E40AF;
+  --healthcare-accent: #06B6D4;
+  
+  --ecommerce-primary: #8B5CF6;
+  --ecommerce-secondary: #EC4899;
+  --ecommerce-accent: #F59E0B;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Template Theme Classes */
+.template-wellness {
+  --template-primary: var(--wellness-primary);
+  --template-secondary: var(--wellness-secondary);
+  --template-accent: var(--wellness-accent);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.template-restaurant {
+  --template-primary: var(--restaurant-primary);
+  --template-secondary: var(--restaurant-secondary);
+  --template-accent: var(--restaurant-accent);
+}
+
+.template-healthcare {
+  --template-primary: var(--healthcare-primary);
+  --template-secondary: var(--healthcare-secondary);
+  --template-accent: var(--healthcare-accent);
+}
+
+.template-ecommerce {
+  --template-primary: var(--ecommerce-primary);
+  --template-secondary: var(--ecommerce-secondary);
+  --template-accent: var(--ecommerce-accent);
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: 'Poppins', sans-serif;
+  background-color: var(--neutral-cream);
+  color: var(--text-charcoal);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  .animate-fade-in {
+    animation: fadeIn 0.6s ease-in-out;
+  }
+  
+  .animate-slide-up {
+    animation: slideUp 0.6s ease-out;
+  }
+  
+  .animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+  }
+  
+  /* Template Engine Utilities */
+  .bg-template-primary {
+    background-color: var(--template-primary);
+  }
+  
+  .bg-template-secondary {
+    background-color: var(--template-secondary);
+  }
+  
+  .bg-template-accent {
+    background-color: var(--template-accent);
+  }
+  
+  .text-template-primary {
+    color: var(--template-primary);
+  }
+  
+  .text-template-secondary {
+    color: var(--template-secondary);
+  }
+  
+  .text-template-accent {
+    color: var(--template-accent);
+  }
+  
+  .border-template-primary {
+    border-color: var(--template-primary);
+  }
+  
+  .border-template-secondary {
+    border-color: var(--template-secondary);
+  }
+  
+  .border-template-accent {
+    border-color: var(--template-accent);
+  }
+  
+  .bg-template-primary-50 {
+    background-color: color-mix(in srgb, var(--template-primary) 10%, white);
+  }
+  
+  .bg-template-primary-100 {
+    background-color: color-mix(in srgb, var(--template-primary) 20%, white);
+  }
+  
+  .bg-template-primary-200 {
+    background-color: color-mix(in srgb, var(--template-primary) 30%, white);
+  }
+  
+  .hover\:bg-template-primary:hover {
+    background-color: var(--template-primary);
+  }
+  
+  .hover\:text-template-primary:hover {
+    color: var(--template-primary);
+  }
+  
+  .focus\:ring-template-primary:focus {
+    --tw-ring-color: var(--template-primary);
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-[var(--primary-sage)] hover:bg-[var(--accent-forest)] text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .btn-secondary {
+    @apply border-2 border-[var(--primary-sage)] text-[var(--primary-sage)] hover:bg-[var(--primary-sage)] hover:text-white font-medium px-6 py-3 rounded-lg transition-all duration-300;
+  }
+  
+  .btn-template-primary {
+    @apply bg-template-primary hover:opacity-90 text-white font-medium px-6 py-3 rounded-lg transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+  
+  .btn-template-secondary {
+    @apply border-2 border-template-primary text-template-primary hover:bg-template-primary hover:text-white font-medium px-6 py-3 rounded-lg transition-all duration-300;
+  }
+  
+  .card-elevated {
+    @apply bg-white rounded-2xl p-6 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-medium)] transition-all duration-300 hover:-translate-y-2;
+  }
+  
+  .section-padding {
+    @apply py-16 lg:py-24;
+  }
+  
+  .container-custom {
+    @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+  
+  .card-template {
+    @apply bg-white rounded-2xl p-6 shadow-[var(--shadow-soft)] hover:shadow-[var(--shadow-medium)] transition-all duration-300 hover:-translate-y-2 border-l-4 border-template-primary;
+  }
+  
+  .badge-template-primary {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-template-primary-100 text-template-primary;
+  }
+  
+  .badge-template-secondary {
+    @apply inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-template-secondary text-white;
+  }
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes templateTransition {
+  0% {
+    opacity: 0.8;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Button Entrance Animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slide-right {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoom-in {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes bounce-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.3) translateY(-30px);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05) translateY(10px);
+  }
+  70% {
+    transform: scale(0.95) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) translateY(0);
+  }
+}
+
+.animate-slide-left {
+  animation: slide-left 0.6s ease-out forwards;
+}
+
+.animate-slide-right {
+  animation: slide-right 0.6s ease-out forwards;
+}
+
+.animate-zoom-in {
+  animation: zoom-in 0.6s ease-out forwards;
+}
+
+.animate-bounce-in {
+  animation: bounce-in 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+}
+
+.template-transition {
+  animation: templateTransition 0.5s ease-out;
+}
+
+/* Scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: var(--template-primary);
+  color: white;
+}
+
+:focus-visible {
+  outline: 2px solid var(--template-primary);
+  outline-offset: 2px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--neutral-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--template-primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--template-accent);
+}
+
+/* Template loading indicator */
+.template-loading {
+  position: relative;
+}
+
+.template-loading::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  animation: templateShimmer 1.5s infinite;
+}
+
+@keyframes templateShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }

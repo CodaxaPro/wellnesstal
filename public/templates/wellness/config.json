@@ -1,0 +1,46 @@
+{
+  "id": "wellness-basic",
+  "name": "Wellness Management",
+  "industry": "wellness",
+  "version": "1.0.0",
+  "description": "Wellness management system",
+  "entities": {
+    "primary": {
+      "name": "Services",
+      "singular": "Service",
+      "plural": "Services", 
+      "icon": "Sparkles",
+      "color": "#10B981",
+      "fields": [
+        {
+          "key": "name",
+          "label": "Name",
+          "type": "text",
+          "required": true,
+          "order": 1
+        }
+      ],
+      "permissions": {
+        "create": true,
+        "read": true,
+        "update": true,
+        "delete": true,
+        "bulk": true
+      }
+    }
+  },
+  "ui": {
+    "theme": {
+      "primaryColor": "#10B981",
+      "secondaryColor": "#6B7280",
+      "fontFamily": "Inter, sans-serif",
+      "borderRadius": "0.75rem",
+      "spacing": "comfortable",
+      "darkMode": false
+    }
+  },
+  "features": {
+    "enabled": ["crud"],
+    "disabled": []
+  }
+}
