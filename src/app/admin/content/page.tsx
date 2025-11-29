@@ -237,10 +237,15 @@ export default function ContentManagement() {
     setUploadingImage(index)
     setSaveMessage(null)
     try {
+      const token = localStorage.getItem('adminToken')
       const formData = new FormData()
       formData.append('file', file)
       formData.append('folder', 'about')
-      const response = await fetch('/api/upload', { method: 'POST', body: formData })
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      })
       const data = await response.json()
       if (data.success) {
         setEditingContent((prev: any) => {
@@ -277,7 +282,11 @@ export default function ContentManagement() {
     setDeletingImage(index)
     setSaveMessage(null)
     try {
-      const response = await fetch(`/api/upload?url=${encodeURIComponent(imageUrl)}`, { method: 'DELETE' })
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/upload?url=${encodeURIComponent(imageUrl)}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
       const data = await response.json()
       if (data.success) {
         setEditingContent((prev: any) => {
@@ -301,10 +310,15 @@ export default function ContentManagement() {
     setUploadingHeroImage(true)
     setSaveMessage(null)
     try {
+      const token = localStorage.getItem('adminToken')
       const formData = new FormData()
       formData.append('file', file)
       formData.append('folder', 'hero')
-      const response = await fetch('/api/upload', { method: 'POST', body: formData })
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      })
       const data = await response.json()
       if (data.success) {
         setEditingContent((prev: any) => ({ ...prev, image: { ...prev.image, url: data.data.url } }))
@@ -332,7 +346,11 @@ export default function ContentManagement() {
     setDeletingHeroImage(true)
     setSaveMessage(null)
     try {
-      const response = await fetch(`/api/upload?url=${encodeURIComponent(imageUrl)}`, { method: 'DELETE' })
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch(`/api/upload?url=${encodeURIComponent(imageUrl)}`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
       const data = await response.json()
       if (data.success) {
         setEditingContent((prev: any) => ({ ...prev, image: { ...prev.image, url: '' } }))
