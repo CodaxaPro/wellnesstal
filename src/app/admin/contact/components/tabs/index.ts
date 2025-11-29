@@ -1,0 +1,8 @@
+export { BusinessTab } from './BusinessTab'
+export { ContactTab } from './ContactTab'
+export { AddressTab } from './AddressTab'
+export { HoursTab } from './HoursTab'
+export { SocialTab } from './SocialTab'
+export { SeoTab } from './SeoTab'
+export { NotificationsTab } from './NotificationsTab'
+export { StylesTab } from './StylesTab'
