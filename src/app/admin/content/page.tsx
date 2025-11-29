@@ -263,10 +263,12 @@ export default function ContentManagement() {
     setSaveMessage(null)
 
     try {
+      const token = localStorage.getItem('adminToken')
       const response = await fetch('/api/content', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           id: section.id,
