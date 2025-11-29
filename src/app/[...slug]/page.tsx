@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
-import PageRenderer from '@/components/PageRenderer'
-import { Page } from '@/types/pages'
+import { createClient } from '@supabase/supabase-js'
+import BlockRenderer from '@/components/blocks/BlockRenderer'
 
 interface PageProps {
   params: Promise<{
@@ -9,112 +9,43 @@ interface PageProps {
   }>
 }
 
-// Mock data - In production, this would fetch from your database
-async function getPageBySlug(slug: string): Promise<Page | null> {
-  // Simulate API call
-  const PAGES: Page[] = [
-    {
-      id: '1',
-      slug: 'aromatherapie-koeln',
-      title: 'Aromatherapie in Köln',
-      metaDescription: 'Professionelle Aromatherapie-Behandlungen in Köln. Entspannung durch ätherische Öle.',
-      metaTitle: 'Aromatherapie Köln | Wellnesstal',
-      status: 'published',
-      templateType: 'service',
-      content: {
-        hero: {
-          title: 'Aromatherapie',
-          subtitle: 'Entspannung durch die Kraft ätherischer Öle',
-          image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=1200',
-          ctaText: 'Termin buchen',
-          ctaLink: 'tel:+4922112345678',
-          backgroundType: 'image'
-        },
-        sections: [
-          {
-            id: '1',
-            type: 'text',
-            title: 'Was ist Aromatherapie?',
-            content: {
-              content: 'Aromatherapie nutzt natürliche Pflanzenextrakte zur Förderung von Gesundheit und Wohlbefinden. Diese ganzheitliche Heilmethode wird seit Jahrhunderten verwendet, um Körper, Geist und Seele in Einklang zu bringen.',
-              layout: 'single',
-              alignment: 'left'
-            },
-            orderIndex: 1,
-            visible: true
-          },
-          {
-            id: '2',
-            type: 'features',
-            title: 'Ihre Vorteile',
-            content: {
-              features: [
-                { title: 'Stressabbau', description: 'Reduziert Stress und fördert tiefe Entspannung' },
-                { title: 'Besserer Schlaf', description: 'Verbessert die Schlafqualität natürlich' },
-                { title: 'Emotionale Balance', description: 'Unterstützt emotionales Wohlbefinden' },
-                { title: 'Natürliche Heilung', description: '100% natürliche ätherische Öle' }
-              ]
-            },
-            orderIndex: 2,
-            visible: true
-          }
-        ]
-      },
-      seo: {
-        metaTitle: 'Aromatherapie Köln | Wellnesstal',
-        metaDescription: 'Professionelle Aromatherapie-Behandlungen in Köln. Entspannung durch ätherische Öle.',
-        keywords: ['aromatherapie', 'köln', 'ätherische öle', 'entspannung', 'wellness'],
-        noIndex: false,
-        noFollow: false
-      },
-      createdAt: '2024-01-15T10:00:00Z',
-      updatedAt: '2024-01-15T10:00:00Z',
-      publishedAt: '2024-01-15T10:00:00Z'
-    },
-    {
-      id: '2',
-      slug: 'ueber-wellnesstal',
-      title: 'Über Wellnesstal',
-      metaDescription: 'Erfahren Sie mehr über Wellnesstal - Ihre Wellness-Oase im Herzen von Köln.',
-      metaTitle: 'Über uns | Wellnesstal',
-      status: 'published',
-      templateType: 'about',
-      content: {
-        hero: {
-          title: 'Über Wellnesstal',
-          subtitle: 'Ihre Oase der Entspannung seit 2019',
-          image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200',
-          backgroundType: 'image'
-        },
-        sections: [
-          {
-            id: '1',
-            type: 'text',
-            title: 'Unsere Geschichte',
-            content: {
-              content: 'Wellnesstal wurde 2019 mit der Vision gegründet, Menschen einen Ort der Ruhe und Regeneration zu bieten. Unser erfahrenes Team von zertifizierten Therapeuten bringt jahrelange Expertise mit.',
-              layout: 'single',
-              alignment: 'left'
-            },
-            orderIndex: 1,
-            visible: true
-          }
-        ]
-      },
-      seo: {
-        metaTitle: 'Über uns | Wellnesstal',
-        metaDescription: 'Erfahren Sie mehr über Wellnesstal - Ihre Wellness-Oase im Herzen von Köln.',
-        keywords: ['wellnesstal', 'über uns', 'wellness köln', 'spa'],
-        noIndex: false,
-        noFollow: false
-      },
-      createdAt: '2024-01-14T15:30:00Z',
-      updatedAt: '2024-01-14T15:30:00Z',
-      publishedAt: '2024-01-14T15:30:00Z'
-    }
-  ]
+// Create Supabase client
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
-  return PAGES.find(page => page.slug === slug && page.status === 'published') || null
+// Fetch page by slug from database
+async function getPageBySlug(slug: string) {
+  try {
+    // First try to get from database
+    const { data: page, error } = await supabase
+      .from('pages')
+      .select('*')
+      .eq('slug', slug)
+      .eq('status', 'published')
+      .single()
+
+    if (error || !page) {
+      return null
+    }
+
+    // Get blocks for this page
+    const { data: blocks } = await supabase
+      .from('page_blocks')
+      .select('*')
+      .eq('page_id', page.id)
+      .eq('visible', true)
+      .order('position', { ascending: true })
+
+    return {
+      ...page,
+      blocks: blocks || []
+    }
+  } catch (error) {
+    console.error('Error fetching page:', error)
+    return null
+  }
 }
 
 // Generate metadata for SEO
@@ -125,39 +56,48 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   if (!page) {
     return {
-      title: 'Seite nicht gefunden | Wellnesstal',
-      description: 'Die angeforderte Seite konnte nicht gefunden werden.'
+      title: 'Sayfa Bulunamadı | Wellnesstal',
+      description: 'Aradığınız sayfa bulunamadı.'
     }
   }
 
   return {
-    title: page.seo.metaTitle || page.metaTitle,
-    description: page.seo.metaDescription || page.metaDescription,
-    keywords: page.seo.keywords?.join(', '),
+    title: page.meta_title || page.title,
+    description: page.meta_description,
+    keywords: page.meta_keywords?.join(', '),
     openGraph: {
-      title: page.seo.metaTitle || page.metaTitle,
-      description: page.seo.metaDescription || page.metaDescription,
-      images: page.seo.ogImage ? [page.seo.ogImage] : undefined,
+      title: page.meta_title || page.title,
+      description: page.meta_description,
+      images: page.og_image ? [page.og_image] : undefined,
     },
     robots: {
-      index: !page.seo.noIndex,
-      follow: !page.seo.noFollow,
+      index: !page.no_index,
+      follow: !page.no_follow,
     },
     alternates: {
-      canonical: page.seo.canonicalUrl,
+      canonical: page.canonical_url,
     },
   }
 }
 
-// Generate static params for static generation (optional)
+// Generate static params for known pages
 export async function generateStaticParams() {
-  // In production, fetch all published page slugs from database
-  const pages = [
-    { slug: ['aromatherapie-koeln'] },
-    { slug: ['ueber-wellnesstal'] }
-  ]
-  
-  return pages
+  try {
+    const { data: pages } = await supabase
+      .from('pages')
+      .select('slug')
+      .eq('status', 'published')
+
+    if (pages) {
+      return pages.map(page => ({
+        slug: page.slug.split('/')
+      }))
+    }
+  } catch (error) {
+    console.error('Error generating static params:', error)
+  }
+
+  return []
 }
 
 export default async function DynamicPage({ params }: PageProps) {
@@ -165,11 +105,14 @@ export default async function DynamicPage({ params }: PageProps) {
   const slugPath = slug.join('/')
   const page = await getPageBySlug(slugPath)
 
-  // If page not found or not published, return 404
-  if (!page || page.status !== 'published') {
+  // If page not found, return 404
+  if (!page) {
     notFound()
   }
 
-  // Render the page using PageRenderer component
-  return <PageRenderer page={page} />
+  return (
+    <main className="min-h-screen">
+      <BlockRenderer blocks={page.blocks} />
+    </main>
+  )
 }

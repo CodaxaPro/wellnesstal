@@ -9,6 +9,7 @@ import TestimonialsSection from '@/components/sections/TestimonialsSection'
 import LandingHeroSection from '@/components/sections/LandingHeroSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ContactSection from '@/components/sections/ContactSection'
+import GallerySection from '@/components/sections/GallerySection'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
 
 // Template Engine imports
@@ -23,6 +24,16 @@ interface MetaContent {
   ogImage: string
 }
 
+// Homepage section interface
+interface HomepageSection {
+  id: string
+  section_key: string
+  section_name: string
+  section_icon: string | null
+  position: number
+  enabled: boolean
+}
+
 const defaultMetaContent: MetaContent = {
   siteTitle: 'Wellnesstal - Premium Wellness & Headspa in Köln',
   siteDescription: 'Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!',
@@ -34,6 +45,7 @@ export default function Home() {
   const [templateConfig, setTemplateConfig] = useState<TemplateConfig | null>(null)
   const [templateLoading, setTemplateLoading] = useState(true)
   const [metaContent, setMetaContent] = useState<MetaContent>(defaultMetaContent)
+  const [sections, setSections] = useState<HomepageSection[]>([])
 
   // Initialize Template Engine
   useEffect(() => {
@@ -206,7 +218,8 @@ export default function Home() {
         }
 
         // Initialize template engine
-        templateEngine.setConfig(config)
+        templateEngine.registerTemplate(config as any)
+        templateEngine.setActiveTemplate(config.id)
         setTemplateConfig(config)
       } catch (error) {
         console.error('Failed to initialize template:', error)
@@ -241,6 +254,39 @@ export default function Home() {
     fetchMetaContent()
   }, [])
 
+  // Fetch section order
+  useEffect(() => {
+    const fetchSections = async () => {
+      try {
+        const response = await fetch('/api/sections')
+        const data = await response.json()
+        if (data.success && data.data) {
+          setSections(data.data)
+        }
+      } catch (error) {
+        console.error('Failed to fetch sections:', error)
+      }
+    }
+
+    fetchSections()
+  }, [])
+
+  // Section component mapping
+  const sectionComponents: Record<string, React.ReactNode> = {
+    'landing-hero': <LandingHeroSection key="landing-hero" />,
+    'hero': <HeroSection key="hero" />,
+    'services': <ServicesSection key="services" />,
+    'gallery': <GallerySection key="gallery" />,
+    'testimonials': <TestimonialsSection key="testimonials" />,
+    'about': <AboutSection key="about" />,
+    'contact': <ContactSection key="contact" brandName={templateConfig?.ui.theme.brandName || 'Wellnesstal Studio'} />
+  }
+
+  // Get enabled sections in order
+  const enabledSections = sections
+    .filter(s => s.enabled)
+    .sort((a, b) => a.position - b.position)
+
   // Template-driven theme variables
   const themeVars = templateConfig?.ui.theme ? {
     '--primary-color': templateConfig.ui.theme.primaryColor,
@@ -263,19 +309,21 @@ export default function Home() {
 
       {/* Main Content */}
       <main>
-        {/* Landing Hero Section */}
-        <LandingHeroSection />
-
-        {/* Hero, Services & Testimonials Sections */}
-        <HeroSection />
-        <ServicesSection />
-        <TestimonialsSection />
-
-        {/* About Section */}
-        <AboutSection />
-
-        {/* Contact Section */}
-        <ContactSection brandName={templateConfig?.ui.theme.brandName || 'Wellnesstal Studio'} />
+        {/* Dynamic Section Rendering */}
+        {enabledSections.length > 0 ? (
+          // Render sections based on database order
+          enabledSections.map(section => sectionComponents[section.section_key])
+        ) : (
+          // Fallback to default order if sections not loaded
+          <>
+            <LandingHeroSection />
+            <HeroSection />
+            <ServicesSection />
+            <TestimonialsSection />
+            <AboutSection />
+            <ContactSection brandName={templateConfig?.ui.theme.brandName || 'Wellnesstal Studio'} />
+          </>
+        )}
       </main>
 
       {/* Footer */}

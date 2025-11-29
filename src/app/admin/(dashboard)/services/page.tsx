@@ -4,14 +4,14 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useServicesEnhanced } from './hooks/useServicesEnhanced'
-import { Service, ServiceFormData, BulkOperation } from '../../../types/services'
+import { Service, ServiceFormData, BulkOperation } from '../../../../types/services'
 import ServiceForm from './components/ServiceForm/ServiceFormModular'
 
 // Template Engine Imports
-import EntityList from '../../../components/shared/EntityList'
-import { configLoader } from '../../../lib/config-loader'
-import { templateEngine } from '../../../lib/template-engine'
-import { TemplateConfig } from '../../../types/templates'
+import EntityList from '../../../../components/shared/EntityList'
+import { configLoader } from '../../../../lib/config-loader'
+import { templateEngine } from '../../../../lib/template-engine'
+import { TemplateConfig } from '../../../../types/templates'
 
 // Local EntityData type to match EntityList component
 interface LocalEntityData {

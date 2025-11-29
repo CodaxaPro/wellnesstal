@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 // Template Engine imports
-import { templateEngine } from '../../../lib/template-engine'
-import { TemplateConfig, EntityConfig } from '../../../types/templates'
+import { templateEngine } from '../../../../lib/template-engine'
+import { TemplateConfig, EntityConfig } from '../../../../types/templates'
 
 // EntityList component
-import EntityList, { EntityData } from '../../../components/shared/EntityList'
+import EntityList, { EntityData } from '../../../../components/shared/EntityList'
 
 // Types
 interface Category extends EntityData {

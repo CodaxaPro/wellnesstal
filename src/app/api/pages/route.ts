@@ -1,109 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
-import { Page, CreatePageForm, UpdatePageForm, pageTemplates } from '@/types/pages'
 
-// Mock data - In production, this would come from a database
-let PAGES: Page[] = [
-  {
-    id: '1',
-    slug: 'aromatherapie-koeln',
-    title: 'Aromatherapie in Köln',
-    metaDescription: 'Professionelle Aromatherapie-Behandlungen in Köln. Entspannung durch ätherische Öle.',
-    metaTitle: 'Aromatherapie Köln | Wellnesstal',
-    status: 'published',
-    templateType: 'service',
-    content: {
-      hero: {
-        title: 'Aromatherapie',
-        subtitle: 'Entspannung durch die Kraft ätherischer Öle',
-        image: 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=1200',
-        ctaText: 'Termin buchen',
-        ctaLink: 'tel:+4922112345678',
-        backgroundType: 'image'
-      },
-      sections: [
-        {
-          id: '1',
-          type: 'text',
-          title: 'Was ist Aromatherapie?',
-          content: {
-            content: 'Aromatherapie nutzt natürliche Pflanzenextrakte zur Förderung von Gesundheit und Wohlbefinden. Diese ganzheitliche Heilmethode wird seit Jahrhunderten verwendet, um Körper, Geist und Seele in Einklang zu bringen.',
-            layout: 'single',
-            alignment: 'left'
-          },
-          orderIndex: 1,
-          visible: true
-        },
-        {
-          id: '2',
-          type: 'features',
-          title: 'Ihre Vorteile',
-          content: {
-            features: [
-              { title: 'Stressabbau', description: 'Reduziert Stress und fördert tiefe Entspannung' },
-              { title: 'Besserer Schlaf', description: 'Verbessert die Schlafqualität natürlich' },
-              { title: 'Emotionale Balance', description: 'Unterstützt emotionales Wohlbefinden' },
-              { title: 'Natürliche Heilung', description: '100% natürliche ätherische Öle' }
-            ]
-          },
-          orderIndex: 2,
-          visible: true
-        }
-      ]
-    },
-    seo: {
-      metaTitle: 'Aromatherapie Köln | Wellnesstal',
-      metaDescription: 'Professionelle Aromatherapie-Behandlungen in Köln. Entspannung durch ätherische Öle.',
-      keywords: ['aromatherapie', 'köln', 'ätherische öle', 'entspannung', 'wellness'],
-      noIndex: false,
-      noFollow: false
-    },
-    createdAt: '2024-01-15T10:00:00Z',
-    updatedAt: '2024-01-15T10:00:00Z',
-    publishedAt: '2024-01-15T10:00:00Z'
-  },
-  {
-    id: '2',
-    slug: 'ueber-wellnesstal',
-    title: 'Über Wellnesstal',
-    metaDescription: 'Erfahren Sie mehr über Wellnesstal - Ihre Wellness-Oase im Herzen von Köln.',
-    metaTitle: 'Über uns | Wellnesstal',
-    status: 'published',
-    templateType: 'about',
-    content: {
-      hero: {
-        title: 'Über Wellnesstal',
-        subtitle: 'Ihre Oase der Entspannung seit 2019',
-        image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200',
-        backgroundType: 'image'
-      },
-      sections: [
-        {
-          id: '1',
-          type: 'text',
-          title: 'Unsere Geschichte',
-          content: {
-            content: 'Wellnesstal wurde 2019 mit der Vision gegründet, Menschen einen Ort der Ruhe und Regeneration zu bieten. Unser erfahrenes Team von zertifizierten Therapeuten bringt jahrelange Expertise mit.',
-            layout: 'single',
-            alignment: 'left'
-          },
-          orderIndex: 1,
-          visible: true
-        }
-      ]
-    },
-    seo: {
-      metaTitle: 'Über uns | Wellnesstal',
-      metaDescription: 'Erfahren Sie mehr über Wellnesstal - Ihre Wellness-Oase im Herzen von Köln.',
-      keywords: ['wellnesstal', 'über uns', 'wellness köln', 'spa'],
-      noIndex: false,
-      noFollow: false
-    },
-    createdAt: '2024-01-14T15:30:00Z',
-    updatedAt: '2024-01-14T15:30:00Z',
-    publishedAt: '2024-01-14T15:30:00Z'
-  }
-]
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
 
 // Helper function to verify JWT token
 function verifyToken(request: NextRequest) {
@@ -120,57 +22,102 @@ function verifyToken(request: NextRequest) {
   }
 }
 
-// Generate slug from title
-function generateSlug(title: string): string {
-  return title
-    .toLowerCase()
-    .replace(/ä/g, 'ae')
-    .replace(/ö/g, 'oe')
-    .replace(/ü/g, 'ue')
-    .replace(/ß/g, 'ss')
-    .replace(/[^a-z0-9\s-]/g, '')
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .trim()
-}
-
-// GET /api/pages - Get all pages
+// GET /api/pages - Get all pages or single page by slug
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
+    const slug = searchParams.get('slug')
+    const id = searchParams.get('id')
     const status = searchParams.get('status')
-    const template = searchParams.get('template')
-    const limit = parseInt(searchParams.get('limit') || '10')
-    const page = parseInt(searchParams.get('page') || '1')
+    const withBlocks = searchParams.get('withBlocks') === 'true'
+    const limit = parseInt(searchParams.get('limit') || '50')
+    const offset = parseInt(searchParams.get('offset') || '0')
 
-    let filteredPages = [...PAGES]
+    // Single page by slug (for frontend)
+    if (slug) {
+      const { data: page, error } = await supabase
+        .from('pages')
+        .select('*')
+        .eq('slug', slug)
+        .eq('status', 'published')
+        .single()
 
-    // Filter by status
+      if (error || !page) {
+        return NextResponse.json(
+          { success: false, error: 'Page not found' },
+          { status: 404 }
+        )
+      }
+
+      // Get blocks for this page
+      const { data: blocks } = await supabase
+        .from('page_blocks')
+        .select('*')
+        .eq('page_id', page.id)
+        .eq('visible', true)
+        .order('position', { ascending: true })
+
+      return NextResponse.json({
+        success: true,
+        data: { ...page, blocks: blocks || [] }
+      })
+    }
+
+    // Single page by ID (for admin)
+    if (id) {
+      const { data: page, error } = await supabase
+        .from('pages')
+        .select('*')
+        .eq('id', id)
+        .single()
+
+      if (error || !page) {
+        return NextResponse.json(
+          { success: false, error: 'Page not found' },
+          { status: 404 }
+        )
+      }
+
+      if (withBlocks) {
+        const { data: blocks } = await supabase
+          .from('page_blocks')
+          .select('*')
+          .eq('page_id', page.id)
+          .order('position', { ascending: true })
+
+        return NextResponse.json({
+          success: true,
+          data: { ...page, blocks: blocks || [] }
+        })
+      }
+
+      return NextResponse.json({ success: true, data: page })
+    }
+
+    // List all pages (for admin)
+    let query = supabase
+      .from('pages')
+      .select('*', { count: 'exact' })
+      .order('updated_at', { ascending: false })
+      .range(offset, offset + limit - 1)
+
     if (status && status !== 'all') {
-      filteredPages = filteredPages.filter(p => p.status === status)
+      query = query.eq('status', status)
     }
 
-    // Filter by template
-    if (template && template !== 'all') {
-      filteredPages = filteredPages.filter(p => p.templateType === template)
+    const { data: pages, error, count } = await query
+
+    if (error) {
+      throw error
     }
-
-    // Sort by updated date (newest first)
-    filteredPages.sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime())
-
-    // Pagination
-    const startIndex = (page - 1) * limit
-    const endIndex = startIndex + limit
-    const paginatedPages = filteredPages.slice(startIndex, endIndex)
 
     return NextResponse.json({
       success: true,
       data: {
-        pages: paginatedPages,
-        total: filteredPages.length,
-        page,
+        pages: pages || [],
+        total: count || 0,
         limit,
-        totalPages: Math.ceil(filteredPages.length / limit)
+        offset
       }
     })
 
@@ -187,71 +134,68 @@ export async function GET(request: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const user = verifyToken(request)
-    if (!user || (user as any).role !== 'admin') {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
-    const formData: CreatePageForm = await request.json()
+    const body = await request.json()
+    const { title, slug, status = 'draft', template = 'default', meta_title, meta_description } = body
 
-    // Validate required fields
-    if (!formData.title || !formData.templateType) {
+    if (!title) {
       return NextResponse.json(
-        { success: false, error: 'Title and template are required' },
+        { success: false, error: 'Title is required' },
         { status: 400 }
       )
     }
 
     // Generate slug if not provided
-    const slug = formData.slug || generateSlug(formData.title)
+    const finalSlug = slug || title
+      .toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
 
-    // Check if slug already exists
-    const existingPage = PAGES.find(p => p.slug === slug)
-    if (existingPage) {
+    // Check if slug exists
+    const { data: existing } = await supabase
+      .from('pages')
+      .select('id')
+      .eq('slug', finalSlug)
+      .single()
+
+    if (existing) {
       return NextResponse.json(
         { success: false, error: 'A page with this slug already exists' },
         { status: 409 }
       )
     }
 
-    // Get template
-    const template = pageTemplates.find(t => t.id === formData.templateType)
-    if (!template) {
-      return NextResponse.json(
-        { success: false, error: 'Invalid template type' },
-        { status: 400 }
-      )
-    }
+    const { data: page, error } = await supabase
+      .from('pages')
+      .insert({
+        title,
+        slug: finalSlug,
+        status,
+        template,
+        meta_title: meta_title || title,
+        meta_description,
+        published_at: status === 'published' ? new Date().toISOString() : null,
+        created_by: (user as any).username
+      })
+      .select()
+      .single()
 
-    // Create new page
-    const newPage: Page = {
-      id: Date.now().toString(),
-      slug,
-      title: formData.title,
-      metaDescription: formData.metaDescription || '',
-      metaTitle: formData.title,
-      status: formData.status || 'draft',
-      templateType: formData.templateType as any,
-      content: template.defaultContent,
-      seo: {
-        metaTitle: formData.title,
-        metaDescription: formData.metaDescription || '',
-        keywords: [],
-        noIndex: formData.status === 'draft',
-        noFollow: false
-      },
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-      publishedAt: formData.status === 'published' ? new Date().toISOString() : undefined
+    if (error) {
+      throw error
     }
-
-    PAGES.push(newPage)
 
     return NextResponse.json({
       success: true,
-      data: newPage,
+      data: page,
       message: 'Page created successfully'
     })
 
@@ -268,14 +212,15 @@ export async function POST(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const user = verifyToken(request)
-    if (!user || (user as any).role !== 'admin') {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
       )
     }
 
-    const { id, ...updateData }: UpdatePageForm & { id: string } = await request.json()
+    const body = await request.json()
+    const { id, ...updateData } = body
 
     if (!id) {
       return NextResponse.json(
@@ -284,18 +229,16 @@ export async function PUT(request: NextRequest) {
       )
     }
 
-    const pageIndex = PAGES.findIndex(page => page.id === id)
-    if (pageIndex === -1) {
-      return NextResponse.json(
-        { success: false, error: 'Page not found' },
-        { status: 404 }
-      )
-    }
+    // Check slug uniqueness if updating slug
+    if (updateData.slug) {
+      const { data: existing } = await supabase
+        .from('pages')
+        .select('id')
+        .eq('slug', updateData.slug)
+        .neq('id', id)
+        .single()
 
-    // If slug is being updated, check for conflicts
-    if (updateData.slug && updateData.slug !== PAGES[pageIndex].slug) {
-      const existingPage = PAGES.find(p => p.slug === updateData.slug && p.id !== id)
-      if (existingPage) {
+      if (existing) {
         return NextResponse.json(
           { success: false, error: 'A page with this slug already exists' },
           { status: 409 }
@@ -303,34 +246,35 @@ export async function PUT(request: NextRequest) {
       }
     }
 
-    // Update page
-    const updatedPage = {
-      ...PAGES[pageIndex],
-      ...updateData,
-      updatedAt: new Date().toISOString(),
-      publishedAt: updateData.status === 'published' && PAGES[pageIndex].status !== 'published' 
-        ? new Date().toISOString() 
-        : PAGES[pageIndex].publishedAt
-    }
+    // Handle publish timestamp
+    if (updateData.status === 'published') {
+      const { data: currentPage } = await supabase
+        .from('pages')
+        .select('status, published_at')
+        .eq('id', id)
+        .single()
 
-    // Ensure SEO fields are properly typed
-    if (updatedPage.seo) {
-      updatedPage.seo = {
-        metaTitle: updatedPage.seo.metaTitle || updatedPage.metaTitle,
-        metaDescription: updatedPage.seo.metaDescription || updatedPage.metaDescription,
-        keywords: updatedPage.seo.keywords || [],
-        ogImage: updatedPage.seo.ogImage,
-        canonicalUrl: updatedPage.seo.canonicalUrl,
-        noIndex: updatedPage.seo.noIndex || false,
-        noFollow: updatedPage.seo.noFollow || false
+      if (currentPage?.status !== 'published' && !currentPage?.published_at) {
+        updateData.published_at = new Date().toISOString()
       }
     }
 
-    PAGES[pageIndex] = updatedPage as Page
+    updateData.updated_by = (user as any).username
+
+    const { data: page, error } = await supabase
+      .from('pages')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single()
+
+    if (error) {
+      throw error
+    }
 
     return NextResponse.json({
       success: true,
-      data: PAGES[pageIndex],
+      data: page,
       message: 'Page updated successfully'
     })
 
@@ -347,7 +291,7 @@ export async function PUT(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     const user = verifyToken(request)
-    if (!user || (user as any).role !== 'admin') {
+    if (!user) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -364,15 +308,15 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    const pageIndex = PAGES.findIndex(page => page.id === id)
-    if (pageIndex === -1) {
-      return NextResponse.json(
-        { success: false, error: 'Page not found' },
-        { status: 404 }
-      )
-    }
+    // Blocks will be deleted automatically due to CASCADE
+    const { error } = await supabase
+      .from('pages')
+      .delete()
+      .eq('id', id)
 
-    PAGES.splice(pageIndex, 1)
+    if (error) {
+      throw error
+    }
 
     return NextResponse.json({
       success: true,
