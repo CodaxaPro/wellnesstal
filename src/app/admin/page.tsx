@@ -18,15 +18,20 @@ export default function AdminLogin() {
     setError('')
 
     try {
-      if (formData.username === 'admin' && formData.password === 'wellnesstal2024') {
-        localStorage.setItem('adminToken', 'demo-token-12345')
-        localStorage.setItem('adminUser', JSON.stringify({
-          id: '1',
-          username: 'admin',
-          email: 'admin@wellnesstal.de',
-          role: 'admin'
-        }))
-        
+      const response = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: formData.username,
+          password: formData.password
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        localStorage.setItem('adminToken', data.data.token)
+        localStorage.setItem('adminUser', JSON.stringify(data.data.user))
         router.push('/admin/dashboard')
       } else {
         setError('Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.')
