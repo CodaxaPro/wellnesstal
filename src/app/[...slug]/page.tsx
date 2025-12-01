@@ -3,6 +3,10 @@ import { Metadata } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
 
+// Force dynamic rendering - pages should always be fresh
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 interface PageProps {
   params: Promise<{
     slug: string[]
