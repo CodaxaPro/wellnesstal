@@ -1,6 +1,5 @@
 'use client'
 
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
 
 interface Service {
@@ -48,7 +47,11 @@ interface SectionContent {
     title: string
     description: string
     primaryButtonText: string
+    primaryButtonType: 'phone' | 'whatsapp' | 'url' | 'email'
+    primaryButtonLink: string
     secondaryButtonText: string
+    secondaryButtonType: 'phone' | 'whatsapp' | 'url' | 'email'
+    secondaryButtonLink: string
   }
   styles?: {
     badge?: { color?: string; backgroundColor?: string }
@@ -69,7 +72,11 @@ const defaultSectionContent: SectionContent = {
     title: 'Nicht sicher, welche Behandlung zu Ihnen passt?',
     description: 'Unsere Wellness-Experten beraten Sie gerne kostenlos und unverbindlich. Gemeinsam finden wir die perfekte Behandlung für Ihre Bedürfnisse.',
     primaryButtonText: 'Kostenlose Beratung',
-    secondaryButtonText: 'WhatsApp Nachricht'
+    primaryButtonType: 'phone',
+    primaryButtonLink: '+4922112345678',
+    secondaryButtonText: 'WhatsApp Nachricht',
+    secondaryButtonType: 'whatsapp',
+    secondaryButtonLink: '+4922112345678'
   }
 }
 
@@ -89,14 +96,17 @@ const ServicesSection = () => {
   const generateButtonHref = (type: string, value: string, message?: string, serviceName?: string) => {
     switch (type) {
       case 'phone':
-        return `tel:${value}`
+        return `tel:${value.replace(/\s/g, '')}`
       case 'whatsapp':
-        const whatsappMessage = message || (serviceName ? 
-          `Hallo, ich interessiere mich für ${serviceName}` : 
+        const whatsappMessage = message || (serviceName ?
+          `Hallo, ich interessiere mich für ${serviceName}` :
           'Hallo, ich hätte gerne eine Beratung')
         return `https://wa.me/${value.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(whatsappMessage)}`
+      case 'email':
+        return `mailto:${value}`
+      case 'url':
       case 'link':
-        return value
+        return value.startsWith('http') ? value : `https://${value}`
       case 'page':
         return '#' // Will be handled by click handler
       default:
@@ -153,16 +163,21 @@ const ServicesSection = () => {
         }
 
         if (sectionData.success && sectionData.data?.content) {
+          const ctaData = sectionData.data.content.cta || {}
           setSectionContent({
             badge: sectionData.data.content.badge || defaultSectionContent.badge,
             sectionTitle: sectionData.data.content.sectionTitle || defaultSectionContent.sectionTitle,
             highlightedText: sectionData.data.content.highlightedText || defaultSectionContent.highlightedText,
             description: sectionData.data.content.description || defaultSectionContent.description,
             cta: {
-              title: sectionData.data.content.cta?.title || defaultSectionContent.cta.title,
-              description: sectionData.data.content.cta?.description || defaultSectionContent.cta.description,
-              primaryButtonText: sectionData.data.content.cta?.primaryButtonText || defaultSectionContent.cta.primaryButtonText,
-              secondaryButtonText: sectionData.data.content.cta?.secondaryButtonText || defaultSectionContent.cta.secondaryButtonText
+              title: ctaData.title || defaultSectionContent.cta.title,
+              description: ctaData.description || defaultSectionContent.cta.description,
+              primaryButtonText: ctaData.primaryButtonText || defaultSectionContent.cta.primaryButtonText,
+              primaryButtonType: (ctaData.primaryButtonType as 'phone' | 'whatsapp' | 'url' | 'email') || defaultSectionContent.cta.primaryButtonType,
+              primaryButtonLink: ctaData.primaryButtonLink || defaultSectionContent.cta.primaryButtonLink,
+              secondaryButtonText: ctaData.secondaryButtonText || defaultSectionContent.cta.secondaryButtonText,
+              secondaryButtonType: (ctaData.secondaryButtonType as 'phone' | 'whatsapp' | 'url' | 'email') || defaultSectionContent.cta.secondaryButtonType,
+              secondaryButtonLink: ctaData.secondaryButtonLink || defaultSectionContent.cta.secondaryButtonLink
             },
             styles: sectionData.data.content.styles || {}
           })
@@ -550,24 +565,62 @@ const ServicesSection = () => {
               {sectionContent.cta.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link
-                href="tel:+4922112345678"
+              <a
+                href={generateButtonHref(sectionContent.cta.primaryButtonType, sectionContent.cta.primaryButtonLink)}
+                target={sectionContent.cta.primaryButtonType === 'url' ? '_blank' : '_self'}
+                rel={sectionContent.cta.primaryButtonType === 'url' ? 'noopener noreferrer' : undefined}
                 className="bg-sage-500 hover:bg-forest-600 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 hover:shadow-medium hover:-translate-y-1 flex items-center justify-center gap-2"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
-                </svg>
+                {sectionContent.cta.primaryButtonType === 'phone' && (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                )}
+                {sectionContent.cta.primaryButtonType === 'whatsapp' && (
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                  </svg>
+                )}
+                {sectionContent.cta.primaryButtonType === 'email' && (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                )}
+                {sectionContent.cta.primaryButtonType === 'url' && (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                )}
                 {sectionContent.cta.primaryButtonText}
-              </Link>
-              <Link
-                href="https://wa.me/4922112345678?text=Hallo,%20ich%20hätte%20gerne%20eine%20Beratung%20für%20Wellness-Behandlungen"
+              </a>
+              <a
+                href={generateButtonHref(sectionContent.cta.secondaryButtonType, sectionContent.cta.secondaryButtonLink)}
+                target={sectionContent.cta.secondaryButtonType === 'url' ? '_blank' : '_self'}
+                rel={sectionContent.cta.secondaryButtonType === 'url' ? 'noopener noreferrer' : undefined}
                 className="border-2 border-sage-500 text-sage-500 hover:bg-sage-500 hover:text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 flex items-center justify-center gap-2"
               >
-                <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
-                </svg>
+                {sectionContent.cta.secondaryButtonType === 'phone' && (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                  </svg>
+                )}
+                {sectionContent.cta.secondaryButtonType === 'whatsapp' && (
+                  <svg className="h-5 w-5" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893A11.821 11.821 0 0020.885 3.488"/>
+                  </svg>
+                )}
+                {sectionContent.cta.secondaryButtonType === 'email' && (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  </svg>
+                )}
+                {sectionContent.cta.secondaryButtonType === 'url' && (
+                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
+                  </svg>
+                )}
                 {sectionContent.cta.secondaryButtonText}
-              </Link>
+              </a>
             </div>
           </div>
         </div>

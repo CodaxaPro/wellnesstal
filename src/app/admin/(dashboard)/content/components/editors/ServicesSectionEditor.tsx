@@ -159,26 +159,119 @@ export function ServicesSectionEditor({
         </div>
 
         {/* CTA Buttons */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-2">Ana Buton Metni</label>
-            <input
-              type="text"
-              value={content.cta?.primaryButtonText || ''}
-              onChange={(e) => updateNestedField('cta', 'primaryButtonText', e.target.value)}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
-            />
+        <div className="space-y-4">
+          {/* Primary Button */}
+          <div className="p-3 bg-white rounded-lg border border-amber-100">
+            <h4 className="text-sm font-semibold text-charcoal mb-3 flex items-center gap-2">
+              <span className="w-2 h-2 bg-sage-500 rounded-full"></span>
+              Ana Buton
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Buton Metni</label>
+                <input
+                  type="text"
+                  value={content.cta?.primaryButtonText || ''}
+                  onChange={(e) => updateNestedField('cta', 'primaryButtonText', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                  placeholder="Kostenlose Beratung"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Buton Tipi</label>
+                <select
+                  value={content.cta?.primaryButtonType || 'phone'}
+                  onChange={(e) => updateNestedField('cta', 'primaryButtonType', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                >
+                  <option value="phone">📞 Telefon</option>
+                  <option value="whatsapp">💬 WhatsApp</option>
+                  <option value="url">🔗 URL Link</option>
+                  <option value="email">✉️ E-posta</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
+                  {content.cta?.primaryButtonType === 'phone' && '📞 Telefon Numarası'}
+                  {content.cta?.primaryButtonType === 'whatsapp' && '💬 WhatsApp Numarası (ülke kodu ile)'}
+                  {content.cta?.primaryButtonType === 'url' && '🔗 URL Adresi'}
+                  {content.cta?.primaryButtonType === 'email' && '✉️ E-posta Adresi'}
+                  {!content.cta?.primaryButtonType && '📞 Telefon Numarası'}
+                </label>
+                <input
+                  type="text"
+                  value={content.cta?.primaryButtonLink || ''}
+                  onChange={(e) => updateNestedField('cta', 'primaryButtonLink', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                  placeholder={
+                    content.cta?.primaryButtonType === 'whatsapp' ? '+49123456789' :
+                    content.cta?.primaryButtonType === 'url' ? 'https://example.com' :
+                    content.cta?.primaryButtonType === 'email' ? 'info@example.com' :
+                    '+49 221 12345678'
+                  }
+                />
+              </div>
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium text-charcoal mb-2">İkincil Buton Metni</label>
-            <input
-              type="text"
-              value={content.cta?.secondaryButtonText || ''}
-              onChange={(e) => updateNestedField('cta', 'secondaryButtonText', e.target.value)}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
-            />
+
+          {/* Secondary Button */}
+          <div className="p-3 bg-white rounded-lg border border-amber-100">
+            <h4 className="text-sm font-semibold text-charcoal mb-3 flex items-center gap-2">
+              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+              İkincil Buton
+            </h4>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Buton Metni</label>
+                <input
+                  type="text"
+                  value={content.cta?.secondaryButtonText || ''}
+                  onChange={(e) => updateNestedField('cta', 'secondaryButtonText', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                  placeholder="WhatsApp Nachricht"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-gray-600 mb-1">Buton Tipi</label>
+                <select
+                  value={content.cta?.secondaryButtonType || 'whatsapp'}
+                  onChange={(e) => updateNestedField('cta', 'secondaryButtonType', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                >
+                  <option value="phone">📞 Telefon</option>
+                  <option value="whatsapp">💬 WhatsApp</option>
+                  <option value="url">🔗 URL Link</option>
+                  <option value="email">✉️ E-posta</option>
+                </select>
+              </div>
+              <div className="md:col-span-2">
+                <label className="block text-xs font-medium text-gray-600 mb-1">
+                  {content.cta?.secondaryButtonType === 'phone' && '📞 Telefon Numarası'}
+                  {content.cta?.secondaryButtonType === 'whatsapp' && '💬 WhatsApp Numarası (ülke kodu ile)'}
+                  {content.cta?.secondaryButtonType === 'url' && '🔗 URL Adresi'}
+                  {content.cta?.secondaryButtonType === 'email' && '✉️ E-posta Adresi'}
+                  {!content.cta?.secondaryButtonType && '💬 WhatsApp Numarası (ülke kodu ile)'}
+                </label>
+                <input
+                  type="text"
+                  value={content.cta?.secondaryButtonLink || ''}
+                  onChange={(e) => updateNestedField('cta', 'secondaryButtonLink', e.target.value)}
+                  disabled={!isEditing}
+                  className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                  placeholder={
+                    content.cta?.secondaryButtonType === 'phone' ? '+49 221 12345678' :
+                    content.cta?.secondaryButtonType === 'url' ? 'https://example.com' :
+                    content.cta?.secondaryButtonType === 'email' ? 'info@example.com' :
+                    '+49123456789'
+                  }
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
