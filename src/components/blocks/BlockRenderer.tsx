@@ -15,6 +15,7 @@ import VideoBlock from './VideoBlock'
 import TeamBlock from './TeamBlock'
 import StatsBlock from './StatsBlock'
 import DividerBlock from './DividerBlock'
+import WhatsAppBlock from './WhatsAppBlock'
 
 interface BlockRendererProps {
   blocks: PageBlock[]
@@ -38,6 +39,7 @@ const blockComponents: Record<string, React.ComponentType<BlockProps>> = {
   team: TeamBlock,
   stats: StatsBlock,
   divider: DividerBlock,
+  whatsapp: WhatsAppBlock,
 }
 
 export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: BlockRendererProps) {

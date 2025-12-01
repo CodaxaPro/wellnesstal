@@ -55,6 +55,37 @@ export default function HeroBlock({ block }: BlockProps) {
           style.backgroundPosition = 'center'
         }
         break
+      case 'pattern':
+        // Pattern background support
+        const patternColor = content.backgroundColor || '#e2e8f0'
+        const bgColor = content.backgroundColor || '#ffffff'
+        switch (content.backgroundPattern) {
+          case 'dots':
+            style.backgroundColor = bgColor
+            style.backgroundImage = `radial-gradient(${patternColor} 1.5px, transparent 1.5px)`
+            style.backgroundSize = '20px 20px'
+            break
+          case 'grid':
+            style.backgroundColor = bgColor
+            style.backgroundImage = `linear-gradient(${patternColor} 1px, transparent 1px), linear-gradient(90deg, ${patternColor} 1px, transparent 1px)`
+            style.backgroundSize = '30px 30px'
+            break
+          case 'waves':
+            style.backgroundColor = bgColor
+            style.backgroundImage = `url("data:image/svg+xml,%3Csvg width='100' height='20' viewBox='0 0 100 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M21.184 20c.357-.13.72-.264 1.088-.402l1.768-.661C33.64 15.347 39.647 14 50 14c10.271 0 15.362 1.222 24.629 4.928.955.383 1.869.74 2.75 1.072h6.225c-2.51-.73-5.139-1.691-8.233-2.928C65.888 13.278 60.562 12 50 12c-10.626 0-16.855 1.397-26.66 5.063l-1.767.662c-2.475.923-4.66 1.674-6.724 2.275h6.335zm0-20C13.258 2.892 8.077 4 0 4V2c5.744 0 9.951-.574 14.85-2h6.334zM77.38 0C85.239 2.966 90.502 4 100 4V2c-6.842 0-11.386-.542-16.396-2h-6.225zM0 14c8.44 0 13.718-1.21 22.272-4.402l1.768-.661C33.64 5.347 39.647 4 50 4c10.271 0 15.362 1.222 24.629 4.928C84.112 12.722 89.438 14 100 14v-2c-10.271 0-15.362-1.222-24.629-4.928C65.888 3.278 60.562 2 50 2 39.374 2 33.145 3.397 23.34 7.063l-1.767.662C13.223 10.84 8.163 12 0 12v2z' fill='${encodeURIComponent(patternColor)}' fill-opacity='0.4' fill-rule='evenodd'/%3E%3C/svg%3E")`
+            break
+          case 'geometric':
+            style.backgroundColor = bgColor
+            style.backgroundImage = `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='${encodeURIComponent(patternColor)}' fill-opacity='0.3'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`
+            break
+          default:
+            style.backgroundColor = bgColor
+        }
+        break
+      case 'video':
+        // Video background is handled separately in layout
+        style.backgroundColor = content.backgroundColor || '#000000'
+        break
     }
 
     return style
@@ -399,6 +430,64 @@ export default function HeroBlock({ block }: BlockProps) {
     )
   }
 
+  // Background video (for backgroundType: 'video')
+  const renderBackgroundVideo = () => {
+    if (content.backgroundType !== 'video' || !content.video?.url) return null
+
+    const { url, provider, autoplay = true, muted = true, loop = true, controls = false, poster } = content.video
+
+    // YouTube background
+    if (provider === 'youtube' || url.includes('youtube.com') || url.includes('youtu.be')) {
+      const videoId = url.includes('youtu.be')
+        ? url.split('/').pop()
+        : new URLSearchParams(new URL(url).search).get('v')
+
+      return (
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <iframe
+            src={`https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&loop=1&controls=0&playlist=${videoId}&showinfo=0&rel=0&modestbranding=1`}
+            className="absolute top-1/2 left-1/2 w-[200%] h-[200%] -translate-x-1/2 -translate-y-1/2"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            style={{ pointerEvents: 'none' }}
+          />
+          {content.backgroundOverlay?.enabled && (
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                backgroundColor: content.backgroundOverlay.color,
+                opacity: content.backgroundOverlay.opacity / 100
+              }}
+            />
+          )}
+        </div>
+      )
+    }
+
+    // Direct video background
+    return (
+      <div className="absolute inset-0 z-0 overflow-hidden">
+        <video
+          src={url}
+          poster={poster}
+          autoPlay={autoplay}
+          muted={muted}
+          loop={loop}
+          playsInline
+          className="w-full h-full object-cover"
+        />
+        {content.backgroundOverlay?.enabled && (
+          <div
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundColor: content.backgroundOverlay.color,
+              opacity: content.backgroundOverlay.opacity / 100
+            }}
+          />
+        )}
+      </div>
+    )
+  }
+
   // Video embed
   const renderVideo = () => {
     if (!content.video?.url) return null
@@ -451,9 +540,15 @@ export default function HeroBlock({ block }: BlockProps) {
   // Check if layout uses dark overlay (needs light text)
   const isDarkOverlay = layout === 'full-width' || layout === 'overlay'
 
+  // Get mobile text alignment class
+  const getMobileTextAlignClass = () => {
+    const mobileAlign = responsive.mobileTextAlign || 'center'
+    return `hero-mobile-text-${mobileAlign} hero-mobile-items-${mobileAlign === 'left' ? 'start' : mobileAlign === 'right' ? 'end' : 'center'}`
+  }
+
   // Content Section - accepts darkMode prop for text colors
   const ContentSection = ({ darkMode = false }: { darkMode?: boolean }) => (
-    <div className={`flex flex-col ${getVerticalClasses()} gap-6 w-full`}>
+    <div className={`flex flex-col ${getVerticalClasses()} gap-6 w-full ${getMobileTextAlignClass()}`}>
       {/* Badge */}
       {content.badge?.text && (
         <div className={`flex w-full ${getElementAlignmentClasses('badge')}`}>
@@ -900,6 +995,7 @@ export default function HeroBlock({ block }: BlockProps) {
 
       // Split layouts (left/right)
       default:
+        const hasVideoBackground = content.backgroundType === 'video' && content.video?.url
         return (
           <section
             ref={heroRef}
@@ -913,7 +1009,11 @@ export default function HeroBlock({ block }: BlockProps) {
               paddingRight: content.padding?.right || '24px'
             }}
           >
-            {content.backgroundOverlay?.enabled && (
+            {/* Video background */}
+            {hasVideoBackground && renderBackgroundVideo()}
+
+            {/* Background overlay (for non-video backgrounds) */}
+            {!hasVideoBackground && content.backgroundOverlay?.enabled && (
               <div
                 className="absolute inset-0 pointer-events-none"
                 style={{
@@ -924,20 +1024,28 @@ export default function HeroBlock({ block }: BlockProps) {
               />
             )}
             <div
-              className="relative z-10 max-w-7xl mx-auto h-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center"
+              className={`relative z-10 max-w-7xl mx-auto h-full grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center ${
+                responsive.mobileImagePosition === 'top' ? '' : 'flex-col-reverse'
+              }`}
               style={{ maxWidth: content.maxWidth || '1400px' }}
             >
               {layout === 'split-left' ? (
                 <>
-                  <div className="flex items-center justify-center">
+                  <div className={`flex items-center justify-center ${
+                    responsive.mobileImagePosition === 'hidden' ? 'hidden lg:flex' : ''
+                  } ${responsive.mobileImagePosition === 'bottom' ? 'order-2 lg:order-1' : ''}`}>
                     <MediaSection />
                   </div>
-                  <ContentSection />
+                  <div className={responsive.mobileImagePosition === 'bottom' ? 'order-1 lg:order-2' : ''}>
+                    <ContentSection darkMode={!!hasVideoBackground} />
+                  </div>
                 </>
               ) : (
                 <>
-                  <ContentSection />
-                  <div className="flex items-center justify-center">
+                  <ContentSection darkMode={!!hasVideoBackground} />
+                  <div className={`flex items-center justify-center ${
+                    responsive.mobileImagePosition === 'hidden' ? 'hidden lg:flex' : ''
+                  }`}>
                     <MediaSection />
                   </div>
                 </>
@@ -1027,6 +1135,29 @@ export default function HeroBlock({ block }: BlockProps) {
             width: var(--hero-img-mobile-w, 100%);
             height: var(--hero-img-mobile-h, auto);
           }
+        }
+        /* Responsive hero min-height */
+        .hero-responsive-height {
+          min-height: var(--hero-desktop-height, 600px);
+        }
+        @media (max-width: 1024px) {
+          .hero-responsive-height {
+            min-height: var(--hero-tablet-height, 500px);
+          }
+        }
+        @media (max-width: 768px) {
+          .hero-responsive-height {
+            min-height: var(--hero-mobile-height, 400px);
+          }
+        }
+        /* Responsive text alignment */
+        @media (max-width: 768px) {
+          .hero-mobile-text-left { text-align: left !important; }
+          .hero-mobile-text-center { text-align: center !important; }
+          .hero-mobile-text-right { text-align: right !important; }
+          .hero-mobile-items-start { align-items: flex-start !important; justify-content: flex-start !important; }
+          .hero-mobile-items-center { align-items: center !important; justify-content: center !important; }
+          .hero-mobile-items-end { align-items: flex-end !important; justify-content: flex-end !important; }
         }
       `}</style>
     </>

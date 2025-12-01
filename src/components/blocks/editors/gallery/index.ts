@@ -1,0 +1,5 @@
+export { default as ImagesTab } from './ImagesTab'
+export { default as LayoutTab } from './LayoutTab'
+export { default as StyleTab } from './StyleTab'
+export { default as LightboxTab } from './LightboxTab'
+export { GALLERY_TABS, defaultGalleryContent } from './defaults'

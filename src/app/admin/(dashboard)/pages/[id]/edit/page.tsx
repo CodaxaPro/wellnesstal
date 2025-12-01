@@ -4,8 +4,16 @@ import React, { useState, useEffect, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
-import { PageBlock, HeroContent } from '@/components/blocks/types'
+import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent } from '@/components/blocks/types'
 import HeroBlockEditor from '@/components/blocks/editors/HeroBlockEditor'
+import FeaturesBlockEditor from '@/components/blocks/editors/FeaturesBlockEditor'
+import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
+import CTABlockEditor from '@/components/blocks/editors/CTABlockEditor'
+import PricingBlockEditor from '@/components/blocks/editors/PricingBlockEditor'
+import FAQBlockEditor from '@/components/blocks/editors/FAQBlockEditor'
+import TeamBlockEditor from '@/components/blocks/editors/TeamBlockEditor'
+import WhatsAppBlockEditor from '@/components/blocks/editors/WhatsAppBlockEditor'
+import GalleryBlockEditor from '@/components/blocks/editors/GalleryBlockEditor'
 
 interface PageData {
   id: string
@@ -440,22 +448,22 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       <main className="flex-1 overflow-y-auto">
         {activeBlock ? (
           <div className="p-6">
-            <div className={`mx-auto ${activeBlock.block_type === 'hero' ? 'max-w-5xl' : 'max-w-3xl'}`}>
+            <div className={`mx-auto ${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' ? 'max-w-5xl' : 'max-w-3xl'}`}>
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      activeBlock.block_type === 'hero' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
+                      activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
                     }`}>
                       <span className="text-lg">
-                        {activeBlock.block_type === 'hero' ? '🎯' : '📝'}
+                        {activeBlock.block_type === 'hero' ? '🎯' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : '📝'}
                       </span>
                     </div>
                     <div>
                       <h2 className="font-semibold text-slate-800 capitalize">
-                        {activeBlock.block_type === 'hero' ? 'Hero Bölümü Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
+                        {activeBlock.block_type === 'hero' ? 'Hero Bölümü Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
                       </h2>
-                      {activeBlock.block_type === 'hero' && (
+                      {(activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery') && (
                         <p className="text-xs text-slate-500">Enterprise düzenleme modu</p>
                       )}
                     </div>
@@ -470,7 +478,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                   </button>
                 </div>
 
-                <div className={`${activeBlock.block_type === 'hero' ? 'p-4' : 'p-6'}`}>
+                <div className={`${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' ? 'p-4' : 'p-6'}`}>
                   <BlockEditorForm
                     block={activeBlock}
                     onUpdate={(content) => handleUpdateBlock(activeBlock.id, content)}
@@ -637,100 +645,76 @@ function BlockEditorForm({
           />
         )
 
-      case 'text':
+      case 'features':
+        // FeaturesBlockEditor manages its own state with debouncing
         return (
-          <>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Başlık</label>
-                <input
-                  type="text"
-                  value={content.title || ''}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">İçerik</label>
-                <textarea
-                  rows={6}
-                  value={content.content || ''}
-                  onChange={(e) => handleChange('content', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Hizalama</label>
-                <select
-                  value={content.alignment || 'left'}
-                  onChange={(e) => handleChange('alignment', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                >
-                  <option value="left">Sola</option>
-                  <option value="center">Ortala</option>
-                  <option value="right">Sağa</option>
-                </select>
-              </div>
-            </div>
-          </>
+          <FeaturesBlockEditor
+            content={content as FeaturesContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'text':
+        // TextBlockEditor manages its own state with debouncing
+        return (
+          <TextBlockEditor
+            content={content as TextContent}
+            onUpdate={onUpdate}
+          />
         )
 
       case 'cta':
+        // CTABlockEditor manages its own state with debouncing
         return (
-          <>
-            <div className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Başlık</label>
-                <input
-                  type="text"
-                  value={content.title || ''}
-                  onChange={(e) => handleChange('title', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Alt Başlık</label>
-                <input
-                  type="text"
-                  value={content.subtitle || ''}
-                  onChange={(e) => handleChange('subtitle', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                />
-              </div>
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Buton Metni</label>
-                  <input
-                    type="text"
-                    value={content.buttonText || ''}
-                    onChange={(e) => handleChange('buttonText', e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">Buton Linki</label>
-                  <input
-                    type="text"
-                    value={content.buttonLink || ''}
-                    onChange={(e) => handleChange('buttonLink', e.target.value)}
-                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                  />
-                </div>
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">Arkaplan Rengi</label>
-                <select
-                  value={content.backgroundColor || 'sage'}
-                  onChange={(e) => handleChange('backgroundColor', e.target.value)}
-                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                >
-                  <option value="sage">Sage (Yeşil)</option>
-                  <option value="forest">Forest (Koyu Yeşil)</option>
-                  <option value="charcoal">Charcoal (Koyu)</option>
-                </select>
-              </div>
-            </div>
-          </>
+          <CTABlockEditor
+            content={content as CTAContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'pricing':
+        // PricingBlockEditor manages its own state with debouncing
+        return (
+          <PricingBlockEditor
+            content={content as PricingContent}
+            onChange={onUpdate}
+          />
+        )
+
+      case 'faq':
+        // FAQBlockEditor manages its own state with debouncing
+        return (
+          <FAQBlockEditor
+            content={content as unknown as Record<string, unknown>}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'team':
+        // TeamBlockEditor manages its own state with debouncing
+        return (
+          <TeamBlockEditor
+            content={content as unknown as Record<string, unknown>}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'whatsapp':
+        // WhatsAppBlockEditor manages its own state with debouncing
+        return (
+          <WhatsAppBlockEditor
+            content={content as unknown as Record<string, unknown>}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'gallery':
+        // GalleryBlockEditor manages its own state with debouncing
+        return (
+          <GalleryBlockEditor
+            content={content as unknown as Record<string, unknown>}
+            onUpdate={onUpdate}
+          />
         )
 
       default:

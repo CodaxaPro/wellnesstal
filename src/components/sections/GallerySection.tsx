@@ -61,7 +61,7 @@ export default function GallerySection() {
           setImages(data.data)
 
           // Extract unique categories
-          const uniqueCategories = [...new Set(data.data.map((img: MediaFile) => img.category))]
+          const uniqueCategories = [...new Set(data.data.map((img: MediaFile) => img.category))] as string[]
           setCategories(['all', ...uniqueCategories])
         }
       } catch (error) {
