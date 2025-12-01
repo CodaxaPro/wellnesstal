@@ -44,6 +44,7 @@ interface SectionContent {
   highlightedText: string
   description: string
   cta: {
+    visible: boolean
     title: string
     description: string
     primaryButtonText: string
@@ -69,6 +70,7 @@ const defaultSectionContent: SectionContent = {
   highlightedText: 'Wellness-Behandlungen',
   description: 'Entdecken Sie unser vielfältiges Angebot an entspannenden und regenerierenden Behandlungen, individuell auf Ihre Bedürfnisse abgestimmt.',
   cta: {
+    visible: true,
     title: 'Nicht sicher, welche Behandlung zu Ihnen passt?',
     description: 'Unsere Wellness-Experten beraten Sie gerne kostenlos und unverbindlich. Gemeinsam finden wir die perfekte Behandlung für Ihre Bedürfnisse.',
     primaryButtonText: 'Kostenlose Beratung',
@@ -170,6 +172,7 @@ const ServicesSection = () => {
             highlightedText: sectionData.data.content.highlightedText || defaultSectionContent.highlightedText,
             description: sectionData.data.content.description || defaultSectionContent.description,
             cta: {
+              visible: ctaData.visible !== false,
               title: ctaData.title || defaultSectionContent.cta.title,
               description: ctaData.description || defaultSectionContent.cta.description,
               primaryButtonText: ctaData.primaryButtonText || defaultSectionContent.cta.primaryButtonText,
@@ -549,7 +552,8 @@ const ServicesSection = () => {
           ))}
         </div>
 
-        {/* CTA Section */}
+        {/* CTA Section - Only render if visible */}
+        {sectionContent.cta.visible && (
         <div className="mt-16 text-center">
           <div className="bg-sage-50 rounded-3xl p-8 lg:p-12">
             <h3
@@ -624,6 +628,7 @@ const ServicesSection = () => {
             </div>
           </div>
         </div>
+        )}
       </div>
 
       {/* Modal for page content */}

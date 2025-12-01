@@ -130,7 +130,30 @@ export function ServicesSectionEditor({
 
       {/* CTA Section */}
       <div className="p-4 bg-amber-50 rounded-xl border border-amber-200">
-        <h3 className="text-lg font-semibold text-charcoal mb-4">CTA Bölümü (Alt Kısım)</h3>
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-lg font-semibold text-charcoal">CTA Bölümü (Alt Kısım)</h3>
+          {/* CTA Visibility Toggle */}
+          <label className="flex items-center gap-3 cursor-pointer">
+            <span className="text-sm text-gray-600">
+              {content.cta?.visible !== false ? 'Aktif' : 'Pasif'}
+            </span>
+            <div className="relative">
+              <input
+                type="checkbox"
+                checked={content.cta?.visible !== false}
+                onChange={(e) => updateNestedField('cta', 'visible', e.target.checked)}
+                disabled={!isEditing}
+                className="sr-only peer"
+              />
+              <div className={`w-11 h-6 rounded-full transition-colors ${
+                content.cta?.visible !== false ? 'bg-sage-500' : 'bg-gray-300'
+              } ${!isEditing ? 'opacity-50' : ''}`}></div>
+              <div className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                content.cta?.visible !== false ? 'translate-x-5' : 'translate-x-0'
+              }`}></div>
+            </div>
+          </label>
+        </div>
 
         {/* CTA Title */}
         <div className="mb-4">
