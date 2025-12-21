@@ -68,7 +68,7 @@ export default function AdminLogin() {
         </div>
 
         <div className="bg-white rounded-2xl shadow-large p-8">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit} autoComplete="off">
             {error && (
               <div className="bg-red-50 border border-red-200 rounded-xl p-4">
                 <div className="flex items-center">
@@ -91,8 +91,9 @@ export default function AdminLogin() {
                 required
                 value={formData.username}
                 onChange={handleInputChange}
+                autoComplete="off"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent transition-all duration-300"
-                placeholder="admin"
+                placeholder="Benutzername eingeben"
                 disabled={isLoading}
               />
             </div>
@@ -108,8 +109,9 @@ export default function AdminLogin() {
                 required
                 value={formData.password}
                 onChange={handleInputChange}
+                autoComplete="new-password"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent transition-all duration-300"
-                placeholder="••••••••"
+                placeholder="Passwort eingeben"
                 disabled={isLoading}
               />
             </div>
