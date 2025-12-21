@@ -4,7 +4,7 @@ import React, { useState, useEffect, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
-import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent } from '@/components/blocks/types'
+import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent, ServicesContent, TestimonialsContent, VideoContent, StatsContent, DividerContent } from '@/components/blocks/types'
 import HeroBlockEditor from '@/components/blocks/editors/HeroBlockEditor'
 import FeaturesBlockEditor from '@/components/blocks/editors/FeaturesBlockEditor'
 import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
@@ -19,6 +19,11 @@ import HeaderBlockEditor from '@/components/blocks/editors/HeaderBlockEditor'
 import FooterBlockEditor from '@/components/blocks/editors/FooterBlockEditor'
 import ContactBlockEditor from '@/components/blocks/editors/ContactBlockEditor'
 import SEOBlockEditor from '@/components/blocks/editors/SEOBlockEditor'
+import ServicesBlockEditor from '@/components/blocks/editors/ServicesBlockEditor'
+import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlockEditor'
+import VideoBlockEditor from '@/components/blocks/editors/VideoBlockEditor'
+import StatsBlockEditor from '@/components/blocks/editors/StatsBlockEditor'
+import DividerBlockEditor from '@/components/blocks/editors/DividerBlockEditor'
 import { ContactBlockContent } from '@/components/blocks/ContactBlock'
 import { SEOContent } from '@/components/blocks/types'
 
@@ -767,6 +772,46 @@ function BlockEditorForm({
         return (
           <SEOBlockEditor
             content={content as SEOContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'services':
+        return (
+          <ServicesBlockEditor
+            content={content as ServicesContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'testimonials':
+        return (
+          <TestimonialsBlockEditor
+            content={content as TestimonialsContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'video':
+        return (
+          <VideoBlockEditor
+            content={content as VideoContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'stats':
+        return (
+          <StatsBlockEditor
+            content={content as StatsContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'divider':
+        return (
+          <DividerBlockEditor
+            content={content as DividerContent}
             onUpdate={onUpdate}
           />
         )
