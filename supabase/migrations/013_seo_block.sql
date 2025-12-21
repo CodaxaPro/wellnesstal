@@ -74,10 +74,10 @@ ON CONFLICT (id) DO UPDATE SET
   sort_order = EXCLUDED.sort_order;
 
 -- =============================================
--- GLOBAL SEO SETTINGS (in site_content table)
+-- GLOBAL SEO SETTINGS (in content table)
 -- =============================================
 
-INSERT INTO site_content (section, content) VALUES
+INSERT INTO content (section, content) VALUES
 ('seo-settings', '{
   "siteName": "Wellnesstal",
   "siteUrl": "https://wellnesstal.de",
@@ -99,7 +99,7 @@ INSERT INTO site_content (section, content) VALUES
 }'::jsonb)
 ON CONFLICT (section) DO UPDATE SET
   content = EXCLUDED.content,
-  updated_at = NOW();
+  last_updated = NOW();
 
 -- Add comment
-COMMENT ON COLUMN site_content.section IS 'seo-settings: Global SEO ayarlari - site geneli varsayilan degerler';
+COMMENT ON COLUMN content.section IS 'seo-settings: Global SEO ayarlari - site geneli varsayilan degerler';
