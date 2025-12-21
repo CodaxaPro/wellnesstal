@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useMemo } from 'react'
+import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import { SEOContent, SEORobotsDirectives, SEOOpenGraph, SEOTwitterCard, SEOSchemaSettings, SchemaLocalBusiness } from '../types'
 import LocalBusinessEditor from './seo/LocalBusinessEditor'
 
@@ -312,6 +312,12 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
   const [expandedSections, setExpandedSections] = useState<string[]>(['meta', 'preview'])
   const [activeTab, setActiveTab] = useState<'meta' | 'social' | 'schema' | 'technical'>('meta')
   const [keywordInput, setKeywordInput] = useState('')
+  const localContentRef = useRef(localContent)
+
+  // Keep ref in sync with state
+  useEffect(() => {
+    localContentRef.current = localContent
+  }, [localContent])
 
   // Debounced update
   useEffect(() => {
@@ -320,6 +326,14 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
     }, 300)
     return () => clearTimeout(timer)
   }, [localContent, onUpdate])
+
+  // Flush pending changes on unmount (when switching blocks)
+  useEffect(() => {
+    return () => {
+      // Call onUpdate with latest content when component unmounts
+      onUpdate(localContentRef.current)
+    }
+  }, [onUpdate])
 
   const updateContent = useCallback((updates: Partial<SEOContent>) => {
     setLocalContent(prev => ({ ...prev, ...updates }))

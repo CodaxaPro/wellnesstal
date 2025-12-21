@@ -65,6 +65,91 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
+  // Check if page has an SEO block
+  const { data: seoBlock } = await supabase
+    .from('page_blocks')
+    .select('content')
+    .eq('page_id', page.id)
+    .eq('block_type', 'seo')
+    .single()
+
+  let seoContent = null
+
+  if (seoBlock?.content) {
+    // Check if using global SEO or custom SEO
+    if (seoBlock.content.useGlobalSEO) {
+      // Fetch global SEO settings from content table
+      const { data: globalSeo } = await supabase
+        .from('content')
+        .select('content')
+        .eq('section', 'seo-settings')
+        .single()
+
+      seoContent = globalSeo?.content
+    } else {
+      // Use page-specific SEO block content
+      seoContent = seoBlock.content
+    }
+  }
+
+  // Build metadata using SEO block if available, otherwise fallback to page table
+  if (seoContent && !seoContent.useGlobalSEO) {
+    const metadata: Metadata = {
+      title: seoContent.title || page.meta_title || page.title,
+      description: seoContent.description || page.meta_description,
+      keywords: seoContent.keywords?.join(', ') || page.meta_keywords?.join(', '),
+      authors: seoContent.author ? [{ name: seoContent.author }] : undefined,
+      robots: {
+        index: seoContent.robots?.index ?? !page.no_index,
+        follow: seoContent.robots?.follow ?? !page.no_follow,
+        noarchive: seoContent.robots?.noarchive,
+        nosnippet: seoContent.robots?.nosnippet,
+        noimageindex: seoContent.robots?.noimageindex,
+        maxSnippet: seoContent.robots?.maxSnippet,
+        maxImagePreview: seoContent.robots?.maxImagePreview,
+        maxVideoPreview: seoContent.robots?.maxVideoPreview,
+      },
+      alternates: {
+        canonical: seoContent.canonicalUrl || page.canonical_url,
+      },
+    }
+
+    // Add OpenGraph if enabled
+    if (seoContent.openGraph?.enabled) {
+      metadata.openGraph = {
+        type: seoContent.openGraph.type || 'website',
+        title: seoContent.openGraph.title || seoContent.title || page.meta_title || page.title,
+        description: seoContent.openGraph.description || seoContent.description || page.meta_description,
+        siteName: seoContent.openGraph.siteName || 'Wellnesstal',
+        locale: seoContent.openGraph.locale || 'de_DE',
+        url: seoContent.canonicalUrl || page.canonical_url,
+        images: seoContent.openGraph.image?.url ? [{
+          url: seoContent.openGraph.image.url,
+          width: seoContent.openGraph.image.width,
+          height: seoContent.openGraph.image.height,
+          alt: seoContent.openGraph.image.alt,
+        }] : (page.og_image ? [page.og_image] : undefined),
+      }
+    }
+
+    // Add Twitter Card if enabled
+    if (seoContent.twitter?.enabled) {
+      metadata.twitter = {
+        card: seoContent.twitter.cardType || 'summary_large_image',
+        title: seoContent.twitter.title || seoContent.title || page.meta_title || page.title,
+        description: seoContent.twitter.description || seoContent.description || page.meta_description,
+        site: seoContent.twitter.site,
+        creator: seoContent.twitter.creator,
+        images: seoContent.twitter.image?.url ? [seoContent.twitter.image.url] :
+                (seoContent.openGraph?.image?.url ? [seoContent.openGraph.image.url] :
+                 (page.og_image ? [page.og_image] : undefined)),
+      }
+    }
+
+    return metadata
+  }
+
+  // Fallback to original page table metadata if no SEO block or using global SEO
   return {
     title: page.meta_title || page.title,
     description: page.meta_description,
