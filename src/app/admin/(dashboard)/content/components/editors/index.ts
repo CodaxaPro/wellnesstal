@@ -1,3 +1,4 @@
+export { HeaderEditor } from './HeaderEditor'
 export { LandingHeroEditor } from './LandingHeroEditor'
 export { HeroEditor } from './HeroEditor'
 export { ServicesSectionEditor } from './ServicesSectionEditor'

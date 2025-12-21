@@ -16,6 +16,10 @@ import TeamBlock from './TeamBlock'
 import StatsBlock from './StatsBlock'
 import DividerBlock from './DividerBlock'
 import WhatsAppBlock from './WhatsAppBlock'
+import EmbedBlock from './EmbedBlock'
+import HeaderBlock from './HeaderBlock'
+import FooterBlock from './FooterBlock'
+import SEOBlock from './SEOBlock'
 
 interface BlockRendererProps {
   blocks: PageBlock[]
@@ -40,6 +44,10 @@ const blockComponents: Record<string, React.ComponentType<BlockProps>> = {
   stats: StatsBlock,
   divider: DividerBlock,
   whatsapp: WhatsAppBlock,
+  embed: EmbedBlock,
+  header: HeaderBlock,
+  footer: FooterBlock,
+  seo: SEOBlock,
 }
 
 export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: BlockRendererProps) {

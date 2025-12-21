@@ -132,14 +132,6 @@ export default function AdminLogin() {
               )}
             </button>
           </form>
-
-          <div className="mt-6 p-4 bg-sage-50 rounded-xl">
-            <h3 className="text-sm font-semibold text-sage-800 mb-2">Demo Anmeldedaten:</h3>
-            <div className="text-sm text-sage-700 space-y-1">
-              <div><strong>Benutzername:</strong> admin</div>
-              <div><strong>Passwort:</strong> wellnesstal2024</div>
-            </div>
-          </div>
         </div>
 
         <div className="text-center">

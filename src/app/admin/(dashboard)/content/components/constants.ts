@@ -40,6 +40,7 @@ export const fontSizes = [
 
 // Content tabs configuration
 export const contentTabs = [
+  { id: 'header', label: 'Header', icon: '🧭' },
   { id: 'landing-hero', label: 'Landing Hero', icon: '✨' },
   { id: 'hero', label: 'Hero Section', icon: '🏠' },
   { id: 'services-section', label: 'Leistungen Bölümü', icon: '💆' },

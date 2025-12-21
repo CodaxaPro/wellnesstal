@@ -2377,3 +2377,893 @@ export interface WhatsAppContent {
   ctaBubble: WhatsAppCtaBubbleSettings
 }
 
+// ==========================================
+// Enterprise Embed Block Types
+// ==========================================
+
+// Embed Provider Types
+export type EmbedProviderType =
+  | 'custom'      // Custom HTML/iframe code
+  | 'youtube'     // YouTube video
+  | 'vimeo'       // Vimeo video
+  | 'google-maps' // Google Maps embed
+  | 'instagram'   // Instagram post/reel
+  | 'twitter'     // Twitter/X post
+  | 'facebook'    // Facebook post/video
+  | 'tiktok'      // TikTok video
+  | 'spotify'     // Spotify embed
+  | 'soundcloud'  // SoundCloud embed
+  | 'calendly'    // Calendly scheduler
+  | 'typeform'    // Typeform embed
+  | 'codepen'     // CodePen embed
+  | 'figma'       // Figma embed
+  | 'loom'        // Loom video
+  | 'iframe'      // Generic iframe URL
+
+// Embed Aspect Ratio Presets
+export type EmbedAspectRatio =
+  | '16:9'        // Standard video
+  | '4:3'         // Classic
+  | '1:1'         // Square
+  | '9:16'        // Vertical/mobile video
+  | '21:9'        // Ultrawide
+  | 'auto'        // Auto based on content
+  | 'custom'      // Custom ratio
+
+// Embed Section Header
+export interface EmbedSectionHeader {
+  enabled?: boolean
+  title?: string
+  titleHighlight?: {
+    enabled?: boolean
+    words?: number[]
+    color?: string
+    style?: 'color' | 'background' | 'underline' | 'gradient'
+  }
+  subtitle?: string
+  description?: string
+  alignment?: 'left' | 'center' | 'right'
+  badge?: {
+    enabled?: boolean
+    text?: string
+    backgroundColor?: string
+    textColor?: string
+  }
+  typography?: {
+    titleSize?: string
+    titleWeight?: string
+    titleColor?: string
+    subtitleSize?: string
+    subtitleColor?: string
+    marginBottom?: string
+  }
+}
+
+// Embed Container Settings
+export interface EmbedContainerSettings {
+  maxWidth: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | 'full' | 'custom'
+  customMaxWidth?: string
+  alignment: 'left' | 'center' | 'right'
+  padding: {
+    top: string
+    bottom: string
+    left: string
+    right: string
+  }
+  margin: {
+    top: string
+    bottom: string
+  }
+}
+
+// Embed Frame Settings
+export interface EmbedFrameSettings {
+  aspectRatio: EmbedAspectRatio
+  customAspectRatio?: string
+  minHeight?: string
+  maxHeight?: string
+  height?: string
+  borderEnabled: boolean
+  borderWidth?: number
+  borderColor?: string
+  borderStyle?: 'solid' | 'dashed' | 'dotted'
+  borderRadius?: string
+  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+  overflow?: 'hidden' | 'visible' | 'auto' | 'scroll'
+}
+
+// Embed Background Settings
+export interface EmbedBackground {
+  type?: 'none' | 'solid' | 'gradient' | 'pattern'
+  color?: string
+  gradientFrom?: string
+  gradientTo?: string
+  gradientDirection?: 'to-r' | 'to-l' | 'to-t' | 'to-b' | 'to-br' | 'to-bl' | 'to-tr' | 'to-tl'
+  pattern?: 'dots' | 'grid' | 'lines'
+  patternColor?: string
+  patternOpacity?: number
+}
+
+// Embed Security/Sandbox Settings
+export interface EmbedSecuritySettings {
+  sandboxEnabled: boolean
+  allowScripts?: boolean
+  allowSameOrigin?: boolean
+  allowForms?: boolean
+  allowPopups?: boolean
+  lazyLoad: boolean
+  referrerPolicy?: 'no-referrer' | 'no-referrer-when-downgrade' | 'origin' | 'strict-origin' | 'same-origin'
+}
+
+// Embed Loading Settings
+export interface EmbedLoadingSettings {
+  showLoadingSpinner: boolean
+  spinnerColor?: string
+  placeholderText?: string
+  placeholderBackgroundColor?: string
+  fallbackEnabled: boolean
+  fallbackText?: string
+}
+
+// Embed Responsive Settings
+export interface EmbedResponsive {
+  desktop: {
+    visible: boolean
+    aspectRatio?: EmbedAspectRatio
+    maxWidth?: string
+  }
+  tablet: {
+    visible: boolean
+    aspectRatio?: EmbedAspectRatio
+    maxWidth?: string
+  }
+  mobile: {
+    visible: boolean
+    aspectRatio?: EmbedAspectRatio
+    maxWidth?: string
+  }
+}
+
+// Provider-specific Settings
+export interface EmbedProviderSettings {
+  youtube?: {
+    videoId?: string
+    autoplay?: boolean
+    muted?: boolean
+    loop?: boolean
+    controls?: boolean
+    startTime?: number
+    showRelated?: boolean
+    enablePrivacyMode?: boolean
+  }
+  googleMaps?: {
+    embedUrl?: string
+    zoom?: number
+    mapType?: 'roadmap' | 'satellite' | 'hybrid' | 'terrain'
+  }
+  social?: {
+    postUrl?: string
+    theme?: 'light' | 'dark'
+  }
+}
+
+// Enterprise Embed Content - Main Interface
+export interface EmbedContent {
+  // Provider Selection
+  provider: EmbedProviderType
+
+  // Content based on provider
+  embedCode?: string          // For 'custom' provider - raw HTML/JS
+  embedUrl?: string           // For URL-based providers
+
+  // Provider-specific settings
+  providerSettings?: EmbedProviderSettings
+
+  // Section Header
+  header?: EmbedSectionHeader
+
+  // Legacy title support
+  title?: string
+  subtitle?: string
+
+  // Container Settings
+  container: EmbedContainerSettings
+
+  // Frame/Embed Settings
+  frame: EmbedFrameSettings
+
+  // Background
+  background?: EmbedBackground
+
+  // Security
+  security: EmbedSecuritySettings
+
+  // Loading/Placeholder
+  loading: EmbedLoadingSettings
+
+  // Responsive
+  responsive?: EmbedResponsive
+
+  // Caption
+  caption?: {
+    enabled?: boolean
+    text?: string
+    alignment?: 'left' | 'center' | 'right'
+    fontSize?: string
+    color?: string
+  }
+
+  // Interaction
+  clickToLoad?: boolean
+  clickToLoadText?: string
+
+  // Custom CSS
+  customClass?: string
+
+  // Section ID for navigation
+  sectionId?: string
+}
+
+// ==========================================
+// Enterprise Header Block Types
+// ==========================================
+
+// Header Navigation Item
+export interface HeaderNavItem {
+  id?: string
+  href: string
+  label: string
+  icon?: string
+  iconColor?: string
+  color?: string
+  hoverColor?: string
+  fontSize?: string
+  fontWeight?: string
+  badge?: string
+  badgeColor?: string
+  visible?: boolean
+}
+
+// Header Logo Settings
+export interface HeaderLogoSettings {
+  text: string
+  emoji?: string
+  imageUrl?: string
+  imageAlt?: string
+  useImage?: boolean
+  fontSize?: string
+  fontWeight?: string
+  textColor?: string
+  hoverColor?: string
+}
+
+// Header CTA Button Settings
+export interface HeaderCTASettings {
+  visible: boolean
+  text: string
+  type: 'phone' | 'whatsapp' | 'url' | 'email'
+  link: string
+  icon?: string
+  iconColor?: string
+  backgroundColor?: string
+  textColor?: string
+  hoverBackgroundColor?: string
+  borderRadius?: string
+  size?: 'sm' | 'md' | 'lg'
+}
+
+// Header Style Settings
+export interface HeaderStyleSettings {
+  backgroundColor?: string
+  backgroundBlur?: boolean
+  shadowOnScroll?: boolean
+  height?: string
+  maxWidth?: 'full' | 'xl' | '2xl' | '3xl' | '4xl' | '5xl' | '6xl' | '7xl'
+  sticky?: boolean
+  borderBottom?: boolean
+  borderColor?: string
+}
+
+// Header Mobile Settings
+export interface HeaderMobileSettings {
+  menuBackgroundColor?: string
+  showCTAInMenu?: boolean
+  menuAnimation?: 'slide' | 'fade' | 'none'
+}
+
+// Enterprise Header Content - Main Interface
+export interface HeaderContent {
+  // Logo
+  logo: HeaderLogoSettings
+
+  // Navigation Items
+  navItems: HeaderNavItem[]
+
+  // CTA Button
+  cta: HeaderCTASettings
+
+  // Style Settings
+  style: HeaderStyleSettings
+
+  // Mobile Settings
+  mobile: HeaderMobileSettings
+
+  // Visibility Controls
+  showLogo?: boolean
+  showNav?: boolean
+  showCTA?: boolean
+
+  // Custom CSS Class
+  customClass?: string
+
+  // Section ID
+  sectionId?: string
+}
+
+// ==========================================
+// Enterprise Footer Block Types
+// ==========================================
+
+// Footer Text Style
+export interface FooterTextStyle {
+  fontFamily?: string
+  fontSize?: string
+  fontWeight?: string
+  color?: string
+}
+
+// Footer Styles
+export interface FooterStyles {
+  brandName?: FooterTextStyle
+  description?: FooterTextStyle
+  sectionTitle?: FooterTextStyle
+  link?: FooterTextStyle
+  newsletterTitle?: FooterTextStyle
+  copyright?: FooterTextStyle
+}
+
+// Footer Newsletter Content
+export interface FooterNewsletterContent {
+  enabled: boolean
+  title: string
+  subtitle: string
+  placeholder: string
+  buttonText: string
+  disclaimer: string
+}
+
+// Footer Link Item
+export interface FooterLinkItem {
+  label: string
+  href: string
+}
+
+// Footer Service Item
+export interface FooterServiceItem {
+  label: string
+  href: string
+}
+
+// Footer Contact Info
+export interface FooterContactInfo {
+  businessName: string
+  phone: string
+  email: string
+  address: {
+    street: string
+    city: string
+    postalCode: string
+    country: string
+  }
+  openingHours: {
+    monday: { open: string; close: string; closed: boolean }
+    tuesday: { open: string; close: string; closed: boolean }
+    wednesday: { open: string; close: string; closed: boolean }
+    thursday: { open: string; close: string; closed: boolean }
+    friday: { open: string; close: string; closed: boolean }
+    saturday: { open: string; close: string; closed: boolean }
+    sunday: { open: string; close: string; closed: boolean }
+  }
+}
+
+// Enterprise Footer Content - Main Interface
+export interface FooterContent {
+  // Brand
+  brandName: string
+  brandEmoji: string
+  description: string
+
+  // Social Media
+  socialMedia: {
+    instagram: string
+    facebook: string
+    whatsapp: string
+  }
+
+  // Newsletter
+  newsletter: FooterNewsletterContent
+
+  // Links
+  quickLinks: FooterLinkItem[]
+  legalLinks: FooterLinkItem[]
+  services: FooterServiceItem[]
+
+  // Copyright
+  copyright: string
+
+  // Styles
+  styles?: FooterStyles
+
+  // Contact
+  contact: FooterContactInfo
+
+  // Custom CSS Class
+  customClass?: string
+
+  // Section ID
+  sectionId?: string
+}
+
+// ==========================================
+// Enterprise SEO Block Types
+// The Ultimate SEO Solution
+// ==========================================
+
+// SEO Robots Directives
+export interface SEORobotsDirectives {
+  index: boolean
+  follow: boolean
+  noarchive?: boolean
+  nosnippet?: boolean
+  noimageindex?: boolean
+  notranslate?: boolean
+  maxSnippet?: number // -1 = no limit, 0 = none
+  maxImagePreview?: 'none' | 'standard' | 'large'
+  maxVideoPreview?: number // seconds, -1 = no limit
+}
+
+// Open Graph Settings
+export interface SEOOpenGraph {
+  enabled: boolean
+  type: 'website' | 'article' | 'product' | 'business.business' | 'place' | 'profile'
+  title?: string // Falls back to meta title
+  description?: string // Falls back to meta description
+  image?: {
+    url: string
+    width?: number
+    height?: number
+    alt?: string
+    type?: string
+  }
+  url?: string // Falls back to canonical
+  siteName?: string
+  locale?: string
+  localeAlternates?: string[]
+  // Article specific
+  article?: {
+    publishedTime?: string
+    modifiedTime?: string
+    expirationTime?: string
+    author?: string
+    section?: string
+    tags?: string[]
+  }
+  // Business specific
+  business?: {
+    contactData?: {
+      streetAddress?: string
+      locality?: string
+      region?: string
+      postalCode?: string
+      country?: string
+      email?: string
+      phone?: string
+      website?: string
+    }
+    hours?: {
+      day: string
+      open: string
+      close: string
+    }[]
+  }
+}
+
+// Twitter Card Settings
+export interface SEOTwitterCard {
+  enabled: boolean
+  cardType: 'summary' | 'summary_large_image' | 'app' | 'player'
+  site?: string // @username of website
+  creator?: string // @username of content creator
+  title?: string // Falls back to OG or meta title
+  description?: string // Falls back to OG or meta description
+  image?: {
+    url: string
+    alt?: string
+  }
+  // Player card specific
+  player?: {
+    url?: string
+    width?: number
+    height?: number
+    stream?: string
+  }
+}
+
+// JSON-LD Schema Types
+export type SchemaType =
+  | 'LocalBusiness'
+  | 'Organization'
+  | 'WebPage'
+  | 'WebSite'
+  | 'Article'
+  | 'BlogPosting'
+  | 'Product'
+  | 'Service'
+  | 'FAQPage'
+  | 'HowTo'
+  | 'Event'
+  | 'BreadcrumbList'
+  | 'Review'
+  | 'AggregateRating'
+  | 'Person'
+  | 'Place'
+  | 'ItemList'
+
+// LocalBusiness Schema (Critical for Wellness/Spa)
+export interface SchemaLocalBusiness {
+  enabled: boolean
+  '@type': 'LocalBusiness' | 'HealthAndBeautyBusiness' | 'DaySpa' | 'BeautySalon' | 'HealthClub' | 'MedicalSpa'
+  name: string
+  description?: string
+  url?: string
+  telephone?: string
+  email?: string
+  logo?: string
+  image?: string[]
+  priceRange?: string // e.g., "€€", "$$$"
+  currenciesAccepted?: string
+  paymentAccepted?: string[]
+  address?: {
+    streetAddress: string
+    addressLocality: string
+    addressRegion?: string
+    postalCode: string
+    addressCountry: string
+  }
+  geo?: {
+    latitude: number
+    longitude: number
+  }
+  openingHoursSpecification?: {
+    dayOfWeek: string | string[]
+    opens: string
+    closes: string
+    validFrom?: string
+    validThrough?: string
+  }[]
+  aggregateRating?: {
+    ratingValue: number
+    reviewCount: number
+    bestRating?: number
+    worstRating?: number
+  }
+  review?: {
+    author: string
+    datePublished: string
+    reviewBody: string
+    reviewRating: {
+      ratingValue: number
+      bestRating?: number
+      worstRating?: number
+    }
+  }[]
+  sameAs?: string[] // Social profiles
+  hasMap?: string // Google Maps URL
+  amenityFeature?: {
+    name: string
+    value: boolean
+  }[]
+  // Wellness specific
+  availableService?: {
+    '@type': 'Service'
+    name: string
+    description?: string
+    offers?: {
+      price: string
+      priceCurrency: string
+    }
+  }[]
+}
+
+// Organization Schema
+export interface SchemaOrganization {
+  enabled: boolean
+  '@type': 'Organization' | 'Corporation' | 'LocalBusiness'
+  name: string
+  legalName?: string
+  description?: string
+  url?: string
+  logo?: string
+  foundingDate?: string
+  founder?: {
+    '@type': 'Person'
+    name: string
+  }
+  address?: {
+    streetAddress: string
+    addressLocality: string
+    postalCode: string
+    addressCountry: string
+  }
+  contactPoint?: {
+    '@type': 'ContactPoint'
+    telephone: string
+    contactType: string
+    areaServed?: string
+    availableLanguage?: string[]
+  }[]
+  sameAs?: string[]
+}
+
+// WebPage Schema
+export interface SchemaWebPage {
+  enabled: boolean
+  '@type': 'WebPage' | 'AboutPage' | 'ContactPage' | 'FAQPage' | 'CollectionPage' | 'ItemPage' | 'ProfilePage' | 'SearchResultsPage'
+  name?: string
+  description?: string
+  url?: string
+  datePublished?: string
+  dateModified?: string
+  author?: {
+    '@type': 'Person' | 'Organization'
+    name: string
+    url?: string
+  }
+  publisher?: {
+    '@type': 'Organization'
+    name: string
+    logo?: string
+  }
+  mainEntity?: string // Reference to main schema
+  breadcrumb?: boolean // Generate BreadcrumbList
+  speakable?: {
+    cssSelector?: string[]
+    xpath?: string[]
+  }
+}
+
+// Service Schema (for wellness services)
+export interface SchemaService {
+  enabled: boolean
+  services: {
+    '@type': 'Service'
+    name: string
+    description?: string
+    provider?: string
+    serviceType?: string
+    areaServed?: string
+    audience?: string
+    availableChannel?: {
+      serviceUrl?: string
+      servicePhone?: string
+      serviceSmsNumber?: string
+    }
+    offers?: {
+      '@type': 'Offer'
+      price: string
+      priceCurrency: string
+      availability?: 'InStock' | 'OutOfStock' | 'PreOrder' | 'LimitedAvailability'
+      validFrom?: string
+      validThrough?: string
+    }
+    termsOfService?: string
+    aggregateRating?: {
+      ratingValue: number
+      reviewCount: number
+    }
+  }[]
+}
+
+// FAQ Schema
+export interface SchemaFAQ {
+  enabled: boolean
+  questions: {
+    question: string
+    answer: string
+  }[]
+}
+
+// BreadcrumbList Schema
+export interface SchemaBreadcrumb {
+  enabled: boolean
+  autoGenerate: boolean // Generate from URL structure
+  items?: {
+    name: string
+    url: string
+  }[]
+}
+
+// Event Schema
+export interface SchemaEvent {
+  enabled: boolean
+  events: {
+    '@type': 'Event' | 'BusinessEvent' | 'SocialEvent'
+    name: string
+    description?: string
+    startDate: string
+    endDate?: string
+    location?: {
+      name: string
+      address: string
+    }
+    organizer?: {
+      name: string
+      url?: string
+    }
+    offers?: {
+      price: string
+      priceCurrency: string
+      availability: 'InStock' | 'SoldOut' | 'PreOrder'
+      validFrom?: string
+      url?: string
+    }
+    performer?: {
+      name: string
+    }
+    image?: string
+    eventStatus?: 'EventScheduled' | 'EventCancelled' | 'EventPostponed' | 'EventRescheduled'
+    eventAttendanceMode?: 'OfflineEventAttendanceMode' | 'OnlineEventAttendanceMode' | 'MixedEventAttendanceMode'
+  }[]
+}
+
+// All Schema Settings Combined
+export interface SEOSchemaSettings {
+  localBusiness?: SchemaLocalBusiness
+  organization?: SchemaOrganization
+  webPage?: SchemaWebPage
+  service?: SchemaService
+  faq?: SchemaFAQ
+  breadcrumb?: SchemaBreadcrumb
+  event?: SchemaEvent
+}
+
+// Sitemap Settings
+export interface SEOSitemapSettings {
+  include: boolean
+  priority: number // 0.0 - 1.0
+  changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
+  lastModified?: string
+}
+
+// Hreflang Settings (Multilingual)
+export interface SEOHreflang {
+  enabled: boolean
+  defaultLanguage: string
+  alternates: {
+    hreflang: string // e.g., 'de', 'en-US', 'x-default'
+    href: string
+  }[]
+}
+
+// Advanced SEO Settings
+export interface SEOAdvancedSettings {
+  // Preload/Prefetch
+  preload?: {
+    enabled: boolean
+    resources: {
+      href: string
+      as: 'script' | 'style' | 'image' | 'font' | 'fetch'
+      type?: string
+      crossorigin?: 'anonymous' | 'use-credentials'
+    }[]
+  }
+  // DNS Prefetch
+  dnsPrefetch?: {
+    enabled: boolean
+    domains: string[]
+  }
+  // Preconnect
+  preconnect?: {
+    enabled: boolean
+    origins: string[]
+  }
+  // Custom Meta Tags
+  customMeta?: {
+    name?: string
+    property?: string
+    content: string
+  }[]
+  // Custom Link Tags
+  customLinks?: {
+    rel: string
+    href: string
+    hreflang?: string
+    type?: string
+  }[]
+}
+
+// SEO Analysis/Score (computed, not stored)
+export interface SEOAnalysis {
+  score: number // 0-100
+  issues: {
+    type: 'error' | 'warning' | 'info'
+    category: 'meta' | 'content' | 'technical' | 'social'
+    message: string
+    suggestion?: string
+  }[]
+  // Individual scores
+  titleScore: number
+  descriptionScore: number
+  keywordScore: number
+  technicalScore: number
+  socialScore: number
+  schemaScore: number
+}
+
+// Global SEO Settings (site-wide defaults)
+export interface SEOGlobalSettings {
+  siteName: string
+  siteUrl: string
+  defaultLanguage: string
+  separator: string // e.g., ' | ', ' - ', ' — '
+  defaultImage?: string
+  twitterHandle?: string
+  facebookAppId?: string
+  googleSiteVerification?: string
+  bingSiteVerification?: string
+  pinterestVerification?: string
+  yandexVerification?: string
+  defaultSchemaOrg?: SchemaOrganization
+  defaultLocalBusiness?: SchemaLocalBusiness
+}
+
+// Enterprise SEO Content - Main Interface
+export interface SEOContent {
+  // Use Global Settings Toggle
+  useGlobalSEO?: boolean
+
+  // Basic Meta Tags
+  title: string
+  titleTemplate?: string // e.g., "%s | Wellnesstal"
+  description: string
+  keywords?: string[]
+  author?: string
+
+  // URLs
+  canonicalUrl?: string
+  alternateUrls?: {
+    media?: string // e.g., 'only screen and (max-width: 640px)'
+    href: string
+  }[]
+
+  // Robots
+  robots: SEORobotsDirectives
+
+  // Open Graph
+  openGraph: SEOOpenGraph
+
+  // Twitter Cards
+  twitter: SEOTwitterCard
+
+  // Structured Data (JSON-LD)
+  schema: SEOSchemaSettings
+
+  // Sitemap
+  sitemap: SEOSitemapSettings
+
+  // Hreflang (Multilingual)
+  hreflang?: SEOHreflang
+
+  // Advanced Settings
+  advanced?: SEOAdvancedSettings
+
+  // Preview URLs for editor
+  previewUrl?: string
+
+  // Custom CSS
+  customClass?: string
+
+  // Section ID
+  sectionId?: string
+}
+

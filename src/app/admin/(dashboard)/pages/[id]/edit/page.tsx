@@ -4,7 +4,7 @@ import React, { useState, useEffect, use, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
-import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent } from '@/components/blocks/types'
+import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent } from '@/components/blocks/types'
 import HeroBlockEditor from '@/components/blocks/editors/HeroBlockEditor'
 import FeaturesBlockEditor from '@/components/blocks/editors/FeaturesBlockEditor'
 import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
@@ -14,6 +14,13 @@ import FAQBlockEditor from '@/components/blocks/editors/FAQBlockEditor'
 import TeamBlockEditor from '@/components/blocks/editors/TeamBlockEditor'
 import WhatsAppBlockEditor from '@/components/blocks/editors/WhatsAppBlockEditor'
 import GalleryBlockEditor from '@/components/blocks/editors/GalleryBlockEditor'
+import EmbedBlockEditor from '@/components/blocks/editors/EmbedBlockEditor'
+import HeaderBlockEditor from '@/components/blocks/editors/HeaderBlockEditor'
+import FooterBlockEditor from '@/components/blocks/editors/FooterBlockEditor'
+import ContactBlockEditor from '@/components/blocks/editors/ContactBlockEditor'
+import SEOBlockEditor from '@/components/blocks/editors/SEOBlockEditor'
+import { ContactBlockContent } from '@/components/blocks/ContactBlock'
+import { SEOContent } from '@/components/blocks/types'
 
 interface PageData {
   id: string
@@ -448,22 +455,22 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       <main className="flex-1 overflow-y-auto">
         {activeBlock ? (
           <div className="p-6">
-            <div className={`mx-auto ${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' ? 'max-w-5xl' : 'max-w-3xl'}`}>
+            <div className={`mx-auto ${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'max-w-5xl' : 'max-w-3xl'}`}>
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
+                      activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
                     }`}>
                       <span className="text-lg">
-                        {activeBlock.block_type === 'hero' ? '🎯' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : '📝'}
+                        {activeBlock.block_type === 'hero' ? '🎯' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : activeBlock.block_type === 'embed' ? '🔗' : activeBlock.block_type === 'header' ? '📋' : activeBlock.block_type === 'footer' ? '🦶' : '📝'}
                       </span>
                     </div>
                     <div>
                       <h2 className="font-semibold text-slate-800 capitalize">
-                        {activeBlock.block_type === 'hero' ? 'Hero Bölümü Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
+                        {activeBlock.block_type === 'hero' ? 'Hero Bölümü Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : activeBlock.block_type === 'embed' ? 'Embed Editörü' : activeBlock.block_type === 'header' ? 'Header Editörü' : activeBlock.block_type === 'footer' ? 'Footer Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
                       </h2>
-                      {(activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery') && (
+                      {(activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer') && (
                         <p className="text-xs text-slate-500">Enterprise düzenleme modu</p>
                       )}
                     </div>
@@ -478,7 +485,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                   </button>
                 </div>
 
-                <div className={`${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' ? 'p-4' : 'p-6'}`}>
+                <div className={`${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'p-4' : 'p-6'}`}>
                   <BlockEditorForm
                     block={activeBlock}
                     onUpdate={(content) => handleUpdateBlock(activeBlock.id, content)}
@@ -561,6 +568,8 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                               {block.icon === 'users' && '👥'}
                               {block.icon === 'chart-bar' && '📊'}
                               {block.icon === 'minus' && '➖'}
+                              {block.icon === 'code' && '🔗'}
+                              {block.icon === 'menu' && '📋'}
                             </span>
                           </div>
                           <div className="min-w-0">
@@ -713,6 +722,51 @@ function BlockEditorForm({
         return (
           <GalleryBlockEditor
             content={content as unknown as Record<string, unknown>}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'embed':
+        // EmbedBlockEditor manages its own state with debouncing
+        return (
+          <EmbedBlockEditor
+            content={content as EmbedContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'header':
+        // HeaderBlockEditor manages its own state with debouncing
+        return (
+          <HeaderBlockEditor
+            content={content as HeaderContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'footer':
+        // FooterBlockEditor manages its own state with debouncing
+        return (
+          <FooterBlockEditor
+            content={content as FooterContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'contact':
+        // ContactBlockEditor manages its own state with debouncing
+        return (
+          <ContactBlockEditor
+            content={content as ContactBlockContent}
+            onUpdate={onUpdate}
+          />
+        )
+
+      case 'seo':
+        // SEOBlockEditor - Enterprise SEO management
+        return (
+          <SEOBlockEditor
+            content={content as SEOContent}
             onUpdate={onUpdate}
           />
         )

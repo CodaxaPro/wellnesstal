@@ -1,5 +1,44 @@
 [
   {
+    "id": "0",
+    "section": "header",
+    "title": "Header Bölümü",
+    "description": "Üst menü ve navigasyon ayarları",
+    "content": {
+      "logoText": "Wellnesstal",
+      "logoEmoji": "🌿",
+      "navItems": [
+        { "href": "#home", "label": "Start", "icon": "", "iconColor": "" },
+        { "href": "#services", "label": "Leistungen", "icon": "", "iconColor": "" },
+        { "href": "#about", "label": "Über uns", "icon": "", "iconColor": "" },
+        { "href": "#contact", "label": "Kontakt", "icon": "", "iconColor": "" }
+      ],
+      "ctaButtonText": "Termin vereinbaren",
+      "ctaButtonType": "phone",
+      "ctaButtonLink": "+49 1733828581",
+      "ctaButtonVisible": true,
+      "ctaButtonIconColor": "",
+      "ctaButtonBgColor": "",
+      "ctaButtonTextColor": ""
+    },
+    "defaults": {
+      "logoText": "Wellnesstal",
+      "logoEmoji": "🌿",
+      "navItems": [
+        { "href": "#home", "label": "Start" },
+        { "href": "#services", "label": "Leistungen" },
+        { "href": "#about", "label": "Über uns" },
+        { "href": "#contact", "label": "Kontakt" }
+      ],
+      "ctaButtonText": "Termin vereinbaren",
+      "ctaButtonType": "phone",
+      "ctaButtonLink": "+49 1733828581",
+      "ctaButtonVisible": true
+    },
+    "lastUpdated": "2025-12-01T00:00:00.000Z",
+    "updatedBy": "Admin"
+  },
+  {
     "id": "1",
     "section": "hero",
     "title": "Ana Sayfa Hero Bölümü",

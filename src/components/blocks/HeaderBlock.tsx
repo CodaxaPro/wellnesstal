@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { BlockProps } from './types'
 
 interface NavItem {
   href: string
@@ -16,7 +17,7 @@ interface NavItem {
   badgeColor?: string
 }
 
-interface HeaderContent {
+interface HeaderBlockContent {
   logoText: string
   logoEmoji: string
   navItems: NavItem[]
@@ -144,7 +145,7 @@ const NavIcon = ({ icon, color }: { icon: string; color?: string }) => {
   return <span className="text-sm">{icon}</span>
 }
 
-const defaultContent: HeaderContent = {
+const defaultContent: HeaderBlockContent = {
   logoText: 'Wellnesstal',
   logoEmoji: '🌿',
   navItems: [
@@ -159,11 +160,26 @@ const defaultContent: HeaderContent = {
   ctaButtonVisible: true
 }
 
-const Header = () => {
+export default function HeaderBlock({ block }: BlockProps) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
-  const [headerContent, setHeaderContent] = useState<HeaderContent>(defaultContent)
   const [hoveredNavIndex, setHoveredNavIndex] = useState<number | null>(null)
+
+  // Merge block content with defaults
+  const content = block.content as HeaderBlockContent
+  const headerContent: HeaderBlockContent = {
+    logoText: content?.logoText || defaultContent.logoText,
+    logoEmoji: content?.logoEmoji || defaultContent.logoEmoji,
+    navItems: content?.navItems || defaultContent.navItems,
+    ctaButtonText: content?.ctaButtonText || defaultContent.ctaButtonText,
+    ctaButtonType: content?.ctaButtonType || defaultContent.ctaButtonType,
+    ctaButtonLink: content?.ctaButtonLink || defaultContent.ctaButtonLink,
+    ctaButtonVisible: content?.ctaButtonVisible !== false,
+    ctaButtonIcon: content?.ctaButtonIcon,
+    ctaButtonIconColor: content?.ctaButtonIconColor,
+    ctaButtonBgColor: content?.ctaButtonBgColor,
+    ctaButtonTextColor: content?.ctaButtonTextColor
+  }
 
   useEffect(() => {
     const handleScroll = () => {
@@ -172,36 +188,6 @@ const Header = () => {
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
-  // Fetch header content from API
-  useEffect(() => {
-    const fetchHeaderContent = async () => {
-      try {
-        const response = await fetch('/api/content?section=header')
-        const data = await response.json()
-        if (data.success && data.data?.content) {
-          const content = data.data.content
-          setHeaderContent({
-            logoText: content.logoText || defaultContent.logoText,
-            logoEmoji: content.logoEmoji || defaultContent.logoEmoji,
-            navItems: content.navItems || defaultContent.navItems,
-            ctaButtonText: content.ctaButtonText || defaultContent.ctaButtonText,
-            ctaButtonType: content.ctaButtonType || defaultContent.ctaButtonType,
-            ctaButtonLink: content.ctaButtonLink || defaultContent.ctaButtonLink,
-            ctaButtonVisible: content.ctaButtonVisible !== false,
-            ctaButtonIcon: content.ctaButtonIcon,
-            ctaButtonIconColor: content.ctaButtonIconColor,
-            ctaButtonBgColor: content.ctaButtonBgColor,
-            ctaButtonTextColor: content.ctaButtonTextColor
-          })
-        }
-      } catch (error) {
-        console.error('Error fetching header content:', error)
-      }
-    }
-
-    fetchHeaderContent()
   }, [])
 
   // Generate CTA button href based on type
@@ -302,143 +288,145 @@ const Header = () => {
   }
 
   return (
-    <header
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-medium'
-          : 'bg-white shadow-soft'
-      }`}
-    >
-      <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16 lg:h-18">
-          {/* Logo */}
-          <Link
-            href="/"
-            className="text-2xl lg:text-3xl font-bold text-forest-600 hover:text-sage-500 transition-colors"
-          >
-            {headerContent.logoEmoji} {headerContent.logoText}
-          </Link>
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 w-full z-50 transition-all duration-300 ${
+          isScrolled
+            ? 'bg-white/95 backdrop-blur-md shadow-medium'
+            : 'bg-white shadow-soft'
+        }`}
+      >
+        <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16 lg:h-18">
+            {/* Logo */}
+            <Link
+              href="/"
+              className="text-2xl lg:text-3xl font-bold text-forest-600 hover:text-sage-500 transition-colors"
+            >
+              {headerContent.logoEmoji} {headerContent.logoText}
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-8">
-            {headerContent.navItems.map((item, index) => (
-              <Link
-                key={item.href + index}
-                href={item.href}
-                className="font-medium transition-colors duration-300 relative group flex items-center gap-1.5"
-                style={getNavItemStyle(item, index)}
-                onMouseEnter={() => setHoveredNavIndex(index)}
-                onMouseLeave={() => setHoveredNavIndex(null)}
-              >
-                {item.icon && (
-                  <NavIcon icon={item.icon} color={item.iconColor} />
-                )}
-                {item.label}
-                {item.badge && (
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              {headerContent.navItems.map((item, index) => (
+                <Link
+                  key={item.href + index}
+                  href={item.href}
+                  className="font-medium transition-colors duration-300 relative group flex items-center gap-1.5"
+                  style={getNavItemStyle(item, index)}
+                  onMouseEnter={() => setHoveredNavIndex(index)}
+                  onMouseLeave={() => setHoveredNavIndex(null)}
+                >
+                  {item.icon && (
+                    <NavIcon icon={item.icon} color={item.iconColor} />
+                  )}
+                  {item.label}
+                  {item.badge && (
+                    <span
+                      className="text-[10px] px-1.5 py-0.5 rounded-full ml-1"
+                      style={{
+                        backgroundColor: item.badgeColor || '#9CAF88',
+                        color: '#fff'
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
                   <span
-                    className="text-[10px] px-1.5 py-0.5 rounded-full ml-1"
-                    style={{
-                      backgroundColor: item.badgeColor || '#9CAF88',
-                      color: '#fff'
-                    }}
-                  >
-                    {item.badge}
+                    className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
+                    style={{ backgroundColor: item.hoverColor || '#9CAF88' }}
+                  ></span>
+                </Link>
+              ))}
+
+              {/* CTA Button */}
+              {headerContent.ctaButtonVisible && (
+                <Link
+                  href={generateCtaHref()}
+                  className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-medium hover:-translate-y-1 flex items-center gap-2 ${
+                    !headerContent.ctaButtonBgColor ? 'bg-sage-500 hover:bg-forest-600 text-white' : ''
+                  }`}
+                  style={headerContent.ctaButtonBgColor ? ctaButtonStyle : undefined}
+                >
+                  <span style={{ color: headerContent.ctaButtonIconColor || undefined }}>
+                    {getCtaIcon()}
                   </span>
-                )}
-                <span
-                  className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
-                  style={{ backgroundColor: item.hoverColor || '#9CAF88' }}
-                ></span>
-              </Link>
-            ))}
-
-            {/* CTA Button */}
-            {headerContent.ctaButtonVisible && (
-              <Link
-                href={generateCtaHref()}
-                className={`px-6 py-3 rounded-xl font-semibold transition-all duration-300 hover:shadow-medium hover:-translate-y-1 flex items-center gap-2 ${
-                  !headerContent.ctaButtonBgColor ? 'bg-sage-500 hover:bg-forest-600 text-white' : ''
-                }`}
-                style={headerContent.ctaButtonBgColor ? ctaButtonStyle : undefined}
-              >
-                <span style={{ color: headerContent.ctaButtonIconColor || undefined }}>
-                  {getCtaIcon()}
-                </span>
-                {headerContent.ctaButtonText}
-              </Link>
-            )}
-          </div>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="lg:hidden text-charcoal hover:text-sage-500 transition-colors"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label="Menu öffnen"
-          >
-            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              {isMobileMenuOpen ? (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  {headerContent.ctaButtonText}
+                </Link>
               )}
-            </svg>
-          </button>
-        </div>
+            </div>
 
-        {/* Mobile Menu */}
-        <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? 'max-h-[500px] py-4' : 'max-h-0'
-        }`}>
-          <div className="flex flex-col space-y-4 bg-white rounded-xl p-4 shadow-medium mt-2">
-            {headerContent.navItems.map((item, index) => (
-              <Link
-                key={item.href + index}
-                href={item.href}
-                className="font-medium transition-colors py-2 flex items-center gap-2"
-                style={{
-                  color: item.color || undefined,
-                  fontSize: item.fontSize || undefined,
-                  fontWeight: item.fontWeight || '500'
-                }}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                {item.icon && (
-                  <NavIcon icon={item.icon} color={item.iconColor} />
+            {/* Mobile Menu Button */}
+            <button
+              className="lg:hidden text-charcoal hover:text-sage-500 transition-colors"
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              aria-label="Menu öffnen"
+            >
+              <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
                 )}
-                {item.label}
-                {item.badge && (
-                  <span
-                    className="text-[10px] px-1.5 py-0.5 rounded-full"
-                    style={{
-                      backgroundColor: item.badgeColor || '#9CAF88',
-                      color: '#fff'
-                    }}
-                  >
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            ))}
-            {headerContent.ctaButtonVisible && (
-              <Link
-                href={generateCtaHref()}
-                className={`px-6 py-3 rounded-xl font-semibold text-center transition-colors mt-4 flex items-center justify-center gap-2 ${
-                  !headerContent.ctaButtonBgColor ? 'bg-sage-500 hover:bg-forest-600 text-white' : ''
-                }`}
-                style={headerContent.ctaButtonBgColor ? ctaButtonStyle : undefined}
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <span style={{ color: headerContent.ctaButtonIconColor || undefined }}>
-                  {getCtaIcon()}
-                </span>
-                {headerContent.ctaButtonText}
-              </Link>
-            )}
+              </svg>
+            </button>
           </div>
-        </div>
-      </nav>
-    </header>
+
+          {/* Mobile Menu */}
+          <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
+            isMobileMenuOpen ? 'max-h-[500px] py-4' : 'max-h-0'
+          }`}>
+            <div className="flex flex-col space-y-4 bg-white rounded-xl p-4 shadow-medium mt-2">
+              {headerContent.navItems.map((item, index) => (
+                <Link
+                  key={item.href + index}
+                  href={item.href}
+                  className="font-medium transition-colors py-2 flex items-center gap-2"
+                  style={{
+                    color: item.color || undefined,
+                    fontSize: item.fontSize || undefined,
+                    fontWeight: item.fontWeight || '500'
+                  }}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.icon && (
+                    <NavIcon icon={item.icon} color={item.iconColor} />
+                  )}
+                  {item.label}
+                  {item.badge && (
+                    <span
+                      className="text-[10px] px-1.5 py-0.5 rounded-full"
+                      style={{
+                        backgroundColor: item.badgeColor || '#9CAF88',
+                        color: '#fff'
+                      }}
+                    >
+                      {item.badge}
+                    </span>
+                  )}
+                </Link>
+              ))}
+              {headerContent.ctaButtonVisible && (
+                <Link
+                  href={generateCtaHref()}
+                  className={`px-6 py-3 rounded-xl font-semibold text-center transition-colors mt-4 flex items-center justify-center gap-2 ${
+                    !headerContent.ctaButtonBgColor ? 'bg-sage-500 hover:bg-forest-600 text-white' : ''
+                  }`}
+                  style={headerContent.ctaButtonBgColor ? ctaButtonStyle : undefined}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  <span style={{ color: headerContent.ctaButtonIconColor || undefined }}>
+                    {getCtaIcon()}
+                  </span>
+                  {headerContent.ctaButtonText}
+                </Link>
+              )}
+            </div>
+          </div>
+        </nav>
+      </header>
+      {/* Spacer to prevent content from going behind fixed header */}
+      <div className="h-16 lg:h-18" />
+    </>
   )
 }
-
-export default Header

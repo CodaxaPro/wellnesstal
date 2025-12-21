@@ -10,6 +10,7 @@ import { contentTabs } from './components/constants'
 
 // Import editor components
 import {
+  HeaderEditor,
   LandingHeroEditor,
   HeroEditor,
   ServicesSectionEditor,
@@ -23,7 +24,7 @@ import {
 
 export default function ContentManagement() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('landing-hero')
+  const [activeTab, setActiveTab] = useState('header')
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
@@ -386,6 +387,14 @@ export default function ContentManagement() {
     if (!section) return null
 
     switch (activeTab) {
+      case 'header':
+        return (
+          <HeaderEditor
+            section={section}
+            {...commonEditorProps}
+            setEditingContent={setEditingContent}
+          />
+        )
       case 'landing-hero':
         return <LandingHeroEditor section={section} {...commonEditorProps} />
       case 'hero':
@@ -479,6 +488,14 @@ export default function ContentManagement() {
     const content = section.content
 
     switch (activeTab) {
+      case 'header':
+        return (
+          <div className="space-y-4">
+            <div className="flex justify-between"><span className="text-gray-500">Logo:</span><span className="font-medium">{content.logoEmoji} {content.logoText}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Nav Links:</span><span className="font-medium">{content.navItems?.map((item: any) => item.label).join(' • ')}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">CTA:</span><span className="font-medium">{content.ctaButtonText}</span></div>
+          </div>
+        )
       case 'landing-hero':
         return (
           <div className="space-y-4">
