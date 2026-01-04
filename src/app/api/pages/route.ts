@@ -85,6 +85,13 @@ export async function GET(request: NextRequest) {
           .eq('page_id', page.id)
           .order('position', { ascending: true })
 
+        // Debug: log brief preview of blocks returned for troubleshooting
+        try {
+          console.log('[DEBUG] GET /api/pages - returning blocks preview:', blocks?.map(b => ({ id: b.id, title: b.content?.title || null })).slice(0, 20))
+        } catch (e) {
+          console.log('[DEBUG] GET /api/pages - blocks preview unavailable')
+        }
+
         return NextResponse.json({
           success: true,
           data: { ...page, blocks: blocks || [] }
@@ -95,6 +102,10 @@ export async function GET(request: NextRequest) {
     }
 
     // List all pages (for admin)
+    const categoryId = searchParams.get('categoryId')
+    const categorySlug = searchParams.get('categorySlug')
+    
+    // Build base query
     let query = supabase
       .from('pages')
       .select('*', { count: 'exact' })
@@ -105,7 +116,66 @@ export async function GET(request: NextRequest) {
       query = query.eq('status', status)
     }
 
+    // Filter by category ID
+    if (categoryId) {
+      query = query.eq('category_id', categoryId)
+    }
+
+    // Filter by category slug
+    if (categorySlug && !categoryId) {
+      try {
+        const { data: category } = await supabase
+          .from('page_categories')
+          .select('id')
+          .eq('slug', categorySlug)
+          .eq('active', true)
+          .single()
+        
+        if (category) {
+          query = query.eq('category_id', category.id)
+        }
+      } catch (e) {
+        console.log('Could not filter by category slug:', e)
+      }
+    }
+
+    // Execute query
     const { data: pages, error, count } = await query
+    
+    if (error) {
+      throw error
+    }
+    
+    // Fetch categories separately and merge (more reliable than join)
+    let pagesWithCategories = pages || []
+    if (pages && pages.length > 0) {
+      try {
+        const { data: allCategories } = await supabase
+          .from('page_categories')
+          .select('id, name, slug, color, icon')
+        
+        if (allCategories && allCategories.length > 0) {
+          const categoryMap = new Map(allCategories.map((c: any) => [c.id, c]))
+          pagesWithCategories = pages.map((page: any) => ({
+            ...page,
+            page_categories: page.category_id ? categoryMap.get(page.category_id) || null : null
+          }))
+        } else {
+          // No categories exist yet, just return pages without category data
+          pagesWithCategories = pages.map((page: any) => ({
+            ...page,
+            page_categories: null
+          }))
+        }
+      } catch (e) {
+        // Categories table might not exist yet, that's okay - return pages without category data
+        console.log('Could not fetch categories (table may not exist):', e)
+        pagesWithCategories = pages.map((page: any) => ({
+          ...page,
+          page_categories: null
+        }))
+      }
+    }
 
     if (error) {
       throw error
@@ -114,7 +184,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       data: {
-        pages: pages || [],
+        pages: pagesWithCategories || [],
         total: count || 0,
         limit,
         offset
@@ -142,7 +212,7 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { title, slug, status = 'draft', template = 'default', meta_title, meta_description } = body
+    const { title, slug, status = 'draft', template = 'default', meta_title, meta_description, category_id } = body
 
     if (!title) {
       return NextResponse.json(
@@ -183,11 +253,30 @@ export async function POST(request: NextRequest) {
         template,
         meta_title: meta_title || title,
         meta_description,
+        category_id: category_id || null,
         published_at: status === 'published' ? new Date().toISOString() : null,
         created_by: (user as any).username
       })
       .select()
       .single()
+
+    // Fetch category separately if needed
+    let pageWithCategory = page
+    if (page && category_id) {
+      try {
+        const { data: category } = await supabase
+          .from('page_categories')
+          .select('id, name, slug, color, icon')
+          .eq('id', category_id)
+          .single()
+        
+        if (category) {
+          pageWithCategory = { ...page, page_categories: category }
+        }
+      } catch (e) {
+        console.log('Could not fetch category:', e)
+      }
+    }
 
     if (error) {
       throw error
@@ -195,7 +284,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      data: page,
+      data: pageWithCategory || page,
       message: 'Page created successfully'
     })
 
@@ -268,13 +357,36 @@ export async function PUT(request: NextRequest) {
       .select()
       .single()
 
+    // Fetch category separately if needed
+    let pageWithCategory = page
+    if (page && (updateData.category_id !== undefined || page.category_id)) {
+      try {
+        const categoryId = updateData.category_id || page.category_id
+        if (categoryId) {
+          const { data: category } = await supabase
+            .from('page_categories')
+            .select('id, name, slug, color, icon')
+            .eq('id', categoryId)
+            .single()
+          
+          if (category) {
+            pageWithCategory = { ...page, page_categories: category }
+          }
+        } else {
+          pageWithCategory = { ...page, page_categories: null }
+        }
+      } catch (e) {
+        console.log('Could not fetch category:', e)
+      }
+    }
+
     if (error) {
       throw error
     }
 
     return NextResponse.json({
       success: true,
-      data: page,
+      data: pageWithCategory || page,
       message: 'Page updated successfully'
     })
 

@@ -47,6 +47,7 @@ export default function CTABlockEditor({ content, onUpdate }: CTABlockEditorProp
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: CTAContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

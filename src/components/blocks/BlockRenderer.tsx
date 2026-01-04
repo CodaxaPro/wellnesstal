@@ -1,7 +1,6 @@
 'use client'
 
 import { PageBlock, BlockProps } from './types'
-import HeroBlock from './HeroBlock'
 import TextBlock from './TextBlock'
 import FeaturesBlock from './FeaturesBlock'
 import GalleryBlock from './GalleryBlock'
@@ -20,6 +19,7 @@ import EmbedBlock from './EmbedBlock'
 import HeaderBlock from './HeaderBlock'
 import FooterBlock from './FooterBlock'
 import SEOBlock from './SEOBlock'
+import HeroBlock from './HeroBlock'
 
 interface BlockRendererProps {
   blocks: PageBlock[]
@@ -75,7 +75,7 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: Bloc
         return (
           <div
             key={block.id}
-            className={`block-wrapper ${!block.visible ? 'opacity-50' : ''}`}
+            className={`block-wrapper w-full ${!block.visible ? 'opacity-50' : ''}`}
             data-block-id={block.id}
             data-block-type={block.block_type}
           >

@@ -274,6 +274,34 @@ export const TEXT_STYLE_PRESETS = {
       },
       padding: { top: '1.5rem', bottom: '1.5rem', left: '1.5rem', right: '1.5rem' }
     }
+  },
+  problem: {
+    label: 'Problem Tanımlama',
+    description: 'Sorun tanımlama bölümü için (gri arka plan)',
+    settings: {
+      layout: 'default' as const,
+      alignment: 'left' as const,
+      background: { type: 'solid' as const, color: '#f7f5f3' },
+      typography: {
+        title: { fontSize: '2.5rem', fontWeight: '700', color: '#2C2C2C' },
+        body: { fontSize: '1.125rem', lineHeight: '1.75', color: '#666666' }
+      },
+      padding: { top: '4rem', bottom: '4rem', left: '1.5rem', right: '1.5rem' }
+    }
+  },
+  solution: {
+    label: 'Çözüm Açıklama',
+    description: 'Çözüm açıklama bölümü için (vurgulu)',
+    settings: {
+      layout: 'default' as const,
+      alignment: 'left' as const,
+      background: { type: 'solid' as const, color: '#ffffff' },
+      typography: {
+        title: { fontSize: '2.5rem', fontWeight: '700', color: '#2C2C2C' },
+        body: { fontSize: '1.125rem', lineHeight: '1.75', color: '#666666' }
+      },
+      padding: { top: '4rem', bottom: '4rem', left: '1.5rem', right: '1.5rem' }
+    }
   }
 }
 

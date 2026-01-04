@@ -253,6 +253,79 @@ export default function FeatureItemEditor({
             />
           </div>
 
+          {/* Features List */}
+          <div className="p-4 bg-slate-50 rounded-xl space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="flex items-center gap-2">
+                <input
+                  type="checkbox"
+                  checked={feature.showFeaturesList !== false}
+                  onChange={(e) => onUpdate(index, { showFeaturesList: e.target.checked })}
+                  className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
+                />
+                <span className="text-sm font-medium text-slate-700">Özellik Listesi (Tik İşaretli)</span>
+              </label>
+              {feature.showFeaturesList !== false && (
+                <button
+                  onClick={() => {
+                    const newItem = {
+                      id: `item-${Date.now()}`,
+                      text: '',
+                      enabled: true
+                    }
+                    onUpdate(index, {
+                      featuresList: [...(feature.featuresList || []), newItem]
+                    })
+                  }}
+                  className="px-3 py-1.5 text-xs bg-sage-500 text-white rounded-lg hover:bg-sage-600 transition-colors"
+                >
+                  + Ekle
+                </button>
+              )}
+            </div>
+
+            {feature.showFeaturesList !== false && feature.featuresList && feature.featuresList.length > 0 && (
+              <div className="space-y-2">
+                {feature.featuresList.map((item, itemIndex) => (
+                  <div key={item.id || itemIndex} className="flex items-center gap-2 bg-white p-2 rounded-lg border border-slate-200">
+                    <input
+                      type="checkbox"
+                      checked={item.enabled !== false}
+                      onChange={(e) => {
+                        const updated = [...feature.featuresList!]
+                        updated[itemIndex] = { ...item, enabled: e.target.checked }
+                        onUpdate(index, { featuresList: updated })
+                      }}
+                      className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
+                    />
+                    <input
+                      type="text"
+                      value={item.text}
+                      onChange={(e) => {
+                        const updated = [...feature.featuresList!]
+                        updated[itemIndex] = { ...item, text: e.target.value }
+                        onUpdate(index, { featuresList: updated })
+                      }}
+                      className="flex-1 px-2 py-1 text-sm border border-slate-200 rounded focus:ring-1 focus:ring-sage-500"
+                      placeholder="Özellik metni..."
+                    />
+                    <button
+                      onClick={() => {
+                        const updated = feature.featuresList!.filter((_, i) => i !== itemIndex)
+                        onUpdate(index, { featuresList: updated })
+                      }}
+                      className="p-1 text-red-400 hover:text-red-600"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           {/* Link */}
           {showAdvanced && (
             <>

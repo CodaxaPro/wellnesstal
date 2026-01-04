@@ -57,12 +57,18 @@ export default function ContactBlockEditor({ content, onUpdate }: ContactBlockEd
 
   const [expandedSections, setExpandedSections] = useState<string[]>([])
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const isInitialMount = useRef(true)
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: ContactBlockContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) clearTimeout(debounceRef.current)
     debounceRef.current = setTimeout(() => onUpdate(newContent), 300)
   }, [onUpdate])
+
+  useEffect(() => {
+    isInitialMount.current = false
+  }, [])
 
   // Update content
   const updateContent = (updates: Partial<ContactBlockContent>) => {

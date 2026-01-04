@@ -4,6 +4,14 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
+interface PageCategory {
+  id: string
+  name: string
+  slug: string
+  color: string
+  icon: string
+}
+
 interface Page {
   id: string
   slug: string
@@ -12,6 +20,8 @@ interface Page {
   template: string
   meta_title?: string
   meta_description?: string
+  category_id?: string
+  page_categories?: PageCategory
   created_at: string
   updated_at: string
   published_at?: string
@@ -26,22 +36,48 @@ interface PageStats {
 export default function PagesManagement() {
   const router = useRouter()
   const [pages, setPages] = useState<Page[]>([])
+  const [categories, setCategories] = useState<PageCategory[]>([])
   const [stats, setStats] = useState<PageStats>({ total: 0, published: 0, drafts: 0 })
   const [isLoading, setIsLoading] = useState(true)
   const [selectedStatus, setSelectedStatus] = useState('all')
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false)
+  const [isCategoryModalOpen, setIsCategoryModalOpen] = useState(false)
   const [newPageForm, setNewPageForm] = useState({
     title: '',
     slug: '',
     template: 'default',
     meta_description: '',
-    status: 'draft' as 'draft' | 'published'
+    status: 'draft' as 'draft' | 'published',
+    category_id: ''
   })
+  const [newCategoryForm, setNewCategoryForm] = useState({
+    name: '',
+    slug: '',
+    description: '',
+    color: '#9CAF88',
+    icon: '📄'
+  })
+  const [editingCategory, setEditingCategory] = useState<PageCategory | null>(null)
   const [saving, setSaving] = useState(false)
+  const [savingCategory, setSavingCategory] = useState(false)
 
   useEffect(() => {
+    fetchCategories()
     fetchPages()
-  }, [selectedStatus])
+  }, [selectedStatus, selectedCategory])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/pages/categories')
+      const data = await response.json()
+      if (data.success) {
+        setCategories(data.data || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch categories:', error)
+    }
+  }
 
   const fetchPages = async () => {
     try {
@@ -49,6 +85,9 @@ export default function PagesManagement() {
       const params = new URLSearchParams()
       if (selectedStatus !== 'all') {
         params.set('status', selectedStatus)
+      }
+      if (selectedCategory !== 'all') {
+        params.set('categoryId', selectedCategory)
       }
 
       const response = await fetch(`/api/pages?${params}`, {
@@ -89,7 +128,7 @@ export default function PagesManagement() {
       if (response.ok) {
         const data = await response.json()
         setIsCreateModalOpen(false)
-        setNewPageForm({ title: '', slug: '', template: 'default', meta_description: '', status: 'draft' })
+        setNewPageForm({ title: '', slug: '', template: 'default', meta_description: '', status: 'draft', category_id: '' })
         // Navigate to page editor
         router.push(`/admin/pages/${data.data.id}/edit`)
       } else {
@@ -241,7 +280,49 @@ export default function PagesManagement() {
               <option value="draft">Taslak</option>
             </select>
           </div>
-          <div className="text-sm text-slate-400 ml-auto">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-slate-500">Kategori:</span>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="px-3 py-2 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-sage-500 focus:border-transparent"
+            >
+              <option value="all">Tümü</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.icon} {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            <button
+              onClick={() => {
+                setEditingCategory(null)
+                setNewCategoryForm({ name: '', slug: '', description: '', color: '#9CAF88', icon: '📄' })
+                setIsCategoryModalOpen(true)
+              }}
+              className="px-3 py-2 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+              </svg>
+              Kategori Ekle
+            </button>
+            <button
+              onClick={() => {
+                setEditingCategory(null)
+                setIsCategoryModalOpen(true)
+              }}
+              className="px-3 py-2 text-sm border border-slate-200 rounded-lg text-slate-600 hover:bg-slate-50 transition-colors flex items-center gap-2"
+              title="Kategorileri Yönet"
+            >
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+              </svg>
+            </button>
+          </div>
+          <div className="text-sm text-slate-400">
             {pages.length} sayfa bulundu
           </div>
         </div>
@@ -254,6 +335,7 @@ export default function PagesManagement() {
             <thead className="bg-slate-50 border-b border-slate-200">
               <tr>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Sayfa</th>
+                <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Kategori</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Şablon</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Durum</th>
                 <th className="px-6 py-4 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">Güncelleme</th>
@@ -268,6 +350,21 @@ export default function PagesManagement() {
                       <div className="font-medium text-slate-800">{page.title}</div>
                       <div className="text-sm text-slate-400">/{page.slug}</div>
                     </div>
+                  </td>
+                  <td className="px-6 py-4">
+                    {page.page_categories ? (
+                      <span 
+                        className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg text-white"
+                        style={{ backgroundColor: page.page_categories.color || '#9CAF88' }}
+                      >
+                        <span>{page.page_categories.icon}</span>
+                        {page.page_categories.name}
+                      </span>
+                    ) : (
+                      <span className="inline-flex px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-100 text-slate-400">
+                        Kategori yok
+                      </span>
+                    )}
                   </td>
                   <td className="px-6 py-4">
                     <span className="inline-flex px-2.5 py-1 text-xs font-medium rounded-lg bg-slate-100 text-slate-600">
@@ -411,6 +508,24 @@ export default function PagesManagement() {
 
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Kategori
+                </label>
+                <select
+                  value={newPageForm.category_id}
+                  onChange={(e) => setNewPageForm(prev => ({ ...prev, category_id: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
+                >
+                  <option value="">Kategori Seçin</option>
+                  {categories.map((cat) => (
+                    <option key={cat.id} value={cat.id}>
+                      {cat.icon} {cat.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
                   Şablon
                 </label>
                 <select
@@ -455,6 +570,270 @@ export default function PagesManagement() {
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+
+      {/* Category Management Modal */}
+      {isCategoryModalOpen && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-2xl max-w-2xl w-full shadow-2xl max-h-[90vh] overflow-hidden flex flex-col">
+            <div className="p-6 border-b border-slate-200">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-semibold text-slate-800">
+                  {editingCategory ? 'Kategori Düzenle' : 'Kategori Yönetimi'}
+                </h2>
+                <button
+                  onClick={() => {
+                    setIsCategoryModalOpen(false)
+                    setEditingCategory(null)
+                    setNewCategoryForm({ name: '', slug: '', description: '', color: '#9CAF88', icon: '📄' })
+                  }}
+                  className="p-2 text-slate-400 hover:text-slate-600 hover:bg-slate-100 rounded-lg transition-all"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+
+            <div className="flex-1 overflow-y-auto">
+              {/* Categories List */}
+              {!editingCategory && (
+                <div className="p-6">
+                  <div className="mb-4 flex items-center justify-between">
+                    <h3 className="text-lg font-semibold text-slate-800">Mevcut Kategoriler</h3>
+                    <button
+                      onClick={() => {
+                        setEditingCategory(null)
+                        setNewCategoryForm({ name: '', slug: '', description: '', color: '#9CAF88', icon: '📄' })
+                      }}
+                      className="px-3 py-1.5 text-sm bg-sage-500 hover:bg-sage-600 text-white rounded-lg transition-colors"
+                    >
+                      + Yeni Ekle
+                    </button>
+                  </div>
+                  <div className="space-y-2">
+                    {categories.map((cat) => (
+                      <div
+                        key={cat.id}
+                        className="flex items-center justify-between p-3 border border-slate-200 rounded-lg hover:bg-slate-50"
+                      >
+                        <div className="flex items-center gap-3">
+                          <span className="text-2xl">{cat.icon}</span>
+                          <div>
+                            <div className="font-medium text-slate-800">{cat.name}</div>
+                            <div className="text-sm text-slate-500">/{cat.slug}</div>
+                          </div>
+                          <span
+                            className="w-4 h-4 rounded-full"
+                            style={{ backgroundColor: cat.color }}
+                          />
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => {
+                              setEditingCategory(cat)
+                              setNewCategoryForm({
+                                name: cat.name,
+                                slug: cat.slug,
+                                description: (cat as any).description || '',
+                                color: cat.color,
+                                icon: cat.icon
+                              })
+                            }}
+                            className="p-2 text-slate-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all"
+                            title="Düzenle"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={async () => {
+                              if (!confirm(`"${cat.name}" kategorisini silmek istediğinizden emin misiniz?`)) {
+                                return
+                              }
+                              try {
+                                const token = localStorage.getItem('adminToken')
+                                const response = await fetch(`/api/pages/categories?id=${cat.id}`, {
+                                  method: 'DELETE',
+                                  headers: { 'Authorization': `Bearer ${token}` }
+                                })
+                                const data = await response.json()
+                                if (data.success) {
+                                  await fetchCategories()
+                                } else {
+                                  alert(`Hata: ${data.error}`)
+                                }
+                              } catch (error) {
+                                alert('Kategori silinirken hata oluştu')
+                              }
+                            }}
+                            className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
+                            title="Sil"
+                          >
+                            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                    {categories.length === 0 && (
+                      <div className="text-center py-8 text-slate-500">
+                        Henüz kategori yok. Yeni kategori ekleyin.
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+
+              {/* Category Form */}
+              {(editingCategory || categories.length === 0) && (
+                <form onSubmit={async (e) => {
+                  e.preventDefault()
+                  setSavingCategory(true)
+                  try {
+                    const token = localStorage.getItem('adminToken')
+                    const url = editingCategory
+                      ? '/api/pages/categories'
+                      : '/api/pages/categories'
+                    const method = editingCategory ? 'PUT' : 'POST'
+                    const body = editingCategory
+                      ? { id: editingCategory.id, ...newCategoryForm }
+                      : newCategoryForm
+
+                    const response = await fetch(url, {
+                      method,
+                      headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                      },
+                      body: JSON.stringify(body)
+                    })
+                    const data = await response.json()
+                    if (data.success) {
+                      setEditingCategory(null)
+                      setNewCategoryForm({ name: '', slug: '', description: '', color: '#9CAF88', icon: '📄' })
+                      await fetchCategories()
+                      if (categories.length === 0) {
+                        setIsCategoryModalOpen(false)
+                      }
+                    } else {
+                      alert(`Hata: ${data.error}`)
+                    }
+                  } catch (error) {
+                    alert('Kategori kaydedilirken hata oluştu')
+                  } finally {
+                    setSavingCategory(false)
+                  }
+                }} className="p-6 space-y-5 border-t border-slate-200">
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Kategori Adı *
+                </label>
+                <input
+                  type="text"
+                  value={newCategoryForm.name}
+                  onChange={(e) => {
+                    const name = e.target.value
+                    setNewCategoryForm(prev => ({
+                      ...prev,
+                      name,
+                      slug: prev.slug === '' || prev.slug === generateSlug(prev.name) ? generateSlug(name) : prev.slug
+                    }))
+                  }}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
+                  placeholder="Örn: Hizmetler"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Slug *
+                </label>
+                <div className="flex">
+                  <span className="inline-flex items-center px-4 rounded-l-xl border border-r-0 border-slate-200 bg-slate-50 text-slate-500 text-sm">
+                    /
+                  </span>
+                  <input
+                    type="text"
+                    value={newCategoryForm.slug}
+                    onChange={(e) => setNewCategoryForm(prev => ({ ...prev, slug: e.target.value }))}
+                    className="flex-1 px-4 py-3 border border-slate-200 rounded-r-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
+                    placeholder="hizmetler"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    Renk
+                  </label>
+                  <input
+                    type="color"
+                    value={newCategoryForm.color}
+                    onChange={(e) => setNewCategoryForm(prev => ({ ...prev, color: e.target.value }))}
+                    className="w-full h-12 border border-slate-200 rounded-xl cursor-pointer"
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                    İkon
+                  </label>
+                  <input
+                    type="text"
+                    value={newCategoryForm.icon}
+                    onChange={(e) => setNewCategoryForm(prev => ({ ...prev, icon: e.target.value }))}
+                    className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent text-2xl text-center"
+                    placeholder="📄"
+                    maxLength={2}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate-700 mb-2">
+                  Açıklama
+                </label>
+                <textarea
+                  rows={2}
+                  value={newCategoryForm.description}
+                  onChange={(e) => setNewCategoryForm(prev => ({ ...prev, description: e.target.value }))}
+                  className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
+                  placeholder="Kategori açıklaması..."
+                />
+              </div>
+
+                  <div className="flex justify-end gap-3 pt-4">
+                    {editingCategory && (
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setEditingCategory(null)
+                          setNewCategoryForm({ name: '', slug: '', description: '', color: '#9CAF88', icon: '📄' })
+                        }}
+                        className="px-5 py-2.5 border border-slate-200 rounded-xl text-slate-600 hover:bg-slate-50 transition-colors"
+                      >
+                        İptal
+                      </button>
+                    )}
+                    <button
+                      type="submit"
+                      disabled={savingCategory}
+                      className="px-5 py-2.5 bg-gradient-to-r from-sage-500 to-sage-600 hover:from-sage-600 hover:to-forest-600 text-white rounded-xl font-medium transition-all disabled:opacity-50"
+                    >
+                      {savingCategory ? (editingCategory ? 'Kaydediliyor...' : 'Oluşturuluyor...') : (editingCategory ? 'Kaydet' : 'Oluştur')}
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
           </div>
         </div>
       )}

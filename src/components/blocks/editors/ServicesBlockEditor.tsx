@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ServicesContent, ServiceItem } from '../types'
 
 interface ServicesBlockEditorProps {
@@ -11,7 +11,12 @@ interface ServicesBlockEditorProps {
 export default function ServicesBlockEditor({ content, onUpdate }: ServicesBlockEditorProps) {
   const [localContent, setLocalContent] = useState<ServicesContent>(content)
 
+  const isInitialMount = useRef(true)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       onUpdate(localContent)
     }, 300)

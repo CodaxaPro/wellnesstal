@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { TestimonialsContent, Testimonial } from '../types'
 
 interface TestimonialsBlockEditorProps {
@@ -11,7 +11,12 @@ interface TestimonialsBlockEditorProps {
 export default function TestimonialsBlockEditor({ content, onUpdate }: TestimonialsBlockEditorProps) {
   const [localContent, setLocalContent] = useState<TestimonialsContent>(content)
 
+  const isInitialMount = useRef(true)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       onUpdate(localContent)
     }, 300)
@@ -171,6 +176,51 @@ export default function TestimonialsBlockEditor({ content, onUpdate }: Testimoni
                     onChange={(e) => updateTestimonial(index, { rating: parseInt(e.target.value) })}
                     className="w-full"
                   />
+                </div>
+                <div className="p-3 bg-slate-50 rounded-lg space-y-2">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={testimonial.readMoreLink?.enabled || false}
+                      onChange={(e) => updateTestimonial(index, {
+                        readMoreLink: {
+                          enabled: e.target.checked,
+                          text: testimonial.readMoreLink?.text || 'Weiter lesen',
+                          url: testimonial.readMoreLink?.url || '#'
+                        }
+                      })}
+                      className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
+                    />
+                    <span className="text-sm font-medium text-slate-700">"Weiter lesen" Linki</span>
+                  </label>
+                  {testimonial.readMoreLink?.enabled && (
+                    <div className="grid grid-cols-2 gap-2">
+                      <input
+                        type="text"
+                        value={testimonial.readMoreLink?.text || 'Weiter lesen'}
+                        onChange={(e) => updateTestimonial(index, {
+                          readMoreLink: {
+                            ...testimonial.readMoreLink,
+                            text: e.target.value
+                          }
+                        })}
+                        className="px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-sage-500"
+                        placeholder="Weiter lesen"
+                      />
+                      <input
+                        type="text"
+                        value={testimonial.readMoreLink?.url || '#'}
+                        onChange={(e) => updateTestimonial(index, {
+                          readMoreLink: {
+                            ...testimonial.readMoreLink,
+                            url: e.target.value
+                          }
+                        })}
+                        className="px-3 py-2 text-sm border border-slate-300 rounded-lg focus:ring-2 focus:ring-sage-500"
+                        placeholder="URL"
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
               <div className="flex flex-col gap-2">

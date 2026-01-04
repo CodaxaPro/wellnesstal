@@ -92,6 +92,7 @@ export default function EmbedBlockEditor({ content, onUpdate }: EmbedBlockEditor
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: EmbedContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

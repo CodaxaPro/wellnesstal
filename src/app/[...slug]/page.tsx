@@ -93,7 +93,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   // Build metadata using SEO block if available, otherwise fallback to page table
+  // Enterprise SEO: Optimized for Google, Bing, Yandex, and AI crawlers
   if (seoContent && !seoContent.useGlobalSEO) {
+    const canonicalUrl = seoContent.canonicalUrl || page.canonical_url || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://wellnesstal.de'}/${page.slug}`
+    
     const metadata: Metadata = {
       title: seoContent.title || page.meta_title || page.title,
       description: seoContent.description || page.meta_description,
@@ -108,13 +111,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         maxSnippet: seoContent.robots?.maxSnippet,
         maxImagePreview: seoContent.robots?.maxImagePreview,
         maxVideoPreview: seoContent.robots?.maxVideoPreview,
+        // Enterprise: Google, Bing, Yandex specific directives
+        googleBot: {
+          index: seoContent.robots?.index ?? !page.no_index,
+          follow: seoContent.robots?.follow ?? !page.no_follow,
+          'max-video-preview': seoContent.robots?.maxVideoPreview,
+          'max-image-preview': seoContent.robots?.maxImagePreview,
+          'max-snippet': seoContent.robots?.maxSnippet,
+        },
       },
       alternates: {
-        canonical: seoContent.canonicalUrl || page.canonical_url,
+        canonical: canonicalUrl,
+      },
+      // Enterprise: Additional metadata for AI crawlers and search engines
+      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://wellnesstal.de'),
+      applicationName: seoContent.openGraph?.siteName || 'Wellnesstal',
+      referrer: 'origin-when-cross-origin',
+      formatDetection: {
+        email: false,
+        address: false,
+        telephone: false,
       },
     }
 
-    // Add OpenGraph if enabled
+    // Add OpenGraph if enabled (Critical for Facebook, LinkedIn, AI crawlers)
     if (seoContent.openGraph?.enabled) {
       metadata.openGraph = {
         type: seoContent.openGraph.type || 'website',
@@ -122,17 +142,30 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         description: seoContent.openGraph.description || seoContent.description || page.meta_description,
         siteName: seoContent.openGraph.siteName || 'Wellnesstal',
         locale: seoContent.openGraph.locale || 'de_DE',
-        url: seoContent.canonicalUrl || page.canonical_url,
+        url: canonicalUrl,
         images: seoContent.openGraph.image?.url ? [{
           url: seoContent.openGraph.image.url,
-          width: seoContent.openGraph.image.width,
-          height: seoContent.openGraph.image.height,
-          alt: seoContent.openGraph.image.alt,
-        }] : (page.og_image ? [page.og_image] : undefined),
+          width: seoContent.openGraph.image.width || 1200,
+          height: seoContent.openGraph.image.height || 630,
+          alt: seoContent.openGraph.image.alt || seoContent.title || page.title,
+          // Enterprise: Additional OG image properties for better AI understanding
+          type: 'image/jpeg',
+        }] : (page.og_image ? [{
+          url: page.og_image,
+          alt: seoContent.title || page.title,
+        }] : undefined),
+        // Enterprise: Additional OG properties for AI crawlers
+        ...(seoContent.openGraph.type === 'article' && {
+          publishedTime: seoContent.openGraph.publishedTime,
+          modifiedTime: seoContent.openGraph.modifiedTime,
+          authors: seoContent.openGraph.authors,
+          section: seoContent.openGraph.section,
+          tags: seoContent.keywords,
+        }),
       }
     }
 
-    // Add Twitter Card if enabled
+    // Add Twitter Card if enabled (Critical for Twitter/X and AI crawlers)
     if (seoContent.twitter?.enabled) {
       metadata.twitter = {
         card: seoContent.twitter.cardType || 'summary_large_image',
@@ -143,7 +176,28 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         images: seoContent.twitter.image?.url ? [seoContent.twitter.image.url] :
                 (seoContent.openGraph?.image?.url ? [seoContent.openGraph.image.url] :
                  (page.og_image ? [page.og_image] : undefined)),
+        // Enterprise: Additional Twitter properties
+        ...(seoContent.twitter.cardType === 'summary_large_image' && {
+          'image:alt': seoContent.openGraph?.image?.alt || seoContent.title || page.title,
+        }),
       }
+    }
+
+    // Enterprise: Additional metadata for AI crawlers and search engines
+    metadata.other = {
+      // AI crawler hints
+      'ai:description': seoContent.description || page.meta_description || '',
+      'ai:keywords': seoContent.keywords?.join(', ') || page.meta_keywords?.join(', ') || '',
+      // Bing specific
+      'msapplication-TileColor': '#9CAF88',
+      'theme-color': '#9CAF88',
+      // Apple specific
+      'apple-mobile-web-app-title': seoContent.title || page.title,
+      // Additional search engine hints
+      'geo.region': 'DE-NW',
+      'geo.placename': 'Köln',
+      'geo.position': '50.9375;6.9603',
+      'ICBM': '50.9375, 6.9603',
     }
 
     return metadata

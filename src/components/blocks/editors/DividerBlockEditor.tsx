@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { DividerContent } from '../types'
 
 interface DividerBlockEditorProps {
@@ -11,7 +11,12 @@ interface DividerBlockEditorProps {
 export default function DividerBlockEditor({ content, onUpdate }: DividerBlockEditorProps) {
   const [localContent, setLocalContent] = useState<DividerContent>(content)
 
+  const isInitialMount = useRef(true)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       onUpdate(localContent)
     }, 300)

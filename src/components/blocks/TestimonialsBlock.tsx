@@ -46,6 +46,21 @@ export default function TestimonialsBlock({ block }: BlockProps) {
                   "{testimonial.content}"
                 </p>
 
+                {/* Read More Link */}
+                {testimonial.readMoreLink?.enabled && testimonial.readMoreLink?.url && (
+                  <div className="mb-4">
+                    <a
+                      href={testimonial.readMoreLink.url}
+                      className="text-sage-600 hover:text-sage-700 text-sm font-medium inline-flex items-center gap-1 transition-colors"
+                    >
+                      {testimonial.readMoreLink.text || 'Weiter lesen'}
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </a>
+                  </div>
+                )}
+
                 {/* Author */}
                 <div className="flex items-center gap-4">
                   {testimonial.avatar ? (

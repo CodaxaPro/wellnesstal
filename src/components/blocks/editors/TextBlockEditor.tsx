@@ -47,6 +47,7 @@ export default function TextBlockEditor({ content, onUpdate }: TextBlockEditorPr
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: TextContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

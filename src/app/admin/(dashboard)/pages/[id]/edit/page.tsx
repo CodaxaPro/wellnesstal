@@ -1,7 +1,8 @@
 'use client'
 
-import React, { useState, useEffect, use, useRef } from 'react'
+import React, { useState, useEffect, use, useRef, useCallback } from 'react'
 import { useRouter } from 'next/navigation'
+import toast from 'react-hot-toast'
 import Link from 'next/link'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
 import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent, ServicesContent, TestimonialsContent, VideoContent, StatsContent, DividerContent } from '@/components/blocks/types'
@@ -27,6 +28,14 @@ import DividerBlockEditor from '@/components/blocks/editors/DividerBlockEditor'
 import { ContactBlockContent } from '@/components/blocks/ContactBlock'
 import { SEOContent } from '@/components/blocks/types'
 
+interface PageCategory {
+  id: string
+  name: string
+  slug: string
+  color: string
+  icon: string
+}
+
 interface PageData {
   id: string
   slug: string
@@ -35,6 +44,8 @@ interface PageData {
   template: string
   meta_title?: string
   meta_description?: string
+  category_id?: string
+  page_categories?: PageCategory
   blocks: PageBlock[]
 }
 
@@ -53,6 +64,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
   const [page, setPage] = useState<PageData | null>(null)
   const [blockTypes, setBlockTypes] = useState<BlockType[]>([])
+  const [categories, setCategories] = useState<PageCategory[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [activeBlockId, setActiveBlockId] = useState<string | null>(null)
@@ -62,7 +74,20 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   useEffect(() => {
     fetchPage()
     fetchBlockTypes()
+    fetchCategories()
   }, [id])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/pages/categories')
+      const data = await response.json()
+      if (data.success) {
+        setCategories(data.data || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch categories:', error)
+    }
+  }
 
   const fetchPage = async () => {
     try {
@@ -99,8 +124,13 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   const handleAddBlock = async (blockType: string) => {
     if (!page) return
 
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      toast.error('Yetkilendirme eksik: giriş yapın ve tekrar deneyin')
+      return
+    }
+
     try {
-      const token = localStorage.getItem('adminToken')
       const response = await fetch('/api/pages/blocks', {
         method: 'POST',
         headers: {
@@ -113,40 +143,161 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
         })
       })
 
-      if (response.ok) {
-        const data = await response.json()
-        setPage(prev => prev ? {
-          ...prev,
-          blocks: [...prev.blocks, data.data]
-        } : null)
-        setShowBlockLibrary(false)
-        setActiveBlockId(data.data.id)
+      const json = await response.json()
+      if (!response.ok) {
+        toast.error(json?.error || 'Blok oluşturulamadı')
+        return
       }
+
+      setPage(prev => prev ? {
+        ...prev,
+        blocks: [...prev.blocks, json.data]
+      } : null)
+      setShowBlockLibrary(false)
+      setActiveBlockId(json.data.id)
+      toast.success('Blok eklendi')
     } catch (error) {
-      alert('Blok eklenirken hata oluştu')
+      console.error('Add block error:', error)
+      toast.error('Blok eklenirken hata oluştu')
     }
   }
 
-  const handleUpdateBlock = async (blockId: string, content: Record<string, any>) => {
+  const handleUpdateBlock = useCallback(async (blockId: string, content: Record<string, any>) => {
+    // Helper: deep merge source into target (immutable)
+    // CRITICAL: Preserve empty strings and arrays for fields that should be cleared
+    const deepMerge = (target: any, source: any): any => {
+      if (source === undefined) return target
+      if (source === null) return source // null is a valid value
+      if (typeof target !== 'object' || target === null) return source
+      if (typeof source !== 'object' || source === null) return source
+      const out = Array.isArray(target) ? [...target] : { ...target }
+      
+      // Fields that should always be updated, even if empty (user explicitly cleared them)
+      const alwaysUpdateFields = ['title']
+      
+      // Array fields that should always be preserved (even if empty)
+      const alwaysUpdateArrays = ['buttons', 'hideOnMobile']
+      
+      for (const key of Object.keys(source)) {
+        const s = source[key]
+        const t = (target as any)[key]
+        
+        // CRITICAL: Always update array fields (buttons, etc.)
+        if (alwaysUpdateArrays.includes(key) && Array.isArray(s)) {
+          out[key] = s // Always preserve arrays, even if empty
+          continue
+        }
+        
+        // CRITICAL: Always update these fields if they exist in source (even if empty string)
+        if (alwaysUpdateFields.includes(key) && typeof s === 'string') {
+          out[key] = s // Always preserve, even if empty string
+          continue
+        }
+        
+        // Skip null/undefined (but not empty strings for non-critical fields)
+        if (s === null || s === undefined) {
+          continue
+        }
+        
+        // Skip empty strings for other fields (to avoid accidental overwrites)
+        // BUT only if the field wasn't explicitly set in source
+        if (s === '' && !alwaysUpdateFields.includes(key)) {
+          continue
+        }
+        
+        if (typeof s === 'object' && s !== null && !Array.isArray(s) && typeof t === 'object' && t !== null && !Array.isArray(t)) {
+          out[key] = deepMerge(t, s)
+        } else {
+          out[key] = s
+        }
+      }
+      return out
+    }
+
+    // Find existing block
+    const existing = page?.blocks.find(b => b.id === blockId)
+    const merged = existing ? deepMerge(existing.content || {}, content || {}) : (content || {})
+
+    // No-op if merge produces no change
     try {
-      const token = localStorage.getItem('adminToken')
-      await fetch('/api/pages/blocks', {
+      if (existing && JSON.stringify(existing.content) === JSON.stringify(merged)) {
+        return existing
+      }
+    } catch (e) {
+      // ignore
+    }
+
+    // Optimistic update: set merged content locally, but send the incoming partial to the API
+    setPage(prev => prev ? {
+      ...prev,
+      blocks: prev.blocks.map(b => b.id === blockId ? { ...b, content: merged } : b)
+    } : null)
+
+    // API save is debounced by child editors - just pass through
+    const token = localStorage.getItem('adminToken')
+    if (!token) {
+      toast.error('Yetkilendirme eksik: kaydetme başarısız')
+      await fetchPage()
+      throw new Error('No admin token')
+    }
+
+    try {
+      // Send the merged content to the API to avoid races where partial
+      // payloads overwrite other fields. Server will still deep-merge and
+      // ignore empty values, but sending the merged state reduces surprises.
+      console.debug('[debug] handleUpdateBlock: sending', { blockId, mergedPreview: JSON.stringify(merged).slice(0, 200), tokenPresent: !!token })
+      const res = await fetch('/api/pages/blocks', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`
         },
-        body: JSON.stringify({ id: blockId, content })
+        body: JSON.stringify({ id: blockId, content: merged, clientUpdatedAt: Date.now() }),
+        keepalive: true // Keep request alive even if page closes/refreshes
       })
 
-      setPage(prev => prev ? {
-        ...prev,
-        blocks: prev.blocks.map(b => b.id === blockId ? { ...b, content } : b)
-      } : null)
+      let json = null
+      try {
+        json = await res.json()
+      } catch (parseErr) {
+        console.error('[debug] handleUpdateBlock: failed parsing JSON response', parseErr)
+      }
+
+      console.debug('[debug] handleUpdateBlock: response', { status: res.status, ok: res.ok, bodyPreview: json ? JSON.stringify(json).slice(0, 500) : null })
+
+      if (!res.ok) {
+        toast.error(json?.error || 'Blok kaydı başarısız')
+        await fetchPage()
+        throw new Error(json?.error || `Update failed (status ${res.status})`)
+      }
+
+      // Update local page state with server-saved block to ensure exact persisted state
+      try {
+        if (json?.data?.id) {
+          setPage(prev => prev ? ({
+            ...prev,
+            blocks: prev.blocks.map(b => b.id === json.data.id ? json.data : b)
+          }) : null)
+          console.debug('[debug] handleUpdateBlock: Updated page state with saved block', {
+            blockId: json.data.id,
+            hasContent: !!json.data.content,
+            contentKeys: Object.keys(json.data.content || {}),
+          })
+        } else {
+          console.warn('[debug] handleUpdateBlock: server returned success but no data.block. Full response:', json)
+        }
+      } catch (e) {
+        console.error('[debug] handleUpdateBlock: failed updating local state', e)
+      }
+
+      toast.success('Değişiklikler kaydedildi')
+      return json
     } catch (error) {
       console.error('Failed to update block:', error)
+      await fetchPage()
+      throw error
     }
-  }
+  }, [page])
 
   const handleDeleteBlock = async (blockId: string) => {
     if (!confirm('Bu bloğu silmek istediğinizden emin misiniz?')) return
@@ -251,12 +402,47 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
       if (response.ok) {
         const data = await response.json()
-        setPage(prev => prev ? { ...prev, status: data.data.status } : null)
+        setPage(prev => prev ? { ...prev, status: data.data.status, page_categories: data.data.page_categories } : null)
       }
     } catch (error) {
       alert('Durum güncellenirken hata oluştu')
     } finally {
       setSaving(false)
+    }
+  }
+
+  const handleCategoryChange = async (categoryId: string) => {
+    if (!page) return
+
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/pages', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: page.id,
+          category_id: categoryId || null
+        })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPage(prev => prev ? { 
+          ...prev, 
+          category_id: data.data.category_id,
+          page_categories: data.data.page_categories 
+        } : null)
+        toast.success('Kategori güncellendi')
+      } else {
+        const errorData = await response.json()
+        toast.error(errorData.error || 'Kategori güncellenemedi')
+      }
+    } catch (error) {
+      console.error('Failed to update category:', error)
+      toast.error('Kategori güncellenirken hata oluştu')
     }
   }
 
@@ -314,6 +500,36 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
           </Link>
           <h1 className="font-semibold text-slate-800 truncate">{page.title}</h1>
           <p className="text-xs text-slate-400 mt-1">/{page.slug}</p>
+          
+          {/* Category Selector */}
+          <div className="mt-3">
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">
+              Kategori
+            </label>
+            <select
+              value={page.category_id || ''}
+              onChange={(e) => handleCategoryChange(e.target.value)}
+              className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white"
+            >
+              <option value="">Kategori Seçin</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.icon} {cat.name}
+                </option>
+              ))}
+            </select>
+            {page.page_categories && (
+              <div className="mt-2 flex items-center gap-2">
+                <span 
+                  className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded-lg text-white"
+                  style={{ backgroundColor: page.page_categories.color || '#9CAF88' }}
+                >
+                  <span>{page.page_categories.icon}</span>
+                  {page.page_categories.name}
+                </span>
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Blocks List */}
@@ -460,7 +676,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       <main className="flex-1 overflow-y-auto">
         {activeBlock ? (
           <div className="p-6">
-            <div className={`mx-auto ${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'max-w-5xl' : 'max-w-3xl'}`}>
+            <div className={`mx-auto ${activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'max-w-5xl' : 'max-w-3xl'}`}>
               <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
                 <div className="p-4 border-b border-slate-200 flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -468,12 +684,12 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                       activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
                     }`}>
                       <span className="text-lg">
-                        {activeBlock.block_type === 'hero' ? '🎯' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : activeBlock.block_type === 'embed' ? '🔗' : activeBlock.block_type === 'header' ? '📋' : activeBlock.block_type === 'footer' ? '🦶' : '📝'}
+                        {activeBlock.block_type === 'hero' ? '🏠' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : activeBlock.block_type === 'embed' ? '🔗' : activeBlock.block_type === 'header' ? '📋' : activeBlock.block_type === 'footer' ? '🦶' : '📝'}
                       </span>
                     </div>
                     <div>
                       <h2 className="font-semibold text-slate-800 capitalize">
-                        {activeBlock.block_type === 'hero' ? 'Hero Bölümü Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : activeBlock.block_type === 'embed' ? 'Embed Editörü' : activeBlock.block_type === 'header' ? 'Header Editörü' : activeBlock.block_type === 'footer' ? 'Footer Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
+                        {activeBlock.block_type === 'hero' ? 'Hero Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : activeBlock.block_type === 'embed' ? 'Embed Editörü' : activeBlock.block_type === 'header' ? 'Header Editörü' : activeBlock.block_type === 'footer' ? 'Footer Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
                       </h2>
                       {(activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer') && (
                         <p className="text-xs text-slate-500">Enterprise düzenleme modu</p>
@@ -492,8 +708,10 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
                 <div className={`${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'p-4' : 'p-6'}`}>
                   <BlockEditorForm
+                    key={activeBlock.id}
                     block={activeBlock}
-                    onUpdate={(content) => handleUpdateBlock(activeBlock.id, content)}
+                    blockId={activeBlock.id}
+                    onUpdate={handleUpdateBlock}
                   />
                 </div>
               </div>
@@ -625,37 +843,504 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 // Block Editor Form Component
 function BlockEditorForm({
   block,
+  blockId,
   onUpdate
 }: {
   block: PageBlock
-  onUpdate: (content: Record<string, any>) => void
+  blockId: string
+  onUpdate: (blockId: string, content: Record<string, any>) => void
 }) {
+  // Note: This component has key={block.id} so it fully remounts when switching blocks
+  // Sync content state with block.content when block changes (e.g., from API refresh)
   const [content, setContent] = useState(block.content)
-  const blockIdRef = useRef(block.id)
-
-  // Only reset content when block ID changes (switching blocks), not on content updates
+  const [savingBlock, setSavingBlock] = useState(false)
+  const [dirty, setDirty] = useState(false)
+  const isInitialMount = useRef(true)
+  const pendingSaveRef = useRef<NodeJS.Timeout | null>(null)
+  const contentRef = useRef(content)
+  const isManualSavingRef = useRef(false) // Flag to prevent debounced saves during manual save
+  const savingBlockRef = useRef(false) // Additional ref for immediate synchronous check
+  const debouncedSaveExecutingRef = useRef(false) // Flag to prevent multiple debounced saves from executing simultaneously
+  const lastSavedContentRef = useRef<any>(null) // Track last successfully saved content
+  
+  // Keep contentRef in sync with content state
   useEffect(() => {
-    if (blockIdRef.current !== block.id) {
-      blockIdRef.current = block.id
-      setContent(block.content)
+    contentRef.current = content
+  }, [content])
+
+  // Sync content state when block.content changes (e.g., after API save or page refresh)
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      lastSavedContentRef.current = block.content
+      return
     }
-  }, [block.id, block.content])
+    
+    // Only update if block.content is actually different (from server)
+    // This happens after a successful save, so we should sync local state
+    try {
+      const currentStr = JSON.stringify(content)
+      const blockStr = JSON.stringify(block.content)
+      if (currentStr !== blockStr) {
+        console.debug('[BlockEditorForm] Syncing content from block.content (after save)', {
+          contentKeys: Object.keys(content || {}),
+          blockContentKeys: Object.keys(block.content || {}),
+        })
+        setContent(block.content)
+        contentRef.current = block.content
+        lastSavedContentRef.current = block.content
+        // After syncing from server, content should match, so mark as not dirty
+        // But let the dirty check useEffect handle this to avoid race conditions
+      } else {
+        // Even if strings match, update lastSavedContentRef to ensure consistency
+        lastSavedContentRef.current = block.content
+      }
+    } catch (e) {
+      // If stringify fails, update anyway
+      setContent(block.content)
+      contentRef.current = block.content
+      lastSavedContentRef.current = block.content
+    }
+  }, [block.content])
+
+  // Track dirty state - improved to detect empty string changes
+  useEffect(() => {
+    // Use a small delay to ensure state updates have propagated
+    const timeoutId = setTimeout(() => {
+      try {
+        // Use contentRef for most up-to-date content
+        const currentContent = contentRef.current || content
+        
+        // Normalize both objects for comparison (handle undefined, null, empty string)
+        const normalizeValue = (val: any): string => {
+          if (val === null || val === undefined) return ''
+          if (typeof val === 'string') return val
+          return JSON.stringify(val)
+        }
+        
+        // Deep comparison function that handles empty strings correctly
+        const deepEqual = (a: any, b: any): boolean => {
+          if (a === b) return true
+          if (a == null || b == null) return a === b
+          if (typeof a !== 'object' || typeof b !== 'object') {
+            // For strings, compare directly (empty string !== undefined)
+            return normalizeValue(a) === normalizeValue(b)
+          }
+          
+          // Special handling for arrays (buttons, etc.)
+          if (Array.isArray(a) && Array.isArray(b)) {
+            if (a.length !== b.length) return false
+            for (let i = 0; i < a.length; i++) {
+              if (!deepEqual(a[i], b[i])) return false
+            }
+            return true
+          }
+          
+          const keysA = Object.keys(a)
+          const keysB = Object.keys(b)
+          if (keysA.length !== keysB.length) return false
+          
+          for (const key of keysA) {
+            if (!keysB.includes(key)) return false
+            if (!deepEqual(a[key], b[key])) return false
+          }
+          return true
+        }
+        
+        // Check if content matches last saved content (from debounced save)
+        // If it matches, content is saved even if block.content prop hasn't updated yet
+        const matchesLastSaved = lastSavedContentRef.current && deepEqual(currentContent, lastSavedContentRef.current)
+        const matchesBlockContent = deepEqual(currentContent, block.content)
+        
+        // Content is dirty only if it differs from both last saved and block.content
+        const isDirty = !matchesLastSaved && !matchesBlockContent
+        setDirty(isDirty)
+        
+        console.debug('[BlockEditorForm] Dirty state check:', {
+          isDirty,
+          usingRef: !!contentRef.current,
+          contentKeys: Object.keys(currentContent || {}),
+          blockKeys: Object.keys(block.content || {}),
+        })
+      } catch (e) {
+        console.error('[BlockEditorForm] Dirty state check error:', e)
+        setDirty(true)
+      }
+    }, 50) // Small delay to ensure state updates have propagated
+    
+    return () => clearTimeout(timeoutId)
+  }, [content, block.content])
+
+  // Flush pending saves when unmounting (switching blocks)
+  useEffect(() => {
+    return () => {
+      // Clear any pending debounced saves
+      if (pendingSaveRef.current) {
+        clearTimeout(pendingSaveRef.current)
+        pendingSaveRef.current = null
+      }
+      
+      // If there are unsaved changes, save them immediately
+      if (dirty && content) {
+        // Use sendBeacon for reliable save on unmount
+        const token = localStorage.getItem('adminToken')
+        if (token) {
+          const payload = {
+            id: blockId,
+            content: content,
+            clientUpdatedAt: Date.now()
+          }
+          
+          // Try to save synchronously
+          fetch('/api/pages/blocks', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload),
+            keepalive: true // Critical for unmount saves
+          }).catch(() => {
+            // Ignore errors on unmount
+          })
+        }
+      }
+    }
+  }, [blockId, content, dirty])
+
+  // Memoize the update handler with blockId bound - prevents re-creating on every render
+  // This handles updates from child editors (like SEOBlockEditor) that send full content
+  const handleUpdate = useCallback((updatedContent: Partial<any> | any) => {
+    // Update local content state immediately for responsive UI
+    let mergedContent: any
+    setContent(prev => {
+      // If updatedContent is a full object (from block editors, etc.), use it directly
+      // Otherwise merge with previous content
+      if (updatedContent && typeof updatedContent === 'object' && !Array.isArray(updatedContent)) {
+        // Check if this looks like a full content object (has multiple keys)
+        const keys = Object.keys(updatedContent)
+        if (keys.length > 1 || (keys.length === 1 && keys[0] !== 'title' && keys[0] !== 'text')) {
+          // Likely a full content object, merge it (including empty strings for cleared fields)
+          mergedContent = { ...prev, ...updatedContent }
+          return mergedContent
+        }
+      }
+      // Partial update, merge (including empty strings)
+      mergedContent = { ...prev, ...updatedContent }
+      return mergedContent
+    })
+    
+    // Update contentRef immediately to ensure it's available in setTimeout
+    if (mergedContent) {
+      contentRef.current = mergedContent
+    }
+    
+    // CRITICAL: Immediately check if content is dirty and update dirty state
+    // This ensures "Kayıt Et" button becomes active immediately when content changes
+    const checkDirty = () => {
+      try {
+        const normalizeValue = (val: any): string => {
+          if (val === null || val === undefined) return ''
+          if (typeof val === 'string') return val
+          return JSON.stringify(val)
+        }
+        
+        const deepEqual = (a: any, b: any): boolean => {
+          if (a === b) return true
+          if (a == null || b == null) return a === b
+          if (typeof a !== 'object' || typeof b !== 'object') {
+            return normalizeValue(a) === normalizeValue(b)
+          }
+          
+          if (Array.isArray(a) && Array.isArray(b)) {
+            if (a.length !== b.length) return false
+            for (let i = 0; i < a.length; i++) {
+              if (!deepEqual(a[i], b[i])) return false
+            }
+            return true
+          }
+          
+          const keysA = Object.keys(a)
+          const keysB = Object.keys(b)
+          if (keysA.length !== keysB.length) return false
+          
+          for (const key of keysA) {
+            if (!keysB.includes(key)) return false
+            if (!deepEqual(a[key], b[key])) return false
+          }
+          return true
+        }
+        
+        const isDirty = !deepEqual(mergedContent, block.content)
+        setDirty(isDirty)
+        
+        console.debug('[BlockEditorForm] handleUpdate - Dirty state updated:', {
+          isDirty,
+          descriptionsCount: mergedContent?.descriptions?.length || 0,
+          blockDescriptionsCount: block.content?.descriptions?.length || 0,
+        })
+      } catch (e) {
+        console.error('[BlockEditorForm] handleUpdate - Dirty check error:', e)
+        setDirty(true) // On error, assume dirty to allow saving
+      }
+    }
+    
+    // Check dirty state immediately
+    checkDirty()
+    
+    // Skip debounced save if manual save is in progress OR if a debounced save is already executing
+    if (isManualSavingRef.current || savingBlockRef.current || debouncedSaveExecutingRef.current) {
+      console.debug('[BlockEditorForm] handleUpdate - Skipping debounced save (save in progress)', {
+        isManualSaving: isManualSavingRef.current,
+        savingBlock: savingBlockRef.current,
+        debouncedSaveExecuting: debouncedSaveExecutingRef.current,
+      })
+      return
+    }
+    
+    // Debounce the API call to avoid excessive requests
+    // CRITICAL: If a debounced save is already pending, just update the timeout with new content
+    // Don't create multiple pending saves
+    if (pendingSaveRef.current) {
+      clearTimeout(pendingSaveRef.current)
+      pendingSaveRef.current = null
+    }
+    
+    pendingSaveRef.current = setTimeout(() => {
+      // CRITICAL: Double-check flags at the START of the callback (before any async operations)
+      // This prevents race conditions where flags might be set after the timeout fires
+      if (isManualSavingRef.current || savingBlockRef.current || debouncedSaveExecutingRef.current) {
+        console.debug('[BlockEditorForm] handleUpdate - Skipping debounced save (flags set during debounce)', {
+          isManualSaving: isManualSavingRef.current,
+          savingBlock: savingBlockRef.current,
+          debouncedSaveExecuting: debouncedSaveExecutingRef.current,
+        })
+        pendingSaveRef.current = null
+        return
+      }
+      
+      // Mark that debounced save is executing IMMEDIATELY (before any async operations)
+      debouncedSaveExecutingRef.current = true
+      // Use the merged content directly (already captured above)
+      const currentContent = mergedContent || contentRef.current || content
+      // Ensure all content fields are included, especially empty strings for cleared fields
+      const fullContent = {
+        ...currentContent,
+        ...updatedContent,
+        // Explicitly preserve all fields, including empty strings and arrays
+        title: updatedContent.title !== undefined ? updatedContent.title : currentContent.title,
+        buttons: updatedContent.buttons !== undefined ? updatedContent.buttons : currentContent.buttons,
+      }
+      console.debug('[BlockEditorForm] Saving block (debounced):', {
+        blockId,
+      })
+      
+      // Call onUpdate and wait for it to complete
+      onUpdate(blockId, fullContent).then((result) => {
+        // After successful save, update contentRef and check dirty state
+        if (result?.data?.content) {
+          const savedContent = result.data.content
+          contentRef.current = savedContent
+          lastSavedContentRef.current = savedContent
+          // Update local content state to match server
+          setContent(savedContent)
+          
+          // If save was successful, mark as not dirty immediately
+          setDirty(false)
+        } else {
+          contentRef.current = fullContent
+          lastSavedContentRef.current = fullContent
+          // Even without server response, if save didn't error, assume it's saved
+          // Mark as not dirty since save was successful
+          setDirty(false)
+        }
+      }).catch((error) => {
+        console.error('[BlockEditorForm] Error in debounced save:', error)
+        // On error, keep dirty state as true so user can retry
+      }).finally(() => {
+        // CRITICAL: Clear the executing flag so new debounced saves can run
+        debouncedSaveExecutingRef.current = false
+        pendingSaveRef.current = null
+      })
+    }, 200) // 200ms debounce for faster saves
+  }, [blockId, onUpdate, content, block.content])
 
   const handleChange = (key: string, value: any) => {
     const newContent = { ...content, [key]: value }
     setContent(newContent)
-    onUpdate(newContent)
+    handleUpdate(newContent)
+  }
+
+  const handleSaveBlock = async () => {
+    // CRITICAL: Check ref first (synchronous) before any async state updates
+    if (savingBlockRef.current || isManualSavingRef.current) {
+      console.debug('[BlockEditorForm] handleSaveBlock - Already saving (ref check), skipping duplicate call', {
+        savingBlockRef: savingBlockRef.current,
+        isManualSavingRef: isManualSavingRef.current,
+        savingBlockState: savingBlock,
+      })
+      return
+    }
+    
+    // CRITICAL: Cancel any pending debounced saves FIRST, before setting flags
+    // This prevents race conditions where a debounced save might fire after flags are set
+    if (pendingSaveRef.current) {
+      clearTimeout(pendingSaveRef.current)
+      pendingSaveRef.current = null
+    }
+    
+    // Set refs immediately (synchronous) to prevent any concurrent calls
+    // These flags prevent both manual saves and debounced saves from running concurrently
+    // If a debounced save is currently executing, it will check these flags and skip
+    savingBlockRef.current = true
+    isManualSavingRef.current = true
+    setSavingBlock(true)
+    
+    try {
+      
+      // Use the most up-to-date content from ref (which is updated immediately in handleUpdate)
+      // The ref is updated synchronously in handleUpdate, so it's always current
+      // Fallback to state if ref is not available (shouldn't happen, but safety check)
+      const currentContent = contentRef.current || content
+      
+      console.debug('[BlockEditorForm] handleSaveBlock - Current content source:', {
+        usingRef: !!contentRef.current,
+        refKeys: contentRef.current ? Object.keys(contentRef.current) : [],
+        stateKeys: Object.keys(content),
+        dirty,
+      })
+      
+      // Ensure all content is included, especially empty strings for cleared fields
+      const fullContent = {
+        ...currentContent,
+        // Explicitly preserve all fields, including empty strings and arrays
+        title: currentContent.title !== undefined ? currentContent.title : '',
+        buttons: currentContent.buttons !== undefined ? currentContent.buttons : [],
+        // Preserve all nested objects
+        titleHighlight: currentContent.titleHighlight !== undefined ? currentContent.titleHighlight : undefined,
+        titleStyles: currentContent.titleStyles !== undefined ? currentContent.titleStyles : undefined,
+        image: currentContent.image !== undefined ? currentContent.image : undefined,
+        video: currentContent.video !== undefined ? currentContent.video : undefined,
+        imageStyles: currentContent.imageStyles || {},
+        gradientColors: currentContent.gradientColors !== undefined ? currentContent.gradientColors : undefined,
+        backgroundOverlay: currentContent.backgroundOverlay !== undefined ? currentContent.backgroundOverlay : undefined,
+        animations: currentContent.animations || {},
+        responsive: currentContent.responsive || {},
+        elementAlignments: currentContent.elementAlignments !== undefined ? currentContent.elementAlignments : undefined,
+        trustIndicator: currentContent.trustIndicator !== undefined ? currentContent.trustIndicator : undefined,
+        padding: currentContent.padding || {},
+      }
+      console.debug('[BlockEditorForm] Manual save:', {
+        blockId,
+        usingRef: !!contentRef.current,
+        subtitle: fullContent.subtitle,
+        subtitleIsEmpty: fullContent.subtitle === '',
+        descriptionsCount: fullContent.descriptions?.length || 0,
+        descriptions: fullContent.descriptions?.map((d: any) => ({ id: d.id, contentLength: d.content?.length || 0 })) || [],
+        dirty,
+        fullContentKeys: Object.keys(fullContent),
+      })
+      // Call parent handler which performs optimistic update + API save
+      // CRITICAL: Only call once - check flag again before calling
+      if (!isManualSavingRef.current) {
+        console.warn('[BlockEditorForm] handleSaveBlock - Flag was cleared before onUpdate call, this should not happen')
+        return
+      }
+      const result = await onUpdate(blockId, fullContent)
+      
+      // Update local state to match saved content from server response
+      // CRITICAL: Use server response content to ensure exact match
+      if (result?.data?.content) {
+        const savedContent = result.data.content
+        setContent(savedContent)
+        contentRef.current = savedContent
+        lastSavedContentRef.current = savedContent
+        console.debug('[BlockEditorForm] handleSaveBlock - Updated from server response', {
+          blockId,
+          savedContentKeys: Object.keys(savedContent),
+        })
+      } else {
+        // Fallback: use the content we sent
+        setContent(fullContent)
+        contentRef.current = fullContent
+        lastSavedContentRef.current = fullContent
+        console.debug('[BlockEditorForm] handleSaveBlock - Using sent content (no server response)', {
+          blockId,
+        })
+      }
+      
+      // After successful save, mark as not dirty immediately
+      // The saved content should match what we just saved
+      setDirty(false)
+      
+      // CRITICAL: Wait a bit for state updates to propagate, then check dirty state again
+      // This handles the case where block.content prop updates from parent
+      setTimeout(() => {
+        // Force a dirty state check after save
+        const currentContent = contentRef.current || content
+        try {
+          const currentStr = JSON.stringify(currentContent)
+          const blockStr = JSON.stringify(block.content)
+          const isDirty = currentStr !== blockStr
+          
+          // Only set dirty to true if there's an actual difference
+          // If save was successful, content should match
+          if (isDirty) {
+            // There might be a delay in block.content prop update, so check again later
+            setTimeout(() => {
+              const finalContent = contentRef.current || content
+              const finalBlockContent = block.content
+              const finalDirty = JSON.stringify(finalContent) !== JSON.stringify(finalBlockContent)
+              setDirty(finalDirty)
+            }, 200)
+          } else {
+            setDirty(false)
+          }
+        } catch (e) {
+          console.error('[BlockEditorForm] handleSaveBlock - Error checking dirty state:', e)
+        }
+      }, 100)
+      
+      console.debug('[BlockEditorForm] handleSaveBlock - Save completed successfully', {
+        blockId,
+        hasResult: !!result,
+        hasData: !!result?.data,
+      })
+    } catch (error) {
+      console.error('[BlockEditorForm] Failed to save block:', error)
+      // Don't clear dirty state on error - user should be able to retry
+      toast.error('Blok kaydedilemedi. Ağ bağlantınızı kontrol edin ve tekrar deneyin.')
+      throw error // Re-throw so caller knows it failed
+    } finally {
+      setSavingBlock(false)
+      savingBlockRef.current = false
+      // Clear flag after a short delay to allow state updates to propagate
+      setTimeout(() => {
+        isManualSavingRef.current = false
+      }, 100)
+    }
+  }
+
+  const handleRevert = async () => {
+    if (!confirm('Yaptığınız değişiklikleri geri almak istiyor musunuz?')) return
+    setContent(block.content)
+    try {
+      await onUpdate(blockId, block.content)
+      setDirty(false)
+    } catch (error) {
+      console.error('Failed to revert block:', error)
+      alert('Geri alma sırasında hata oluştu.')
+    }
   }
 
   // Render different form fields based on block type
   const renderFields = () => {
     switch (block.block_type) {
       case 'hero':
-        // HeroBlockEditor manages its own state with debouncing
         return (
           <HeroBlockEditor
             content={content as HeroContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -664,7 +1349,7 @@ function BlockEditorForm({
         return (
           <FeaturesBlockEditor
             content={content as FeaturesContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -673,7 +1358,7 @@ function BlockEditorForm({
         return (
           <TextBlockEditor
             content={content as TextContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -682,7 +1367,7 @@ function BlockEditorForm({
         return (
           <CTABlockEditor
             content={content as CTAContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -691,7 +1376,7 @@ function BlockEditorForm({
         return (
           <PricingBlockEditor
             content={content as PricingContent}
-            onChange={onUpdate}
+            onChange={handleUpdate}
           />
         )
 
@@ -700,7 +1385,7 @@ function BlockEditorForm({
         return (
           <FAQBlockEditor
             content={content as unknown as Record<string, unknown>}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -709,7 +1394,7 @@ function BlockEditorForm({
         return (
           <TeamBlockEditor
             content={content as unknown as Record<string, unknown>}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -718,7 +1403,7 @@ function BlockEditorForm({
         return (
           <WhatsAppBlockEditor
             content={content as unknown as Record<string, unknown>}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -727,7 +1412,7 @@ function BlockEditorForm({
         return (
           <GalleryBlockEditor
             content={content as unknown as Record<string, unknown>}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -736,7 +1421,7 @@ function BlockEditorForm({
         return (
           <EmbedBlockEditor
             content={content as EmbedContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -744,8 +1429,8 @@ function BlockEditorForm({
         // HeaderBlockEditor manages its own state with debouncing
         return (
           <HeaderBlockEditor
-            content={content as HeaderContent}
-            onUpdate={onUpdate}
+            content={content as any}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -753,8 +1438,8 @@ function BlockEditorForm({
         // FooterBlockEditor manages its own state with debouncing
         return (
           <FooterBlockEditor
-            content={content as FooterContent}
-            onUpdate={onUpdate}
+            content={content as any}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -763,7 +1448,7 @@ function BlockEditorForm({
         return (
           <ContactBlockEditor
             content={content as ContactBlockContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -772,7 +1457,7 @@ function BlockEditorForm({
         return (
           <SEOBlockEditor
             content={content as SEOContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -780,7 +1465,7 @@ function BlockEditorForm({
         return (
           <ServicesBlockEditor
             content={content as ServicesContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -788,7 +1473,7 @@ function BlockEditorForm({
         return (
           <TestimonialsBlockEditor
             content={content as TestimonialsContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -796,7 +1481,7 @@ function BlockEditorForm({
         return (
           <VideoBlockEditor
             content={content as VideoContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -804,7 +1489,7 @@ function BlockEditorForm({
         return (
           <StatsBlockEditor
             content={content as StatsContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -812,7 +1497,7 @@ function BlockEditorForm({
         return (
           <DividerBlockEditor
             content={content as DividerContent}
-            onUpdate={onUpdate}
+            onUpdate={handleUpdate}
           />
         )
 
@@ -841,5 +1526,54 @@ function BlockEditorForm({
     }
   }
 
-  return renderFields()
+  return (
+    <>
+      {renderFields()}
+
+      {/* Inline Save / Revert controls to ensure non-enterprise editors can persist changes */}
+      <div className="p-4 bg-white border-t border-slate-200 flex items-center justify-between">
+        <div className="text-xs text-slate-500">
+          {dirty && !savingBlock && '⚠️ Kaydedilmemiş değişiklikler var'}
+          {savingBlock && '💾 Kaydediliyor...'}
+          {!dirty && !savingBlock && '✅ Tüm değişiklikler kaydedildi'}
+        </div>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRevert}
+            disabled={!dirty || savingBlock}
+            className={`px-3 py-2 rounded-lg border border-slate-200 text-sm transition-colors ${
+              !dirty || savingBlock
+                ? 'text-slate-300 cursor-not-allowed'
+                : 'text-slate-700 hover:bg-slate-50'
+            }`}
+          >
+            Geri Al
+          </button>
+          <button
+            onClick={(e) => {
+              e.preventDefault()
+              e.stopPropagation()
+              handleSaveBlock()
+            }}
+            disabled={savingBlock}
+            className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${
+              savingBlock
+                ? 'bg-slate-400 cursor-not-allowed'
+                : 'bg-sage-500 hover:bg-forest-600 active:bg-forest-700'
+            }`}
+            title={savingBlock ? 'Kaydediliyor...' : dirty ? 'Değişiklikleri kaydet' : 'Manuel kaydet (tüm değişiklikler zaten otomatik kaydediliyor)'}
+          >
+            {savingBlock ? (
+              <span className="flex items-center gap-2">
+                <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
+                Kaydediliyor...
+              </span>
+            ) : (
+              '💾 Kaydet'
+            )}
+          </button>
+        </div>
+      </div>
+    </>
+  )
 }

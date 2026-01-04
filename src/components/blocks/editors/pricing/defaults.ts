@@ -10,12 +10,12 @@ export const getDefaultPackageStyle = (): PricingPackageStyle => ({
   hoverEffect: 'lift',
   headerBackgroundColor: 'transparent',
   headerTextColor: '#1e293b',
-  priceColor: '#059669',
+  priceColor: '#9CAF88',
   priceFontSize: '3rem',
   periodColor: '#64748b',
   featureTextColor: '#475569',
-  featureIconColor: '#059669',
-  checkmarkColor: '#059669'
+  featureIconColor: '#9CAF88',
+  checkmarkColor: '#9CAF88'
 })
 
 // Default Package
@@ -23,7 +23,7 @@ export const getDefaultPackage = (id?: string): PricingPackage => ({
   id: id || `pkg-${Date.now()}`,
   name: 'Paket Adı',
   price: '€99',
-  period: 'ay',
+  period: '',
   billingCycle: 'monthly',
   subtitle: '',
   description: 'Paket açıklaması buraya gelecek.',
@@ -31,7 +31,7 @@ export const getDefaultPackage = (id?: string): PricingPackage => ({
   highlighted: false,
   popular: false,
   recommended: false,
-  ctaText: 'Seç',
+  ctaText: 'Jetzt buchen',
   ctaLink: '#',
   style: getDefaultPackageStyle()
 })
@@ -44,52 +44,144 @@ export const getDefaultPricingContent = (): PricingContent => ({
 
   // Section Header
   header: {
-    title: 'Fiyatlandırma',
-    subtitle: 'Size uygun paketi seçin',
+    title: 'Unsere Headspa-Pakete',
+    subtitle: 'Wähle das perfekte Paket für dich',
     description: '',
     alignment: 'center',
     titleFontSize: '2.5rem',
     titleFontWeight: '700',
-    titleColor: '#1e293b',
+    titleColor: '#2C2C2C',
     subtitleFontSize: '1.125rem',
-    subtitleColor: '#64748b'
+    subtitleColor: '#666666'
   },
 
   // Legacy support
-  title: 'Fiyatlandırma',
-  subtitle: 'Size uygun paketi seçin',
+  title: 'Unsere Headspa-Pakete',
+  subtitle: 'Wähle das perfekte Paket für dich',
 
   // Packages
   packages: [
     {
       ...getDefaultPackage('pkg-1'),
-      name: 'Başlangıç',
-      price: '€49',
-      features: ['5 Seans', 'Temel Danışmanlık', 'E-posta Desteği']
+      name: 'Basic',
+      price: '€89',
+      period: '',
+      subtitle: 'Perfekt für den Einstieg',
+      description: 'Ideal für alle, die Headspa zum ersten Mal erleben möchten.',
+      features: [
+        '60 Minuten Headspa-Behandlung',
+        'Kopfhautanalyse',
+        'Reinigung & Peeling',
+        'Entspannende Massage',
+        'Pflegende Maske'
+      ],
+      ctaText: 'Jetzt buchen',
+      ctaLink: '#contact',
+      isPartner: false
     },
     {
       ...getDefaultPackage('pkg-2'),
-      name: 'Profesyonel',
-      price: '€99',
+      name: 'Beauty',
+      price: '€159',
+      period: '',
+      subtitle: 'Unser Bestseller',
+      description: 'Die perfekte Balance aus Entspannung und intensiver Pflege.',
       highlighted: true,
       popular: true,
       badge: {
         enabled: true,
-        text: 'En Popüler',
-        backgroundColor: '#059669',
+        text: 'Bestseller',
+        backgroundColor: '#9CAF88',
         textColor: '#ffffff',
         position: 'top-center',
         animation: 'pulse'
       },
-      features: ['10 Seans', 'Gelişmiş Danışmanlık', '7/24 Destek', 'Özel Program']
+      features: [
+        '90 Minuten Headspa-Behandlung',
+        'Detaillierte Kopfhautanalyse',
+        'Tiefenreinigung & Peeling',
+        'Intensive Massage',
+        'Nährstoffreiche Maske',
+        'Haarstyling'
+      ],
+      ctaText: 'Jetzt buchen',
+      ctaLink: '#contact',
+      isPartner: false
     },
     {
       ...getDefaultPackage('pkg-3'),
       name: 'Premium',
-      price: '€199',
-      features: ['Sınırsız Seans', 'VIP Danışmanlık', 'Öncelikli Destek', 'Özel Program', 'Ev Ziyareti']
+      price: '€229',
+      period: '',
+      subtitle: 'Das ultimative Erlebnis',
+      description: 'Die luxuriöseste Headspa-Erfahrung mit allen Extras.',
+      features: [
+        '120 Minuten Headspa-Behandlung',
+        'Umfassende Kopfhautanalyse',
+        'Premium Reinigung & Peeling',
+        'Luxus-Massage',
+        'Premium Maske & Behandlung',
+        'Haarstyling & Finishing',
+        'Wellness-Getränk inklusive'
+      ],
+      ctaText: 'Jetzt buchen',
+      ctaLink: '#contact',
+      isPartner: false
+    },
+    {
+      ...getDefaultPackage('pkg-4'),
+      name: 'Basic',
+      price: '€159',
+      period: '',
+      subtitle: 'Partnertermin',
+      description: 'Genieße die Basic-Behandlung zu zweit.',
+      features: [
+        '2x 60 Minuten Headspa-Behandlung',
+        'Kopfhautanalyse für beide',
+        'Reinigung & Peeling',
+        'Entspannende Massage',
+        'Pflegende Maske'
+      ],
+      ctaText: 'Jetzt buchen',
+      ctaLink: '#contact',
+      isPartner: true,
+      partnerLabel: '2x'
+    },
+    {
+      ...getDefaultPackage('pkg-5'),
+      name: 'Beauty',
+      price: '€289',
+      period: '',
+      subtitle: 'Partnertermin',
+      description: 'Das Beauty-Erlebnis zu zweit genießen.',
+      features: [
+        '2x 90 Minuten Headspa-Behandlung',
+        'Detaillierte Kopfhautanalyse',
+        'Tiefenreinigung & Peeling',
+        'Intensive Massage',
+        'Nährstoffreiche Maske',
+        'Haarstyling'
+      ],
+      ctaText: 'Jetzt buchen',
+      ctaLink: '#contact',
+      isPartner: true,
+      partnerLabel: '2x'
     }
   ],
+
+  // Tabs (Einzeltermin/Partnertermin)
+  tabs: {
+    enabled: true,
+    defaultTab: 'einzeltermin',
+    labels: {
+      einzeltermin: 'Einzeltermin',
+      partnertermin: 'Partnertermin'
+    },
+    style: 'tabs'
+  },
+
+  // Show all features (including missing ones with X mark)
+  showAllFeatures: false,
 
   // Billing Toggle
   billingToggle: {
@@ -101,7 +193,7 @@ export const getDefaultPricingContent = (): PricingContent => ({
     defaultOption: 'monthly',
     style: 'pills',
     backgroundColor: '#f1f5f9',
-    activeBackgroundColor: '#059669',
+    activeBackgroundColor: '#9CAF88',
     textColor: '#64748b',
     activeTextColor: '#ffffff'
   },

@@ -32,23 +32,14 @@ export interface HeroButton {
   textColor?: string
   borderColor?: string
   borderRadius?: string
-  hoverEffect?: 'scale' | 'glow' | 'slide' | 'none'
-}
-
-// Enterprise Hero Badge Interface
-export interface HeroBadge {
-  text: string
-  icon?: string
-  backgroundColor?: string
-  textColor?: string
-  borderColor?: string
-  animation?: 'pulse' | 'bounce' | 'none'
-  // Typography
-  fontSize?: string
-  fontWeight?: string
-  borderRadius?: string
-  paddingX?: string
-  paddingY?: string
+  hoverEffect?: 'scale' | 'glow' | 'slide' | 'lift' | 'shrink' | 'rotate' | 'pulse' | 'shake' | 'bounce' | 'gradient' | 'none'
+  hoverBackgroundColor?: string
+  hoverTextColor?: string
+  animation?: 'none' | 'pulse' | 'bounce' | 'shake' | 'wiggle' | 'float' | 'glow-pulse'
+  animationDuration?: number // milliseconds
+  animationDelay?: number // milliseconds
+  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
+  hoverShadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
 // Enterprise Hero Trust Item
@@ -115,7 +106,6 @@ export interface HeroVideoSettings {
 export interface HeroAnimationSettings {
   enabled: boolean
   titleAnimation: 'fade' | 'slide-up' | 'slide-down' | 'zoom' | 'typewriter' | 'none'
-  subtitleAnimation: 'fade' | 'slide-up' | 'slide-down' | 'zoom' | 'none'
   imageAnimation: 'fade' | 'slide-left' | 'slide-right' | 'zoom' | 'parallax' | 'none'
   buttonAnimation: 'fade' | 'slide-up' | 'bounce' | 'none'
   staggerDelay: number
@@ -137,114 +127,124 @@ export type ContentAlignment = 'left' | 'center' | 'right'
 
 // Enterprise Hero Element Alignments
 export interface HeroElementAlignments {
-  badge: ContentAlignment
   title: ContentAlignment
-  subtitle: ContentAlignment
-  description: ContentAlignment
   buttons: ContentAlignment
   trustIndicator: ContentAlignment
 }
 
-// Enterprise Hero Content
-export interface HeroContent {
-  // Layout Settings
-  layout: 'full-width' | 'split-left' | 'split-right' | 'centered' | 'overlay' | 'minimal'
-  contentAlignment: 'left' | 'center' | 'right'
-  verticalAlignment: 'top' | 'center' | 'bottom'
-  minHeight: string
-  maxWidth: string
-  padding: {
-    top: string
-    bottom: string
-    left: string
-    right: string
-  }
-
-  // Enterprise Element-Level Alignments
-  elementAlignments?: HeroElementAlignments
-
-  // Content
-  badge?: HeroBadge
-  title: string
-  titleHighlight?: {
-    words: number[] // indices of words to highlight
-    color: string
-    style: 'color' | 'background' | 'underline' | 'gradient'
-  }
-  subtitle?: string
-  description?: string
-
-  // Buttons (multiple support)
-  buttons: HeroButton[]
-
-  // Trust Elements
-  trustIndicator?: {
-    enabled: boolean
-    items: HeroTrustItem[]
-    layout: 'inline' | 'stacked'
-  }
-
-  // Media
-  mediaType: 'image' | 'video' | 'gradient' | 'pattern' | 'none'
-  image?: {
-    url: string
-    alt: string
-    focalPoint?: { x: number, y: number }
-  }
-  video?: HeroVideoSettings
-  imageStyles: HeroImageStyles
-
-  // Background
-  backgroundType: 'solid' | 'gradient' | 'image' | 'video' | 'pattern'
+// Hero Text Style
+export interface HeroTextStyle {
+  fontFamily?: string
+  fontSize?: string
+  fontWeight?: string
+  color?: string
   backgroundColor?: string
-  gradientColors?: {
-    from: string
-    via?: string
-    to: string
-    direction: 'to-r' | 'to-l' | 'to-t' | 'to-b' | 'to-br' | 'to-bl' | 'to-tr' | 'to-tl'
-  }
-  backgroundImage?: string
-  backgroundOverlay?: {
-    enabled: boolean
-    color: string
-    opacity: number
-    blendMode: 'normal' | 'multiply' | 'overlay' | 'darken' | 'lighten'
-  }
-  backgroundPattern?: 'dots' | 'grid' | 'waves' | 'geometric' | 'none'
+  borderColor?: string
+}
 
-  // Typography Styles
-  titleStyles?: {
-    fontSize: string
-    fontWeight: string
-    lineHeight: string
-    letterSpacing: string
-    color: string
-  }
-  subtitleStyles?: {
-    fontSize: string
-    fontWeight: string
-    lineHeight: string
-    color: string
-  }
-  descriptionStyles?: {
-    fontSize: string
-    fontWeight: string
-    lineHeight: string
-    color: string
-    maxWidth?: string
-  }
+// Hero Styles
+export interface HeroStyles {
+  badge?: HeroTextStyle
+  mainTitle?: HeroTextStyle
+  highlightedText?: HeroTextStyle
+  subtitle?: HeroTextStyle
+  description?: HeroTextStyle
+  primaryButton?: HeroTextStyle
+  secondaryButton?: HeroTextStyle
+  trustIndicator?: HeroTextStyle
+}
 
-  // Animations
-  animations: HeroAnimationSettings
+// Hero Image
+export interface HeroImage {
+  url: string
+  alt: string
+}
 
-  // Responsive
-  responsive: HeroResponsiveSettings
+// Hero Image Styles (simplified from HeroImageStyles)
+export interface HeroImageStyles {
+  borderRadius?: string
+  boxShadow?: string
+  opacity?: string
+  hoverScale?: string
+  brightness?: string
+  contrast?: string
+  saturation?: string
+  overlayOpacity?: string
+  overlayColor?: string
+}
 
-  // Legacy support
-  ctaText?: string
-  ctaLink?: string
-  textColor?: string
-  overlay?: boolean
+// Enterprise Hero Content (based on /admin/content HeroEditor)
+export interface HeroContent {
+  // Content Fields
+  badge?: string
+  badgeEnabled?: boolean // Badge'in gösterilip gösterilmeyeceği
+  mainTitle: string
+  highlightedWordIndices?: number[] // Hangi kelime indekslerinin vurgulanacağı (0-based)
+  subtitle?: string
+  description?: string // Açıklama metni
+  primaryButton?: string
+  primaryButtonLink?: string
+  primaryButtonIcon?: string
+  primaryButtonIconPosition?: 'left' | 'right'
+  secondaryButton?: string
+  secondaryButtonLink?: string
+  secondaryButtonIcon?: string
+  secondaryButtonIconPosition?: 'left' | 'right'
+  trustIndicator?: string
+  trustIndicatorSubtext?: string // "⭐ 4.9/5 Bewertungen" gibi alt metin
+  trustIndicatorSecondary?: string // "Kostenlose Beratung" gibi ikinci trust indicator
+  trustIndicatorSecondarySubtext?: string // "Unverbindlich & persönlich" gibi ikinci alt metin
+  
+  // Scroll Indicator
+  scrollIndicator?: {
+    enabled?: boolean
+    text?: string
+    position?: {
+      vertical: 'top' | 'center' | 'bottom'
+      horizontal: 'left' | 'center' | 'right'
+    }
+  }
+  
+  // Image Floating Elements
+  imageFloatingElements?: {
+    // Status Badge (Jetzt geöffnet)
+    statusBadge?: {
+      enabled?: boolean
+      text?: string
+      position?: {
+        vertical: 'top' | 'center' | 'bottom'
+        horizontal: 'left' | 'center' | 'right'
+      }
+    }
+    // Premium Card
+    premiumCard?: {
+      enabled?: boolean
+      emoji?: string
+      title?: string
+      subtitle?: string
+      position?: {
+        vertical: 'top' | 'center' | 'bottom'
+        horizontal: 'left' | 'center' | 'right'
+      }
+    }
+    // Reviews Badge
+    reviewsBadge?: {
+      enabled?: boolean
+      rating?: string
+      text?: string
+      position?: {
+        vertical: 'top' | 'center' | 'bottom'
+        horizontal: 'left' | 'center' | 'right'
+      }
+    }
+  }
+  
+  // Image
+  image?: HeroImage
+  imageStyles?: HeroImageStyles
+  
+  // Styles
+  styles?: HeroStyles
 }
 
 // ============================================
@@ -255,7 +255,7 @@ export interface HeroContent {
 export type TextLayoutType = 'default' | 'narrow' | 'wide' | 'full' | 'split' | 'sidebar-left' | 'sidebar-right'
 
 // Text Block Style Presets
-export type TextStylePreset = 'article' | 'quote' | 'feature' | 'minimal' | 'card' | 'highlight' | 'custom'
+export type TextStylePreset = 'article' | 'quote' | 'feature' | 'minimal' | 'card' | 'highlight' | 'problem' | 'solution' | 'custom'
 
 // Rich Text Format Element
 export interface TextFormatElement {
@@ -533,6 +533,13 @@ export interface FeatureLink {
   openInNewTab?: boolean
 }
 
+// Feature List Item (for checkmark lists)
+export interface FeatureListItem {
+  id?: string
+  text: string
+  enabled?: boolean
+}
+
 // Feature Image (for image-based features)
 export interface FeatureImage {
   url: string
@@ -572,6 +579,10 @@ export interface FeatureItem {
 
   // Link/CTA
   link?: FeatureLink
+
+  // Feature List (checkmark list)
+  featuresList?: FeatureListItem[]
+  showFeaturesList?: boolean
 
   // Individual Styles (overrides global)
   styles?: FeatureItemStyles
@@ -976,6 +987,9 @@ export interface PricingPackage {
   highlighted?: boolean
   popular?: boolean
   recommended?: boolean
+  // Partner/Double Package
+  isPartner?: boolean
+  partnerLabel?: string // e.g., "2x", "Partnertermin"
   // Badge
   badge?: PricingBadge
   // CTA
@@ -1157,6 +1171,20 @@ export interface PricingContent {
   // Billing Toggle
   billingToggle?: PricingBillingToggle
 
+  // Tab System (Einzeltermin/Partnertermin)
+  tabs?: {
+    enabled?: boolean
+    defaultTab?: 'einzeltermin' | 'partnertermin'
+    labels?: {
+      einzeltermin?: string
+      partnertermin?: string
+    }
+    style?: 'pills' | 'tabs' | 'buttons'
+  }
+
+  // Show all features (including missing ones with X mark)
+  showAllFeatures?: boolean
+
   // Comparison Table
   comparisonTable?: PricingComparisonTable
 
@@ -1210,6 +1238,11 @@ export interface Testimonial {
   content: string
   avatar?: string
   rating?: number
+  readMoreLink?: {
+    enabled?: boolean
+    text?: string
+    url?: string
+  }
 }
 
 export interface TestimonialsContent {

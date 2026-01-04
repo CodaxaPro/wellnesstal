@@ -76,6 +76,29 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
 
   return (
     <div className="space-y-6">
+      {/* Show All Features */}
+      <div className="bg-white rounded-xl p-4 border border-slate-200">
+        <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+          <span className="w-6 h-6 bg-amber-100 rounded-lg flex items-center justify-center text-amber-600">✓</span>
+          Özellik Gösterimi
+        </h3>
+
+        <label className="flex items-center gap-2">
+          <input
+            type="checkbox"
+            checked={content.showAllFeatures ?? false}
+            onChange={(e) => updateContent({ showAllFeatures: e.target.checked })}
+            className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
+          />
+          <div>
+            <span className="text-sm font-medium text-slate-700">Tüm Özellikleri Göster</span>
+            <p className="text-xs text-slate-500 mt-0.5">
+              Paket içinde olmayan özelliklere "X" işareti gösterilir
+            </p>
+          </div>
+        </label>
+      </div>
+
       {/* Section Header */}
       <div className="bg-white rounded-xl p-4 border border-slate-200">
         <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
@@ -243,6 +266,107 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Tabs (Einzeltermin/Partnertermin) */}
+      <div className="bg-white rounded-xl p-4 border border-slate-200">
+        <h3 className="text-sm font-semibold text-slate-700 mb-4 flex items-center gap-2">
+          <span className="w-6 h-6 bg-indigo-100 rounded-lg flex items-center justify-center text-indigo-600">📑</span>
+          Tab Sistemi (Einzeltermin/Partnertermin)
+        </h3>
+
+        <label className="flex items-center gap-2 mb-4">
+          <input
+            type="checkbox"
+            checked={content.tabs?.enabled ?? false}
+            onChange={(e) => updateContent({
+              tabs: {
+                enabled: e.target.checked,
+                defaultTab: content.tabs?.defaultTab || 'einzeltermin',
+                labels: content.tabs?.labels || {
+                  einzeltermin: 'Einzeltermin',
+                  partnertermin: 'Partnertermin'
+                },
+                style: content.tabs?.style || 'tabs'
+              }
+            })}
+            className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
+          />
+          <span className="text-sm font-medium text-slate-700">Tab Sistemi Aktif</span>
+        </label>
+
+        {content.tabs?.enabled && (
+          <div className="space-y-4 p-3 bg-slate-50 rounded-lg">
+            {/* Default Tab */}
+            <div>
+              <label className="block text-xs font-medium text-slate-600 mb-1.5">Varsayılan Tab</label>
+              <div className="flex gap-2">
+                <button
+                  onClick={() => updateContent({
+                    tabs: { ...content.tabs, defaultTab: 'einzeltermin' }
+                  })}
+                  className={`flex-1 py-2 rounded-lg text-sm font-medium ${
+                    content.tabs?.defaultTab === 'einzeltermin'
+                      ? 'bg-sage-500 text-white'
+                      : 'bg-white text-slate-600 border border-slate-200'
+                  }`}
+                >
+                  Einzeltermin
+                </button>
+                <button
+                  onClick={() => updateContent({
+                    tabs: { ...content.tabs, defaultTab: 'partnertermin' }
+                  })}
+                  className={`flex-1 py-2 rounded-lg text-sm font-medium ${
+                    content.tabs?.defaultTab === 'partnertermin'
+                      ? 'bg-sage-500 text-white'
+                      : 'bg-white text-slate-600 border border-slate-200'
+                  }`}
+                >
+                  Partnertermin
+                </button>
+              </div>
+            </div>
+
+            {/* Tab Labels */}
+            <div className="grid grid-cols-2 gap-3">
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1.5">Einzeltermin Etiketi</label>
+                <input
+                  type="text"
+                  value={content.tabs?.labels?.einzeltermin || 'Einzeltermin'}
+                  onChange={(e) => updateContent({
+                    tabs: {
+                      ...content.tabs,
+                      labels: {
+                        ...content.tabs?.labels,
+                        einzeltermin: e.target.value
+                      }
+                    }
+                  })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-slate-600 mb-1.5">Partnertermin Etiketi</label>
+                <input
+                  type="text"
+                  value={content.tabs?.labels?.partnertermin || 'Partnertermin'}
+                  onChange={(e) => updateContent({
+                    tabs: {
+                      ...content.tabs,
+                      labels: {
+                        ...content.tabs?.labels,
+                        partnertermin: e.target.value
+                      }
+                    }
+                  })}
+                  className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Billing Toggle */}

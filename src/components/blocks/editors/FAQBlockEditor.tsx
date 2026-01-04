@@ -123,6 +123,7 @@ export default function FAQBlockEditor({ content, onUpdate }: FAQBlockEditorProp
     deepMerge(defaultContent, content as Partial<FAQContent>)
   )
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isInitialMount = useRef(true)
 
   // Sync local state when prop content changes
   useEffect(() => {
@@ -135,6 +136,7 @@ export default function FAQBlockEditor({ content, onUpdate }: FAQBlockEditorProp
     setLocalContent(newContent)
 
     // Debounce parent update
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -142,6 +144,10 @@ export default function FAQBlockEditor({ content, onUpdate }: FAQBlockEditorProp
       onUpdate(newContent)
     }, 300)
   }, [localContent, onUpdate])
+
+  useEffect(() => {
+    isInitialMount.current = false
+  }, [])
 
   // Cleanup debounce on unmount
   useEffect(() => {

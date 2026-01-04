@@ -78,6 +78,7 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
   }))
   const [expandedNavItem, setExpandedNavItem] = useState<number | null>(null)
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const isInitialMount = useRef(true)
 
   // Sync local content when prop changes (for block switching)
   useEffect(() => {
@@ -89,6 +90,7 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
 
   // Debounced update to parent
   const debouncedUpdate = (newContent: HeaderBlockContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

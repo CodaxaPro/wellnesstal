@@ -46,6 +46,7 @@ export default function PricingBlockEditor({ content, onChange }: PricingBlockEd
 
   // Debounced onChange
   const debouncedOnChange = useCallback((newContent: PricingContent) => {
+    if (isInitialMount.current) return
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }

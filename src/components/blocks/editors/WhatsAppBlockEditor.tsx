@@ -49,9 +49,11 @@ export default function WhatsAppBlockEditor({ content: initialContent, onUpdate 
 
   // Debounce ref
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const isInitialMount = useRef(true)
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: WhatsAppContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

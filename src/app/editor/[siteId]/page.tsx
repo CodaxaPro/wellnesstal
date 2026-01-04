@@ -9,6 +9,8 @@ import { useContentStore } from './store/useContentStore';
 import EditableWrapper from './components/EditableWrapper';
 import InlineEditor from './components/InlineEditor';
 import { useEditableClick } from './hooks/useEditableClick';
+import { useAutoSave } from './hooks/useAutoSave';
+import toast from 'react-hot-toast';
 
 interface EditorPageProps {
   params: Promise<{
@@ -36,21 +38,101 @@ export default function EditorPage({ params }: EditorPageProps) {
   const [siteData, setSiteData] = useState<any>(null);
   const [activeTab, setActiveTab] = useState<'preview' | 'settings'>('preview');
   const [isReady, setIsReady] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [saveStatus, setSaveStatus] = useState<'saved' | 'saving' | 'unsaved'>('saved');
   
   const { content, isEditMode, setEditMode, loadFromWizard } = useContentStore();
   
   useEditableClick();
 
+  // Load site data from database (with localStorage fallback)
   useEffect(() => {
-    const data = localStorage.getItem('wizardData');
-    if (data) {
-      const parsedData = JSON.parse(data);
-      setSiteData(parsedData);
-      console.log('📦 Loaded wizard data:', parsedData);
-      loadFromWizard(parsedData);
-    }
+    const loadSiteData = async () => {
+      try {
+        setIsLoading(true);
+        
+        // Try to load from database first
+        const response = await fetch(`/api/editor/sites?siteId=${siteId}`);
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          // Load from database
+          const dbData = result.data;
+          setSiteData(dbData);
+          console.log('📦 Loaded from database:', dbData);
+          
+          // Load content into store if available
+          if (dbData.content) {
+            loadFromWizard({
+              ...dbData,
+              content: dbData.content
+            });
+          } else {
+            loadFromWizard(dbData);
+          }
+        } else {
+          // Fallback to localStorage
+          const localData = localStorage.getItem('wizardData');
+          if (localData) {
+            const parsedData = JSON.parse(localData);
+            if (parsedData.siteId === siteId) {
+              setSiteData(parsedData);
+              console.log('📦 Loaded from localStorage:', parsedData);
+              loadFromWizard(parsedData);
+              
+              // Save to database for future use
+              try {
+                await fetch('/api/editor/sites', {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({
+                    siteId,
+                    ...parsedData
+                  })
+                });
+              } catch (e) {
+                console.warn('Failed to migrate localStorage to database:', e);
+              }
+            } else {
+              throw new Error('Site ID mismatch');
+            }
+          } else {
+            throw new Error('No site data found');
+          }
+        }
+      } catch (error) {
+        console.error('Failed to load site data:', error);
+        toast.error('Site verileri yüklenemedi');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    loadSiteData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [siteId]);
+
+  // Auto-save hook
+  const { saveNow } = useAutoSave({
+    siteId,
+    siteData,
+    enabled: !!siteData,
+    debounceMs: 2000,
+    onSaveSuccess: () => {
+      setSaveStatus('saved');
+    },
+    onSaveError: (error) => {
+      setSaveStatus('unsaved');
+      console.error('Auto-save failed:', error);
+    }
+  });
+
+  // Track save status
+  useEffect(() => {
+    if (siteData && content) {
+      setSaveStatus('unsaved');
+    }
+  }, [content, siteData]);
 
   useEffect(() => {
     if (content.sections && content.sections.length > 0) {
@@ -65,7 +147,7 @@ export default function EditorPage({ params }: EditorPageProps) {
     console.log('🎯 isReady:', isReady);
   }, [content, isReady]);
 
-  if (!siteData) {
+  if (isLoading || !siteData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -91,15 +173,22 @@ export default function EditorPage({ params }: EditorPageProps) {
 
   const primaryColor = themeColors[siteData.theme || 'headspa-purple'];
 
-  const handleSave = () => {
-    const updatedData = {
-      ...siteData,
-      content: content,
-      updatedAt: new Date().toISOString()
-    };
-    
-    localStorage.setItem('wizardData', JSON.stringify(updatedData));
-    alert('✅ Değişiklikler kaydedildi!');
+  const handleSave = async () => {
+    try {
+      setSaveStatus('saving');
+      const success = await saveNow();
+      if (success) {
+        toast.success('✅ Değişiklikler kaydedildi!');
+        setSaveStatus('saved');
+      } else {
+        toast.error('❌ Kaydetme başarısız. Lütfen tekrar deneyin.');
+        setSaveStatus('unsaved');
+      }
+    } catch (error) {
+      console.error('Save error:', error);
+      toast.error('❌ Kaydetme sırasında hata oluştu.');
+      setSaveStatus('unsaved');
+    }
   };
 
   return (
@@ -160,9 +249,25 @@ export default function EditorPage({ params }: EditorPageProps) {
                 </button>
                 <button 
                   onClick={handleSave}
-                  className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 font-medium"
+                  disabled={saveStatus === 'saving'}
+                  className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                    saveStatus === 'saving'
+                      ? 'bg-gray-400 text-white cursor-not-allowed'
+                      : saveStatus === 'saved'
+                      ? 'bg-green-500 text-white hover:bg-green-600'
+                      : 'bg-gray-200 hover:bg-gray-300'
+                  }`}
                 >
-                  💾 Kaydet
+                  {saveStatus === 'saving' ? (
+                    <>
+                      <span className="animate-spin inline-block mr-2">⏳</span>
+                      Kaydediliyor...
+                    </>
+                  ) : saveStatus === 'saved' ? (
+                    '✅ Kaydedildi'
+                  ) : (
+                    '💾 Kaydet'
+                  )}
                 </button>
                 <button className="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 font-medium">
                   🚀 Yayınla

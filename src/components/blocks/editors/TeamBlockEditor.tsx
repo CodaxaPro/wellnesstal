@@ -42,6 +42,7 @@ export default function TeamBlockEditor({ content, onUpdate }: TeamBlockEditorPr
     deepMerge(defaultTeamContent, content as Partial<TeamContent>)
   )
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const isInitialMount = useRef(true)
 
   // Sync local state when prop content changes
   useEffect(() => {
@@ -54,6 +55,7 @@ export default function TeamBlockEditor({ content, onUpdate }: TeamBlockEditorPr
     setLocalContent(newContent)
 
     // Debounce parent update
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -61,6 +63,10 @@ export default function TeamBlockEditor({ content, onUpdate }: TeamBlockEditorPr
       onUpdate(newContent)
     }, 300)
   }, [localContent, onUpdate])
+
+  useEffect(() => {
+    isInitialMount.current = false
+  }, [])
 
   // Cleanup debounce on unmount
   useEffect(() => {

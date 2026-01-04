@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
 import { SchemaLocalBusiness } from '../../types'
 
 interface LocalBusinessEditorProps {
@@ -200,94 +200,136 @@ function FormTextarea({
 
 export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEditorProps) {
   const [activeTab, setActiveTab] = useState<'basic' | 'address' | 'hours' | 'social' | 'services' | 'amenities'>('basic')
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
+  // Local copy of data to avoid sending many partial updates; we debounce
+  // and send the full local object to parent. This reduces races and missing fields.
+  const [local, setLocal] = useState<SchemaLocalBusiness>(data || ({} as SchemaLocalBusiness))
+  const isInitialMount = useRef(true)
+
+  // Validation functions
+  const validateUrl = (url: string): string | null => {
+    if (!url) return null
+    try {
+      new URL(url)
+      return null
+    } catch {
+      return 'Geçerli bir URL girin'
+    }
+  }
+
+  const validateEmail = (email: string): string | null => {
+    if (!email) return null
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi girin'
+  }
+
+  const validatePhone = (phone: string): string | null => {
+    if (!phone) return null
+    const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
+    return phoneRegex.test(phone.replace(/\s/g, '')) ? null : 'Geçerli bir telefon numarası girin'
+  }
+
+  // Keep local in sync when parent `data` changes (e.g., on fetch/refresh)
+  useEffect(() => {
+    setLocal(data || ({} as SchemaLocalBusiness))
+  }, [data])
+
+  // Debounced full update to parent
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+    const t = setTimeout(() => {
+      try { console.debug('[debug][LocalBusinessEditor] debounced full onUpdate', { preview: { name: local.name, description: local.description } }) } catch (e) {}
+      onUpdate(local)
+    }, 300)
+    return () => clearTimeout(t)
+  }, [JSON.stringify(local)])
+
+  const patchLocal = useCallback((updates: Partial<SchemaLocalBusiness>) => {
+    setLocal(prev => ({ ...prev, ...updates }))
+  }, [])
 
   // Update nested address
   const updateAddress = useCallback((field: string, value: string) => {
-    onUpdate({
+    const next = {
       address: {
-        streetAddress: data.address?.streetAddress || '',
-        addressLocality: data.address?.addressLocality || '',
-        postalCode: data.address?.postalCode || '',
-        addressCountry: data.address?.addressCountry || 'Germany',
-        ...data.address,
+        streetAddress: local.address?.streetAddress || '',
+        addressLocality: local.address?.addressLocality || '',
+        postalCode: local.address?.postalCode || '',
+        addressCountry: local.address?.addressCountry || 'Germany',
+        ...local.address,
         [field]: value
       }
-    })
-  }, [data.address, onUpdate])
+    }
+    try { console.debug('[debug][LocalBusinessEditor] updateAddress', { field, value, payloadPreview: { streetAddress: next.address.streetAddress, addressLocality: next.address.addressLocality } }) } catch (e) {}
+    setLocal(prev => ({ ...prev, ...next }))
+  }, [])
 
   // Update geo coordinates
   const updateGeo = useCallback((field: 'latitude' | 'longitude', value: number) => {
-    onUpdate({
-      geo: {
-        latitude: data.geo?.latitude || 0,
-        longitude: data.geo?.longitude || 0,
-        [field]: value
-      }
-    })
-  }, [data.geo, onUpdate])
+    const next = { geo: { latitude: local.geo?.latitude || 0, longitude: local.geo?.longitude || 0, ...(local.geo || {}), [field]: value } }
+    try { console.debug('[debug][LocalBusinessEditor] updateGeo', { field, value, payload: next }) } catch (e) {}
+    setLocal(prev => ({ ...prev, ...next }))
+  }, [])
 
   // Update aggregate rating
   const updateRating = useCallback((field: string, value: number) => {
-    onUpdate({
-      aggregateRating: {
-        ratingValue: data.aggregateRating?.ratingValue || 0,
-        reviewCount: data.aggregateRating?.reviewCount || 0,
-        ...data.aggregateRating,
-        [field]: value
-      }
-    })
-  }, [data.aggregateRating, onUpdate])
+    const next = { aggregateRating: { ratingValue: local.aggregateRating?.ratingValue || 0, reviewCount: local.aggregateRating?.reviewCount || 0, ...(local.aggregateRating || {}), [field]: value } }
+    try { console.debug('[debug][LocalBusinessEditor] updateRating', { field, value, payload: next }) } catch (e) {}
+    setLocal(prev => ({ ...prev, ...next }))
+  }, [])
 
   // Update opening hours
   const updateOpeningHours = useCallback((index: number, field: string, value: string | string[]) => {
-    const hours = [...(data.openingHoursSpecification || [])]
+    const hours = [...(local.openingHoursSpecification || [])]
     if (hours[index]) {
       hours[index] = { ...hours[index], [field]: value }
     }
-    onUpdate({ openingHoursSpecification: hours })
-  }, [data.openingHoursSpecification, onUpdate])
+    try { console.debug('[debug][LocalBusinessEditor] updateOpeningHours', { index, field, value, payloadPreview: hours[index] }) } catch (e) {}
+    setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
+  }, [])
 
   // Add opening hours entry
   const addOpeningHours = useCallback(() => {
-    const hours = [...(data.openingHoursSpecification || [])]
-    hours.push({
-      dayOfWeek: 'Monday',
-      opens: '09:00',
-      closes: '18:00'
-    })
-    onUpdate({ openingHoursSpecification: hours })
-  }, [data.openingHoursSpecification, onUpdate])
+    const hours = [...(local.openingHoursSpecification || [])]
+    hours.push({ dayOfWeek: 'Monday', opens: '09:00', closes: '18:00' })
+    try { console.debug('[debug][LocalBusinessEditor] addOpeningHours', { payload: hours }) } catch (e) {}
+    setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
+  }, [])
 
   // Remove opening hours entry
   const removeOpeningHours = useCallback((index: number) => {
-    const hours = [...(data.openingHoursSpecification || [])]
+    const hours = [...(local.openingHoursSpecification || [])]
     hours.splice(index, 1)
-    onUpdate({ openingHoursSpecification: hours })
-  }, [data.openingHoursSpecification, onUpdate])
+    setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
+  }, [])
 
   // Update sameAs (social links)
   const updateSameAs = useCallback((index: number, value: string) => {
-    const links = [...(data.sameAs || [])]
+    const links = [...(local.sameAs || [])]
     links[index] = value
-    onUpdate({ sameAs: links.filter(l => l) })
-  }, [data.sameAs, onUpdate])
+    setLocal(prev => ({ ...prev, sameAs: links.filter(l => l) }))
+  }, [])
 
   // Add social link
   const addSocialLink = useCallback(() => {
-    const links = [...(data.sameAs || []), '']
-    onUpdate({ sameAs: links })
-  }, [data.sameAs, onUpdate])
+    const links = [...(local.sameAs || []), '']
+    setLocal(prev => ({ ...prev, sameAs: links }))
+  }, [])
 
   // Remove social link
   const removeSocialLink = useCallback((index: number) => {
-    const links = [...(data.sameAs || [])]
+    const links = [...(local.sameAs || [])]
     links.splice(index, 1)
-    onUpdate({ sameAs: links })
-  }, [data.sameAs, onUpdate])
+    setLocal(prev => ({ ...prev, sameAs: links }))
+  }, [])
 
   // Update services
   const updateService = useCallback((index: number, field: string, value: string) => {
-    const services = [...(data.availableService || [])]
+    const services = [...(local.availableService || [])]
     if (services[index]) {
       if (field === 'price' || field === 'priceCurrency') {
         services[index] = {
@@ -302,12 +344,12 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
         services[index] = { ...services[index], [field]: value }
       }
     }
-    onUpdate({ availableService: services })
-  }, [data.availableService, onUpdate])
+    setLocal(prev => ({ ...prev, availableService: services }))
+  }, [])
 
   // Add service
   const addService = useCallback(() => {
-    const services = [...(data.availableService || [])]
+    const services = [...(local.availableService || [])]
     services.push({
       '@type': 'Service',
       name: '',
@@ -317,70 +359,70 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
         priceCurrency: 'EUR'
       }
     })
-    onUpdate({ availableService: services })
-  }, [data.availableService, onUpdate])
+    setLocal(prev => ({ ...prev, availableService: services }))
+  }, [])
 
   // Remove service
   const removeService = useCallback((index: number) => {
-    const services = [...(data.availableService || [])]
+    const services = [...(local.availableService || [])]
     services.splice(index, 1)
-    onUpdate({ availableService: services })
-  }, [data.availableService, onUpdate])
+    setLocal(prev => ({ ...prev, availableService: services }))
+  }, [])
 
   // Update amenities
   const updateAmenity = useCallback((index: number, field: 'name' | 'value', newValue: string | boolean) => {
-    const amenities = [...(data.amenityFeature || [])]
+    const amenities = [...(local.amenityFeature || [])]
     if (amenities[index]) {
       amenities[index] = { ...amenities[index], [field]: newValue }
     }
-    onUpdate({ amenityFeature: amenities })
-  }, [data.amenityFeature, onUpdate])
+    setLocal(prev => ({ ...prev, amenityFeature: amenities }))
+  }, [])
 
   // Add amenity
   const addAmenity = useCallback((name?: string) => {
-    const amenities = [...(data.amenityFeature || [])]
+    const amenities = [...(local.amenityFeature || [])]
     amenities.push({
       name: name || '',
       value: true
     })
-    onUpdate({ amenityFeature: amenities })
-  }, [data.amenityFeature, onUpdate])
+    setLocal(prev => ({ ...prev, amenityFeature: amenities }))
+  }, [])
 
   // Remove amenity
   const removeAmenity = useCallback((index: number) => {
-    const amenities = [...(data.amenityFeature || [])]
+    const amenities = [...(local.amenityFeature || [])]
     amenities.splice(index, 1)
-    onUpdate({ amenityFeature: amenities })
-  }, [data.amenityFeature, onUpdate])
+    setLocal(prev => ({ ...prev, amenityFeature: amenities }))
+  }, [])
 
   // Update payment methods
   const updatePaymentAccepted = useCallback((method: string, checked: boolean) => {
-    let methods = [...(data.paymentAccepted || [])]
+    let methods = [...(local.paymentAccepted || [])]
     if (checked) {
       methods.push(method)
     } else {
       methods = methods.filter(m => m !== method)
     }
-    onUpdate({ paymentAccepted: methods })
-  }, [data.paymentAccepted, onUpdate])
+    setLocal(prev => ({ ...prev, paymentAccepted: methods }))
+  }, [])
 
   // Update images
   const updateImages = useCallback((index: number, value: string) => {
-    const images = [...(data.image || [])]
+    const images = [...(local.image || [])]
     images[index] = value
-    onUpdate({ image: images.filter(i => i) })
-  }, [data.image, onUpdate])
+    setLocal(prev => ({ ...prev, image: images.filter(i => i) }))
+  }, [])
 
   const addImage = useCallback(() => {
-    const images = [...(data.image || []), '']
-    onUpdate({ image: images })
-  }, [data.image, onUpdate])
+    const images = [...(local.image || []), '']
+    setLocal(prev => ({ ...prev, image: images }))
+  }, [])
 
   const removeImage = useCallback((index: number) => {
-    const images = [...(data.image || [])]
+    const images = [...(local.image || [])]
     images.splice(index, 1)
-    onUpdate({ image: images })
-  }, [data.image, onUpdate])
+    setLocal(prev => ({ ...prev, image: images }))
+  }, [])
 
   // Tab Navigation
   const tabs = [
@@ -420,15 +462,15 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               <div className="grid grid-cols-2 gap-4">
                 <FormSelect
                   label="Isletme Tipi"
-                  value={data['@type'] || 'DaySpa'}
-                  onChange={(v) => onUpdate({ '@type': v as any })}
+                  value={local['@type'] || 'DaySpa'}
+                  onChange={(v) => patchLocal({ '@type': v as any })}
                   options={BUSINESS_TYPES.map(t => ({ value: t.value, label: t.label }))}
                   helpText="Google'da dogru kategoride gorunmek icin"
                 />
                 <FormSelect
                   label="Fiyat Araligi"
-                  value={data.priceRange || ''}
-                  onChange={(v) => onUpdate({ priceRange: v })}
+                  value={local.priceRange || ''}
+                  onChange={(v) => patchLocal({ priceRange: v })}
                   options={[
                     { value: '', label: 'Secin...' },
                     { value: '€', label: '€ (Ekonomik)' },
@@ -441,16 +483,16 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
 
               <FormInput
                 label="Isletme Adi"
-                value={data.name || ''}
-                onChange={(v) => onUpdate({ name: v })}
+                value={local.name || ''}
+                onChange={(v) => patchLocal({ name: v })}
                 placeholder="Wellnesstal"
                 required
               />
 
               <FormTextarea
                 label="Isletme Aciklamasi"
-                value={data.description || ''}
-                onChange={(v) => onUpdate({ description: v })}
+                value={local.description || ''}
+                onChange={(v) => patchLocal({ description: v })}
                 placeholder="Ihre Oase der Entspannung..."
                 rows={3}
                 maxLength={500}
@@ -458,30 +500,60 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               />
 
               <div className="grid grid-cols-2 gap-4">
-                <FormInput
-                  label="Telefon"
-                  value={data.telephone || ''}
-                  onChange={(v) => onUpdate({ telephone: v })}
-                  placeholder="+49 221 12345678"
-                  type="tel"
-                  required
-                />
-                <FormInput
-                  label="E-posta"
-                  value={data.email || ''}
-                  onChange={(v) => onUpdate({ email: v })}
-                  placeholder="info@wellnesstal.de"
-                  type="email"
-                />
+                <div>
+                  <FormInput
+                    label="Telefon"
+                    value={local.telephone || ''}
+                    onChange={(v) => {
+                      patchLocal({ telephone: v })
+                      const error = validatePhone(v)
+                      setErrors(prev => ({ ...prev, telephone: error || '' }))
+                    }}
+                    placeholder="+49 221 12345678"
+                    type="tel"
+                    required
+                  />
+                  {errors.telephone && (
+                    <p className="text-xs text-red-500 mt-1">{errors.telephone}</p>
+                  )}
+                </div>
+                <div>
+                  <FormInput
+                    label="E-posta"
+                    value={local.email || ''}
+                    onChange={(v) => {
+                      patchLocal({ email: v })
+                      const error = validateEmail(v)
+                      setErrors(prev => ({ ...prev, email: error || '' }))
+                    }}
+                    placeholder="info@wellnesstal.de"
+                    type="email"
+                  />
+                  {errors.email && (
+                    <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                  )}
+                </div>
               </div>
 
-              <FormInput
-                label="Website URL"
-                value={data.url || ''}
-                onChange={(v) => onUpdate({ url: v })}
-                placeholder="https://wellnesstal.de"
-                type="url"
-              />
+              <div>
+                <FormInput
+                  label="Website URL"
+                  value={local.url || ''}
+                  onChange={(v) => {
+                    patchLocal({ url: v })
+                    const error = validateUrl(v)
+                    setErrors(prev => ({ ...prev, url: error || '' }))
+                  }}
+                  placeholder="https://wellnesstal.de"
+                  type="url"
+                />
+                {errors.url && (
+                  <p className="text-xs text-red-500 mt-1">{errors.url}</p>
+                )}
+                {!errors.url && local.url && (
+                  <p className="text-xs text-green-600 mt-1">✓ Geçerli URL</p>
+                )}
+              </div>
             </div>
           </CollapsibleSection>
 
@@ -489,8 +561,8 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
             <div className="space-y-4">
               <FormInput
                 label="Logo URL"
-                value={data.logo || ''}
-                onChange={(v) => onUpdate({ logo: v })}
+                value={local.logo || ''}
+                onChange={(v) => patchLocal({ logo: v })}
                 placeholder="https://wellnesstal.de/logo.png"
                 type="url"
                 helpText="Kare format, min. 112x112px onerilen"
@@ -500,7 +572,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Isletme Gorselleri
                 </label>
-                {(data.image || []).map((img, i) => (
+                {(local.image || []).map((img, i) => (
                   <div key={i} className="flex gap-2 mb-2">
                     <input
                       type="url"
@@ -535,7 +607,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               <div className="grid grid-cols-2 gap-4">
                 <FormInput
                   label="Ortalama Puan (1-5)"
-                  value={data.aggregateRating?.ratingValue?.toString() || ''}
+                  value={local.aggregateRating?.ratingValue?.toString() || ''}
                   onChange={(v) => updateRating('ratingValue', parseFloat(v) || 0)}
                   placeholder="4.8"
                   type="number"
@@ -543,7 +615,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 />
                 <FormInput
                   label="Toplam Yorum Sayisi"
-                  value={data.aggregateRating?.reviewCount?.toString() || ''}
+                  value={local.aggregateRating?.reviewCount?.toString() || ''}
                   onChange={(v) => updateRating('reviewCount', parseInt(v) || 0)}
                   placeholder="127"
                   type="number"
@@ -553,14 +625,14 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               <div className="grid grid-cols-2 gap-4">
                 <FormInput
                   label="En Yuksek Puan"
-                  value={data.aggregateRating?.bestRating?.toString() || '5'}
+                  value={local.aggregateRating?.bestRating?.toString() || '5'}
                   onChange={(v) => updateRating('bestRating', parseInt(v) || 5)}
                   placeholder="5"
                   type="number"
                 />
                 <FormInput
                   label="En Dusuk Puan"
-                  value={data.aggregateRating?.worstRating?.toString() || '1'}
+                  value={local.aggregateRating?.worstRating?.toString() || '1'}
                   onChange={(v) => updateRating('worstRating', parseInt(v) || 1)}
                   placeholder="1"
                   type="number"
@@ -573,8 +645,8 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
             <div className="space-y-4">
               <FormInput
                 label="Kabul Edilen Para Birimleri"
-                value={data.currenciesAccepted || ''}
-                onChange={(v) => onUpdate({ currenciesAccepted: v })}
+                value={local.currenciesAccepted || ''}
+                onChange={(v) => patchLocal({ currenciesAccepted: v })}
                 placeholder="EUR"
                 helpText="Ornek: EUR, USD"
               />
@@ -588,7 +660,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                     <label key={method} className="flex items-center gap-2 cursor-pointer">
                       <input
                         type="checkbox"
-                        checked={data.paymentAccepted?.includes(method) || false}
+                        checked={local.paymentAccepted?.includes(method) || false}
                         onChange={(e) => updatePaymentAccepted(method, e.target.checked)}
                         className="w-4 h-4 text-indigo-600 rounded"
                       />
@@ -609,7 +681,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
             <div className="space-y-4">
               <FormInput
                 label="Sokak Adresi"
-                value={data.address?.streetAddress || ''}
+                value={local.address?.streetAddress || ''}
                 onChange={(v) => updateAddress('streetAddress', v)}
                 placeholder="Musterstrasse 123"
                 required
@@ -618,14 +690,14 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               <div className="grid grid-cols-2 gap-4">
                 <FormInput
                   label="Sehir"
-                  value={data.address?.addressLocality || ''}
+                  value={local.address?.addressLocality || ''}
                   onChange={(v) => updateAddress('addressLocality', v)}
                   placeholder="Koln"
                   required
                 />
                 <FormInput
                   label="Bolge/Eyalet"
-                  value={data.address?.addressRegion || ''}
+                  value={local.address?.addressRegion || ''}
                   onChange={(v) => updateAddress('addressRegion', v)}
                   placeholder="Nordrhein-Westfalen"
                 />
@@ -634,14 +706,14 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               <div className="grid grid-cols-2 gap-4">
                 <FormInput
                   label="Posta Kodu"
-                  value={data.address?.postalCode || ''}
+                  value={local.address?.postalCode || ''}
                   onChange={(v) => updateAddress('postalCode', v)}
                   placeholder="50667"
                   required
                 />
                 <FormInput
                   label="Ulke"
-                  value={data.address?.addressCountry || ''}
+                  value={local.address?.addressCountry || ''}
                   onChange={(v) => updateAddress('addressCountry', v)}
                   placeholder="Germany"
                   required
@@ -658,7 +730,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               <div className="grid grid-cols-2 gap-4">
                 <FormInput
                   label="Enlem (Latitude)"
-                  value={data.geo?.latitude?.toString() || ''}
+                  value={local.geo?.latitude?.toString() || ''}
                   onChange={(v) => updateGeo('latitude', parseFloat(v) || 0)}
                   placeholder="50.937531"
                   type="number"
@@ -666,7 +738,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 />
                 <FormInput
                   label="Boylam (Longitude)"
-                  value={data.geo?.longitude?.toString() || ''}
+                  value={local.geo?.longitude?.toString() || ''}
                   onChange={(v) => updateGeo('longitude', parseFloat(v) || 0)}
                   placeholder="6.960279"
                   type="number"
@@ -676,8 +748,8 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
 
               <FormInput
                 label="Google Maps URL"
-                value={data.hasMap || ''}
-                onChange={(v) => onUpdate({ hasMap: v })}
+                value={local.hasMap || ''}
+                onChange={(v) => patchLocal({ hasMap: v })}
                 placeholder="https://maps.google.com/?q=..."
                 type="url"
                 helpText="Google Maps'te isletme sayfanizin linki"
@@ -696,7 +768,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 <strong>Oneri:</strong> Google Business Profile'daki saatlerle ayni olmali.
               </div>
 
-              {(data.openingHoursSpecification || []).map((hours, index) => (
+              {(local.openingHoursSpecification || []).map((hours, index) => (
                 <div key={index} className="p-4 bg-slate-50 rounded-lg space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-slate-700">Zaman Dilimi {index + 1}</span>
@@ -797,7 +869,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 <strong>Onerilir:</strong> Tum aktif sosyal medya profillerinizi ekleyin. Bu Google'in isletmenizi dogrulamasina yardimci olur.
               </div>
 
-              {(data.sameAs || []).map((link, index) => (
+              {(local.sameAs || []).map((link, index) => (
                 <div key={index} className="flex gap-2">
                   <input
                     type="url"
@@ -846,7 +918,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 <strong>SEO Avantaji:</strong> Hizmetlerinizi eklemek, Google'da aranabilirliginizi arttirir.
               </div>
 
-              {(data.availableService || []).map((service, index) => (
+              {(local.availableService || []).map((service, index) => (
                 <div key={index} className="p-4 bg-slate-50 rounded-lg space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-sm font-medium text-slate-700">Hizmet {index + 1}</span>
@@ -921,7 +993,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 <label className="block text-sm font-medium text-slate-700 mb-2">Hizli Ekle</label>
                 <div className="flex flex-wrap gap-2">
                   {DEFAULT_AMENITIES.filter(a =>
-                    !data.amenityFeature?.some(af => af.name === a)
+                    !local.amenityFeature?.some(af => af.name === a)
                   ).slice(0, 8).map(amenity => (
                     <button
                       key={amenity}
@@ -935,7 +1007,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
               </div>
 
               {/* Current Amenities */}
-              {(data.amenityFeature || []).map((amenity, index) => (
+              {(local.amenityFeature || []).map((amenity, index) => (
                 <div key={index} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                   <input
                     type="checkbox"

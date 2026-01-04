@@ -281,6 +281,35 @@ function FeatureCard({
             </p>
           )}
 
+          {/* Features List (Checkmark List) */}
+          {feature.showFeaturesList !== false && feature.featuresList && feature.featuresList.length > 0 && (
+            <ul className="mt-4 space-y-2">
+              {feature.featuresList.filter(item => item.enabled !== false).map((item, idx) => (
+                <li key={item.id || idx} className="flex items-start gap-2">
+                  <svg 
+                    className="w-5 h-5 flex-shrink-0 mt-0.5" 
+                    fill="none" 
+                    viewBox="0 0 24 24" 
+                    stroke="currentColor"
+                    style={{ color: '#9CAF88' }}
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span
+                    style={{
+                      fontSize: typography.featureDescription?.fontSize || '1rem',
+                      fontWeight: typography.featureDescription?.fontWeight || '400',
+                      color: typography.featureDescription?.color || '#64748b',
+                      lineHeight: typography.featureDescription?.lineHeight || '1.6',
+                    }}
+                  >
+                    {item.text}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          )}
+
           {/* Link/CTA */}
           {content.showLinks && feature.link?.enabled && (
             <a

@@ -14,13 +14,15 @@ export const getDefaultFeatureItem = (): FeatureItem => ({
     shape: 'circle',
     shadow: 'none'
   },
+  showFeaturesList: false,
+  featuresList: [],
   visible: true
 })
 
 export const getDefaultFeaturesContent = (): FeaturesContent => ({
   // Section Header
-  title: 'Özelliklerimiz',
-  subtitle: 'Size sunduğumuz benzersiz avantajları keşfedin.',
+  title: 'Was macht Headspa so besonders?',
+  subtitle: 'Entdecke die vielfältigen Vorteile dieser einzigartigen Behandlung.',
   headerAlignment: 'center',
   showDivider: false,
   dividerColor: '#e2e8f0',
@@ -29,50 +31,68 @@ export const getDefaultFeaturesContent = (): FeaturesContent => ({
   features: [
     {
       id: 'feature-1',
-      title: 'Profesyonel Ekip',
-      description: 'Alanında uzman terapistlerimizle en kaliteli hizmeti alın.',
-      icon: 'star',
+      title: 'Tiefenentspannung',
+      description: 'Lass den Alltagsstress hinter dir und tauche ein in eine Welt der Ruhe und Entspannung.',
+      icon: 'spa',
       iconConfig: {
         type: 'preset',
-        value: 'star',
-        backgroundColor: '#10b981',
+        value: 'spa',
+        backgroundColor: '#9CAF88',
         iconColor: '#ffffff',
         size: 'md',
         shape: 'circle',
         shadow: 'none'
       },
+      showFeaturesList: true,
+      featuresList: [
+        { id: '1', text: 'Sanfte Kopfhautmassage', enabled: true },
+        { id: '2', text: 'Entspannung für Körper und Geist', enabled: true },
+        { id: '3', text: 'Reduzierung von Stress und Verspannungen', enabled: true }
+      ],
       visible: true
     },
     {
       id: 'feature-2',
-      title: 'Organik Ürünler',
-      description: '%100 doğal ve organik ürünlerle bakım yapıyoruz.',
+      title: 'Intensive Kopfhautpflege',
+      description: 'Deine Kopfhaut wird mit hochwertigen Produkten verwöhnt und gepflegt.',
       icon: 'leaf',
       iconConfig: {
         type: 'preset',
         value: 'leaf',
-        backgroundColor: '#10b981',
+        backgroundColor: '#9CAF88',
         iconColor: '#ffffff',
         size: 'md',
         shape: 'circle',
         shadow: 'none'
       },
+      showFeaturesList: true,
+      featuresList: [
+        { id: '1', text: 'Reinigung und Peeling der Kopfhaut', enabled: true },
+        { id: '2', text: 'Nährstoffreiche Masken', enabled: true },
+        { id: '3', text: 'Verbesserte Durchblutung', enabled: true }
+      ],
       visible: true
     },
     {
       id: 'feature-3',
-      title: 'Hijyenik Ortam',
-      description: 'Steril ve hijyenik ortamda güvenle hizmet alın.',
-      icon: 'check',
+      title: 'Gesunder Haarwuchs',
+      description: 'Fördere das natürliche Haarwachstum und stärke deine Haare von der Wurzel an.',
+      icon: 'heart',
       iconConfig: {
         type: 'preset',
-        value: 'check',
-        backgroundColor: '#10b981',
+        value: 'heart',
+        backgroundColor: '#9CAF88',
         iconColor: '#ffffff',
         size: 'md',
         shape: 'circle',
         shadow: 'none'
       },
+      showFeaturesList: true,
+      featuresList: [
+        { id: '1', text: 'Stärkung der Haarwurzeln', enabled: true },
+        { id: '2', text: 'Verbesserte Haarstruktur', enabled: true },
+        { id: '3', text: 'Mehr Glanz und Volumen', enabled: true }
+      ],
       visible: true
     }
   ],

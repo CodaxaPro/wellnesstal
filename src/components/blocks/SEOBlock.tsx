@@ -470,7 +470,7 @@ export default function SEOBlock({ block }: BlockProps) {
 
   return (
     <>
-      {/* JSON-LD Structured Data */}
+      {/* JSON-LD Structured Data - Critical for Google, Bing, and AI crawlers */}
       {schemas.map((schema, index) => (
         <Script
           key={`schema-${index}`}
@@ -481,22 +481,90 @@ export default function SEOBlock({ block }: BlockProps) {
         />
       ))}
 
-      {/* Hidden SEO data container for debugging/preview */}
+      {/* AI & Search Engine Optimization Meta Tags */}
+      {/* These help ChatGPT, Perplexity, Claude, and other AI crawlers understand content */}
+      <Script
+        id="seo-meta-injector"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              // Ensure meta tags are set for AI crawlers
+              if (typeof document !== 'undefined') {
+                const title = ${JSON.stringify(finalTitle)};
+                const description = ${JSON.stringify(seoContent.description || '')};
+                const keywords = ${JSON.stringify(seoContent.keywords?.join(', ') || '')};
+                
+                // Update or create title
+                if (title) {
+                  document.title = title;
+                  let titleMeta = document.querySelector('meta[property="og:title"]');
+                  if (!titleMeta) {
+                    titleMeta = document.createElement('meta');
+                    titleMeta.setAttribute('property', 'og:title');
+                    document.head.appendChild(titleMeta);
+                  }
+                  titleMeta.setAttribute('content', title);
+                }
+                
+                // Update or create description
+                if (description) {
+                  let descMeta = document.querySelector('meta[name="description"]');
+                  if (!descMeta) {
+                    descMeta = document.createElement('meta');
+                    descMeta.setAttribute('name', 'description');
+                    document.head.appendChild(descMeta);
+                  }
+                  descMeta.setAttribute('content', description);
+                  
+                  // OG description
+                  let ogDesc = document.querySelector('meta[property="og:description"]');
+                  if (!ogDesc) {
+                    ogDesc = document.createElement('meta');
+                    ogDesc.setAttribute('property', 'og:description');
+                    document.head.appendChild(ogDesc);
+                  }
+                  ogDesc.setAttribute('content', description);
+                }
+                
+                // Keywords
+                if (keywords) {
+                  let keywordsMeta = document.querySelector('meta[name="keywords"]');
+                  if (!keywordsMeta) {
+                    keywordsMeta = document.createElement('meta');
+                    keywordsMeta.setAttribute('name', 'keywords');
+                    document.head.appendChild(keywordsMeta);
+                  }
+                  keywordsMeta.setAttribute('content', keywords);
+                }
+              }
+            })();
+          `
+        }}
+      />
+
+      {/* Hidden SEO data container for AI crawlers and debugging */}
       <div
         data-seo-block="true"
         data-title={finalTitle}
         data-description={seoContent.description}
+        data-keywords={seoContent.keywords?.join(', ')}
+        data-canonical={seoContent.canonicalUrl}
+        data-robots-index={seoContent.robots?.index}
+        data-robots-follow={seoContent.robots?.follow}
         style={{ display: 'none' }}
         aria-hidden="true"
       >
-        {/* SEO Block Active */}
+        {/* SEO Block Active - AI crawlers can read this structured data */}
       </div>
 
       {/*
-        Note: In Next.js App Router, meta tags should be set using
-        generateMetadata in the page component or layout.
-        This block provides the JSON-LD and can be extended to
-        communicate with a parent metadata provider.
+        Note: In Next.js App Router, meta tags are set using generateMetadata.
+        This block provides JSON-LD structured data which is critical for:
+        - Google Rich Results
+        - Bing Search
+        - AI crawlers (ChatGPT, Perplexity, Claude)
+        - Social media platforms
       */}
     </>
   )

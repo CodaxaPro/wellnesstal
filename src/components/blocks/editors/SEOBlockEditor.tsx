@@ -310,30 +310,161 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
     ...content
   })
   const [expandedSections, setExpandedSections] = useState<string[]>(['meta', 'preview'])
-  const [activeTab, setActiveTab] = useState<'meta' | 'social' | 'schema' | 'technical'>('meta')
+  const [activeTab, setActiveTab] = useState<'meta' | 'social' | 'schema' | 'technical' | 'advanced'>('meta')
   const [keywordInput, setKeywordInput] = useState('')
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle')
   const localContentRef = useRef(localContent)
+  const onUpdateRef = useRef(onUpdate)
+  const isInitialMount = useRef(true)
 
-  // Keep ref in sync with state
+  // Keep refs in sync
   useEffect(() => {
     localContentRef.current = localContent
-  }, [localContent])
+    onUpdateRef.current = onUpdate
+  })
 
-  // Debounced update
+  // Sync localContent when content prop changes (e.g., from server/API refresh)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      onUpdate(localContent)
-    }, 300)
-    return () => clearTimeout(timer)
-  }, [localContent, onUpdate])
+    if (isInitialMount.current) {
+      return // Skip on initial mount
+    }
+    
+    try {
+      const incomingStr = JSON.stringify({ ...defaultContent, ...content })
+      const currentStr = JSON.stringify(localContent)
+      if (incomingStr !== currentStr) {
+        // Content prop changed, update local state
+        const merged = { ...defaultContent, ...content }
+        setLocalContent(merged)
+        // Reset lastSaved to avoid false dirty state
+        lastSavedRef.current = JSON.stringify(merged)
+      }
+    } catch (e) {
+      // If stringify fails, update anyway
+      setLocalContent({ ...defaultContent, ...content })
+    }
+  }, [JSON.stringify(content)]) // Deep comparison via JSON
+
+  const debounceTimerRef = useRef<NodeJS.Timeout | null>(null)
+  const lastSavedRef = useRef<string | null>(null)
+
+  // Debounced update with deep comparison to avoid excessive updates
+  // Skip the very first effect run to avoid overwriting server state with defaults on mount
+  useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      // Initialize lastSaved with current content to avoid false dirty state
+      try {
+        lastSavedRef.current = JSON.stringify(localContent)
+      } catch (e) {}
+      return
+    }
+
+    // Check if content actually changed
+    try {
+      const currentStr = JSON.stringify(localContent)
+      if (lastSavedRef.current === currentStr) {
+        return // No changes, skip update
+      }
+    } catch (e) {
+      // If stringify fails, proceed with update
+    }
+
+    if (debounceTimerRef.current) {
+      clearTimeout(debounceTimerRef.current)
+    }
+
+    debounceTimerRef.current = setTimeout(() => {
+      try {
+        // Validate before saving
+        const validationErrors: Record<string, string> = {}
+        
+        // Validate canonical URL
+        if (localContent.canonicalUrl) {
+          const urlError = validateUrl(localContent.canonicalUrl)
+          if (urlError) validationErrors.canonicalUrl = urlError
+        }
+
+        // Validate OG Image
+        if (localContent.openGraph?.image?.url) {
+          const imageError = validateImageUrl(localContent.openGraph.image.url)
+          if (imageError) validationErrors.ogImage = imageError
+        }
+
+        // Validate Twitter Image
+        if (localContent.twitter?.image?.url) {
+          const imageError = validateImageUrl(localContent.twitter.image.url)
+          if (imageError) validationErrors.twitterImage = imageError
+        }
+
+        setErrors(validationErrors)
+
+        // Only save if no validation errors
+        if (Object.keys(validationErrors).length === 0) {
+          setSaveStatus('saving')
+          console.debug('[debug][SEOBlockEditor] debounced onUpdate', {
+            keys: Object.keys(localContent || {}),
+            preview: {
+              title: localContent.title,
+              meta_description: localContent.description,
+            }
+          })
+          onUpdateRef.current(localContent)
+          // Mark as saved
+          try {
+            lastSavedRef.current = JSON.stringify(localContent)
+            setSaveStatus('saved')
+            setTimeout(() => setSaveStatus('idle'), 2000)
+          } catch (e) {
+            setSaveStatus('error')
+          }
+        } else {
+          setSaveStatus('error')
+        }
+      } catch (e) {
+        console.error('[debug][SEOBlockEditor] onUpdate error', e)
+        setSaveStatus('error')
+      }
+      debounceTimerRef.current = null
+    }, 300) // 300ms - fast enough to save frequently, slow enough to debounce
+
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+        debounceTimerRef.current = null
+      }
+    }
+  }, [JSON.stringify(localContent)]) // Deep comparison via JSON
 
   // Flush pending changes on unmount (when switching blocks)
+  // Only flush if there are actual unsaved changes
   useEffect(() => {
     return () => {
-      // Call onUpdate with latest content when component unmounts
-      onUpdate(localContentRef.current)
+      // Clear debounce timer
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current)
+        debounceTimerRef.current = null
+      }
+
+      // Flush pending changes if they exist
+      try {
+        const currentStr = JSON.stringify(localContentRef.current)
+        if (lastSavedRef.current !== currentStr) {
+          // There are unsaved changes, flush them immediately
+          console.debug('[debug][SEOBlockEditor] flushing pending changes on unmount')
+          onUpdateRef.current(localContentRef.current)
+        }
+      } catch (e) {
+        // If comparison fails, flush anyway to be safe
+        console.debug('[debug][SEOBlockEditor] flushing on unmount (comparison failed)')
+        onUpdateRef.current(localContentRef.current)
+      }
     }
-  }, [onUpdate])
+  }, []) // Only run on unmount
+
+  // Save data when page is about to refresh/close
+  // NOTE: disabled beforeunload auto-save; rely on explicit save or debounced saves
 
   const updateContent = useCallback((updates: Partial<SEOContent>) => {
     setLocalContent(prev => ({ ...prev, ...updates }))
@@ -380,12 +511,59 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
     )
   }
 
-  // Add keyword
-  const addKeyword = () => {
-    if (keywordInput.trim() && !localContent.keywords?.includes(keywordInput.trim())) {
-      updateContent({ keywords: [...(localContent.keywords || []), keywordInput.trim()] })
-      setKeywordInput('')
+  // Validation functions
+  const validateUrl = (url: string): string | null => {
+    if (!url) return null
+    try {
+      new URL(url)
+      return null
+    } catch {
+      return 'Geçerli bir URL girin (örn: https://example.com)'
     }
+  }
+
+  const validateEmail = (email: string): string | null => {
+    if (!email) return null
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi girin'
+  }
+
+  const validatePhone = (phone: string): string | null => {
+    if (!phone) return null
+    const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
+    return phoneRegex.test(phone.replace(/\s/g, '')) ? null : 'Geçerli bir telefon numarası girin'
+  }
+
+  const validateImageUrl = (url: string): string | null => {
+    if (!url) return null
+    const urlError = validateUrl(url)
+    if (urlError) return urlError
+    const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg']
+    const hasImageExt = imageExtensions.some(ext => url.toLowerCase().includes(ext))
+    if (!hasImageExt) {
+      return 'Geçerli bir görsel URL\'si girin (jpg, png, gif, webp, svg)'
+    }
+    return null
+  }
+
+  // Add keyword with validation
+  const addKeyword = () => {
+    const trimmed = keywordInput.trim()
+    if (!trimmed) {
+      setErrors(prev => ({ ...prev, keyword: 'Anahtar kelime boş olamaz' }))
+      return
+    }
+    if (localContent.keywords?.includes(trimmed)) {
+      setErrors(prev => ({ ...prev, keyword: 'Bu anahtar kelime zaten ekli' }))
+      return
+    }
+    if (localContent.keywords && localContent.keywords.length >= 10) {
+      setErrors(prev => ({ ...prev, keyword: 'Maksimum 10 anahtar kelime ekleyebilirsiniz' }))
+      return
+    }
+    updateContent({ keywords: [...(localContent.keywords || []), trimmed] })
+    setKeywordInput('')
+    setErrors(prev => ({ ...prev, keyword: '' }))
   }
 
   // Remove keyword
@@ -437,6 +615,26 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
       {/* Custom SEO Settings */}
       {!useGlobalSEO && (
         <>
+          {/* Save Status Indicator */}
+          {saveStatus !== 'idle' && (
+            <div className={`p-3 rounded-xl border ${
+              saveStatus === 'saving' ? 'bg-blue-50 border-blue-200 text-blue-700' :
+              saveStatus === 'saved' ? 'bg-green-50 border-green-200 text-green-700' :
+              'bg-red-50 border-red-200 text-red-700'
+            }`}>
+              <div className="flex items-center gap-2">
+                {saveStatus === 'saving' && <span className="animate-spin">⏳</span>}
+                {saveStatus === 'saved' && <span>✓</span>}
+                {saveStatus === 'error' && <span>✗</span>}
+                <span className="text-sm font-medium">
+                  {saveStatus === 'saving' && 'Kaydediliyor...'}
+                  {saveStatus === 'saved' && 'Başarıyla kaydedildi!'}
+                  {saveStatus === 'error' && 'Kaydetme hatası - Lütfen formu kontrol edin'}
+                </span>
+              </div>
+            </div>
+          )}
+
           {/* SEO Score Card */}
           <div className="p-5 bg-white rounded-2xl border border-slate-200 shadow-sm">
             <div className="flex items-center gap-2 mb-4">
@@ -480,11 +678,20 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
                 <input
                   type="text"
                   value={localContent.title || ''}
-                  onChange={(e) => updateContent({ title: e.target.value })}
+                  onChange={(e) => {
+                    updateContent({ title: e.target.value })
+                    setErrors(prev => ({ ...prev, title: '' }))
+                  }}
                   placeholder="Sayfa başlığınızı girin..."
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
+                  className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                    errors.title ? 'border-red-300' : 'border-slate-300'
+                  }`}
                   maxLength={70}
+                  required
                 />
+                {errors.title && (
+                  <p className="text-xs text-red-500 mt-1">{errors.title}</p>
+                )}
                 <div className="flex justify-between mt-2">
                   <CharCounter current={localContent.title?.length || 0} min={30} max={60} optimal={{ min: 50, max: 60 }} />
                   <span className={`text-xs ${(localContent.title?.length || 0) >= 30 && (localContent.title?.length || 0) <= 60 ? 'text-green-500' : 'text-orange-500'}`}>
@@ -520,14 +727,24 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
                   Anahtar Kelimeler
                 </label>
                 <div className="flex gap-2 mb-3">
-                  <input
-                    type="text"
-                    value={keywordInput}
-                    onChange={(e) => setKeywordInput(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addKeyword()}
-                    placeholder="Anahtar kelime ekle..."
-                    className="flex-1 px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
-                  />
+                  <div className="flex-1">
+                    <input
+                      type="text"
+                      value={keywordInput}
+                      onChange={(e) => {
+                        setKeywordInput(e.target.value)
+                        setErrors(prev => ({ ...prev, keyword: '' }))
+                      }}
+                      onKeyPress={(e) => e.key === 'Enter' && addKeyword()}
+                      placeholder="Anahtar kelime ekle..."
+                      className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 ${
+                        errors.keyword ? 'border-red-300' : 'border-slate-300'
+                      }`}
+                    />
+                    {errors.keyword && (
+                      <p className="text-xs text-red-500 mt-1">{errors.keyword}</p>
+                    )}
+                  </div>
                   <button
                     onClick={addKeyword}
                     className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition-colors"
@@ -594,20 +811,135 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
                         type="text"
                         value={localContent.openGraph?.title || ''}
                         onChange={(e) => updateOpenGraph({ title: e.target.value })}
-                        placeholder={localContent.title}
+                        placeholder={localContent.title || 'Sayfa başlığı'}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        maxLength={95}
                       />
+                      <p className="text-xs text-slate-500 mt-1">
+                        {localContent.openGraph?.title?.length || 0}/95 karakter
+                        {localContent.openGraph?.title && localContent.openGraph.title.length > 95 && (
+                          <span className="text-red-500"> - Çok uzun!</span>
+                        )}
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">OG Description (boş = meta description)</label>
+                      <textarea
+                        value={localContent.openGraph?.description || ''}
+                        onChange={(e) => updateOpenGraph({ description: e.target.value })}
+                        placeholder={localContent.description || 'Sayfa açıklaması'}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        rows={2}
+                        maxLength={200}
+                      />
+                      <p className="text-xs text-slate-500 mt-1">
+                        {localContent.openGraph?.description?.length || 0}/200 karakter
+                      </p>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">OG Image Width (px)</label>
+                      <input
+                        type="number"
+                        value={localContent.openGraph?.image?.width || 1200}
+                        onChange={(e) => updateOpenGraph({ 
+                          image: { 
+                            ...localContent.openGraph?.image, 
+                            width: parseInt(e.target.value) || 1200 
+                          } 
+                        })}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        min={200}
+                        max={2400}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">OG Image Height (px)</label>
+                      <input
+                        type="number"
+                        value={localContent.openGraph?.image?.height || 630}
+                        onChange={(e) => updateOpenGraph({ 
+                          image: { 
+                            ...localContent.openGraph?.image, 
+                            height: parseInt(e.target.value) || 630 
+                          } 
+                        })}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        min={200}
+                        max={2400}
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">OG Image Alt Text</label>
+                      <input
+                        type="text"
+                        value={localContent.openGraph?.image?.alt || ''}
+                        onChange={(e) => updateOpenGraph({ 
+                          image: { 
+                            ...localContent.openGraph?.image, 
+                            alt: e.target.value 
+                          } 
+                        })}
+                        placeholder="Görsel açıklaması"
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        maxLength={125}
+                      />
+                      <p className="text-xs text-slate-500 mt-1">Erişilebilirlik için önemli</p>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">OG Type</label>
+                      <select
+                        value={localContent.openGraph?.type || 'website'}
+                        onChange={(e) => updateOpenGraph({ type: e.target.value as any })}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                      >
+                        <option value="website">Website (Genel)</option>
+                        <option value="article">Article (Makale/Blog)</option>
+                        <option value="product">Product (Ürün)</option>
+                        <option value="video">Video</option>
+                        <option value="book">Book (Kitap)</option>
+                        <option value="profile">Profile (Profil)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-sm text-slate-600 mb-1">Locale</label>
+                      <select
+                        value={localContent.openGraph?.locale || 'de_DE'}
+                        onChange={(e) => updateOpenGraph({ locale: e.target.value })}
+                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                      >
+                        <option value="de_DE">de_DE (Almanca - Almanya)</option>
+                        <option value="en_US">en_US (İngilizce - ABD)</option>
+                        <option value="en_GB">en_GB (İngilizce - İngiltere)</option>
+                        <option value="tr_TR">tr_TR (Türkçe - Türkiye)</option>
+                        <option value="fr_FR">fr_FR (Fransızca - Fransa)</option>
+                        <option value="es_ES">es_ES (İspanyolca - İspanya)</option>
+                      </select>
                     </div>
                     <div>
                       <label className="block text-sm text-slate-600 mb-1">OG Image URL</label>
                       <input
                         type="url"
                         value={localContent.openGraph?.image?.url || ''}
-                        onChange={(e) => updateOpenGraph({ image: { ...localContent.openGraph?.image, url: e.target.value } })}
+                        onChange={(e) => {
+                          const url = e.target.value
+                          updateOpenGraph({ image: { ...localContent.openGraph?.image, url } })
+                          const error = validateImageUrl(url)
+                          setErrors(prev => ({ ...prev, ogImage: error || '' }))
+                        }}
                         placeholder="https://example.com/image.jpg"
-                        className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        className={`w-full px-3 py-2 border rounded-lg text-sm ${
+                          errors.ogImage ? 'border-red-300' : 'border-slate-300'
+                        }`}
                       />
-                      <p className="text-xs text-slate-500 mt-1">Önerilen: 1200x630px</p>
+                      {errors.ogImage && (
+                        <p className="text-xs text-red-500 mt-1">{errors.ogImage}</p>
+                      )}
+                      <p className="text-xs text-slate-500 mt-1">
+                        Önerilen: 1200x630px (Facebook/LinkedIn için ideal)
+                        {localContent.openGraph?.image?.url && (
+                          <span className="block mt-1 text-green-600">✓ Görsel URL doğrulandı</span>
+                        )}
+                      </p>
                     </div>
                     <div>
                       <label className="block text-sm text-slate-600 mb-1">Site Adı</label>
@@ -721,6 +1053,231 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
                     data={localContent.schema.localBusiness}
                     onUpdate={updateLocalBusiness}
                   />
+                )}
+              </div>
+
+              {/* FAQ Schema */}
+              <div className="p-4 bg-white rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">❓</span>
+                    <div>
+                      <h4 className="font-medium text-slate-800">FAQ Schema</h4>
+                      <p className="text-xs text-slate-500">Google'da FAQ snippet'leri için</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => updateContent({
+                      schema: {
+                        ...localContent.schema,
+                        faq: {
+                          enabled: !localContent.schema?.faq?.enabled,
+                          questions: localContent.schema?.faq?.questions || []
+                        }
+                      }
+                    })}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      localContent.schema?.faq?.enabled ? 'bg-green-500' : 'bg-slate-300'
+                    }`}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                      localContent.schema?.faq?.enabled ? 'left-7' : 'left-1'
+                    }`} />
+                  </button>
+                </div>
+
+                {localContent.schema?.faq?.enabled && (
+                  <div className="space-y-3 mt-4">
+                    {(localContent.schema.faq.questions || []).map((q, i) => (
+                      <div key={i} className="p-3 bg-slate-50 rounded-lg space-y-2">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-slate-700">Soru {i + 1}</span>
+                          <button
+                            onClick={() => updateContent({
+                              schema: {
+                                ...localContent.schema,
+                                faq: {
+                                  ...localContent.schema.faq,
+                                  questions: localContent.schema.faq.questions.filter((_, idx) => idx !== i)
+                                }
+                              }
+                            })}
+                            className="text-red-500 hover:text-red-700 text-sm"
+                          >
+                            Sil
+                          </button>
+                        </div>
+                        <input
+                          type="text"
+                          value={q.question || ''}
+                          onChange={(e) => {
+                            const questions = [...(localContent.schema.faq.questions || [])]
+                            questions[i] = { ...questions[i], question: e.target.value }
+                            updateContent({
+                              schema: {
+                                ...localContent.schema,
+                                faq: { ...localContent.schema.faq, questions }
+                              }
+                            })
+                          }}
+                          placeholder="Soru..."
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                        />
+                        <textarea
+                          value={q.answer || ''}
+                          onChange={(e) => {
+                            const questions = [...(localContent.schema.faq.questions || [])]
+                            questions[i] = { ...questions[i], answer: e.target.value }
+                            updateContent({
+                              schema: {
+                                ...localContent.schema,
+                                faq: { ...localContent.schema.faq, questions }
+                              }
+                            })
+                          }}
+                          placeholder="Cevap..."
+                          className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                          rows={2}
+                        />
+                      </div>
+                    ))}
+                    <button
+                      onClick={() => updateContent({
+                        schema: {
+                          ...localContent.schema,
+                          faq: {
+                            ...localContent.schema.faq,
+                            questions: [...(localContent.schema.faq.questions || []), { question: '', answer: '' }]
+                          }
+                        }
+                      })}
+                      className="w-full py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm text-slate-600 hover:border-indigo-500 hover:text-indigo-600 transition-colors"
+                    >
+                      + Soru Ekle
+                    </button>
+                  </div>
+                )}
+              </div>
+
+              {/* Breadcrumb Schema */}
+              <div className="p-4 bg-white rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">🍞</span>
+                    <div>
+                      <h4 className="font-medium text-slate-800">Breadcrumb Schema</h4>
+                      <p className="text-xs text-slate-500">Sayfa hiyerarşisi için</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => updateContent({
+                      schema: {
+                        ...localContent.schema,
+                        breadcrumb: {
+                          enabled: !localContent.schema?.breadcrumb?.enabled,
+                          autoGenerate: localContent.schema?.breadcrumb?.autoGenerate ?? true,
+                          items: localContent.schema?.breadcrumb?.items || []
+                        }
+                      }
+                    })}
+                    className={`relative w-12 h-6 rounded-full transition-colors ${
+                      localContent.schema?.breadcrumb?.enabled ? 'bg-green-500' : 'bg-slate-300'
+                    }`}
+                  >
+                    <div className={`absolute top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
+                      localContent.schema?.breadcrumb?.enabled ? 'left-7' : 'left-1'
+                    }`} />
+                  </button>
+                </div>
+
+                {localContent.schema?.breadcrumb?.enabled && (
+                  <div className="space-y-3 mt-4">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={localContent.schema.breadcrumb.autoGenerate ?? true}
+                        onChange={(e) => updateContent({
+                          schema: {
+                            ...localContent.schema,
+                            breadcrumb: {
+                              ...localContent.schema.breadcrumb,
+                              autoGenerate: e.target.checked
+                            }
+                          }
+                        })}
+                        className="w-4 h-4 text-indigo-600 rounded"
+                      />
+                      <span className="text-sm text-slate-700">URL'den otomatik oluştur</span>
+                    </label>
+                    {!localContent.schema.breadcrumb.autoGenerate && (
+                      <div className="space-y-2">
+                        {(localContent.schema.breadcrumb.items || []).map((item, i) => (
+                          <div key={i} className="flex gap-2">
+                            <input
+                              type="text"
+                              value={item.name || ''}
+                              onChange={(e) => {
+                                const items = [...(localContent.schema.breadcrumb.items || [])]
+                                items[i] = { ...items[i], name: e.target.value }
+                                updateContent({
+                                  schema: {
+                                    ...localContent.schema,
+                                    breadcrumb: { ...localContent.schema.breadcrumb, items }
+                                  }
+                                })
+                              }}
+                              placeholder="Ad"
+                              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                            />
+                            <input
+                              type="url"
+                              value={item.url || ''}
+                              onChange={(e) => {
+                                const items = [...(localContent.schema.breadcrumb.items || [])]
+                                items[i] = { ...items[i], url: e.target.value }
+                                updateContent({
+                                  schema: {
+                                    ...localContent.schema,
+                                    breadcrumb: { ...localContent.schema.breadcrumb, items }
+                                  }
+                                })
+                              }}
+                              placeholder="URL"
+                              className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm"
+                            />
+                            <button
+                              onClick={() => updateContent({
+                                schema: {
+                                  ...localContent.schema,
+                                  breadcrumb: {
+                                    ...localContent.schema.breadcrumb,
+                                    items: localContent.schema.breadcrumb.items.filter((_, idx) => idx !== i)
+                                  }
+                                }
+                              })}
+                              className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg"
+                            >
+                              Sil
+                            </button>
+                          </div>
+                        ))}
+                        <button
+                          onClick={() => updateContent({
+                            schema: {
+                              ...localContent.schema,
+                              breadcrumb: {
+                                ...localContent.schema.breadcrumb,
+                                items: [...(localContent.schema.breadcrumb.items || []), { name: '', url: '' }]
+                              }
+                            }
+                          })}
+                          className="w-full py-2 border-2 border-dashed border-slate-300 rounded-lg text-sm text-slate-600 hover:border-indigo-500 hover:text-indigo-600 transition-colors"
+                        >
+                          + Breadcrumb Ekle
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 )}
               </div>
 
@@ -888,11 +1445,24 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
                 <input
                   type="url"
                   value={localContent.canonicalUrl || ''}
-                  onChange={(e) => updateContent({ canonicalUrl: e.target.value })}
+                  onChange={(e) => {
+                    const url = e.target.value
+                    updateContent({ canonicalUrl: url })
+                    const error = validateUrl(url)
+                    setErrors(prev => ({ ...prev, canonicalUrl: error || '' }))
+                  }}
                   placeholder="https://wellnesstal.de/sayfa"
-                  className="w-full px-4 py-2 border border-slate-300 rounded-lg"
+                  className={`w-full px-4 py-2 border rounded-lg ${
+                    errors.canonicalUrl ? 'border-red-300' : 'border-slate-300'
+                  }`}
                 />
-                <p className="text-xs text-slate-500 mt-1">Duplicate content'i önlemek için</p>
+                {errors.canonicalUrl && (
+                  <p className="text-xs text-red-500 mt-1">{errors.canonicalUrl}</p>
+                )}
+                {!errors.canonicalUrl && localContent.canonicalUrl && (
+                  <p className="text-xs text-green-600 mt-1">✓ Geçerli URL</p>
+                )}
+                <p className="text-xs text-slate-500 mt-1">Duplicate content'i önlemek için - Sayfa URL'inizi girin</p>
               </div>
 
               {/* Sitemap */}

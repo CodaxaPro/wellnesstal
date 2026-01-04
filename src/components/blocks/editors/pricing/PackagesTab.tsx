@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { PricingContent, PricingPackage } from '../../types'
 import { getDefaultPackage } from './defaults'
 
@@ -10,7 +10,30 @@ interface PackagesTabProps {
 }
 
 export default function PackagesTab({ content, updateContent }: PackagesTabProps) {
-  const packages = content.packages || []
+  let packages = content.packages || []
+  
+  // Sort packages by order property if ALL packages have order, otherwise maintain original order
+  const allHaveOrder = packages.length > 0 && packages.every(pkg => pkg.order !== undefined)
+  if (allHaveOrder) {
+    packages = [...packages].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+  }
+  
+  // Auto-set order property based on current array order if missing (only once on mount)
+  useEffect(() => {
+    if (packages.length === 0) return
+    
+    // Check if any package is missing order property
+    const hasMissingOrder = packages.some(pkg => pkg.order === undefined)
+    if (hasMissingOrder) {
+      const updatedPackages = packages.map((pkg, idx) => ({
+        ...pkg,
+        order: pkg.order ?? idx
+      }))
+      updateContent({ packages: updatedPackages })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []) // Only run once on mount
+  
   const [activePackageId, setActivePackageId] = useState<string | null>(
     packages[0]?.id || null
   )
@@ -19,7 +42,10 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
   const activePackage = packages.find(p => p.id === activePackageId)
 
   const addPackage = () => {
-    const newPackage = getDefaultPackage()
+    const newPackage = {
+      ...getDefaultPackage(),
+      order: packages.length
+    }
     updateContent({
       packages: [...packages, newPackage]
     })
@@ -71,22 +97,56 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
     const newPackages = [...packages]
     const targetIndex = direction === 'up' ? index - 1 : index + 1
     ;[newPackages[index], newPackages[targetIndex]] = [newPackages[targetIndex], newPackages[index]]
-    updateContent({ packages: newPackages })
+    
+    // Update order property for all packages to reflect new order
+    const updatedPackages = newPackages.map((pkg, idx) => ({
+      ...pkg,
+      order: idx
+    }))
+    
+    updateContent({ packages: updatedPackages })
   }
 
   const addFeature = (packageId: string) => {
     const pkg = packages.find(p => p.id === packageId)
     if (!pkg) return
     const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
-    features.push('Yeni Özellik')
+    features.push({
+      id: `feat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      text: 'Yeni Özellik',
+      included: true
+    })
     updatePackage(packageId, { features })
   }
 
-  const updateFeature = (packageId: string, index: number, value: string) => {
+  const updateFeature = (packageId: string, index: number, value: string | { text: string; included: boolean }) => {
     const pkg = packages.find(p => p.id === packageId)
     if (!pkg) return
     const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
-    features[index] = value
+    if (typeof value === 'string') {
+      // If current feature is object, update text, otherwise replace with string
+      const currentFeature = features[index]
+      if (typeof currentFeature === 'string') {
+        features[index] = value
+      } else {
+        features[index] = { ...currentFeature, text: value }
+      }
+    } else {
+      features[index] = value
+    }
+    updatePackage(packageId, { features })
+  }
+
+  const toggleFeatureIncluded = (packageId: string, index: number) => {
+    const pkg = packages.find(p => p.id === packageId)
+    if (!pkg) return
+    const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
+    const feature = features[index]
+    if (typeof feature === 'string') {
+      features[index] = { id: `feat-${Date.now()}`, text: feature, included: false }
+    } else {
+      features[index] = { ...feature, included: !(feature.included !== false) }
+    }
     updatePackage(packageId, { features })
   }
 
@@ -109,6 +169,7 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
     updateContent({ packages: [...packages, newPackage] })
     setActivePackageId(newPackage.id)
   }
+
 
   return (
     <div className="flex gap-4 h-full">
@@ -331,6 +392,34 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
                       <span className="text-xs text-slate-600">Önerilen</span>
                     </label>
                   </div>
+
+                  {/* Partner/Double Package */}
+                  <div className="p-3 bg-sage-50 rounded-lg space-y-3">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={activePackage.isPartner ?? false}
+                        onChange={(e) => updatePackage(activePackage.id, { 
+                          isPartner: e.target.checked,
+                          partnerLabel: e.target.checked ? (activePackage.partnerLabel || '2x') : undefined
+                        })}
+                        className="rounded border-slate-300 text-sage-500"
+                      />
+                      <span className="text-xs font-medium text-slate-700">Partner/Çift Paket</span>
+                    </label>
+                    {activePackage.isPartner && (
+                      <div>
+                        <label className="block text-xs font-medium text-slate-600 mb-1.5">Etiket (örn: 2x, Partnertermin)</label>
+                        <input
+                          type="text"
+                          value={activePackage.partnerLabel || '2x'}
+                          onChange={(e) => updatePackage(activePackage.id, { partnerLabel: e.target.value })}
+                          className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                          placeholder="2x"
+                        />
+                      </div>
+                    )}
+                  </div>
                 </div>
               )}
             </div>
@@ -343,7 +432,10 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
               >
                 <span className="text-sm font-semibold text-slate-700 flex items-center gap-2">
                   <span className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">✓</span>
-                  Özellikler ({Array.isArray(activePackage.features) ? activePackage.features.length : 0})
+                  Özellikler ({Array.isArray(activePackage.features) ? activePackage.features.filter(f => {
+                    if (typeof f === 'string') return true
+                    return f.included === true
+                  }).length : 0})
                 </span>
                 <svg className={`w-5 h-5 text-slate-400 transition-transform ${expandedSection === 'features' ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -351,25 +443,55 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
               </button>
               {expandedSection === 'features' && (
                 <div className="p-4 pt-0 space-y-2">
-                  {Array.isArray(activePackage.features) && activePackage.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-2">
-                      <span className="text-sage-500">✓</span>
-                      <input
-                        type="text"
-                        value={typeof feature === 'string' ? feature : feature.text}
-                        onChange={(e) => updateFeature(activePackage.id, index, e.target.value)}
-                        className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                      />
-                      <button
-                        onClick={() => removeFeature(activePackage.id, index)}
-                        className="p-2 text-slate-400 hover:text-red-600 rounded-lg"
-                      >
-                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                        </svg>
-                      </button>
-                    </div>
-                  ))}
+                  {Array.isArray(activePackage.features) && activePackage.features.map((feature, index) => {
+                    const isString = typeof feature === 'string'
+                    const text = isString ? feature : feature.text
+                    const included = isString ? true : feature.included === true
+                    return (
+                      <div key={index} className="flex items-center gap-2">
+                        <button
+                          onClick={() => toggleFeatureIncluded(activePackage.id, index)}
+                          className={`flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center transition-all ${
+                            included
+                              ? 'bg-green-100 text-green-600 hover:bg-green-200'
+                              : 'bg-red-100 text-red-500 hover:bg-red-200'
+                          }`}
+                          title={included ? 'Var' : 'Yok'}
+                        >
+                          {included ? (
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                            </svg>
+                          ) : (
+                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                          )}
+                        </button>
+                        <input
+                          type="text"
+                          value={text}
+                          onChange={(e) => {
+                            if (isString) {
+                              updateFeature(activePackage.id, index, e.target.value)
+                            } else {
+                              updateFeature(activePackage.id, index, { ...feature, text: e.target.value })
+                            }
+                          }}
+                          className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                          placeholder="Özellik adı"
+                        />
+                        <button
+                          onClick={() => removeFeature(activePackage.id, index)}
+                          className="p-2 text-slate-400 hover:text-red-600 rounded-lg flex-shrink-0"
+                        >
+                          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
+                      </div>
+                    )
+                  })}
                   <button
                     onClick={() => addFeature(activePackage.id)}
                     className="w-full py-2 border-2 border-dashed border-slate-300 rounded-lg text-slate-500 hover:border-sage-500 hover:text-sage-600 text-sm"

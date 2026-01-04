@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { BlockProps, PricingContent, PricingPackage, PricingFeatureItem, PricingResponsive, PricingSectionHeader, PricingBackground, PricingAnimations, PricingPackageStyle } from './types'
 
 const defaultResponsive: PricingResponsive = {
@@ -17,6 +17,15 @@ const defaultPackageStyleObj: PricingPackageStyle = {}
 export default function PricingBlock({ block }: BlockProps) {
   const content = block.content as PricingContent
   const [billingCycle, setBillingCycle] = useState<'monthly' | 'yearly'>('monthly')
+  // Always start with 'einzeltermin' as default
+  const [activeTab, setActiveTab] = useState<'einzeltermin' | 'partnertermin'>('einzeltermin')
+
+  // Update active tab if defaultTab changes in content (only on mount or when defaultTab changes)
+  useEffect(() => {
+    if (content.tabs?.defaultTab) {
+      setActiveTab(content.tabs.defaultTab)
+    }
+  }, [content.tabs?.defaultTab])
 
   // Safe access with defaults
   const packages = content.packages || []
@@ -26,11 +35,46 @@ export default function PricingBlock({ block }: BlockProps) {
   const background = content.background || defaultBackground
   const animations = content.animations || defaultAnimations
   const billingToggle = content.billingToggle
+  const tabs = content.tabs
   const trustElement = content.trustElement
   const faq = content.faq
   const comparisonTable = content.comparisonTable
   const responsive = content.responsive || defaultResponsive
   const defaultPackageStyle = content.defaultPackageStyle || defaultPackageStyleObj
+
+  // Filter packages by tab
+  let filteredPackages = tabs?.enabled
+    ? packages.filter(pkg => {
+        if (activeTab === 'einzeltermin') {
+          return !pkg.isPartner
+        } else {
+          return pkg.isPartner === true
+        }
+      })
+    : packages
+
+  // Create a map of original indices from the original packages array
+  const originalIndices = new Map<string, number>()
+  packages.forEach((pkg, idx) => {
+    originalIndices.set(pkg.id, idx)
+  })
+
+  // Sort: use order if available, otherwise use original array index
+  filteredPackages = [...filteredPackages].sort((a, b) => {
+    // If both have order, sort by order
+    if (a.order !== undefined && b.order !== undefined) {
+      return a.order - b.order
+    }
+    
+    // If only one has order, it comes first
+    if (a.order !== undefined) return -1
+    if (b.order !== undefined) return 1
+    
+    // Neither has order - use original array index
+    const aIdx = originalIndices.get(a.id) ?? Infinity
+    const bIdx = originalIndices.get(b.id) ?? Infinity
+    return aIdx - bIdx
+  })
 
   // Background styles
   const getBackgroundStyle = (): React.CSSProperties => {
@@ -162,11 +206,15 @@ export default function PricingBlock({ block }: BlockProps) {
   const renderFeature = (feature: string | PricingFeatureItem, index: number, highlighted: boolean, pkgStyle?: PricingPackageStyle) => {
     const isString = typeof feature === 'string'
     const text = isString ? feature : feature.text
-    const included = isString ? true : feature.included !== false
+    const included = isString ? true : feature.included === true
     const tooltip = isString ? undefined : feature.tooltip
 
     // Use package style checkmarkColor or default style checkmarkColor
-    const checkmarkColor = pkgStyle?.checkmarkColor || defaultPackageStyle.checkmarkColor
+    // If checkmarkColor is the old green color, use the new sage color
+    let checkmarkColor = pkgStyle?.checkmarkColor || defaultPackageStyle.checkmarkColor
+    if (checkmarkColor === '#059669' || !checkmarkColor) {
+      checkmarkColor = '#9CAF88'
+    }
     const featureTextColor = pkgStyle?.featureTextColor || defaultPackageStyle.featureTextColor
 
     return (
@@ -175,7 +223,7 @@ export default function PricingBlock({ block }: BlockProps) {
           className="w-5 h-5 flex-shrink-0"
           style={{
             color: included
-              ? (highlighted ? '#ffffff' : (checkmarkColor || '#059669'))
+              ? (highlighted ? '#ffffff' : (checkmarkColor || '#9CAF88'))
               : '#9ca3af'
           }}
           fill="none"
@@ -240,7 +288,12 @@ export default function PricingBlock({ block }: BlockProps) {
   const getPriceColor = (pkg: PricingPackage) => {
     if (pkg.highlighted) return '#ffffff'
     const style = pkg.style || defaultPackageStyle
-    return style.priceColor || defaultPackageStyle.priceColor || '#059669'
+    // If priceColor is the old green color, use the new sage color
+    const priceColor = style.priceColor || defaultPackageStyle.priceColor
+    if (priceColor === '#059669' || !priceColor) {
+      return '#9CAF88'
+    }
+    return priceColor
   }
 
   // CTA button style
@@ -286,6 +339,12 @@ export default function PricingBlock({ block }: BlockProps) {
     }
   }
 
+  // Get features for a package - show all features (both included and not included)
+  const getPackageFeatures = (pkg: PricingPackage): (string | PricingFeatureItem)[] => {
+    // Return all features - included ones will show ✓, not included ones will show ✗
+    return pkg.features
+  }
+
   // Render package card
   const renderPackageCard = (pkg: PricingPackage, index: number) => {
     const animationStyle = getAnimationStyle(index)
@@ -294,6 +353,7 @@ export default function PricingBlock({ block }: BlockProps) {
     const hoverClass = getHoverEffectClass(pkg.style)
     const pkgStyleDef = pkg.style || defaultPackageStyle
     const shadowClass = pkg.highlighted ? 'shadow-xl' : getShadowClass(pkgStyleDef.shadowSize)
+    const packageFeatures = getPackageFeatures(pkg)
 
     return (
       <div
@@ -324,7 +384,7 @@ export default function PricingBlock({ block }: BlockProps) {
         )}
 
         {/* Custom Badge */}
-        {pkg.badge?.text && (
+        {pkg.badge?.enabled && pkg.badge?.text && (
           <div className="mb-4">
             <span
               className="inline-block text-xs font-bold px-3 py-1 rounded-full"
@@ -338,8 +398,19 @@ export default function PricingBlock({ block }: BlockProps) {
           </div>
         )}
 
+        {/* Partner/Double Package Badge */}
+        {pkg.isPartner && (
+          <div className="mb-3">
+            <span
+              className="inline-block text-xs font-bold px-3 py-1 rounded-full bg-sage-100 text-sage-700 border border-sage-300"
+            >
+              {pkg.partnerLabel || '2x'}
+            </span>
+          </div>
+        )}
+
         <h3 className={`text-2xl font-bold mb-1 ${pkg.highlighted ? 'text-white' : 'text-charcoal'}`}>
-          {pkg.name}
+          {pkg.isPartner && pkg.partnerLabel ? `${pkg.partnerLabel} ${pkg.name}` : pkg.name}
         </h3>
 
         {/* Package Subtitle */}
@@ -376,7 +447,7 @@ export default function PricingBlock({ block }: BlockProps) {
         )}
 
         <ul className="space-y-3 mb-8">
-          {pkg.features.map((feature, idx) => renderFeature(feature, idx, pkg.highlighted || false, pkg.style))}
+          {packageFeatures.map((feature, idx) => renderFeature(feature, idx, pkg.highlighted || false, pkg.style))}
         </ul>
 
         <a
@@ -671,6 +742,44 @@ export default function PricingBlock({ block }: BlockProps) {
             )}
           </div>
 
+          {/* Tabs (Einzeltermin/Partnertermin) */}
+          {tabs?.enabled && (
+            <div className="flex items-center justify-center mb-12">
+              <div 
+                className="inline-flex rounded-lg p-1 bg-white border border-gray-200 shadow-sm"
+                data-current={activeTab}
+                data-easing="ease"
+                data-duration-in="300"
+                data-duration-out="100"
+              >
+                <button
+                  onClick={() => setActiveTab('einzeltermin')}
+                  className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    activeTab === 'einzeltermin'
+                      ? 'bg-sage-500 text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                  role="tab"
+                  aria-selected={activeTab === 'einzeltermin'}
+                >
+                  {tabs.labels?.einzeltermin || 'Einzeltermin'}
+                </button>
+                <button
+                  onClick={() => setActiveTab('partnertermin')}
+                  className={`px-6 py-3 rounded-lg text-sm font-medium transition-all duration-300 ${
+                    activeTab === 'partnertermin'
+                      ? 'bg-sage-500 text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                  }`}
+                  role="tab"
+                  aria-selected={activeTab === 'partnertermin'}
+                >
+                  {tabs.labels?.partnertermin || 'Partnertermin'}
+                </button>
+              </div>
+            </div>
+          )}
+
           {/* Billing Toggle */}
           {billingToggle?.enabled && (
             <div className="flex items-center justify-center mb-12">
@@ -827,7 +936,7 @@ export default function PricingBlock({ block }: BlockProps) {
           {/* Packages */}
           {packages.length > 0 ? (
             <div className={`pricing-packages ${getLayoutClasses()}`} style={{ gap: content.packageGap || '2rem' }}>
-              {layout === 'comparison' ? renderComparisonTable() : packages.map((pkg, index) => renderPackageCard(pkg, index))}
+              {layout === 'comparison' ? renderComparisonTable() : filteredPackages.map((pkg, index) => renderPackageCard(pkg, index))}
             </div>
           ) : (
             <div className="text-center py-12 bg-gray-50 rounded-xl">

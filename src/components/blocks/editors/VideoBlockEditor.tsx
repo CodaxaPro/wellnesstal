@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { VideoContent } from '../types'
 
 interface VideoBlockEditorProps {
@@ -11,7 +11,12 @@ interface VideoBlockEditorProps {
 export default function VideoBlockEditor({ content, onUpdate }: VideoBlockEditorProps) {
   const [localContent, setLocalContent] = useState<VideoContent>(content)
 
+  const isInitialMount = useRef(true)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       onUpdate(localContent)
     }, 300)

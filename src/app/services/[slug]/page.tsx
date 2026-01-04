@@ -164,11 +164,15 @@ export default function ServiceLandingPage({ params }: ServicePageProps) {
                 Über diese Behandlung
               </h2>
               
-              <div className="text-lg text-gray-custom leading-relaxed space-y-4">
-                {service.longDescription.split('\n').map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
-              </div>
+              {service.longDescription && (
+                <div className="text-lg text-gray-custom leading-relaxed space-y-4">
+                  {service.longDescription.split('\n')
+                    .filter(paragraph => paragraph.trim())
+                    .map((paragraph, index) => (
+                      <p key={index}>{paragraph}</p>
+                    ))}
+                </div>
+              )}
             </div>
             
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">

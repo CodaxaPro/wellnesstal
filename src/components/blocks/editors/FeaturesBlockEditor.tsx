@@ -46,6 +46,7 @@ export default function FeaturesBlockEditor({ content, onUpdate }: FeaturesBlock
 
   // Debounced save to parent
   const debouncedUpdate = useCallback((newContent: FeaturesContent) => {
+    if (isInitialMount.current) return
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
     }

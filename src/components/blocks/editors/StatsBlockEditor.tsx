@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { StatsContent, StatItem } from '../types'
 
 interface StatsBlockEditorProps {
@@ -11,7 +11,12 @@ interface StatsBlockEditorProps {
 export default function StatsBlockEditor({ content, onUpdate }: StatsBlockEditorProps) {
   const [localContent, setLocalContent] = useState<StatsContent>(content)
 
+  const isInitialMount = useRef(true)
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
     const timer = setTimeout(() => {
       onUpdate(localContent)
     }, 300)

@@ -147,9 +147,11 @@ export default function FooterBlockEditor({ content, onUpdate }: FooterBlockEdit
   const [localContent, setLocalContent] = useState<FooterBlockContent>(mergedContent)
   const [expandedSections, setExpandedSections] = useState<string[]>(['brand'])
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
+  const isInitialMount = useRef(true)
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: FooterBlockContent) => {
+    if (isInitialMount.current) return
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -157,6 +159,10 @@ export default function FooterBlockEditor({ content, onUpdate }: FooterBlockEdit
       onUpdate(newContent)
     }, 300)
   }, [onUpdate])
+
+  useEffect(() => {
+    isInitialMount.current = false
+  }, [])
 
   // Update local and trigger debounced save
   const updateContent = useCallback((updates: Partial<FooterBlockContent>) => {

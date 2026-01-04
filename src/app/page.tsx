@@ -1,16 +1,19 @@
-'use client'
+"use client"
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Header from '@/components/layout/Header'
 import Footer from '@/components/layout/Footer'
+import BlockRenderer from '@/components/blocks/BlockRenderer'
+import { PageBlock } from '@/components/blocks/types'
+import WhatsAppButton from '@/components/ui/WhatsAppButton'
+
+// Content Sections
+import LandingHeroSection from '@/components/sections/LandingHeroSection'
 import HeroSection from '@/components/sections/HeroSection'
 import ServicesSection from '@/components/sections/ServicesSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
-import LandingHeroSection from '@/components/sections/LandingHeroSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ContactSection from '@/components/sections/ContactSection'
-import GallerySection from '@/components/sections/GallerySection'
-import WhatsAppButton from '@/components/ui/WhatsAppButton'
+import TestimonialsSection from '@/components/sections/TestimonialsSection'
 
 // Template Engine imports
 import { templateEngine } from '@/lib/template-engine'
@@ -24,16 +27,6 @@ interface MetaContent {
   ogImage: string
 }
 
-// Homepage section interface
-interface HomepageSection {
-  id: string
-  section_key: string
-  section_name: string
-  section_icon: string | null
-  position: number
-  enabled: boolean
-}
-
 const defaultMetaContent: MetaContent = {
   siteTitle: 'Wellnesstal - Premium Wellness & Headspa in Köln',
   siteDescription: 'Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!',
@@ -45,179 +38,50 @@ export default function Home() {
   const [templateConfig, setTemplateConfig] = useState<TemplateConfig | null>(null)
   const [templateLoading, setTemplateLoading] = useState(true)
   const [metaContent, setMetaContent] = useState<MetaContent>(defaultMetaContent)
-  const [sections, setSections] = useState<HomepageSection[]>([])
 
-  // Initialize Template Engine
+  const [blocks, setBlocks] = useState<PageBlock[]>([])
+  const [blocksLoading, setBlocksLoading] = useState(true)
+  const [homepageSections, setHomepageSections] = useState<Array<{section_key: string, position: number, enabled: boolean}>>([])
+  const [sectionsLoading, setSectionsLoading] = useState(true)
+
+  // Initialize Template Engine (keeps previous behavior)
   useEffect(() => {
     const initializeTemplate = async () => {
       try {
-        // Same wellness config as in services page
         const config: TemplateConfig = {
-          id: "wellness-basic",
-          name: "Wellness & Spa Management",
-          industry: "wellness" as const,
-          version: "1.0.0",
-          description: "Complete wellness and spa management system",
-
+          id: 'wellness-basic',
+          name: 'Wellness & Spa Management',
+          industry: 'wellness' as const,
+          version: '1.0.0',
+          description: 'Complete wellness and spa management system',
           entities: {
             primary: {
-              name: "Services",
-              singular: "Service",
-              plural: "Services",
-              icon: "Sparkles",
-              color: "#10B981",
+              name: 'Services', singular: 'Service', plural: 'Services', icon: 'Sparkles', color: '#10B981',
               fields: [
-                {
-                  key: "name",
-                  label: "Service Name",
-                  type: "text" as const,
-                  required: true,
-                  order: 1
-                },
-                {
-                  key: "description",
-                  label: "Description",
-                  type: "textarea" as const,
-                  required: false,
-                  order: 2
-                },
-                {
-                  key: "price",
-                  label: "Price",
-                  type: "currency" as const,
-                  required: true,
-                  order: 3
-                },
-                {
-                  key: "duration",
-                  label: "Duration (minutes)",
-                  type: "number" as const,
-                  required: true,
-                  order: 4
-                }
-              ]
-            },
-            secondary: [
-              {
-                name: "Categories",
-                singular: "Category",
-                plural: "Categories",
-                icon: "Tag",
-                color: "#F59E0B",
-                fields: [
-                  {
-                    key: "name",
-                    label: "Category Name",
-                    type: "text" as const,
-                    required: true,
-                    order: 1
-                  },
-                  {
-                    key: "description",
-                    label: "Description",
-                    type: "textarea" as const,
-                    required: false,
-                    order: 2
-                  }
-                ]
-              },
-              {
-                name: "Testimonials",
-                singular: "Testimonial",
-                plural: "Testimonials",
-                icon: "MessageCircle",
-                color: "#EC4899",
-                fields: [
-                  {
-                    key: "name",
-                    label: "Customer Name",
-                    type: "text" as const,
-                    required: true,
-                    order: 1
-                  },
-                  {
-                    key: "rating",
-                    label: "Rating",
-                    type: "number" as const,
-                    required: true,
-                    order: 2
-                  },
-                  {
-                    key: "text",
-                    label: "Review Text",
-                    type: "textarea" as const,
-                    required: true,
-                    order: 3
-                  }
-                ]
-              },
-              {
-                name: "Therapists",
-                singular: "Therapist",
-                plural: "Therapists",
-                icon: "Users",
-                color: "#8B5CF6",
-                fields: [
-                  {
-                    key: "name",
-                    label: "Name",
-                    type: "text" as const,
-                    required: true,
-                    order: 1
-                  },
-                  {
-                    key: "specialization",
-                    label: "Specialization",
-                    type: "text" as const,
-                    required: false,
-                    order: 2
-                  },
-                  {
-                    key: "bio",
-                    label: "Bio",
-                    type: "textarea" as const,
-                    required: false,
-                    order: 3
-                  }
-                ]
-              }
-            ]
+                { key: 'name', label: 'Service Name', type: 'text' as const, required: true, order: 1 },
+                { key: 'description', label: 'Description', type: 'textarea' as const, required: false, order: 2 }
+              ],
+              permissions: { create: true, read: true, update: true, delete: true, bulk: false }
+            }
           },
-
           ui: {
             theme: {
-              primaryColor: "#9CAF88",
-              secondaryColor: "#637554",
-              accentColor: "#2C2C2C",
-              brandName: "Wellnesstal Studio"
+              primaryColor: '#9CAF88', secondaryColor: '#637554', accentColor: '#2C2C2C',
+              fontFamily: "Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial",
+              fontSize: { sm: '0.875rem', base: '1rem', lg: '1.125rem', xl: '1.25rem' },
+              borderRadius: '8px', spacing: 'comfortable', darkMode: false
             },
-            navigation: [
-              { label: "Dashboard", href: "/admin/dashboard", icon: "LayoutDashboard" },
-              { label: "Services", href: "/admin/services", icon: "Sparkles" },
-              { label: "Categories", href: "/admin/categories", icon: "Tag" },
-              { label: "Testimonials", href: "/admin/testimonials", icon: "MessageCircle" },
-              { label: "Therapists", href: "/admin/therapists", icon: "Users" },
-              { label: "Content", href: "/admin/content", icon: "FileText" },
-              { label: "Media", href: "/admin/media", icon: "Image" }
-            ],
-            features: {
-              booking: true,
-              payments: false,
-              analytics: true,
-              notifications: true
+            components: {},
+            layout: {
+              sidebar: { position: 'left', collapsible: true, defaultCollapsed: false },
+              navigation: { style: 'sidebar', items: [] },
+              dashboard: { widgets: [], layout: 'grid' }
             }
           },
-
-          workflows: {
-            booking: {
-              enabled: true,
-              steps: ["select_service", "select_therapist", "select_time", "confirm"],
-              notifications: ["email", "sms"]
-            }
-          }
+          business: { workflows: [], validations: {}, automations: [] },
+          features: { enabled: [], disabled: [], premium: [] }
         }
 
-        // Initialize template engine
         templateEngine.registerTemplate(config as any)
         templateEngine.setActiveTemplate(config.id)
         setTemplateConfig(config)
@@ -238,12 +102,8 @@ export default function Home() {
         const response = await fetch('/api/content?section=meta')
         const data = await response.json()
         if (data.success && data.data?.content) {
-          const meta = {
-            ...defaultMetaContent,
-            ...data.data.content
-          }
+          const meta = { ...defaultMetaContent, ...data.data.content }
           setMetaContent(meta)
-          // Update document title dynamically
           document.title = meta.siteTitle
         }
       } catch (error) {
@@ -254,46 +114,101 @@ export default function Home() {
     fetchMetaContent()
   }, [])
 
-  // Fetch section order
+  // Fetch homepage sections order (from /admin/content)
   useEffect(() => {
     const fetchSections = async () => {
       try {
+        setSectionsLoading(true)
         const response = await fetch('/api/sections')
         const data = await response.json()
         if (data.success && data.data) {
-          setSections(data.data)
+          // Sort by position and filter enabled
+          const enabledSections = data.data
+            .filter((s: any) => s.enabled)
+            .sort((a: any, b: any) => a.position - b.position)
+          setHomepageSections(enabledSections)
         }
       } catch (error) {
-        console.error('Failed to fetch sections:', error)
+        console.error('Failed to fetch homepage sections:', error)
+      } finally {
+        setSectionsLoading(false)
       }
     }
 
     fetchSections()
   }, [])
 
-  // Section component mapping
-  const sectionComponents: Record<string, React.ReactNode> = {
-    'landing-hero': <LandingHeroSection key="landing-hero" />,
-    'hero': <HeroSection key="hero" />,
-    'services': <ServicesSection key="services" />,
-    'gallery': <GallerySection key="gallery" />,
-    'testimonials': <TestimonialsSection key="testimonials" />,
-    'about': <AboutSection key="about" />,
-    'contact': <ContactSection key="contact" brandName={templateConfig?.ui.theme.brandName || 'Wellnesstal Studio'} />
-  }
+  // Fetch homepage blocks (from /admin/pages)
+  useEffect(() => {
+    const fetchBlocks = async () => {
+      try {
+        setBlocksLoading(true)
+        // Try home slug first, fallback to index
+        const res = await fetch('/api/pages?slug=home')
+        if (res.ok) {
+          const json = await res.json()
+          if (json.success && json.data?.blocks) {
+            setBlocks(json.data.blocks)
+          }
+        } else {
+          // fallback attempt
+          const r2 = await fetch('/api/pages?slug=index')
+          if (r2.ok) {
+            const j2 = await r2.json()
+            if (j2.success && j2.data?.blocks) setBlocks(j2.data.blocks)
+          }
+        }
+      } catch (error) {
+        console.error('Failed to fetch blocks:', error)
+      } finally {
+        setBlocksLoading(false)
+      }
+    }
 
-  // Get enabled sections in order
-  const enabledSections = sections
-    .filter(s => s.enabled)
-    .sort((a, b) => a.position - b.position)
+    fetchBlocks()
+  }, [])
 
   // Template-driven theme variables
   const themeVars = templateConfig?.ui.theme ? {
     '--primary-color': templateConfig.ui.theme.primaryColor,
     '--secondary-color': templateConfig.ui.theme.secondaryColor,
     '--accent-color': templateConfig.ui.theme.accentColor,
-    '--brand-name': templateConfig.ui.theme.brandName || 'Wellnesstal Studio'
+    '--brand-name': (templateConfig.ui.theme as any).brandName || 'Wellnesstal Studio'
   } : {}
+
+  if (blocksLoading || sectionsLoading) {
+    return (
+      <div className="min-h-screen bg-cream flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto mb-4"></div>
+          <p className="text-slate-600">Sayfa yükleniyor...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // Render section component based on section_key
+  const renderContentSection = (sectionKey: string) => {
+    switch (sectionKey) {
+      case 'landing-hero':
+        return <LandingHeroSection key={sectionKey} />
+      case 'hero':
+        return <HeroSection key={sectionKey} />
+      case 'services':
+      case 'services-section':
+        return <ServicesSection key={sectionKey} />
+      case 'about':
+        return <AboutSection key={sectionKey} />
+      case 'contact':
+      case 'contact-section':
+        return <ContactSection key={sectionKey} brandName={metaContent.siteTitle} />
+      case 'testimonials':
+      case 'testimonials-section':
+        return <TestimonialsSection key={sectionKey} />
+      default:
+        return null
+    }
+  }
 
   return (
     <div className="min-h-screen bg-cream" style={themeVars as any}>
@@ -304,35 +219,51 @@ export default function Home() {
         </div>
       )}
 
-      {/* Header */}
       <Header />
 
-      {/* Main Content */}
       <main>
-        {/* Dynamic Section Rendering */}
-        {enabledSections.length > 0 ? (
-          // Render sections based on database order
-          enabledSections.map(section => sectionComponents[section.section_key])
-        ) : (
-          // Fallback to default order if sections not loaded
+        {/* Render Content Sections (from /admin/content) */}
+        {homepageSections.length > 0 && (
           <>
-            <LandingHeroSection />
-            <HeroSection />
-            <ServicesSection />
-            <TestimonialsSection />
-            <AboutSection />
-            <ContactSection brandName={templateConfig?.ui.theme.brandName || 'Wellnesstal Studio'} />
+            {homepageSections.map((section) => renderContentSection(section.section_key))}
           </>
+        )}
+
+        {/* Render Blocks (from /admin/pages) */}
+        {blocks.length > 0 && (
+          <BlockRenderer blocks={blocks} />
+        )}
+
+        {/* Empty State - Show only if both are empty */}
+        {homepageSections.length === 0 && blocks.length === 0 && (
+          <div className="min-h-screen flex items-center justify-center">
+            <div className="text-center max-w-md mx-auto p-8">
+              <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+                </svg>
+              </div>
+              <h2 className="text-2xl font-bold text-slate-800 mb-2">Ana Sayfa Henüz Oluşturulmamış</h2>
+              <p className="text-slate-600 mb-4">
+                İçerik eklemek için:
+              </p>
+              <div className="flex flex-col gap-3 items-center">
+                <a href="/admin/content" className="inline-flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                  📝 İçerik Yönetimi
+                </a>
+                <span className="text-sm text-gray-500">veya</span>
+                <a href="/admin/pages" className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-xl font-medium transition-colors">
+                  🧩 Sayfa Blokları
+                </a>
+              </div>
+            </div>
+          </div>
         )}
       </main>
 
-      {/* Footer */}
       <Footer />
-
-      {/* WhatsApp Button */}
       <WhatsAppButton />
 
-      {/* Template Engine Status */}
       {templateConfig && (
         <div className="fixed bottom-4 left-4 bg-white border border-gray-200 rounded-lg px-4 py-2 shadow-lg text-xs text-gray-600 z-40">
           <div className="flex items-center gap-2">

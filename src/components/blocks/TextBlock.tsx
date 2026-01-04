@@ -87,6 +87,14 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Get background styles
   const getBackgroundStyles = (): React.CSSProperties => {
+    // Apply stylePreset overrides
+    if (content.stylePreset === 'problem') {
+      return { backgroundColor: '#f7f5f3' } // cream background
+    }
+    if (content.stylePreset === 'solution') {
+      return { backgroundColor: '#ffffff' } // white background
+    }
+
     if (!content.background || content.background.type === 'none') return {}
 
     switch (content.background.type) {
@@ -164,6 +172,19 @@ export default function TextBlock({ block }: BlockProps) {
   const getTitleStyles = (): React.CSSProperties => {
     const t = content.typography?.title
     if (!t) return {}
+    
+    // Apply stylePreset overrides
+    if (content.stylePreset === 'problem' || content.stylePreset === 'solution') {
+      return {
+        fontSize: '2.5rem',
+        fontWeight: '700',
+        lineHeight: '1.2',
+        letterSpacing: '-0.02em',
+        color: '#2C2C2C', // charcoal
+        marginBottom: '1.5rem'
+      }
+    }
+    
     return {
       fontSize: t.fontSize || '2rem',
       fontWeight: t.fontWeight || '700',
@@ -191,6 +212,18 @@ export default function TextBlock({ block }: BlockProps) {
   const getBodyStyles = (): React.CSSProperties => {
     const b = content.typography?.body
     if (!b) return {}
+    
+    // Apply stylePreset overrides
+    if (content.stylePreset === 'problem' || content.stylePreset === 'solution') {
+      return {
+        fontSize: '1.125rem',
+        fontWeight: '400',
+        lineHeight: '1.75',
+        letterSpacing: '0',
+        color: '#666666' // gray-custom
+      }
+    }
+    
     return {
       fontSize: b.fontSize || '1.125rem',
       fontWeight: b.fontWeight || '400',
