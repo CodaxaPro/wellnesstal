@@ -577,7 +577,7 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
                           value={activePackage.badge?.text ?? ''}
                           onChange={(e) => updatePackageBadge(activePackage.id, { text: e.target.value })}
                           className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
-                          placeholder="En Popüler"
+                          placeholder="Beliebteste"
                         />
                       </div>
                       <div className="grid grid-cols-2 gap-3">
