@@ -115,6 +115,7 @@ export default function StickyButtonBlock({ block }: BlockProps) {
   const [isVisible, setIsVisible] = useState(false)
   const [hasScrolled, setHasScrolled] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [hasReachedTarget, setHasReachedTarget] = useState(false)
 
   // Check if button should be shown
   useEffect(() => {
@@ -194,7 +195,38 @@ export default function StickyButtonBlock({ block }: BlockProps) {
     isMobile
   ])
 
-  if (!content.enabled || !isVisible) return null
+  // Check if target is in viewport (for hiding button after scroll)
+  useEffect(() => {
+    if (!content.link.startsWith('#') || hasReachedTarget) return
+
+    const targetId = content.link.substring(1)
+    const checkTargetVisibility = () => {
+      const element = document.getElementById(targetId)
+      if (!element) return
+
+      const rect = element.getBoundingClientRect()
+      const isInViewport = rect.top >= 0 && rect.top <= window.innerHeight * 0.3
+      
+      if (isInViewport) {
+        setHasReachedTarget(true)
+        setIsVisible(false)
+      }
+    }
+
+    // Check immediately
+    checkTargetVisibility()
+
+    // Listen for scroll events to detect when target is reached
+    window.addEventListener('scroll', checkTargetVisibility, { passive: true })
+    window.addEventListener('resize', checkTargetVisibility, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', checkTargetVisibility)
+      window.removeEventListener('resize', checkTargetVisibility)
+    }
+  }, [content.link, hasReachedTarget])
+
+  if (!content.enabled || !isVisible || hasReachedTarget) return null
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (content.link.startsWith('#')) {
@@ -202,7 +234,22 @@ export default function StickyButtonBlock({ block }: BlockProps) {
       const targetId = content.link.substring(1)
       const element = document.getElementById(targetId)
       if (element) {
+        // Scroll to target
         element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+        
+        // Set a timeout to check if target was reached (fallback mechanism)
+        // This ensures the button disappears even if IntersectionObserver-like behavior fails
+        const checkAfterScroll = () => {
+          setTimeout(() => {
+            const rect = element.getBoundingClientRect()
+            const isInViewport = rect.top >= 0 && rect.top <= window.innerHeight * 0.3
+            if (isInViewport) {
+              setHasReachedTarget(true)
+              setIsVisible(false)
+            }
+          }, 800) // Wait for smooth scroll to complete (typically 500-700ms)
+        }
+        checkAfterScroll()
       }
     }
   }
