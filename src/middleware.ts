@@ -21,7 +21,7 @@ const securityHeaders = {
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
     "connect-src 'self' https://*.supabase.co https://*.supabase.in",
-    "frame-src 'self' https://www.youtube.com https://player.vimeo.com",
+    "frame-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self'",
