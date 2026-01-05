@@ -536,3 +536,18 @@ html {
     transform: translateX(100%);
   }
 }
+
+/* Center Content Wrapper Styles - Deluxe Style */
+.center-content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.center-block {
+  background-color: var(--white-pure);
+  padding: 2rem;
+  border-radius: 0.75rem;
+}

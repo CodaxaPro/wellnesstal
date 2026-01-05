@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from 'react'
 import { BlockProps, TextContent } from './types'
+import Image from 'next/image'
 
 export default function TextBlock({ block }: BlockProps) {
   const content = block.content as TextContent
@@ -63,6 +64,9 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Get max width class
   const getMaxWidthClass = () => {
+    if (content.maxWidth === 'custom' && content.customMaxWidth) {
+      return ''
+    }
     const widthMap: Record<string, string> = {
       sm: 'max-w-2xl',
       md: 'max-w-3xl',
@@ -112,39 +116,6 @@ export default function TextBlock({ block }: BlockProps) {
           backgroundSize: 'cover',
           backgroundPosition: 'center'
         }
-      case 'pattern':
-        const patternOpacity = (content.background.patternOpacity || 10) / 100
-        const patternColor = `rgba(0, 0, 0, ${patternOpacity})`
-        const bgColor = content.background.color || '#ffffff'
-        switch (content.background.pattern) {
-          case 'dots':
-            return {
-              backgroundColor: bgColor,
-              backgroundImage: `radial-gradient(${patternColor} 1.5px, transparent 1.5px)`,
-              backgroundSize: '20px 20px'
-            }
-          case 'grid':
-            return {
-              backgroundColor: bgColor,
-              backgroundImage: `linear-gradient(${patternColor} 1px, transparent 1px), linear-gradient(90deg, ${patternColor} 1px, transparent 1px)`,
-              backgroundSize: '20px 20px'
-            }
-          case 'lines':
-            return {
-              backgroundColor: bgColor,
-              backgroundImage: `repeating-linear-gradient(45deg, ${patternColor}, ${patternColor} 1px, transparent 1px, transparent 10px)`
-            }
-          case 'waves':
-            return {
-              backgroundColor: bgColor,
-              backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 320'%3E%3Cpath fill='rgba(0,0,0,${patternOpacity})' d='M0,96L48,112C96,128,192,160,288,186.7C384,213,480,235,576,213.3C672,192,768,128,864,128C960,128,1056,192,1152,208C1248,224,1344,192,1392,176L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z'%3E%3C/path%3E%3C/svg%3E")`,
-              backgroundRepeat: 'repeat-x',
-              backgroundSize: '100% auto',
-              backgroundPosition: 'bottom'
-            }
-          default:
-            return { backgroundColor: bgColor }
-        }
       default:
         return {}
     }
@@ -153,268 +124,348 @@ export default function TextBlock({ block }: BlockProps) {
   // Get border styles
   const getBorderStyles = (): React.CSSProperties => {
     if (!content.border?.enabled) return {}
-
-    const sides = content.border.sides || { top: true, right: true, bottom: true, left: true }
-    const width = content.border.width || 1
-    const color = content.border.color || '#e2e8f0'
-    const style = content.border.style || 'solid'
-
     return {
-      borderTop: sides.top ? `${width}px ${style} ${color}` : 'none',
-      borderRight: sides.right ? `${width}px ${style} ${color}` : 'none',
-      borderBottom: sides.bottom ? `${width}px ${style} ${color}` : 'none',
-      borderLeft: sides.left ? `${width}px ${style} ${color}` : 'none',
-      borderRadius: content.border.radius || '0'
+      borderTopWidth: content.border.thickness || 1,
+      borderTopStyle: content.border.style || 'solid',
+      borderTopColor: content.border.color || '#e2e8f0',
+      paddingTop: content.border.marginTop || '2rem'
     }
+  }
+
+  // Get container styles
+  const getContainerStyles = (): React.CSSProperties => {
+    const styles: React.CSSProperties = {
+      padding: content.containerPadding || '2rem',
+      backgroundColor: content.containerBackground || '#ffffff',
+      borderRadius: content.containerBorderRadius || '0.75rem'
+    }
+
+    switch (content.containerStyle) {
+      case 'card':
+        styles.boxShadow = '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)'
+        break
+      case 'bordered':
+        styles.border = '2px solid #e2e8f0'
+        break
+      case 'shadow':
+        styles.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)'
+        break
+      case 'outlined':
+        styles.border = '3px solid #64748b'
+        break
+    }
+
+    return styles
+  }
+
+  // Render divider
+  const renderDivider = (divider?: any) => {
+    if (!divider || !divider.enabled) return null
+    return (
+      <div
+        style={{
+          borderTopWidth: divider.thickness || 1,
+          borderTopStyle: divider.style || 'solid',
+          borderTopColor: divider.color || '#e2e8f0',
+          marginTop: divider.marginTop || '2rem',
+          marginBottom: divider.marginBottom || '2rem',
+          width: divider.width || '100%'
+        }}
+      />
+    )
+  }
+
+  // Render images
+  const renderImages = () => {
+    if (!content.images || content.images.length === 0) return null
+
+    const images = content.images.map((image, index) => {
+      // Width handling - convert "full" to Tailwind class or use as style
+      const widthClass = image.width === 'full' || image.width === '100%' 
+        ? 'w-full' 
+        : image.width?.startsWith('w-') 
+          ? image.width 
+          : 'w-full'
+      
+      // For split layouts, image should fill container
+      const isSplitLayout = content.layoutType === 'image-left' || content.layoutType === 'image-right'
+      
+      const imgElement = (
+        <div
+          className={`relative ${isSplitLayout ? 'w-full h-full' : widthClass} ${isSplitLayout ? '' : (image.height === 'auto' || !image.height ? 'h-auto' : image.height)} overflow-hidden`}
+          style={{
+            borderRadius: isSplitLayout ? '0' : (image.borderRadius || '0.75rem'),
+            boxShadow: image.shadow === 'none' ? 'none' : image.shadow ? `var(--shadow-${image.shadow})` : undefined,
+            aspectRatio: isSplitLayout ? undefined : (image.aspectRatio || '16/9'),
+            maxWidth: isSplitLayout ? '100%' : (image.width && !image.width.startsWith('w-') && image.width !== 'full' ? image.width : undefined),
+            minHeight: isSplitLayout ? '100%' : undefined
+          }}
+        >
+          <Image
+            src={image.url}
+            alt={image.alt || `Image ${index + 1}`}
+            fill
+            className={`object-${image.objectFit || 'cover'}`}
+          />
+        </div>
+      )
+
+      const wrapper = (
+        <div
+          key={image.id || index}
+          className="mb-4"
+          style={{
+            textAlign: image.alignment || 'center',
+            marginBottom: index < content.images!.length - 1 ? content.imageSpacing || '2rem' : '0'
+          }}
+        >
+          {image.link ? (
+            <a href={image.link} className="inline-block">
+              {imgElement}
+            </a>
+          ) : (
+            imgElement
+          )}
+          {image.caption && (
+            <p className="text-sm text-slate-600 mt-2 italic text-center">{image.caption}</p>
+          )}
+        </div>
+      )
+
+      return wrapper
+    })
+
+    return <div className="text-block-images">{images}</div>
+  }
+
+  // Render title based on position
+  const renderTitle = () => {
+    if (content.showTitle === false || !content.title) return null
+
+    const titleParts = content.title.split(' ')
+    const lastWord = titleParts[titleParts.length - 1]
+    const restOfTitle = titleParts.slice(0, -1).join(' ')
+
+    const highlightWord = content.highlightedText || (content.useAutoHighlight !== false ? lastWord : null)
+
+    const titleElement = (
+      <h2 className="text-title mb-6 leading-tight">
+        {highlightWord && content.title.includes(highlightWord) ? (
+          <>
+            <span style={getTitleStyles()}>
+              {content.title.substring(0, content.title.lastIndexOf(highlightWord))}
+            </span>
+            <span style={{
+              ...getTitleStyles(),
+              color: content.typography?.highlightedText?.color || '#9CAF88',
+              fontWeight: content.typography?.highlightedText?.fontWeight || content.typography?.title?.fontWeight || '700'
+            }}>
+              {highlightWord}
+            </span>
+          </>
+        ) : (
+          <span style={getTitleStyles()}>{content.title}</span>
+        )}
+      </h2>
+    )
+
+    // Position-based rendering
+    if (content.titlePosition === 'center') {
+      return <div className="text-center mb-6">{titleElement}</div>
+    }
+    
+    // top (default)
+    return titleElement
   }
 
   // Get title styles
   const getTitleStyles = (): React.CSSProperties => {
-    const t = content.typography?.title
-    if (!t) return {}
-    
-    // Apply stylePreset overrides
-    if (content.stylePreset === 'problem' || content.stylePreset === 'solution') {
-      return {
-        fontSize: '2.5rem',
-        fontWeight: '700',
-        lineHeight: '1.2',
-        letterSpacing: '-0.02em',
-        color: '#2C2C2C', // charcoal
-        marginBottom: '1.5rem'
-      }
-    }
-    
     return {
-      fontSize: t.fontSize || '2rem',
-      fontWeight: t.fontWeight || '700',
-      lineHeight: t.lineHeight || '1.2',
-      letterSpacing: t.letterSpacing || '-0.02em',
-      color: t.color || '#1e293b',
-      marginBottom: t.marginBottom || '1rem'
+      fontFamily: content.typography?.title?.fontFamily || "'Poppins', sans-serif",
+      fontSize: content.typography?.title?.fontSize || '2rem',
+      fontWeight: content.typography?.title?.fontWeight || '700',
+      lineHeight: content.typography?.title?.lineHeight || '1.2',
+      letterSpacing: content.typography?.title?.letterSpacing || '-0.02em',
+      color: content.typography?.title?.color || '#2C2C2C',
+      marginBottom: content.typography?.title?.marginBottom || '1.5rem'
     }
   }
 
   // Get subtitle styles
   const getSubtitleStyles = (): React.CSSProperties => {
-    const s = content.typography?.subtitle
-    if (!s) return {}
     return {
-      fontSize: s.fontSize || '1.25rem',
-      fontWeight: s.fontWeight || '400',
-      lineHeight: s.lineHeight || '1.5',
-      color: s.color || '#64748b',
-      marginBottom: s.marginBottom || '1.5rem'
+      fontFamily: content.typography?.subtitle?.fontFamily || "'Poppins', sans-serif",
+      fontSize: content.typography?.subtitle?.fontSize || '1.25rem',
+      fontWeight: content.typography?.subtitle?.fontWeight || '400',
+      lineHeight: content.typography?.subtitle?.lineHeight || '1.5',
+      color: content.typography?.subtitle?.color || '#64748b',
+      marginBottom: content.typography?.subtitle?.marginBottom || '1.5rem'
     }
   }
 
-  // Get body styles
-  const getBodyStyles = (): React.CSSProperties => {
-    const b = content.typography?.body
-    if (!b) return {}
-    
-    // Apply stylePreset overrides
-    if (content.stylePreset === 'problem' || content.stylePreset === 'solution') {
-      return {
-        fontSize: '1.125rem',
-        fontWeight: '400',
-        lineHeight: '1.75',
-        letterSpacing: '0',
-        color: '#666666' // gray-custom
-      }
+  // Render content based on type
+  const renderContent = () => {
+    const bodyStyles: React.CSSProperties = {
+      fontFamily: content.typography?.body?.fontFamily || "'Poppins', sans-serif",
+      fontSize: content.typography?.body?.fontSize || '1.125rem',
+      fontWeight: content.typography?.body?.fontWeight || '400',
+      lineHeight: content.typography?.body?.lineHeight || '1.75',
+      letterSpacing: content.typography?.body?.letterSpacing || '0',
+      color: content.typography?.body?.color || '#666666',
+      marginBottom: content.typography?.body?.marginBottom || '0'
     }
-    
-    return {
-      fontSize: b.fontSize || '1.125rem',
-      fontWeight: b.fontWeight || '400',
-      lineHeight: b.lineHeight || '1.75',
-      letterSpacing: b.letterSpacing || '0',
-      color: b.color || '#374151'
+
+    switch (content.contentType) {
+      case 'quote':
+        return renderQuote(bodyStyles)
+      case 'callout':
+        return renderCallout(bodyStyles)
+      case 'list':
+        return renderList(bodyStyles)
+      case 'code':
+        return renderCode(bodyStyles)
+      default:
+        return renderParagraph(bodyStyles)
     }
   }
 
-  // Render divider
-  const renderDivider = (divider: typeof content.topDivider) => {
-    if (!divider?.enabled) return null
-
-    const dividerStyle: React.CSSProperties = {
-      width: divider.width || '100%',
-      height: `${divider.thickness || 1}px`,
-      backgroundColor: divider.color || '#e2e8f0',
-      marginTop: divider.marginTop || '0',
-      marginBottom: divider.marginBottom || '0',
-      borderStyle: divider.style === 'dashed' ? 'dashed' : divider.style === 'dotted' ? 'dotted' : 'solid',
-      borderWidth: divider.style !== 'solid' ? `${divider.thickness || 1}px 0 0 0` : 0,
-      borderColor: divider.color || '#e2e8f0'
+  // Render paragraph
+  const renderParagraph = (bodyStyles: React.CSSProperties) => {
+    if (content.columns > 1) {
+      const columnClass = content.columns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-3'
+      return (
+        <div className={`grid grid-cols-1 ${columnClass} gap-${content.columnGap?.replace('rem', '') || '2'}`} style={{ gap: content.columnGap || '2rem' }}>
+          {content.content.split('\n\n').map((paragraph, index) => (
+            <p key={index} className="text-body" style={bodyStyles}>
+              {paragraph}
+            </p>
+          ))}
+        </div>
+      )
     }
 
-    if (divider.style === 'gradient') {
-      dividerStyle.background = `linear-gradient(to right, transparent, ${divider.color || '#e2e8f0'}, transparent)`
-      dividerStyle.borderWidth = 0
-    }
-
-    return <div className="mx-auto" style={dividerStyle} />
-  }
-
-  // Render quote content
-  const renderQuote = () => {
-    const qs = content.quoteStyles
-    const quoteStyle: React.CSSProperties = {
-      borderLeftWidth: qs?.style === 'bordered' || qs?.style === 'simple' ? '4px' : 0,
-      borderLeftColor: qs?.borderColor || '#10b981',
-      backgroundColor: qs?.style === 'background' ? (qs?.backgroundColor || '#f0fdf4') : 'transparent',
-      padding: qs?.style === 'background' || qs?.style === 'bordered' ? '1.5rem' : '0 0 0 1.5rem',
-      borderRadius: qs?.style === 'background' ? '0.75rem' : '0'
-    }
+    // Parse HTML and apply proper paragraph spacing
+    const processedContent = content.content
+      .replace(/<p>/g, '<p style="margin-bottom: 1rem;">')
+      .replace(/<p style="margin-bottom: 1rem;">/g, '<p style="margin-bottom: 1rem;">') // Avoid double styling
+      .replace(/<p\s+style="[^"]*">/g, (match) => {
+        // If p tag already has style, add margin-bottom if not present
+        if (!match.includes('margin-bottom')) {
+          return match.replace('style="', 'style="margin-bottom: 1rem; ')
+        }
+        return match
+      })
 
     return (
-      <blockquote style={quoteStyle} className="relative text-body">
-        {(qs?.style === 'large' || qs?.style === 'icon') && qs?.quoteIcon !== 'none' && (
-          <div className="absolute -top-4 -left-2 text-6xl opacity-20" style={{ color: qs?.iconColor || '#10b981' }}>
-            "
-          </div>
-        )}
-        <p
+      <div 
+        className="text-block-html-content"
+        style={{
+          ...bodyStyles,
+          ...(content.typography?.body?.paragraphSpacing ? {
+            // Apply paragraph spacing via CSS
+          } : {})
+        }}
+        dangerouslySetInnerHTML={{ __html: processedContent }}
+      />
+    )
+  }
+
+  // Render quote
+  const renderQuote = (bodyStyles: React.CSSProperties) => {
+    const qs = content.quoteStyles
+    return (
+      <blockquote
+        className={`border-l-4 ${qs?.style === 'large' ? 'border-sage-500' : 'border-slate-300'} pl-6 py-4 my-6`}
+        style={{
+          backgroundColor: qs?.backgroundColor || 'transparent',
+          borderRadius: qs?.borderRadius || '0.5rem',
+          fontStyle: 'italic'
+        }}
+      >
+        <div
           className={`text-body ${qs?.style === 'large' ? 'text-2xl font-medium italic' : 'text-lg italic'}`}
-          style={getBodyStyles()}
+          style={{
+            ...bodyStyles,
+            color: qs?.textColor || bodyStyles.color
+          }}
         >
           {content.content}
-        </p>
+        </div>
         {(content.quoteAuthor || content.quoteRole) && (
-          <footer className="mt-4">
-            {content.quoteAuthor && (
-              <cite className="not-italic font-semibold text-slate-700">{content.quoteAuthor}</cite>
-            )}
-            {content.quoteRole && (
-              <span className="block text-sm" style={{ color: qs?.authorColor || '#64748b' }}>
-                {content.quoteRole}
-              </span>
-            )}
+          <footer className="mt-4 text-sm text-slate-500">
+            {content.quoteAuthor && <cite className="font-semibold">{content.quoteAuthor}</cite>}
+            {content.quoteRole && <span className="ml-2">— {content.quoteRole}</span>}
           </footer>
         )}
       </blockquote>
     )
   }
 
-  // Render list content
-  const renderList = () => {
-    if (!content.listItems?.length) return null
-
-    const ListTag = content.listType === 'numbered' ? 'ol' : 'ul'
-    const listClass = content.listType === 'numbered' ? 'list-decimal' :
-                      content.listType === 'check' ? 'list-none' : 'list-disc'
-
+  // Render callout
+  const renderCallout = (bodyStyles: React.CSSProperties) => {
     return (
-      <ListTag className={`${listClass} list-inside space-y-2 text-body`} style={getBodyStyles()}>
-        {content.listItems.map((item, index) => (
-          <li key={item.id || index} className={`flex items-start gap-3 ${item.checked === false ? 'opacity-50' : ''}`}>
-            {content.listType === 'check' && (
-              <span style={{ color: content.listIconColor || '#10b981' }}>
-                {item.checked ? '✓' : '○'}
-              </span>
-            )}
-            {content.listType === 'icon' && (
-              <span style={{ color: content.listIconColor || '#10b981' }}>★</span>
-            )}
-            <span className={item.checked ? 'line-through' : ''}>{item.content}</span>
-          </li>
-        ))}
-      </ListTag>
+      <div
+        className="p-6 rounded-xl bg-amber-50 border-l-4 border-amber-400 my-6"
+        style={{
+          backgroundColor: content.typography?.callout?.backgroundColor || '#fef3c7',
+          borderColor: content.typography?.callout?.borderColor || '#fbbf24'
+        }}
+      >
+        <div className="text-body" style={bodyStyles}>
+          {content.content}
+        </div>
+      </div>
     )
   }
 
-  // Render code content
-  const renderCode = () => {
-    const isDark = content.codeTheme === 'dark'
+  // Render list
+  const renderList = (bodyStyles: React.CSSProperties) => {
+    const items = content.listItems || content.content.split('\n').filter(line => line.trim())
+    const listType = content.listType || 'bullet'
+
+    return (
+      <ul
+        className={`${
+          listType === 'numbered' ? 'list-decimal' :
+          listType === 'check' ? 'list-none' :
+          'list-disc'
+        } space-y-2 my-6`}
+        style={{
+          paddingLeft: listType === 'check' ? '0' : '1.5rem',
+          ...bodyStyles
+        }}
+      >
+        {items.map((item, index) => (
+          <li key={index} className="text-body">
+            {typeof item === 'string' ? item : item.text}
+          </li>
+        ))}
+      </ul>
+    )
+  }
+
+  // Render code
+  const renderCode = (bodyStyles: React.CSSProperties) => {
     return (
       <pre
-        className={`p-4 rounded-xl overflow-x-auto ${isDark ? 'bg-slate-900 text-green-400' : 'bg-slate-100 text-slate-800'}`}
+        className={`p-4 rounded-lg overflow-x-auto my-6 ${
+          content.codeTheme === 'dark' ? 'bg-slate-900 text-slate-100' : 'bg-slate-100 text-slate-900'
+        }`}
+        style={{
+          fontFamily: 'monospace',
+          ...bodyStyles
+        }}
       >
-        <code className="text-sm font-mono whitespace-pre-wrap">{content.content}</code>
+        <code>{content.content}</code>
       </pre>
     )
   }
 
-  // Render callout content
-  const renderCallout = () => {
-    const borderColor = content.quoteStyles?.borderColor || '#3b82f6'
-    const bgColor = content.quoteStyles?.backgroundColor || '#eff6ff'
-
-    return (
-      <div
-        className="p-4 rounded-xl border-l-4 text-body"
-        style={{
-          borderLeftColor: borderColor,
-          backgroundColor: bgColor
-        }}
-      >
-        <p className="text-body" style={getBodyStyles()}>{content.content}</p>
-      </div>
-    )
-  }
-
-  // Render paragraph content with drop cap
-  const renderParagraph = () => {
-    const paragraphs = content.content?.split('\n\n') || []
-    const dropCap = content.typography?.dropCap
-
-    return (
-      <div
-        className="space-y-6 text-body"
-        style={{
-          columnCount: content.columns || 1,
-          columnGap: content.columnGap || '2rem'
-        }}
-      >
-        {paragraphs.map((para, index) => (
-          <p key={index} style={getBodyStyles()} className="break-inside-avoid text-body">
-            {index === 0 && dropCap?.enabled && para.length > 0 ? (
-              <>
-                <span
-                  className="float-left mr-2"
-                  style={{
-                    fontSize: dropCap.fontSize || '4rem',
-                    fontWeight: dropCap.fontWeight || '700',
-                    color: dropCap.color || '#10b981',
-                    lineHeight: 0.8,
-                    marginRight: dropCap.marginRight || '0.5rem'
-                  }}
-                >
-                  {para.charAt(0)}
-                </span>
-                {para.slice(1)}
-              </>
-            ) : (
-              para
-            )}
-          </p>
-        ))}
-      </div>
-    )
-  }
-
-  // Render content based on type
-  const renderContent = () => {
-    switch (content.contentType) {
-      case 'quote':
-        return renderQuote()
-      case 'list':
-        return renderList()
-      case 'code':
-        return renderCode()
-      case 'callout':
-        return renderCallout()
-      case 'paragraph':
-      default:
-        return renderParagraph()
-    }
-  }
-
   // Render CTA button
   const renderCTA = () => {
-    if (!content.ctaButton?.enabled) return null
-
     const btn = content.ctaButton
+    if (!btn || !btn.enabled) return null
+
     const sizeClasses = {
       sm: 'px-4 py-2 text-sm',
       md: 'px-6 py-3 text-base',
@@ -451,6 +502,205 @@ export default function TextBlock({ block }: BlockProps) {
           {btn.icon && btn.iconPosition === 'right' && <span>{btn.icon}</span>}
         </a>
       </div>
+    )
+  }
+
+  // Render inner content (reusable)
+  const renderInnerContent = () => {
+    return (
+      <>
+        {/* Top Divider */}
+        {renderDivider(content.topDivider)}
+
+        {/* Container wrapper if style is set */}
+        {(content.containerStyle && content.containerStyle !== 'none') ? (
+          <div style={getContainerStyles()}>
+            {/* Images at top */}
+            {(content.imagePosition === 'top') && renderImages()}
+
+            {/* Enterprise Layout: Image-Left or Image-Right */}
+            {content.layoutType === 'image-left' || content.layoutType === 'image-right' ? (
+              <div className={`grid ${content.layoutType === 'image-left' ? 'md:grid-cols-[1fr_1fr]' : 'md:grid-cols-[1fr_1fr]'} gap-0 items-stretch`} style={{ minHeight: '500px' }}>
+                {/* Image */}
+                <div className={`${content.layoutType === 'image-left' ? 'order-1' : 'order-2'} relative`} style={{ minHeight: '500px', width: '100%' }}>
+                  {content.images && content.images.length > 0 && (
+                    <div className="absolute inset-0 w-full h-full">
+                      <Image
+                        src={content.images[0].url}
+                        alt={content.images[0].alt || 'Image'}
+                        fill
+                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  )}
+                </div>
+                {/* Content */}
+                <div className={`${getAlignmentClass()} text-content ${content.layoutType === 'image-left' ? 'order-2' : 'order-1'} flex flex-col justify-center`} style={{ 
+                  backgroundColor: '#ffffff',
+                  padding: '3rem 2rem'
+                }}>
+                  {renderTitle()}
+                  {content.showSubtitle && content.subtitle && (
+                    <p className="text-subtitle" style={getSubtitleStyles()}>{content.subtitle}</p>
+                  )}
+                  {renderContent()}
+                  {renderCTA()}
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Images at top */}
+                {(content.imagePosition === 'top' || content.imagePosition === 'full-width') && renderImages()}
+
+                <div className={`${getAlignmentClass()} text-content`}>
+                  {renderTitle()}
+
+                  {/* Subtitle */}
+                  {content.showSubtitle && content.subtitle && (
+                    <p className="text-subtitle" style={getSubtitleStyles()}>{content.subtitle}</p>
+                  )}
+
+                  {/* Enterprise Layout: Image-Left or Image-Right (inline) */}
+                  {(content.imagePosition === 'left' || content.imagePosition === 'right') ? (
+                    <div className={`grid ${content.imagePosition === 'left' ? 'md:grid-cols-[1fr_2fr]' : 'md:grid-cols-[2fr_1fr]'} gap-8 lg:gap-12 items-start`}>
+                      <div className={content.imagePosition === 'left' ? 'order-1' : 'order-2'}>
+                        {renderImages()}
+                      </div>
+                      <div className={`${content.imagePosition === 'left' ? 'order-2' : 'order-1'}`}>
+                        {renderContent()}
+                        {renderCTA()}
+                      </div>
+                    </div>
+                  ) : (
+                    <>
+                      {/* Images inline-left or inline-right */}
+                      {(content.imagePosition === 'inline-left' || content.imagePosition === 'inline-right' || content.imagePosition === 'inline-center') && (
+                        <div
+                          className={`flex ${content.imagePosition === 'inline-left' ? 'flex-row' : content.imagePosition === 'inline-right' ? 'flex-row-reverse' : 'flex-col'}`}
+                          style={{ gap: content.imageSpacing || '2rem', alignItems: 'center', marginBottom: content.imageSpacing || '2rem' }}
+                        >
+                          <div style={{ flex: content.imagePosition === 'inline-center' ? '1' : '0 0 auto' }}>
+                            {renderImages()}
+                          </div>
+                          <div style={{ flex: '1' }}>
+                            {renderContent()}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Regular content (if not inline/split image) */}
+                      {!['left', 'right', 'inline-left', 'inline-right', 'inline-center'].includes(content.imagePosition || 'none') && (
+                        <>
+                          {renderContent()}
+                        </>
+                      )}
+
+                      {renderCTA()}
+                    </>
+                  )}
+                </div>
+
+                {/* Images at bottom */}
+                {(content.imagePosition === 'bottom') && renderImages()}
+              </>
+            )}
+          </div>
+        ) : (
+          <>
+            {/* Enterprise Layout: Image-Left or Image-Right (no container) */}
+            {content.layoutType === 'image-left' || content.layoutType === 'image-right' ? (
+              <div className={`grid ${content.layoutType === 'image-left' ? 'md:grid-cols-[1fr_1fr]' : 'md:grid-cols-[1fr_1fr]'} gap-0 items-stretch`} style={{ minHeight: '500px' }}>
+                <div className={`${content.layoutType === 'image-left' ? 'order-1' : 'order-2'} relative`} style={{ minHeight: '500px', width: '100%' }}>
+                  {content.images && content.images.length > 0 && (
+                    <div className="absolute inset-0 w-full h-full">
+                      <Image
+                        src={content.images[0].url}
+                        alt={content.images[0].alt || 'Image'}
+                        fill
+                        className="object-cover"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    </div>
+                  )}
+                </div>
+                <div className={`${getAlignmentClass()} text-content ${content.layoutType === 'image-left' ? 'order-2' : 'order-1'} flex flex-col justify-center`} style={{ 
+                  backgroundColor: '#ffffff',
+                  padding: '3rem 2rem'
+                }}>
+                  {renderTitle()}
+                  {content.showSubtitle && content.subtitle && (
+                    <p className="text-subtitle" style={getSubtitleStyles()}>{content.subtitle}</p>
+                  )}
+                  {renderContent()}
+                  {renderCTA()}
+                </div>
+              </div>
+            ) : (
+              <>
+                {/* Images at top */}
+                {(content.imagePosition === 'top' || content.imagePosition === 'full-width') && renderImages()}
+
+                {/* Full-width images are outside container */}
+                {content.imagePosition === 'full-width' ? null : (
+                  <div className={`${getAlignmentClass()} text-content`}>
+                    {renderTitle()}
+
+                    {content.showSubtitle && content.subtitle && (
+                      <p className="text-subtitle" style={getSubtitleStyles()}>{content.subtitle}</p>
+                    )}
+
+                    {/* Enterprise Layout: Image-Left or Image-Right (inline) */}
+                    {(content.imagePosition === 'left' || content.imagePosition === 'right') ? (
+                      <div className={`grid ${content.imagePosition === 'left' ? 'md:grid-cols-[1fr_2fr]' : 'md:grid-cols-[2fr_1fr]'} gap-8 lg:gap-12 items-start`}>
+                        <div className={content.imagePosition === 'left' ? 'order-1' : 'order-2'}>
+                          {renderImages()}
+                        </div>
+                        <div className={content.imagePosition === 'left' ? 'order-2' : 'order-1'}>
+                          {renderContent()}
+                          {renderCTA()}
+                        </div>
+                      </div>
+                    ) : (
+                      <>
+                        {/* Images inline-left or inline-right */}
+                        {(content.imagePosition === 'inline-left' || content.imagePosition === 'inline-right' || content.imagePosition === 'inline-center') && (
+                          <div
+                            className={`flex ${content.imagePosition === 'inline-left' ? 'flex-row' : content.imagePosition === 'inline-right' ? 'flex-row-reverse' : 'flex-col'}`}
+                            style={{ gap: content.imageSpacing || '2rem', alignItems: 'center', marginBottom: content.imageSpacing || '2rem' }}
+                          >
+                            <div style={{ flex: content.imagePosition === 'inline-center' ? '1' : '0 0 auto' }}>
+                              {renderImages()}
+                            </div>
+                            <div style={{ flex: '1' }}>
+                              {renderContent()}
+                            </div>
+                          </div>
+                        )}
+
+                        {/* Regular content */}
+                        {!['left', 'right', 'inline-left', 'inline-right', 'inline-center'].includes(content.imagePosition || 'none') && (
+                          <>
+                            {renderContent()}
+                          </>
+                        )}
+
+                        {renderCTA()}
+                      </>
+                    )}
+                  </div>
+                )}
+
+                {/* Images at bottom */}
+                {(content.imagePosition === 'bottom') && renderImages()}
+              </>
+            )}
+          </>
+        )}
+
+        {/* Bottom Divider */}
+        {renderDivider(content.bottomDivider)}
+      </>
     )
   }
 
@@ -507,6 +757,39 @@ export default function TextBlock({ block }: BlockProps) {
         text-decoration: ${content.typography.links.hoverDecoration || 'none'};
       }
     ` : ''}
+    /* Paragraph spacing */
+    .text-block-${block.id} .text-block-html-content p {
+      margin-bottom: ${content.typography?.body?.paragraphSpacing || '1rem'};
+      line-height: ${content.typography?.body?.lineHeight || '1.75'};
+    }
+    .text-block-${block.id} .text-block-html-content p:last-child {
+      margin-bottom: 0;
+    }
+    .text-block-${block.id} .text-block-html-content ul,
+    .text-block-${block.id} .text-block-html-content ol {
+      margin-bottom: ${content.typography?.body?.paragraphSpacing || '1rem'};
+    }
+    .text-block-${block.id} .text-block-html-content ul li,
+    .text-block-${block.id} .text-block-html-content ol li {
+      margin-bottom: 0.5rem;
+    }
+    .text-block-${block.id} .text-block-html-content strong {
+      font-weight: 600;
+      color: ${content.typography?.body?.color || '#666666'};
+    }
+    /* Center Content Wrapper Styles */
+    .center-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+    }
+    .center-block {
+      background-color: ${content.wrapperBackground || '#ffffff'};
+      padding: ${content.wrapperPadding || '2rem'};
+      border-radius: ${content.containerBorderRadius || '0.75rem'};
+    }
   `
 
   return (
@@ -524,7 +807,7 @@ export default function TextBlock({ block }: BlockProps) {
           marginBottom: margin.bottom
         }}
       >
-      {/* Image overlay for background image */}
+      {/* Background image overlay */}
       {content.background?.type === 'image' && content.background.imageOverlayOpacity && (
         <div
           className="absolute inset-0"
@@ -535,38 +818,43 @@ export default function TextBlock({ block }: BlockProps) {
         />
       )}
 
-      <div
-        className={`${getMaxWidthClass()} mx-auto relative text-inner`}
-        style={{
-          paddingLeft: padding.left,
-          paddingRight: padding.right,
-          ...getBorderStyles()
-        }}
-      >
-        {/* Top Divider */}
-        {renderDivider(content.topDivider)}
-
-        <div className={`${getAlignmentClass()} text-content`}>
-          {/* Title */}
-          {content.showTitle !== false && content.title && (
-            <h2 className="text-title" style={getTitleStyles()}>{content.title}</h2>
-          )}
-
-          {/* Subtitle */}
-          {content.showSubtitle && content.subtitle && (
-            <p className="text-subtitle" style={getSubtitleStyles()}>{content.subtitle}</p>
-          )}
-
-          {/* Main Content */}
-          {renderContent()}
-
-          {/* CTA Button */}
-          {renderCTA()}
+      {/* Content Wrapper - center-content-wrapper / center-block */}
+      {content.contentWrapper === 'center-content-wrapper' || content.contentWrapper === 'center-block' ? (
+        <div className={`center-content-wrapper ${content.contentWrapper === 'center-block' ? 'center-block' : ''}`}>
+          <div
+            className={`${getMaxWidthClass()} mx-auto relative text-inner`}
+            style={{
+              paddingLeft: padding.left,
+              paddingRight: padding.right,
+              ...getBorderStyles(),
+              ...(content.contentWrapper === 'center-block' ? {
+                padding: content.wrapperPadding || '2rem',
+                backgroundColor: content.wrapperBackground || 'transparent',
+                borderRadius: content.containerBorderRadius || '0.75rem'
+              } : {}),
+              ...(content.maxWidth === 'custom' && content.customMaxWidth ? {
+                maxWidth: content.customMaxWidth
+              } : {})
+            }}
+          >
+            {renderInnerContent()}
+          </div>
         </div>
-
-        {/* Bottom Divider */}
-        {renderDivider(content.bottomDivider)}
-      </div>
+      ) : (
+        <div
+          className={`${getMaxWidthClass()} mx-auto relative text-inner`}
+          style={{
+            paddingLeft: padding.left,
+            paddingRight: padding.right,
+            ...getBorderStyles(),
+            ...(content.maxWidth === 'custom' && content.customMaxWidth ? {
+              maxWidth: content.customMaxWidth
+            } : {})
+          }}
+        >
+          {renderInnerContent()}
+        </div>
+      )}
     </section>
     </>
   )

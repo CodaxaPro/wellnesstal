@@ -322,6 +322,8 @@ export default function EmbedBlock({ block }: BlockProps) {
 
   return (
     <section
+      id={content.sectionId || 'booking'}
+      data-booking-section
       className={content.customClass || ''}
       id={content.sectionId}
       style={getBackgroundStyle()}

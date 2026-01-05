@@ -254,8 +254,8 @@ export interface HeroContent {
 // Text Block Layout Types
 export type TextLayoutType = 'default' | 'narrow' | 'wide' | 'full' | 'split' | 'sidebar-left' | 'sidebar-right'
 
-// Text Block Style Presets
-export type TextStylePreset = 'article' | 'quote' | 'feature' | 'minimal' | 'card' | 'highlight' | 'problem' | 'solution' | 'custom'
+// Text Block Style Presets - 'about' is priority/default for brand consistency
+export type TextStylePreset = 'about' | 'article' | 'quote' | 'feature' | 'minimal' | 'card' | 'highlight' | 'problem' | 'solution' | 'custom'
 
 // Rich Text Format Element
 export interface TextFormatElement {
@@ -271,6 +271,22 @@ export interface TextListItem {
   content: string
   checked?: boolean // for checklist
 }
+
+// Text Block Image
+export interface TextImage {
+  id: string
+  url: string
+  alt: string
+  caption?: string
+  width?: string // e.g., '100%', '300px', '50%'
+  alignment?: 'left' | 'center' | 'right'
+  borderRadius?: string
+  shadow?: boolean
+  link?: string
+}
+
+// Text Block Container Style
+export type TextContainerStyle = 'none' | 'box' | 'card' | 'bordered' | 'shadow' | 'outlined'
 
 // Text Block CTA Button
 export interface TextCTAButton {
@@ -320,6 +336,7 @@ export interface TextTypography {
     letterSpacing: string
     color: string
     marginBottom: string
+    fontFamily?: string
   }
   // Subtitle
   subtitle: {
@@ -329,6 +346,7 @@ export interface TextTypography {
     lineHeight: string
     color: string
     marginBottom: string
+    fontFamily?: string
   }
   // Body Text
   body: {
@@ -338,6 +356,7 @@ export interface TextTypography {
     letterSpacing: string
     color: string
     paragraphSpacing: string
+    fontFamily?: string
   }
   // Drop Cap
   dropCap: {
@@ -425,9 +444,31 @@ export interface TextContent {
   title?: string
   subtitle?: string
   content: string
+  highlightedText?: string // Vurgulanacak kelime (title'ın son kelimesi otomatik, override edilebilir)
+  useAutoHighlight?: boolean // Otomatik son kelime vurgulama (default: true)
 
   // Content Type
   contentType: 'paragraph' | 'quote' | 'callout' | 'list' | 'code'
+
+  // Images/Media
+  images?: TextImage[]
+  imagePosition?: 'none' | 'left' | 'right' | 'top' | 'bottom' | 'full-width' | 'inline-left' | 'inline-right' | 'inline-center'
+  imageSpacing?: string // spacing between image and text
+  titlePosition?: 'top' | 'left' | 'right' | 'center' // Başlık konumu
+  layoutType?: 'default' | 'split-left' | 'split-right' | 'image-left' | 'image-right' // Enterprise layout options
+
+  // Container Style
+  containerStyle?: TextContainerStyle
+  containerPadding?: string
+  containerBackground?: string
+  containerBorderRadius?: string
+  
+  // Content Wrapper (center-content-wrapper / center-block)
+  contentWrapper?: 'none' | 'center-content-wrapper' | 'center-block'
+  wrapperMaxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'custom'
+  wrapperCustomWidth?: string
+  wrapperPadding?: string
+  wrapperBackground?: string
 
   // Quote specific
   quoteAuthor?: string
@@ -1245,8 +1286,76 @@ export interface Testimonial {
   }
 }
 
+export interface StatItem {
+  value: string
+  label: string
+}
+
+export interface TestimonialsBlockStyles {
+  badge?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+    backgroundColor?: string
+  }
+  sectionTitle?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  highlightedText?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  description?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  statsValue?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  statsLabel?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+}
+
 export interface TestimonialsContent {
   title?: string
+  subtitle?: string
+  // Ana sayfadaki gibi yeni alanlar
+  badge?: string
+  sectionTitle?: string
+  highlightedText?: string
+  description?: string
+  autoSlideDelay?: number
+  autoPlay?: boolean
+  showRatings?: boolean
+  maxDisplayCount?: number
+  stats?: StatItem[]
+  styles?: TestimonialsBlockStyles
+  background?: {
+    color?: string
+    image?: string
+  }
+  cardStyles?: {
+    mainCardBackground?: string
+    mainCardRadius?: string
+    smallCardBackground?: string
+    smallCardRadius?: string
+  }
+  // Orijinal alanlar
   testimonials: Testimonial[]
   layout?: 'carousel' | 'grid'
 }
@@ -1258,6 +1367,89 @@ export interface ContactContent {
   showInfo?: boolean
   mapUrl?: string
   customText?: string
+}
+
+// ============================================
+// ABOUT BLOCK TYPES
+// ============================================
+
+export interface AboutImage {
+  url: string
+  alt: string
+}
+
+export interface AboutStat {
+  label: string
+  value: string
+}
+
+export interface AboutButtonStyle {
+  fontFamily?: string
+  fontSize?: string
+  fontWeight?: string
+  color?: string
+  backgroundColor?: string
+  borderColor?: string
+}
+
+export interface AboutStyles {
+  badge?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+    backgroundColor?: string
+  }
+  title?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  highlightedText?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  description?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  statsValue?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  statsLabel?: {
+    fontFamily?: string
+    fontSize?: string
+    fontWeight?: string
+    color?: string
+  }
+  primaryButton?: AboutButtonStyle
+  secondaryButton?: AboutButtonStyle
+}
+
+export interface AboutContent {
+  badge?: string
+  title?: string
+  highlightedText?: string
+  description?: string
+  stats?: AboutStat[]
+  primaryButton?: string
+  primaryButtonLink?: string
+  secondaryButton?: string
+  secondaryButtonLink?: string
+  images?: AboutImage[]
+  styles?: AboutStyles
+  background?: {
+    color?: string
+    image?: string
+  }
 }
 
 // ============================================

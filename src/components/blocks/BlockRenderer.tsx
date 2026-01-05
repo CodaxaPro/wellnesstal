@@ -7,6 +7,7 @@ import GalleryBlock from './GalleryBlock'
 import ServicesBlock from './ServicesBlock'
 import PricingBlock from './PricingBlock'
 import TestimonialsBlock from './TestimonialsBlock'
+import AboutBlock from './AboutBlock'
 import ContactBlock from './ContactBlock'
 import CtaBlock from './CtaBlock'
 import FaqBlock from './FaqBlock'
@@ -20,6 +21,7 @@ import HeaderBlock from './HeaderBlock'
 import FooterBlock from './FooterBlock'
 import SEOBlock from './SEOBlock'
 import HeroBlock from './HeroBlock'
+import StickyButtonBlock from './StickyButtonBlock'
 
 interface BlockRendererProps {
   blocks: PageBlock[]
@@ -36,6 +38,7 @@ const blockComponents: Record<string, React.ComponentType<BlockProps>> = {
   services: ServicesBlock,
   pricing: PricingBlock,
   testimonials: TestimonialsBlock,
+  about: AboutBlock,
   contact: ContactBlock,
   cta: CtaBlock,
   faq: FaqBlock,
@@ -48,6 +51,7 @@ const blockComponents: Record<string, React.ComponentType<BlockProps>> = {
   header: HeaderBlock,
   footer: FooterBlock,
   seo: SEOBlock,
+  'sticky-button': StickyButtonBlock,
 }
 
 export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: BlockRendererProps) {

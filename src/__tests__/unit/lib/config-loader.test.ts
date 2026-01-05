@@ -60,15 +60,41 @@ const createValidConfig = (overrides = {}): TemplateConfig => ({
       secondaryColor: '#10B981',
       accentColor: '#F59E0B',
       fontFamily: 'Inter',
-      borderRadius: 'rounded-lg'
+      fontSize: {
+        sm: '0.875rem',
+        base: '1rem',
+        lg: '1.125rem',
+        xl: '1.25rem'
+      },
+      borderRadius: 'rounded-lg',
+      spacing: 'comfortable',
+      darkMode: false
     },
+    components: {},
     layout: {
-      sidebarPosition: 'left',
-      contentWidth: 'max-w-6xl'
+      sidebar: {
+        position: 'left',
+        collapsible: true,
+        defaultCollapsed: false
+      },
+      navigation: {
+        style: 'sidebar',
+        items: []
+      },
+      dashboard: {
+        widgets: [],
+        layout: 'grid'
+      }
     }
   },
+  business: {
+    workflows: [],
+    validations: {},
+    automations: []
+  },
   features: {
-    enabled: ['crud', 'search']
+    enabled: ['crud', 'search'],
+    disabled: []
   },
   ...overrides
 } as TemplateConfig)

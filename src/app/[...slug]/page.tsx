@@ -108,9 +108,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         noarchive: seoContent.robots?.noarchive,
         nosnippet: seoContent.robots?.nosnippet,
         noimageindex: seoContent.robots?.noimageindex,
-        maxSnippet: seoContent.robots?.maxSnippet,
-        maxImagePreview: seoContent.robots?.maxImagePreview,
-        maxVideoPreview: seoContent.robots?.maxVideoPreview,
+        'max-snippet': seoContent.robots?.maxSnippet,
+        'max-image-preview': seoContent.robots?.maxImagePreview,
+        'max-video-preview': seoContent.robots?.maxVideoPreview,
         // Enterprise: Google, Bing, Yandex specific directives
         googleBot: {
           index: seoContent.robots?.index ?? !page.no_index,

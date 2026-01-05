@@ -1,7 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { TextContent, TextListItem } from '../../types'
+import { useState, useRef } from 'react'
+import { TextContent, TextListItem, TextImage } from '../../types'
 import { CONTENT_TYPE_OPTIONS } from './defaults'
 
 interface ContentTabProps {
@@ -11,6 +11,94 @@ interface ContentTabProps {
 
 export default function ContentTab({ content, updateContent }: ContentTabProps) {
   const [newListItem, setNewListItem] = useState('')
+  const [newImageUrl, setNewImageUrl] = useState('')
+  const [newImageAlt, setNewImageAlt] = useState('')
+  const [uploadingImage, setUploadingImage] = useState<number | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Handle image upload
+  const handleImageUpload = async (file: File, index?: number) => {
+    if (!file) return
+    
+    setUploadingImage(index ?? -1)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'text-block')
+      
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      })
+      
+      const data = await response.json()
+      if (data.success && data.data?.url) {
+        if (index !== undefined) {
+          // Update existing image
+          const images = [...(content.images || [])]
+          images[index] = { ...images[index], url: data.data.url }
+          updateContent({ images })
+        } else {
+          // Add new image
+          const newImage: TextImage = {
+            id: `img-${Date.now()}`,
+            url: data.data.url,
+            alt: newImageAlt || file.name.split('.')[0],
+            position: 'top',
+            width: 'full'
+          }
+          updateContent({ 
+            images: [...(content.images || []), newImage],
+            imagePosition: content.imagePosition || 'top' // Auto-set position if not set
+          })
+          setNewImageUrl('')
+          setNewImageAlt('')
+        }
+      }
+    } catch (error) {
+      console.error('Failed to upload image:', error)
+      alert('Görsel yüklenirken hata oluştu')
+    } finally {
+      setUploadingImage(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
+  // Add image via URL
+  const addImageByUrl = () => {
+    if (!newImageUrl.trim()) return
+    
+    const newImage: TextImage = {
+      id: `img-${Date.now()}`,
+      url: newImageUrl.trim(),
+      alt: newImageAlt || 'Image',
+      position: 'top',
+      width: 'full'
+    }
+    updateContent({ 
+      images: [...(content.images || []), newImage],
+      imagePosition: content.imagePosition || 'top'
+    })
+    setNewImageUrl('')
+    setNewImageAlt('')
+  }
+
+  // Update image
+  const updateImage = (index: number, field: keyof TextImage, value: any) => {
+    const images = [...(content.images || [])]
+    images[index] = { ...images[index], [field]: value }
+    updateContent({ images })
+  }
+
+  // Delete image
+  const deleteImage = (index: number) => {
+    const images = (content.images || []).filter((_, i) => i !== index)
+    updateContent({ images })
+  }
 
   const addListItem = () => {
     if (!newListItem.trim()) return
@@ -75,10 +163,88 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
             <input
               type="text"
               value={content.title || ''}
-              onChange={(e) => updateContent({ title: e.target.value })}
-              placeholder="Başlık yazın..."
+              onChange={(e) => {
+                const newTitle = e.target.value
+                updateContent({ 
+                  title: newTitle,
+                  // Otomatik olarak son kelimeyi highlighted text olarak ayarla
+                  highlightedText: content.useAutoHighlight !== false && newTitle ? newTitle.split(' ').slice(-1)[0] : content.highlightedText
+                })
+              }}
+              placeholder="Başlık yazın... (Son kelime otomatik vurgulanır)"
               className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 text-lg font-semibold"
             />
+            
+            {/* Vurgulu Metin Ayarları - Kullanıcı Dostu */}
+            {content.title && (
+              <div className="mt-3 p-3 bg-sage-50 rounded-lg border border-sage-200">
+                <div className="flex items-center justify-between mb-2">
+                  <label className="text-xs font-medium text-slate-700">Vurgulu Metin</label>
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      checked={content.useAutoHighlight !== false}
+                      onChange={(e) => {
+                        const useAuto = e.target.checked
+                        updateContent({
+                          useAutoHighlight: useAuto,
+                          highlightedText: useAuto ? content.title.split(' ').slice(-1)[0] : content.highlightedText
+                        })
+                      }}
+                      className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
+                    />
+                    <span className="text-xs text-slate-600">Otomatik (Son kelime)</span>
+                  </label>
+                </div>
+
+                {content.useAutoHighlight !== false ? (
+                  // Otomatik mod - Kelime seçimi
+                  <div>
+                    <p className="text-xs text-slate-500 mb-2">Vurgulanacak kelimeyi seçin:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {content.title.split(' ').map((word, index) => {
+                        const isLastWord = index === content.title.split(' ').length - 1
+                        const isSelected = isLastWord || content.highlightedText === word
+                        return (
+                          <button
+                            key={index}
+                            type="button"
+                            onClick={() => {
+                              updateContent({ 
+                                highlightedText: word,
+                                useAutoHighlight: false // Manuel seçim yapıldığında otomatik modu kapat
+                              })
+                            }}
+                            className={`px-2 py-1 rounded-md text-xs font-medium transition-all ${
+                              isSelected
+                                ? 'bg-sage-500 text-white shadow-sm'
+                                : 'bg-white text-slate-700 border border-slate-300 hover:border-sage-400'
+                            }`}
+                          >
+                            {word}
+                          </button>
+                        )
+                      })}
+                    </div>
+                    <p className="text-xs text-sage-600 mt-2">
+                      ✓ Seçili: <strong>"{content.highlightedText || content.title.split(' ').slice(-1)[0]}"</strong>
+                    </p>
+                  </div>
+                ) : (
+                  // Manuel mod
+                  <div>
+                    <label className="block text-xs text-slate-500 mb-1">Manuel Vurgulu Metin</label>
+                    <input
+                      type="text"
+                      value={content.highlightedText || ''}
+                      onChange={(e) => updateContent({ highlightedText: e.target.value })}
+                      placeholder="Vurgulanacak kelime veya metin"
+                      className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                    />
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {content.showSubtitle && (
@@ -403,6 +569,160 @@ Birden fazla paragraf için boş satır bırakabilirsiniz."
           </div>
         </div>
       )}
+
+      {/* Images Management - Görsel Yönetimi */}
+      <div className="p-4 bg-white rounded-xl border border-slate-200">
+        <label className="block text-sm font-semibold text-slate-700 mb-4">🖼️ Görseller</label>
+        
+        {/* Upload Area */}
+        <div className="mb-4 p-4 border-2 border-dashed border-slate-300 rounded-xl hover:border-sage-500 transition-colors">
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files?.[0]
+              if (file) handleImageUpload(file)
+            }}
+            className="hidden"
+            id="text-block-image-upload"
+          />
+          <label htmlFor="text-block-image-upload" className="cursor-pointer">
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
+                {uploadingImage === -1 ? (
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sage-500"></div>
+                ) : (
+                  <svg className="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                )}
+              </div>
+              <div>
+                <p className="text-sm font-medium text-slate-700">
+                  {uploadingImage === -1 ? 'Yükleniyor...' : 'Dosya Yükle'}
+                </p>
+                <p className="text-xs text-slate-500">veya URL ile ekle</p>
+              </div>
+            </div>
+          </label>
+          
+          {/* URL Input */}
+          <div className="grid grid-cols-[1fr_auto] gap-2">
+            <div>
+              <input
+                type="text"
+                value={newImageUrl}
+                onChange={(e) => setNewImageUrl(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && addImageByUrl()}
+                placeholder="Görsel URL'si (https://...)"
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+              />
+            </div>
+            <button
+              onClick={addImageByUrl}
+              disabled={!newImageUrl.trim()}
+              className="px-4 py-2 bg-sage-500 text-white rounded-lg hover:bg-sage-600 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            >
+              Ekle
+            </button>
+          </div>
+          <input
+            type="text"
+            value={newImageAlt}
+            onChange={(e) => setNewImageAlt(e.target.value)}
+            placeholder="Alt text (opsiyonel)"
+            className="w-full mt-2 px-3 py-2 border border-slate-200 rounded-lg text-sm"
+          />
+        </div>
+
+        {/* Images List */}
+        {(content.images || []).length > 0 && (
+          <div className="space-y-3 max-h-[400px] overflow-y-auto">
+            {(content.images || []).map((image, index) => (
+              <div key={image.id || index} className="p-3 border border-slate-200 rounded-lg bg-slate-50">
+                <div className="flex gap-3">
+                  {/* Preview */}
+                  {image.url && (
+                    <div className="w-24 h-24 rounded-lg overflow-hidden border border-slate-200 flex-shrink-0">
+                      <img
+                        src={image.url}
+                        alt={image.alt || 'Preview'}
+                        className="w-full h-full object-cover"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).style.display = 'none'
+                        }}
+                      />
+                    </div>
+                  )}
+                  
+                  {/* Image Details */}
+                  <div className="flex-1 space-y-2">
+                    <div>
+                      <label className="block text-xs text-slate-500 mb-1">URL</label>
+                      <input
+                        type="text"
+                        value={image.url || ''}
+                        onChange={(e) => updateImage(index, 'url', e.target.value)}
+                        className="w-full px-2 py-1.5 border border-slate-200 rounded text-sm"
+                        placeholder="https://..."
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs text-slate-500 mb-1">Alt Text</label>
+                      <input
+                        type="text"
+                        value={image.alt || ''}
+                        onChange={(e) => updateImage(index, 'alt', e.target.value)}
+                        className="w-full px-2 py-1.5 border border-slate-200 rounded text-sm"
+                        placeholder="Görsel açıklaması"
+                      />
+                    </div>
+                    {image.url && (
+                      <div>
+                        <label className="block text-xs text-slate-500 mb-1">Görseli Değiştir</label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0]
+                            if (file) handleImageUpload(file, index)
+                          }}
+                          className="w-full text-xs"
+                        />
+                      </div>
+                    )}
+                  </div>
+                  
+                  {/* Actions */}
+                  <div className="flex flex-col gap-1">
+                    <button
+                      type="button"
+                      onClick={() => deleteImage(index)}
+                      className="p-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded transition-colors"
+                      title="Sil"
+                    >
+                      🗑️
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {(content.images || []).length === 0 && (
+          <p className="text-xs text-slate-500 text-center py-4">
+            Henüz görsel eklenmedi. Yukarıdan görsel ekleyebilirsiniz.
+          </p>
+        )}
+
+        {(content.images || []).length > 0 && (
+          <p className="text-xs text-slate-500 mt-3">
+            💡 Görsel konumunu ayarlamak için <strong>Layout</strong> sekmesine gidin.
+          </p>
+        )}
+      </div>
 
       {/* CTA Button */}
       <div className="p-4 bg-white rounded-xl border border-slate-200">

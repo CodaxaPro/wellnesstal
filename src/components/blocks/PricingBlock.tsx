@@ -302,20 +302,20 @@ export default function PricingBlock({ block }: BlockProps) {
     const style = cta?.style || 'filled'
     const highlighted = pkg.highlighted
 
-    const baseClasses = 'block w-full py-3 rounded-xl font-medium text-center transition-all'
+    const baseClasses = 'block w-full py-3 rounded-xl font-medium text-center transition-all duration-300 hover:scale-105 hover:shadow-lg'
 
     if (style === 'outline') {
-      return `${baseClasses} border-2 ${highlighted ? 'border-white text-white hover:bg-white/10' : 'border-sage-500 text-sage-600 hover:bg-sage-50'}`
+      return `${baseClasses} border-2 ${highlighted ? 'border-white text-white hover:bg-white/20 hover:border-white/80' : 'border-sage-500 text-sage-600 hover:bg-sage-100 hover:border-forest-600'}`
     }
     if (style === 'ghost') {
-      return `${baseClasses} ${highlighted ? 'text-white hover:bg-white/10' : 'text-sage-600 hover:bg-sage-50'}`
+      return `${baseClasses} ${highlighted ? 'text-white hover:bg-white/20' : 'text-sage-600 hover:bg-sage-100'}`
     }
     if (style === 'gradient') {
-      return `${baseClasses} bg-gradient-to-r from-sage-500 to-forest-600 text-white hover:opacity-90`
+      return `${baseClasses} bg-gradient-to-r from-sage-500 to-forest-600 text-white hover:from-forest-600 hover:to-sage-500 hover:shadow-xl`
     }
 
-    // Default: filled
-    return `${baseClasses} ${highlighted ? 'bg-white text-sage-600 hover:bg-gray-100' : 'bg-sage-500 text-white hover:bg-forest-600'}`
+    // Default: filled - Enhanced hover effects
+    return `${baseClasses} ${highlighted ? 'bg-white text-sage-600 hover:bg-gray-50 hover:shadow-xl' : 'bg-sage-500 text-white hover:bg-forest-600 hover:shadow-xl'}`
   }
 
   // Get hover effect class based on settings

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
+import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -24,7 +26,28 @@ function verifyToken(request: NextRequest) {
 
 // GET /api/pages - Get all pages or single page by slug
 export async function GET(request: NextRequest) {
+  const startTime = Date.now()
   try {
+    // Rate limiting
+    const rateLimitResult = await rateLimit(request, apiRateLimiter)
+    if (!rateLimitResult.allowed) {
+      logger.warn('API rate limit exceeded', {
+        endpoint: '/api/pages',
+        remaining: rateLimitResult.remaining
+      })
+      return NextResponse.json(
+        { error: 'Too many requests, please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': '100',
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString(),
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString()
+          }
+        }
+      )
+    }
     const { searchParams } = new URL(request.url)
     const slug = searchParams.get('slug')
     const id = searchParams.get('id')

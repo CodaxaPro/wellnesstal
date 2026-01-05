@@ -16,7 +16,21 @@ export const getDefaultTestimonial = (): Testimonial => ({
 
 export const getDefaultTestimonialsContent = (): TestimonialsContent => ({
   title: 'Was unsere Kunden sagen',
-  layout: 'grid',
+  badge: '💬 Kundenstimmen',
+  sectionTitle: 'Was unsere Kunden',
+  highlightedText: 'sagen',
+  description: 'Echte Bewertungen von zufriedenen Kunden - Ihre Meinung ist uns wichtig',
+  autoSlideDelay: 5000,
+  autoPlay: true,
+  showRatings: true,
+  maxDisplayCount: 5,
+  layout: 'carousel',
+  stats: [
+    { value: '500+', label: 'Zufriedene Kunden' },
+    { value: '4.9', label: '⭐ Google Bewertung' },
+    { value: '98%', label: 'Weiterempfehlung' },
+    { value: '5J', label: 'Erfahrung' }
+  ],
   testimonials: [
     {
       id: 'testimonial-1',

@@ -11,26 +11,237 @@ interface LayoutTabProps {
 export default function LayoutTab({ content, updateContent }: LayoutTabProps) {
   return (
     <div className="space-y-6">
-      {/* Layout Selection */}
-      <div className="p-4 bg-white rounded-xl border border-slate-200">
-        <label className="block text-sm font-semibold text-slate-700 mb-4">Düzen Tipi</label>
-        <div className="grid grid-cols-4 gap-3">
-          {LAYOUT_OPTIONS.map(layout => (
+      {/* Content Wrapper - Merkezleme */}
+      <div className="p-4 bg-gradient-to-br from-sage-50 to-sage-100 rounded-xl border-2 border-sage-200">
+        <label className="block text-sm font-semibold text-slate-700 mb-2">🎯 İçerik Merkezleme (Deluxe Style)</label>
+        <p className="text-xs text-slate-600 mb-4">İçeriği merkeze almak için wrapper seçin</p>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { id: 'none', label: 'Yok', icon: '⬜', desc: 'Normal düzen' },
+            { id: 'center-content-wrapper', label: 'Merkez Wrapper', icon: '🎯', desc: 'center-content-wrapper' },
+            { id: 'center-block', label: 'Merkez Blok', icon: '▦', desc: 'center-block (arkaplanlı)' },
+          ].map(wrapper => (
             <button
-              key={layout.id}
-              onClick={() => updateContent({ layout: layout.id as TextLayoutType })}
+              key={wrapper.id}
+              onClick={() => updateContent({ contentWrapper: wrapper.id as any })}
               className={`p-4 rounded-xl border-2 transition-all text-center ${
-                content.layout === layout.id
-                  ? 'border-sage-500 bg-sage-50'
-                  : 'border-slate-200 hover:border-slate-300'
+                (content.contentWrapper || 'none') === wrapper.id
+                  ? 'border-sage-500 bg-white shadow-md'
+                  : 'border-slate-200 bg-white hover:border-sage-300'
               }`}
+              title={wrapper.desc}
             >
-              <div className="text-2xl mb-2">{layout.icon}</div>
-              <div className="text-sm font-medium text-slate-700">{layout.label}</div>
-              <div className="text-xs text-slate-500 mt-1">{layout.description}</div>
+              <div className="text-2xl mb-2">{wrapper.icon}</div>
+              <div className="text-sm font-medium text-slate-700">{wrapper.label}</div>
+              <div className="text-xs text-slate-500 mt-1">{wrapper.desc}</div>
             </button>
           ))}
         </div>
+        {(content.contentWrapper === 'center-block') && (
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Wrapper Padding</label>
+              <input
+                type="text"
+                value={content.wrapperPadding || '2rem'}
+                onChange={(e) => updateContent({ wrapperPadding: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                placeholder="2rem"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Arkaplan Rengi</label>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={content.wrapperBackground || '#ffffff'}
+                  onChange={(e) => updateContent({ wrapperBackground: e.target.value })}
+                  className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={content.wrapperBackground || '#ffffff'}
+                  onChange={(e) => updateContent({ wrapperBackground: e.target.value })}
+                  className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
+                  placeholder="#ffffff"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Container Width - İçerik Genişliği */}
+      <div className="p-4 bg-white rounded-xl border border-slate-200">
+        <label className="block text-sm font-semibold text-slate-700 mb-2">📏 İçerik Genişliği</label>
+        <p className="text-xs text-slate-500 mb-4">Metin bloğunun genişliğini ayarlayın</p>
+        <div className="grid grid-cols-3 gap-2">
+          {[
+            { id: 'sm', label: 'Dar', width: '640px', icon: '▢' },
+            { id: 'md', label: 'Orta', width: '768px', icon: '▣' },
+            { id: 'lg', label: 'Geniş', width: '1024px', icon: '▬' },
+            { id: 'xl', label: 'XL', width: '1280px', icon: '▭' },
+            { id: '2xl', label: '2XL', width: '1536px', icon: '⬓' },
+            { id: 'full', label: 'Tam Genişlik', width: '100%', icon: '⬛' },
+          ].map(size => (
+            <button
+              key={size.id}
+              onClick={() => updateContent({ maxWidth: size.id as any })}
+              className={`p-3 rounded-xl border-2 transition-all text-center ${
+                (content.maxWidth || 'lg') === size.id
+                  ? 'border-sage-500 bg-sage-50'
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+              title={`${size.label}: ${size.width}`}
+            >
+              <div className="text-2xl mb-1">{size.icon}</div>
+              <div className="text-xs font-medium text-slate-700">{size.label}</div>
+              <div className="text-xs text-slate-500 mt-0.5">{size.width}</div>
+            </button>
+          ))}
+        </div>
+        {content.maxWidth === 'custom' && (
+          <div className="mt-3">
+            <input
+              type="text"
+              value={content.customMaxWidth || ''}
+              onChange={(e) => updateContent({ customMaxWidth: e.target.value })}
+              placeholder="örn: 900px"
+              className="w-full px-4 py-2 border border-slate-200 rounded-lg"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Image Position - Görsel Konumu */}
+      <div className="p-4 bg-white rounded-xl border border-slate-200">
+        <label className="block text-sm font-semibold text-slate-700 mb-2">🖼️ Görsel Konumu</label>
+        <p className="text-xs text-slate-500 mb-4">Eklerseniz görselin metne göre konumunu seçin</p>
+        <div className="grid grid-cols-4 gap-3">
+          {[
+            { id: 'none', label: 'Yok', icon: '❌', desc: 'Görsel gösterme' },
+            { id: 'left', label: 'Sol (Split)', icon: '⬅️', desc: 'Resim sol, metin sağ (grid)' },
+            { id: 'right', label: 'Sağ (Split)', icon: '➡️', desc: 'Metin sol, resim sağ (grid)' },
+            { id: 'top', label: 'Üstte', icon: '⬆️', desc: 'Metnin üstünde' },
+            { id: 'bottom', label: 'Altta', icon: '⬇️', desc: 'Metnin altında' },
+            { id: 'inline-left', label: 'İnline Sol', icon: '⬅️📝', desc: 'Metin yanında sol' },
+            { id: 'inline-right', label: 'İnline Sağ', icon: '📝➡️', desc: 'Metin yanında sağ' },
+            { id: 'full-width', label: 'Tam Genişlik', icon: '↔️', desc: 'Tam genişlik' },
+          ].map(pos => (
+            <button
+              key={pos.id}
+              onClick={() => {
+                const updates: any = { imagePosition: pos.id }
+                // Enterprise layout'u güncelle
+                if (pos.id === 'left') {
+                  updates.layoutType = 'image-left'
+                } else if (pos.id === 'right') {
+                  updates.layoutType = 'image-right'
+                } else if (pos.id === 'none') {
+                  updates.layoutType = 'default'
+                }
+                updateContent(updates)
+              }}
+              className={`p-3 rounded-xl border-2 transition-all text-center ${
+                (content.imagePosition || 'none') === pos.id
+                  ? 'border-sage-500 bg-sage-50'
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+              title={pos.desc}
+            >
+              <div className="text-2xl mb-1">{pos.icon}</div>
+              <div className="text-xs font-medium">{pos.label}</div>
+            </button>
+          ))}
+        </div>
+        {(content.images || []).length === 0 && (content.imagePosition || 'none') !== 'none' && (
+          <p className="text-xs text-amber-600 mt-2">
+            ⚠️ Görsel eklemek için İçerik sekmesine gidin
+          </p>
+        )}
+        {(content.imagePosition || 'none') !== 'none' && (
+          <div className="mt-3">
+            <label className="block text-xs text-slate-500 mb-1">Görsel-Metin Arası Boşluk</label>
+            <input
+              type="text"
+              value={content.imageSpacing || '2rem'}
+              onChange={(e) => updateContent({ imageSpacing: e.target.value })}
+              className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+              placeholder="2rem"
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Container Style */}
+      <div className="p-4 bg-white rounded-xl border border-slate-200">
+        <label className="block text-sm font-semibold text-slate-700 mb-4">Konteyner Stili</label>
+        <div className="grid grid-cols-3 gap-3">
+          {[
+            { id: 'none', label: 'Yok', icon: '⬜', desc: 'Normal' },
+            { id: 'box', label: 'Kutu', icon: '📦', desc: 'Basit kutu' },
+            { id: 'card', label: 'Kart', icon: '🃏', desc: 'Gölgeli kart' },
+            { id: 'bordered', label: 'Kenarlıklı', icon: '▦', desc: 'Kenarlık' },
+            { id: 'shadow', label: 'Gölgeli', icon: '💫', desc: 'Sadece gölge' },
+            { id: 'outlined', label: 'Çerçeveli', icon: '⬛', desc: 'Kalın çerçeve' },
+          ].map(style => (
+            <button
+              key={style.id}
+              onClick={() => updateContent({ containerStyle: style.id as any })}
+              className={`p-3 rounded-xl border-2 transition-all text-center ${
+                (content.containerStyle || 'none') === style.id
+                  ? 'border-sage-500 bg-sage-50'
+                  : 'border-slate-200 hover:border-slate-300'
+              }`}
+              title={style.desc}
+            >
+              <div className="text-2xl mb-1">{style.icon}</div>
+              <div className="text-xs font-medium">{style.label}</div>
+            </button>
+          ))}
+        </div>
+        {(content.containerStyle || 'none') !== 'none' && (
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Padding</label>
+              <input
+                type="text"
+                value={content.containerPadding || '2rem'}
+                onChange={(e) => updateContent({ containerPadding: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                placeholder="2rem"
+              />
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Border Radius</label>
+              <input
+                type="text"
+                value={content.containerBorderRadius || '0.75rem'}
+                onChange={(e) => updateContent({ containerBorderRadius: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+                placeholder="0.75rem"
+              />
+            </div>
+            <div className="col-span-2">
+              <label className="block text-xs text-slate-500 mb-1">Arkaplan Rengi</label>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={content.containerBackground || '#ffffff'}
+                  onChange={(e) => updateContent({ containerBackground: e.target.value })}
+                  className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={content.containerBackground || '#ffffff'}
+                  onChange={(e) => updateContent({ containerBackground: e.target.value })}
+                  className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
+                  placeholder="#ffffff"
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Text Alignment */}
@@ -105,45 +316,6 @@ export default function LayoutTab({ content, updateContent }: LayoutTabProps) {
         )}
       </div>
 
-      {/* Container Width */}
-      <div className="p-4 bg-white rounded-xl border border-slate-200">
-        <label className="block text-sm font-semibold text-slate-700 mb-4">İçerik Genişliği</label>
-        <div className="grid grid-cols-4 gap-2">
-          {[
-            { id: 'sm', label: 'Küçük', width: '640px' },
-            { id: 'md', label: 'Orta', width: '768px' },
-            { id: 'lg', label: 'Geniş', width: '1024px' },
-            { id: 'xl', label: 'XL', width: '1280px' },
-            { id: '2xl', label: '2XL', width: '1536px' },
-            { id: 'full', label: 'Tam', width: '100%' },
-          ].map(size => (
-            <button
-              key={size.id}
-              onClick={() => updateContent({ maxWidth: size.id as any })}
-              className={`p-2 rounded-lg border transition-all ${
-                content.maxWidth === size.id
-                  ? 'border-sage-500 bg-sage-50'
-                  : 'border-slate-200 hover:border-slate-300'
-              }`}
-            >
-              <div className="text-sm font-medium text-slate-700">{size.label}</div>
-              <div className="text-xs text-slate-500">{size.width}</div>
-            </button>
-          ))}
-        </div>
-
-        {content.maxWidth === 'custom' && (
-          <div className="mt-3">
-            <input
-              type="text"
-              value={content.customMaxWidth || ''}
-              onChange={(e) => updateContent({ customMaxWidth: e.target.value })}
-              placeholder="örn: 900px"
-              className="w-full px-4 py-2 border border-slate-200 rounded-lg"
-            />
-          </div>
-        )}
-      </div>
 
       {/* Section Padding */}
       <div className="p-4 bg-white rounded-xl border border-slate-200">

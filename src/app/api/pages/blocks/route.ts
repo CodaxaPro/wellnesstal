@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
+import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -133,9 +135,32 @@ export async function GET(request: NextRequest) {
 
 // POST /api/pages/blocks - Create new block
 export async function POST(request: NextRequest) {
+  const startTime = Date.now()
   try {
+    // Rate limiting
+    const rateLimitResult = await rateLimit(request, apiRateLimiter)
+    if (!rateLimitResult.allowed) {
+      logger.warn('API rate limit exceeded', {
+        endpoint: '/api/pages/blocks',
+        method: 'POST',
+        remaining: rateLimitResult.remaining
+      })
+      return NextResponse.json(
+        { success: false, error: 'Too many requests, please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': '100',
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString()
+          }
+        }
+      )
+    }
+
     const user = verifyToken(request)
     if (!user) {
+      logger.warn('Unauthorized block creation attempt')
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -143,6 +168,10 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
+    logger.debug('Block creation request', {
+      page_id: body.page_id,
+      block_type: body.block_type
+    })
     // Extract an optional client-supplied timestamp (same logic as POST)
     const incomingTsRaw = (body && (body.clientUpdatedAt || body._clientUpdatedAt)) || (body?.content?._meta?.clientUpdatedAt)
     const incomingTs = incomingTsRaw ? Number(incomingTsRaw) : null
@@ -153,6 +182,10 @@ export async function POST(request: NextRequest) {
     const { page_id, block_type, content = {}, position, visible = true, custom_styles = {} } = body
 
     if (!page_id || !block_type) {
+      logger.warn('Block creation failed: missing required fields', {
+        hasPageId: !!page_id,
+        hasBlockType: !!block_type
+      })
       return NextResponse.json(
         { success: false, error: 'page_id and block_type are required' },
         { status: 400 }
@@ -175,16 +208,28 @@ export async function POST(request: NextRequest) {
 
     // Calculate position if not provided
     let finalPosition = position
-    if (finalPosition === undefined) {
-      const { data: lastBlock } = await supabase
+    if (finalPosition === undefined || finalPosition === null) {
+      const { data: lastBlocks, error: positionError } = await supabase
         .from('page_blocks')
         .select('position')
         .eq('page_id', page_id)
         .order('position', { ascending: false })
         .limit(1)
-        .single()
 
-      finalPosition = lastBlock ? lastBlock.position + 1 : 0
+      if (positionError) {
+        logger.warn('Error fetching last block position', positionError, { page_id })
+      }
+
+      const lastBlock = lastBlocks && lastBlocks.length > 0 ? lastBlocks[0] : null
+      finalPosition = lastBlock && typeof lastBlock.position === 'number' 
+        ? lastBlock.position + 1 
+        : 0
+      
+      logger.debug('Calculated block position', {
+        page_id,
+        finalPosition,
+        lastBlockPosition: lastBlock?.position
+      })
     }
 
     const { data: block, error } = await supabase
@@ -200,7 +245,20 @@ export async function POST(request: NextRequest) {
       .select()
       .single()
 
-    if (error) throw error
+    if (error) {
+      logger.error('Database error creating block', error as Error, {
+        page_id,
+        block_type
+      })
+      throw error
+    }
+
+    logger.info('Block created successfully', {
+      blockId: block.id,
+      page_id,
+      block_type,
+      duration: Date.now() - startTime
+    })
 
     return NextResponse.json({
       success: true,
@@ -209,9 +267,18 @@ export async function POST(request: NextRequest) {
     })
 
   } catch (error) {
-    console.error('Blocks POST error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
+    logger.error('Blocks POST error', error as Error, {
+      errorMessage,
+      duration: Date.now() - startTime
+    })
+    
     return NextResponse.json(
-      { success: false, error: 'Failed to create block' },
+      { 
+        success: false, 
+        error: errorMessage || 'Failed to create block',
+        details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
+      },
       { status: 500 }
     )
   }

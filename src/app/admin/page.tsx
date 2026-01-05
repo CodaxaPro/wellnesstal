@@ -8,7 +8,7 @@ export default function AdminLogin() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState('')
   const [formData, setFormData] = useState({
-    username: '',
+    email: '',
     password: ''
   })
 
@@ -22,7 +22,7 @@ export default function AdminLogin() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: formData.username,
+          email: formData.email,
           password: formData.password
         })
       })
@@ -30,11 +30,11 @@ export default function AdminLogin() {
       const data = await response.json()
 
       if (data.success) {
-        localStorage.setItem('adminToken', data.data.token)
-        localStorage.setItem('adminUser', JSON.stringify(data.data.user))
+        localStorage.setItem('adminToken', data.token)
+        localStorage.setItem('adminUser', JSON.stringify(data.user))
         router.push('/admin/dashboard')
       } else {
-        setError('Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.')
+        setError(data.error || 'Ungültige Anmeldedaten. Bitte versuchen Sie es erneut.')
       }
     } catch (error) {
       setError('Ein Fehler ist aufgetreten. Bitte versuchen Sie es später erneut.')
@@ -81,19 +81,19 @@ export default function AdminLogin() {
             )}
 
             <div>
-              <label htmlFor="username" className="block text-sm font-medium text-charcoal mb-2">
-                Benutzername
+              <label htmlFor="email" className="block text-sm font-medium text-charcoal mb-2">
+                E-Mail
               </label>
               <input
-                id="username"
-                name="username"
-                type="text"
+                id="email"
+                name="email"
+                type="email"
                 required
-                value={formData.username}
+                value={formData.email}
                 onChange={handleInputChange}
-                autoComplete="off"
+                autoComplete="email"
                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent transition-all duration-300"
-                placeholder="Benutzername eingeben"
+                placeholder="E-Mail eingeben"
                 disabled={isLoading}
               />
             </div>

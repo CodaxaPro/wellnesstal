@@ -253,13 +253,13 @@ export default function AdminDashboardLayout({
           <div className={`flex items-center gap-3 ${sidebarCollapsed ? 'justify-center' : ''}`}>
             <div className="w-10 h-10 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-purple-500/20 flex-shrink-0">
               <span className="text-white font-semibold">
-                {user.username.charAt(0).toUpperCase()}
+                {(user.username || user.email || 'A').charAt(0).toUpperCase()}
               </span>
             </div>
             {!sidebarCollapsed && (
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-slate-800 truncate">{user.username}</p>
-                <p className="text-xs text-slate-500 truncate">{user.role}</p>
+                <p className="text-sm font-semibold text-slate-800 truncate">{user.username || user.email || 'Admin'}</p>
+                <p className="text-xs text-slate-500 truncate">{user.role || 'admin'}</p>
               </div>
             )}
           </div>
@@ -336,7 +336,7 @@ export default function AdminDashboardLayout({
             {/* User Avatar (Mobile) */}
             <div className="lg:hidden w-9 h-9 bg-gradient-to-br from-purple-400 to-purple-600 rounded-xl flex items-center justify-center">
               <span className="text-white font-semibold text-sm">
-                {user.username.charAt(0).toUpperCase()}
+                {(user.username || user.email || 'A').charAt(0).toUpperCase()}
               </span>
             </div>
           </div>

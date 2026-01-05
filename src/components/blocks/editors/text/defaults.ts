@@ -5,9 +5,24 @@ export const getDefaultTextContent = (): TextContent => ({
   title: '',
   subtitle: '',
   content: 'Metninizi buraya yazın...',
+  highlightedText: '', // Vurgulu metin (otomatik son kelime)
+  useAutoHighlight: true, // Otomatik son kelime vurgulama
 
   // Content Type
   contentType: 'paragraph',
+
+  // Images/Media
+  images: [],
+  imagePosition: 'none',
+  imageSpacing: '2rem',
+  titlePosition: 'top',
+  layoutType: 'default',
+
+  // Container Style
+  containerStyle: 'none',
+  containerPadding: '2rem',
+  containerBackground: '#ffffff',
+  containerBorderRadius: '0.75rem',
 
   // Quote specific
   quoteAuthor: '',
@@ -38,6 +53,10 @@ export const getDefaultTextContent = (): TextContent => ({
 
   // Container Settings
   maxWidth: 'lg',
+  contentWrapper: 'none' as const,
+  wrapperMaxWidth: 'lg' as const,
+  wrapperPadding: '2rem',
+  wrapperBackground: '#ffffff',
   padding: {
     top: '3rem',
     bottom: '3rem',
@@ -49,16 +68,17 @@ export const getDefaultTextContent = (): TextContent => ({
     bottom: '0'
   },
 
-  // Typography
+  // Typography - About style as default (WellnessTal brand)
   typography: {
     title: {
       enabled: true,
-      fontSize: '2rem',
+      fontSize: '2rem', // Will be overridden by stylePreset if 'about' is selected
       fontWeight: '700',
       lineHeight: '1.2',
       letterSpacing: '-0.02em',
-      color: '#1e293b',
-      marginBottom: '1rem'
+      color: '#2C2C2C', // charcoal (About style)
+      marginBottom: '1rem',
+      fontFamily: "'Poppins', sans-serif" // About style
     },
     subtitle: {
       enabled: true,
@@ -66,15 +86,17 @@ export const getDefaultTextContent = (): TextContent => ({
       fontWeight: '400',
       lineHeight: '1.5',
       color: '#64748b',
-      marginBottom: '1.5rem'
+      marginBottom: '1.5rem',
+      fontFamily: "'Poppins', sans-serif"
     },
     body: {
-      fontSize: '1.125rem',
+      fontSize: '1.125rem', // About style: 20px equivalent
       fontWeight: '400',
       lineHeight: '1.75',
       letterSpacing: '0',
-      color: '#374151',
-      paragraphSpacing: '1.5rem'
+      color: '#666666', // gray-custom (About style)
+      paragraphSpacing: '1.5rem',
+      fontFamily: "'Poppins', sans-serif" // About style
     },
     dropCap: {
       enabled: false,
@@ -89,6 +111,12 @@ export const getDefaultTextContent = (): TextContent => ({
       hoverColor: '#059669',
       decoration: 'underline',
       hoverDecoration: 'none'
+    },
+    highlightedText: {
+      fontFamily: "'Poppins', sans-serif",
+      fontSize: '2rem',
+      fontWeight: '700',
+      color: '#9CAF88' // sage-500 (About style)
     }
   },
 
@@ -175,16 +203,31 @@ export const getDefaultTextContent = (): TextContent => ({
     mobilePadding: '1rem'
   },
 
-  // Style Preset
-  stylePreset: 'custom',
+  // Style Preset - About style as default for brand consistency
+  stylePreset: 'about',
 
   // Visibility Controls
   showTitle: true,
   showSubtitle: false
 })
 
-// Style Presets
+// Style Presets - About style is first/priority for brand consistency
 export const TEXT_STYLE_PRESETS = {
+  about: {
+    label: 'About Stili (WellnessTal)',
+    description: 'About bölümü ile uyumlu stil - Öncelikli',
+    settings: {
+      layout: 'default' as const,
+      alignment: 'left' as const,
+      background: { type: 'solid' as const, color: '#ffffff' },
+      typography: {
+        title: { fontSize: '2rem', fontWeight: '700', color: '#2C2C2C', fontFamily: "'Poppins', sans-serif" },
+        subtitle: { fontSize: '1.25rem', fontWeight: '400', color: '#64748b', fontFamily: "'Poppins', sans-serif" },
+        body: { fontSize: '1.125rem', lineHeight: '1.75', color: '#666666', fontFamily: "'Poppins', sans-serif" }
+      },
+      padding: { top: '3rem', bottom: '3rem', left: '1.5rem', right: '1.5rem' }
+    }
+  },
   article: {
     label: 'Makale',
     description: 'Blog ve makale içerikleri için',
@@ -297,10 +340,25 @@ export const TEXT_STYLE_PRESETS = {
       alignment: 'left' as const,
       background: { type: 'solid' as const, color: '#ffffff' },
       typography: {
-        title: { fontSize: '2.5rem', fontWeight: '700', color: '#2C2C2C' },
-        body: { fontSize: '1.125rem', lineHeight: '1.75', color: '#666666' }
+        title: { fontSize: '2.5rem', fontWeight: '700', color: '#2C2C2C', fontFamily: "'Poppins', sans-serif" },
+        body: { fontSize: '1.125rem', lineHeight: '1.75', color: '#666666', fontFamily: "'Poppins', sans-serif" }
       },
       padding: { top: '4rem', bottom: '4rem', left: '1.5rem', right: '1.5rem' }
+    }
+  },
+  about: {
+    label: 'About Stili (WellnessTal)',
+    description: 'About bölümü ile uyumlu stil - Öncelikli',
+    settings: {
+      layout: 'default' as const,
+      alignment: 'left' as const,
+      background: { type: 'solid' as const, color: '#ffffff' },
+      typography: {
+        title: { fontSize: '2rem', fontWeight: '700', color: '#2C2C2C', fontFamily: "'Poppins', sans-serif" },
+        subtitle: { fontSize: '1.25rem', fontWeight: '400', color: '#64748b', fontFamily: "'Poppins', sans-serif" },
+        body: { fontSize: '1.125rem', lineHeight: '1.75', color: '#666666', fontFamily: "'Poppins', sans-serif" }
+      },
+      padding: { top: '3rem', bottom: '3rem', left: '1.5rem', right: '1.5rem' }
     }
   }
 }

@@ -25,8 +25,10 @@ import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlo
 import VideoBlockEditor from '@/components/blocks/editors/VideoBlockEditor'
 import StatsBlockEditor from '@/components/blocks/editors/StatsBlockEditor'
 import DividerBlockEditor from '@/components/blocks/editors/DividerBlockEditor'
+import StickyButtonBlockEditor from '@/components/blocks/editors/StickyButtonBlockEditor'
+import AboutBlockEditor from '@/components/blocks/editors/AboutBlockEditor'
 import { ContactBlockContent } from '@/components/blocks/ContactBlock'
-import { SEOContent } from '@/components/blocks/types'
+import { SEOContent, AboutContent } from '@/components/blocks/types'
 
 interface PageCategory {
   id: string
@@ -122,7 +124,10 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   }
 
   const handleAddBlock = async (blockType: string) => {
-    if (!page) return
+    if (!page) {
+      toast.error('Sayfa yüklenemedi. Lütfen sayfayı yenileyin.')
+      return
+    }
 
     const token = localStorage.getItem('adminToken')
     if (!token) {
@@ -131,6 +136,8 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     }
 
     try {
+      console.log('[handleAddBlock] Adding block:', { page_id: page.id, block_type: blockType })
+      
       const response = await fetch('/api/pages/blocks', {
         method: 'POST',
         headers: {
@@ -144,21 +151,40 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       })
 
       const json = await response.json()
+      console.log('[handleAddBlock] Response:', { status: response.status, ok: response.ok, json })
+
       if (!response.ok) {
-        toast.error(json?.error || 'Blok oluşturulamadı')
+        const errorMessage = json?.error || json?.details || 'Blok oluşturulamadı'
+        console.error('[handleAddBlock] Error response:', errorMessage)
+        toast.error(errorMessage)
         return
       }
 
-      setPage(prev => prev ? {
-        ...prev,
-        blocks: [...prev.blocks, json.data]
-      } : null)
-      setShowBlockLibrary(false)
+      if (!json.success || !json.data) {
+        console.error('[handleAddBlock] Invalid response format:', json)
+        toast.error('Geçersiz yanıt formatı. Sayfa yenileniyor...')
+        await fetchPage()
+        return
+      }
+
+      // Refresh page data to get all blocks in correct order
+      await fetchPage()
+      
+      // Set the newly created block as active
       setActiveBlockId(json.data.id)
-      toast.success('Blok eklendi')
+      setShowBlockLibrary(false)
+      toast.success('Blok başarıyla eklendi')
     } catch (error) {
-      console.error('Add block error:', error)
-      toast.error('Blok eklenirken hata oluştu')
+      console.error('[handleAddBlock] Exception:', error)
+      const errorMessage = error instanceof Error ? error.message : 'Blok eklenirken hata oluştu'
+      toast.error(errorMessage)
+      
+      // Try to refresh page data in case block was created but response failed
+      try {
+        await fetchPage()
+      } catch (fetchError) {
+        console.error('[handleAddBlock] Failed to refresh page:', fetchError)
+      }
     }
   }
 
@@ -681,17 +707,17 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                 <div className="p-4 border-b border-slate-200 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${
-                      activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
+                      activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' || activeBlock.block_type === 'about' ? 'bg-gradient-to-br from-sage-400 to-forest-500' : 'bg-slate-100'
                     }`}>
                       <span className="text-lg">
-                        {activeBlock.block_type === 'hero' ? '🏠' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : activeBlock.block_type === 'embed' ? '🔗' : activeBlock.block_type === 'header' ? '📋' : activeBlock.block_type === 'footer' ? '🦶' : '📝'}
+                        {activeBlock.block_type === 'hero' ? '🏠' : activeBlock.block_type === 'features' ? '⭐' : activeBlock.block_type === 'cta' ? '📢' : activeBlock.block_type === 'pricing' ? '💰' : activeBlock.block_type === 'faq' ? '❓' : activeBlock.block_type === 'team' ? '👥' : activeBlock.block_type === 'whatsapp' ? '💬' : activeBlock.block_type === 'gallery' ? '🖼️' : activeBlock.block_type === 'embed' ? '🔗' : activeBlock.block_type === 'header' ? '📋' : activeBlock.block_type === 'footer' ? '🦶' : activeBlock.block_type === 'about' ? '👥' : '📝'}
                       </span>
                     </div>
                     <div>
                       <h2 className="font-semibold text-slate-800 capitalize">
-                        {activeBlock.block_type === 'hero' ? 'Hero Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : activeBlock.block_type === 'embed' ? 'Embed Editörü' : activeBlock.block_type === 'header' ? 'Header Editörü' : activeBlock.block_type === 'footer' ? 'Footer Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
+                        {activeBlock.block_type === 'hero' ? 'Hero Editörü' : activeBlock.block_type === 'features' ? 'Özellikler Editörü' : activeBlock.block_type === 'cta' ? 'CTA Bölümü Editörü' : activeBlock.block_type === 'pricing' ? 'Fiyatlandırma Editörü' : activeBlock.block_type === 'faq' ? 'FAQ Editörü' : activeBlock.block_type === 'team' ? 'Ekip Editörü' : activeBlock.block_type === 'whatsapp' ? 'WhatsApp Editörü' : activeBlock.block_type === 'gallery' ? 'Galeri Editörü' : activeBlock.block_type === 'embed' ? 'Embed Editörü' : activeBlock.block_type === 'header' ? 'Header Editörü' : activeBlock.block_type === 'footer' ? 'Footer Editörü' : activeBlock.block_type === 'about' ? 'Über Uns Editörü' : `${activeBlock.block_type} Bloğu Düzenle`}
                       </h2>
-                      {(activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer') && (
+                      {(activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' || activeBlock.block_type === 'about') && (
                         <p className="text-xs text-slate-500">Enterprise düzenleme modu</p>
                       )}
                     </div>
@@ -706,7 +732,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                   </button>
                 </div>
 
-                <div className={`${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' ? 'p-4' : 'p-6'}`}>
+                <div className={`${activeBlock.block_type === 'hero' || activeBlock.block_type === 'features' || activeBlock.block_type === 'cta' || activeBlock.block_type === 'pricing' || activeBlock.block_type === 'faq' || activeBlock.block_type === 'team' || activeBlock.block_type === 'whatsapp' || activeBlock.block_type === 'gallery' || activeBlock.block_type === 'embed' || activeBlock.block_type === 'header' || activeBlock.block_type === 'footer' || activeBlock.block_type === 'sticky-button' ? 'p-4' : 'p-6'}`}>
                   <BlockEditorForm
                     key={activeBlock.id}
                     block={activeBlock}
@@ -791,6 +817,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                               {block.icon === 'users' && '👥'}
                               {block.icon === 'chart-bar' && '📊'}
                               {block.icon === 'minus' && '➖'}
+                              {block.icon === 'info-circle' && '👥'}
                               {block.icon === 'code' && '🔗'}
                               {block.icon === 'menu' && '📋'}
                             </span>
@@ -848,7 +875,7 @@ function BlockEditorForm({
 }: {
   block: PageBlock
   blockId: string
-  onUpdate: (blockId: string, content: Record<string, any>) => void
+  onUpdate: (blockId: string, content: Record<string, any>) => Promise<any>
 }) {
   // Note: This component has key={block.id} so it fully remounts when switching blocks
   // Sync content state with block.content when block changes (e.g., from API refresh)
@@ -1233,10 +1260,9 @@ function BlockEditorForm({
       console.debug('[BlockEditorForm] Manual save:', {
         blockId,
         usingRef: !!contentRef.current,
-        subtitle: fullContent.subtitle,
-        subtitleIsEmpty: fullContent.subtitle === '',
-        descriptionsCount: fullContent.descriptions?.length || 0,
-        descriptions: fullContent.descriptions?.map((d: any) => ({ id: d.id, contentLength: d.content?.length || 0 })) || [],
+        subtitle: (fullContent as any).subtitle,
+        subtitleIsEmpty: (fullContent as any).subtitle === '',
+        description: (fullContent as any).description,
         dirty,
         fullContentKeys: Object.keys(fullContent),
       })
@@ -1477,6 +1503,14 @@ function BlockEditorForm({
           />
         )
 
+      case 'about':
+        return (
+          <AboutBlockEditor
+            content={content as AboutContent}
+            onUpdate={handleUpdate}
+          />
+        )
+
       case 'video':
         return (
           <VideoBlockEditor
@@ -1497,6 +1531,14 @@ function BlockEditorForm({
         return (
           <DividerBlockEditor
             content={content as DividerContent}
+            onUpdate={handleUpdate}
+          />
+        )
+
+      case 'sticky-button':
+        return (
+          <StickyButtonBlockEditor
+            content={content as unknown as Record<string, unknown>}
             onUpdate={handleUpdate}
           />
         )

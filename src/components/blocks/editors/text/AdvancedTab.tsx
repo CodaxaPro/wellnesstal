@@ -297,9 +297,14 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
                 content.stylePreset === key
                   ? 'border-sage-500 bg-sage-50'
                   : 'border-slate-200 hover:border-slate-300'
-              }`}
+              } ${key === 'about' ? 'ring-2 ring-sage-200' : ''}`}
             >
-              <div className="text-sm font-medium text-slate-700">{preset.label}</div>
+              <div className="flex items-center gap-2">
+                <div className="text-sm font-medium text-slate-700">{preset.label}</div>
+                {key === 'about' && (
+                  <span className="px-2 py-0.5 bg-sage-500 text-white text-xs rounded-full">Öncelik</span>
+                )}
+              </div>
               <div className="text-xs text-slate-500 mt-1">{preset.description}</div>
             </button>
           ))}

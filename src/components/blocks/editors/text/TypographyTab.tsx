@@ -185,6 +185,50 @@ export default function TypographyTab({ content, updateContent }: TypographyTabP
         )}
       </div>
 
+      {/* Highlighted Text Typography (for title) */}
+      {content.useAutoHighlight !== false && content.title && (
+        <div className="p-4 bg-sage-50 rounded-xl border border-sage-200">
+          <label className="block text-sm font-semibold text-slate-700 mb-2">
+            Vurgulu Metin Stili
+            <span className="ml-2 text-xs font-normal text-slate-500">(Başlığın vurgulanan kelimesi)</span>
+          </label>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Renk</label>
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={content.typography?.highlightedText?.color || '#9CAF88'}
+                  onChange={(e) => updateTypography('highlightedText', { color: e.target.value })}
+                  className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={content.typography?.highlightedText?.color || '#9CAF88'}
+                  onChange={(e) => updateTypography('highlightedText', { color: e.target.value })}
+                  className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono"
+                />
+              </div>
+            </div>
+            <div>
+              <label className="block text-xs text-slate-500 mb-1">Font Ağırlığı</label>
+              <select
+                value={content.typography?.highlightedText?.fontWeight || '700'}
+                onChange={(e) => updateTypography('highlightedText', { fontWeight: e.target.value })}
+                className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
+              >
+                {['400', '500', '600', '700', '800', '900'].map(weight => (
+                  <option key={weight} value={weight}>{weight}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+          <p className="text-xs text-slate-500 mt-2">
+            💡 Vurgulu metin renkleri About stili ile uyumlu (varsayılan: #9CAF88 - sage-500)
+          </p>
+        </div>
+      )}
+
       {/* Body Typography */}
       <div className="p-4 bg-white rounded-xl border border-slate-200">
         <label className="block text-sm font-semibold text-slate-700 mb-4">Metin Stili</label>

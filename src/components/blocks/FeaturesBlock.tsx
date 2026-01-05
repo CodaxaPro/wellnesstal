@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import Image from 'next/image'
 import { BlockProps, FeaturesContent, FeatureItem } from './types'
 import { PRESET_ICONS } from './editors/features/defaults'
 
@@ -589,11 +590,24 @@ export default function FeaturesBlock({ block }: BlockProps) {
             </div>
             {feature.image?.url && (
               <div className="flex-1">
-                <img
-                  src={feature.image.url}
-                  alt={feature.image.alt || feature.title}
-                  className="w-full rounded-xl"
-                />
+                <div 
+                  className="relative w-full rounded-xl overflow-hidden"
+                  style={{
+                    aspectRatio: feature.image.aspectRatio === '16:9' ? '16/9' : 
+                                 feature.image.aspectRatio === '4:3' ? '4/3' :
+                                 feature.image.aspectRatio === '1:1' ? '1/1' :
+                                 feature.image.aspectRatio === '3:2' ? '3/2' : 'auto',
+                    borderRadius: feature.image.borderRadius || '1rem'
+                  }}
+                >
+                  <Image
+                    src={feature.image.url}
+                    alt={feature.image.alt || feature.title}
+                    fill
+                    className={`object-${feature.image.objectFit || 'cover'}`}
+                    sizes="(max-width: 768px) 100vw, 50vw"
+                  />
+                </div>
               </div>
             )}
           </div>

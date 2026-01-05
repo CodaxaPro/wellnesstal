@@ -1,89 +1,107 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-server'
-import { generateToken, verifyPassword, hashPassword } from '@/lib/auth'
+import { createClient } from '@supabase/supabase-js'
+import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs'
+import { authRateLimiter, rateLimit } from '@/lib/rate-limit'
+import { logger } from '@/lib/logger'
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_ROLE_KEY!
+)
+
+const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret'
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json()
-
-    if (!username || !password) {
+    // Rate limiting
+    const rateLimitResult = await rateLimit(request, authRateLimiter)
+    if (!rateLimitResult.allowed) {
+      logger.warn('Rate limit exceeded for login', {
+        remaining: rateLimitResult.remaining,
+        resetTime: rateLimitResult.resetTime
+      })
       return NextResponse.json(
-        { success: false, error: 'Username and password are required' },
+        { success: false, error: 'Too many login attempts. Please try again later.' },
+        {
+          status: 429,
+          headers: {
+            'X-RateLimit-Limit': '5',
+            'X-RateLimit-Remaining': rateLimitResult.remaining.toString(),
+            'X-RateLimit-Reset': new Date(rateLimitResult.resetTime).toISOString(),
+            'Retry-After': Math.ceil((rateLimitResult.resetTime - Date.now()) / 1000).toString()
+          }
+        }
+      )
+    }
+
+    const body = await request.json()
+    const { email, password } = body
+
+    if (!email || !password) {
+      return NextResponse.json(
+        { success: false, error: 'Email ve şifre gereklidir' },
         { status: 400 }
       )
     }
 
-    // Get user from database
-    const { data: user, error } = await supabaseAdmin
+    // Get admin user from database
+    const { data: adminUser, error: fetchError } = await supabase
       .from('admin_users')
-      .select('*')
-      .eq('username', username)
+      .select('id, username, email, role, password_hash')
+      .eq('email', email)
       .single()
 
-    if (error || !user) {
+    if (fetchError || !adminUser) {
+      logger.warn('Login attempt with invalid email', { email })
       return NextResponse.json(
-        { success: false, error: 'Invalid credentials' },
+        { success: false, error: 'Geçersiz email veya şifre' },
         { status: 401 }
       )
     }
 
     // Verify password
-    const isValidPassword = await verifyPassword(password, user.password_hash)
-
+    const isValidPassword = await bcrypt.compare(password, adminUser.password_hash)
     if (!isValidPassword) {
-      // Fallback for initial setup - check against env variable
-      const envPassword = process.env.ADMIN_PASSWORD
-      if (!envPassword || password !== envPassword) {
-        return NextResponse.json(
-          { success: false, error: 'Invalid credentials' },
-          { status: 401 }
-        )
-      }
-
-      // If using env password, update the hash in database for future logins
-      const newHash = await hashPassword(password)
-      await supabaseAdmin
-        .from('admin_users')
-        .update({ password_hash: newHash })
-        .eq('id', user.id)
+      logger.warn('Login attempt with invalid password', { email, userId: adminUser.id })
+      return NextResponse.json(
+        { success: false, error: 'Geçersiz email veya şifre' },
+        { status: 401 }
+      )
     }
 
     // Generate JWT token
-    const token = generateToken({
-      userId: user.id,
-      username: user.username,
-      role: user.role
-    })
+    const token = jwt.sign(
+      {
+        userId: adminUser.id,
+        email: adminUser.email,
+        role: adminUser.role || 'admin'
+      },
+      JWT_SECRET,
+      { expiresIn: '7d' }
+    )
 
-    // Return user data (without password)
-    const { password_hash, ...userWithoutPassword } = user
+    logger.info('Successful login', { email, userId: adminUser.id })
 
     return NextResponse.json({
       success: true,
-      data: {
-        user: {
-          id: userWithoutPassword.id,
-          username: userWithoutPassword.username,
-          email: userWithoutPassword.email,
-          role: userWithoutPassword.role
-        },
-        token
-      },
-      message: 'Login successful'
+      token,
+      user: {
+        id: adminUser.id,
+        username: adminUser.username || adminUser.email.split('@')[0],
+        email: adminUser.email,
+        role: adminUser.role
+      }
     })
-
   } catch (error) {
-    console.error('Login error:', error)
+    logger.error('Login error', error as Error)
     return NextResponse.json(
-      { success: false, error: 'Internal server error' },
+      { success: false, error: 'Giriş yapılırken bir hata oluştu' },
       { status: 500 }
     )
   }
 }
 
 export async function GET() {
-  return NextResponse.json(
-    { message: 'Auth endpoint. Use POST to login.' },
-    { status: 200 }
-  )
+  return NextResponse.json({ message: 'Login endpoint' })
 }

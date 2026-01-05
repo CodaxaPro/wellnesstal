@@ -1,4 +1,5 @@
 // Shared types for content management
+import React from 'react'
 
 export interface ContentSection {
   id: string
