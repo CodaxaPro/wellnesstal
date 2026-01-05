@@ -28,9 +28,9 @@ interface MetaContent {
 }
 
 const defaultMetaContent: MetaContent = {
-  siteTitle: 'Wellnesstal - Premium Wellness & Headspa in Köln',
-  siteDescription: 'Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!',
-  keywords: 'wellness, headspa, massage, köln, entspannung, aromatherapie',
+  siteTitle: 'Wellnesstal - Premium Wellness & Headspa in Baesweiler | Massage & Entspannung',
+  siteDescription: 'Professionelle Wellness & Headspa-Behandlungen in Baesweiler. Japanische Kopfmassage, Entspannung & Massage für Ihr Wohlbefinden. Jetzt Termin vereinbaren!',
+  keywords: 'wellness baesweiler, headspa baesweiler, massage baesweiler, japanische kopfmassage, entspannung baesweiler, wellness studio, spa baesweiler',
   ogImage: '/images/og-wellnesstal.jpg'
 }
 
