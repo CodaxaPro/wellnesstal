@@ -511,6 +511,7 @@ export default function HeroBlock({ block }: BlockProps) {
                     src={content.image.url}
                     alt={content.image.alt || 'Hero görsel'}
                     fill
+                    sizes="100vw"
                     className="object-cover transition-all duration-700"
                     style={{
                       opacity: parseInt(imageStyles.opacity || defaultImageStyles.opacity) / 100,

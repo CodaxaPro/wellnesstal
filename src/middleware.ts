@@ -21,7 +21,8 @@ const securityHeaders = {
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
     "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.timify.com https://*.studiobookr.com",
-    "frame-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com https://*.studiobookr.com",
+    "child-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com https://www.studiobookr.com https://*.studiobookr.com https://studiobookr.com",
+    "frame-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com https://www.studiobookr.com https://*.studiobookr.com https://studiobookr.com",
     "object-src 'none'",
     "base-uri 'self'",
     "form-action 'self' https://*.timify.com https://*.studiobookr.com",
@@ -68,9 +69,16 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   matcher: [
+    /*
+     * Match all request paths except for the ones starting with:
+     * - api (API routes)
+     * - _next/static (static files)
+     * - _next/image (image optimization files)
+     * - favicon.ico (favicon file)
+     */
+    '/((?!api|_next/static|_next/image|favicon.ico).*)',
     '/tenant/:path*',
     '/login',
     '/register',
-    '/((?!api|_next/static|_next/image|favicon.ico).*)'
   ]
 }
