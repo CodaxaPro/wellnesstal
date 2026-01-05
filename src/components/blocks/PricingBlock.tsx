@@ -464,18 +464,30 @@ export default function PricingBlock({ block }: BlockProps) {
             </div>
           )}
           <div className="flex items-baseline gap-1 flex-wrap">
-            <span
-              className="text-4xl md:text-5xl font-bold leading-none"
-              style={{ color: getPriceColor(pkg) }}
-            >
-              {getPrice(pkg).replace(/€/g, '')}
-            </span>
-            <span 
-              className="text-2xl md:text-3xl font-semibold align-baseline"
-              style={{ color: getPriceColor(pkg), verticalAlign: 'baseline' }}
-            >
-              €
-            </span>
+            {(() => {
+              const priceString = getPrice(pkg)
+              const hasEuro = priceString.includes('€')
+              const numPart = priceString.replace(/€/g, '').trim()
+              const euroPart = hasEuro ? '€' : ''
+              return (
+                <>
+                  <span
+                    className="text-4xl md:text-5xl font-bold leading-none"
+                    style={{ color: getPriceColor(pkg) }}
+                  >
+                    {numPart}
+                  </span>
+                  {euroPart && (
+                    <span 
+                      className="text-2xl md:text-3xl font-semibold"
+                      style={{ color: getPriceColor(pkg) }}
+                    >
+                      {euroPart}
+                    </span>
+                  )}
+                </>
+              )
+            })()}
             {pkg.period && (
               <span className={`text-base md:text-lg ${pkg.highlighted ? 'text-white/80' : 'text-gray-500'}`}>
                 /{pkg.period}
