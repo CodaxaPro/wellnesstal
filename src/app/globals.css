@@ -482,6 +482,25 @@ a {
 /* Scroll behavior */
 html {
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch; /* Safari smooth scrolling */
+}
+
+/* Cross-browser compatibility fixes */
+@supports not (display: grid) {
+  /* Fallback for very old browsers */
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+/* Safari-specific fixes */
+@supports (-webkit-appearance: none) {
+  /* Safari transform fixes */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
 }
 
 ::selection {

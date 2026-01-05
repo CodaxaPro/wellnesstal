@@ -291,7 +291,14 @@ export default function EmbedBlock({ block }: BlockProps) {
     return (
       <iframe
         src={embedSrc}
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full border-0"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+        }}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
         loading={content.security?.lazyLoad ? 'lazy' : 'eager'}
