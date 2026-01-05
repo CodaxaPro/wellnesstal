@@ -140,7 +140,7 @@ export default function HeroBlock({ block }: BlockProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text Content */}
-          <div className={`transition-all duration-1000 transform ${
+          <div className={`relative z-10 transition-all duration-1000 transform ${
             isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
           }`}>
             {/* Badge */}
@@ -494,7 +494,7 @@ export default function HeroBlock({ block }: BlockProps) {
 
           {/* Image Content */}
           {content.image?.url && (
-            <div className={`transition-all duration-1000 delay-300 transform ${
+            <div className={`relative z-0 transition-all duration-1000 delay-300 transform ${
               isVisible ? 'translate-y-0 opacity-100' : 'translate-y-8 opacity-0'
             }`}>
               <div className="relative">
