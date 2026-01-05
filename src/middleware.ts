@@ -16,15 +16,15 @@ const securityHeaders = {
   // Content Security Policy
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live",
-    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.timify.com",
+    "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.timify.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
-    "connect-src 'self' https://*.supabase.co https://*.supabase.in",
+    "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.timify.com",
     "frame-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com",
     "object-src 'none'",
     "base-uri 'self'",
-    "form-action 'self'",
+    "form-action 'self' https://*.timify.com",
     "frame-ancestors 'self'",
     "upgrade-insecure-requests"
   ].join('; ')
