@@ -82,9 +82,25 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
 
   // Sync local content when prop changes (for block switching)
   useEffect(() => {
-    setLocalContent({
-      ...defaultContent,
-      ...content
+    if (isInitialMount.current) {
+      isInitialMount.current = false
+      return
+    }
+    // Only update if content is substantially different (avoid unnecessary re-renders)
+    // Note: We compare by JSON.stringify to detect actual changes
+    setLocalContent(prev => {
+      const contentStr = JSON.stringify(content)
+      const prevStr = JSON.stringify(prev)
+      if (contentStr === prevStr) {
+        return prev // No change
+      }
+      // CRITICAL: Preserve empty arrays (user explicitly cleared them)
+      // If navItems is explicitly set (even if empty array), use it
+      return {
+        ...defaultContent,
+        ...content,
+        navItems: content.navItems !== undefined ? content.navItems : defaultContent.navItems
+      }
     })
   }, [content])
 
