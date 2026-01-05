@@ -245,6 +245,9 @@ export interface HeroContent {
   
   // Styles
   styles?: HeroStyles
+  
+  // Section ID for navigation
+  sectionId?: string
 }
 
 // ============================================

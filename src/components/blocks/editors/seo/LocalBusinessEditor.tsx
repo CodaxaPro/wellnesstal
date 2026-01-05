@@ -309,22 +309,28 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
 
   // Update sameAs (social links)
   const updateSameAs = useCallback((index: number, value: string) => {
-    const links = [...(local.sameAs || [])]
-    links[index] = value
-    setLocal(prev => ({ ...prev, sameAs: links.filter(l => l) }))
+    setLocal(prev => {
+      const links = [...(prev.sameAs || [])]
+      links[index] = value
+      return { ...prev, sameAs: links }
+    })
   }, [])
 
   // Add social link
   const addSocialLink = useCallback(() => {
-    const links = [...(local.sameAs || []), '']
-    setLocal(prev => ({ ...prev, sameAs: links }))
+    setLocal(prev => ({
+      ...prev,
+      sameAs: [...(prev.sameAs || []), '']
+    }))
   }, [])
 
   // Remove social link
   const removeSocialLink = useCallback((index: number) => {
-    const links = [...(local.sameAs || [])]
-    links.splice(index, 1)
-    setLocal(prev => ({ ...prev, sameAs: links }))
+    setLocal(prev => {
+      const links = [...(prev.sameAs || [])]
+      links.splice(index, 1)
+      return { ...prev, sameAs: links }
+    })
   }, [])
 
   // Update services

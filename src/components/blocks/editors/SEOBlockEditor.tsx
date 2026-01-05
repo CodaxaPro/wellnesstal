@@ -188,6 +188,13 @@ function SocialPreview({ type, title, description, image, siteName }: {
 }) {
   const bgColor = type === 'facebook' ? 'bg-[#f0f2f5]' : 'bg-black'
   const textColor = type === 'facebook' ? 'text-slate-900' : 'text-white'
+  const [imageError, setImageError] = useState(false)
+  const hasValidImage = image && image.trim() && !imageError
+
+  // Reset error state when image URL changes
+  useEffect(() => {
+    setImageError(false)
+  }, [image])
 
   return (
     <div className={`${bgColor} p-4 rounded-xl`}>
@@ -195,9 +202,16 @@ function SocialPreview({ type, title, description, image, siteName }: {
         {type === 'facebook' ? 'Facebook' : 'Twitter/X'} Paylaşım Önizlemesi
       </p>
       <div className={`bg-white rounded-lg overflow-hidden shadow-sm ${type === 'twitter' ? 'border border-slate-200' : ''}`}>
-        {image ? (
-          <div className="h-40 bg-slate-200 flex items-center justify-center">
-            <img src={image} alt="OG Image" className="w-full h-full object-cover" />
+        {hasValidImage ? (
+          <div className="h-40 bg-slate-200 flex items-center justify-center relative overflow-hidden">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img 
+              src={image} 
+              alt="OG Image" 
+              className="w-full h-full object-cover"
+              onError={() => setImageError(true)}
+              onLoad={() => setImageError(false)}
+            />
           </div>
         ) : (
           <div className="h-40 bg-gradient-to-br from-sage-100 to-sage-200 flex items-center justify-center">

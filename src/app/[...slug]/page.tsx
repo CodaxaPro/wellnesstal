@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { Metadata } from 'next'
 import { createClient } from '@supabase/supabase-js'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
+import HashScrollHandler from '@/components/HashScrollHandler'
 
 // Force dynamic rendering - pages should always be fresh
 export const dynamic = 'force-dynamic'
@@ -255,6 +256,7 @@ export default async function DynamicPage({ params }: PageProps) {
 
   return (
     <main className="min-h-screen">
+      <HashScrollHandler />
       <BlockRenderer blocks={page.blocks} />
     </main>
   )

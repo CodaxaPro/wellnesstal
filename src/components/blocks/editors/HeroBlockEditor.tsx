@@ -1768,6 +1768,28 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
             </>
           )}
         </div>
+
+        {/* Section ID */}
+        <div className="space-y-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">Bölüm ID (Section ID)</label>
+            <p className="text-xs text-gray-500 mb-3">Sayfa içi navigasyon için kullanılır (örn: pricing)</p>
+            <input
+              type="text"
+              value={content.sectionId || ''}
+              onChange={(e) => {
+                // Remove # character if user types it
+                const value = e.target.value.replace(/^#/, '')
+                updateContent({ sectionId: value })
+              }}
+              placeholder="home"
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent font-mono"
+            />
+            <p className="text-xs text-gray-400 mt-2">
+              Link'lerde kullanmak için: #{content.sectionId || 'home'}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )
