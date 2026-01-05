@@ -426,10 +426,14 @@ export default function PricingBlock({ block }: BlockProps) {
             {/* Partner/Double Package Badge */}
             {pkg.isPartner && (
               <span
-                className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full bg-sage-100 text-sage-700 border border-sage-300"
-                style={{ letterSpacing: '0.05em' }}
+                className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full text-white"
+                style={{ 
+                  letterSpacing: '0.05em',
+                  backgroundColor: pkg.style?.partnerBadgeColor || '#9CAF88', // Ana renk (sage)
+                  borderColor: pkg.style?.partnerBadgeColor || '#9CAF88'
+                }}
               >
-                {pkg.partnerLabel || '2x'}
+                {pkg.partnerLabel || 'PARTNER-PACKAGE'}
               </span>
             )}
           </div>

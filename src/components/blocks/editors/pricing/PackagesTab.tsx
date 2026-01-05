@@ -678,6 +678,22 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
                     </div>
                   </div>
 
+                  {/* Partner Badge Color - Sadece partner paketi ise göster */}
+                  {activePackage.isPartner && (
+                    <div>
+                      <label className="block text-xs font-medium text-slate-600 mb-1.5">
+                        Partner Badge Rengi
+                        <span className="text-slate-400 ml-1">(varsayılan: ana renk)</span>
+                      </label>
+                      <input
+                        type="color"
+                        value={activePackage.style?.partnerBadgeColor ?? '#9CAF88'}
+                        onChange={(e) => updatePackageStyle(activePackage.id, { partnerBadgeColor: e.target.value })}
+                        className="w-full h-9 rounded border border-slate-200"
+                      />
+                    </div>
+                  )}
+
                   <div>
                     <label className="block text-xs font-medium text-slate-600 mb-1.5">Gölge</label>
                     <select

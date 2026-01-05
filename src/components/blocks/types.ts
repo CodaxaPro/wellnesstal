@@ -1007,6 +1007,8 @@ export interface PricingPackageStyle {
   featureTextColor?: string
   featureIconColor?: string
   checkmarkColor?: string
+  // Partner badge styling
+  partnerBadgeColor?: string // Partner badge arka plan rengi (varsayılan: #9CAF88 - ana renk)
 }
 
 // Enterprise Pricing Package
