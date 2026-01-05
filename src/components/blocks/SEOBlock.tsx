@@ -10,7 +10,7 @@ const defaultSEOContent: SEOContent = {
   useGlobalSEO: true,
   title: 'Wellnesstal - Ihre Wellness Oase',
   titleTemplate: '%s | Wellnesstal',
-  description: 'Professionelle Wellness-Behandlungen für Körper und Seele. Massage, Spa und Entspannung im Herzen von Köln.',
+  description: 'WellnessTal ist ein Premium-Headspa- und Wellnesszentrum in Baesweiler und Umgebung (Aachen, Köln, Düsseldorf). Japanisches Head Spa, Aromatherapie-Massagen und professionelle Gesichtsbehandlungen.',
   keywords: ['wellness', 'spa', 'massage', 'entspannung', 'köln'],
   author: 'Wellnesstal',
   canonicalUrl: '',
@@ -39,7 +39,7 @@ const defaultSEOContent: SEOContent = {
       enabled: true,
       '@type': 'DaySpa',
       name: 'Wellnesstal',
-      description: 'Ihre Oase der Entspannung im Herzen von Köln',
+      description: 'WellnessTal ist ein Premium-Headspa- und Wellnesszentrum, das in Baesweiler und Umgebung (Aachen, Köln, Düsseldorf) Dienstleistungen anbietet. Unser Expertenteam bietet Japanisches Head Spa (Kopfhaut-Detox), Aromatherapie-Massagen und professionelle Gesichtsbehandlungen. Wir verbinden modernste Techniken für geistige und körperliche Reinigung mit einer entspannenden Atmosphäre. Belohnen Sie sich und vereinbaren Sie noch heute einen Termin.',
       priceRange: '€€',
       currenciesAccepted: 'EUR'
     }
