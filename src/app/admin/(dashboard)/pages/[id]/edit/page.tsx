@@ -202,7 +202,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       const alwaysUpdateFields = ['title']
       
       // Array fields that should always be preserved (even if empty)
-      const alwaysUpdateArrays = ['buttons', 'hideOnMobile']
+      const alwaysUpdateArrays = ['buttons', 'hideOnMobile', 'navItems']
       
       for (const key of Object.keys(source)) {
         const s = source[key]
