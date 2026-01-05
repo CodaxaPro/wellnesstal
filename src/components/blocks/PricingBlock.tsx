@@ -202,7 +202,7 @@ export default function PricingBlock({ block }: BlockProps) {
     `
   }
 
-  // Render feature item (string or object)
+  // Render feature item (string or object) - Improved alignment and negative item styling
   const renderFeature = (feature: string | PricingFeatureItem, index: number, highlighted: boolean, pkgStyle?: PricingPackageStyle) => {
     const isString = typeof feature === 'string'
     const text = isString ? feature : feature.text
@@ -217,28 +217,43 @@ export default function PricingBlock({ block }: BlockProps) {
     }
     const featureTextColor = pkgStyle?.featureTextColor || defaultPackageStyle.featureTextColor
 
+    // Negative items (X icons) - lower opacity and different color
+    const negativeIconColor = highlighted ? 'rgba(255, 255, 255, 0.4)' : '#d1d5db' // Light grey
+    const negativeTextOpacity = highlighted ? 0.6 : 0.6
+
     return (
-      <li key={index} className={`flex items-center gap-3 ${!included ? 'opacity-50' : ''}`} title={tooltip}>
+      <li 
+        key={index} 
+        className="flex items-start gap-3"
+        title={tooltip}
+      >
+        {/* Icon - Perfect alignment with first line of text */}
         <svg
-          className="w-5 h-5 flex-shrink-0"
+          className="w-5 h-5 flex-shrink-0 mt-0.5"
           style={{
             color: included
               ? (highlighted ? '#ffffff' : (checkmarkColor || '#9CAF88'))
-              : '#9ca3af'
+              : negativeIconColor
           }}
           fill="none"
           viewBox="0 0 24 24"
           stroke="currentColor"
+          strokeWidth={included ? 2.5 : 2}
         >
           {included ? (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
           ) : (
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
           )}
         </svg>
+        {/* Text - Aligned with icon */}
         <span
-          className={highlighted ? 'text-white/90' : ''}
-          style={{ color: highlighted ? undefined : (featureTextColor || '#4b5563') }}
+          className="flex-1 leading-relaxed"
+          style={{ 
+            color: highlighted 
+              ? (included ? 'rgba(255, 255, 255, 0.95)' : `rgba(255, 255, 255, ${negativeTextOpacity})`)
+              : (included ? (featureTextColor || '#4b5563') : `rgba(75, 85, 99, ${negativeTextOpacity})`)
+          }}
         >
           {text}
         </span>
@@ -358,12 +373,19 @@ export default function PricingBlock({ block }: BlockProps) {
     return (
       <div
         key={pkg.id}
-        className={`rounded-2xl p-8 transition-all duration-300 ${hoverClass} ${shadowClass} ${
+        className={`rounded-2xl p-6 md:p-8 transition-all duration-300 ${hoverClass} ${shadowClass} ${
           pkg.highlighted
             ? 'bg-gradient-to-br from-sage-500 to-forest-600 text-white'
-            : 'hover:shadow-lg border'
+            : 'bg-white hover:shadow-lg border border-slate-200'
         } ${isFeatured ? 'lg:scale-110 z-10' : ''} ${(pkg.popular || pkg.recommended) ? 'relative' : ''}`}
-        style={{ ...packageStyle, ...animationStyle }}
+        style={{ 
+          ...packageStyle, 
+          ...animationStyle,
+          borderRadius: '16px',
+          boxShadow: pkg.highlighted 
+            ? '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)'
+            : '0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06)'
+        }}
       >
         {/* Popular Badge */}
         {pkg.popular && (
@@ -383,60 +405,90 @@ export default function PricingBlock({ block }: BlockProps) {
           </div>
         )}
 
-        {/* Custom Badge */}
-        {pkg.badge?.enabled && pkg.badge?.text && (
-          <div className="mb-4">
-            <span
-              className="inline-block text-xs font-bold px-3 py-1 rounded-full"
-              style={{
-                backgroundColor: pkg.badge.backgroundColor || '#f0fdf4',
-                color: pkg.badge.textColor || '#166534'
-              }}
-            >
-              {pkg.badge.text}
-            </span>
+        {/* Header Area - Flexbox layout for consistent spacing */}
+        <div className="flex flex-col gap-3 mb-4">
+          {/* Badge and Partner Badge - Top Left */}
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Custom Badge */}
+            {pkg.badge?.enabled && pkg.badge?.text && (
+              <span
+                className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full"
+                style={{
+                  backgroundColor: pkg.badge.backgroundColor || '#f0fdf4',
+                  color: pkg.badge.textColor || '#166534',
+                  letterSpacing: '0.05em'
+                }}
+              >
+                {pkg.badge.text}
+              </span>
+            )}
+
+            {/* Partner/Double Package Badge */}
+            {pkg.isPartner && (
+              <span
+                className="inline-block text-xs font-bold uppercase tracking-wide px-3 py-1 rounded-full bg-sage-100 text-sage-700 border border-sage-300"
+                style={{ letterSpacing: '0.05em' }}
+              >
+                {pkg.partnerLabel || '2x'}
+              </span>
+            )}
           </div>
-        )}
 
-        {/* Partner/Double Package Badge */}
-        {pkg.isPartner && (
-          <div className="mb-3">
-            <span
-              className="inline-block text-xs font-bold px-3 py-1 rounded-full bg-sage-100 text-sage-700 border border-sage-300"
-            >
-              {pkg.partnerLabel || '2x'}
-            </span>
-          </div>
-        )}
+          {/* Title - Improved line-height to prevent overlapping */}
+          <h3 
+            className={`text-3xl md:text-4xl font-bold leading-tight ${pkg.highlighted ? 'text-white' : 'text-charcoal'}`}
+            style={{ 
+              lineHeight: '1.2',
+              wordBreak: 'break-word'
+            }}
+          >
+            {pkg.name}
+          </h3>
 
-        <h3 className={`text-2xl font-bold mb-1 ${pkg.highlighted ? 'text-white' : 'text-charcoal'}`}>
-          {pkg.isPartner && pkg.partnerLabel ? `${pkg.partnerLabel} ${pkg.name}` : pkg.name}
-        </h3>
+          {/* Package Subtitle - Distinct muted grey color */}
+          {pkg.subtitle && (
+            <p className={`text-sm md:text-base leading-relaxed ${pkg.highlighted ? 'text-white/70' : 'text-gray-500'}`}>
+              {pkg.subtitle}
+            </p>
+          )}
+        </div>
 
-        {/* Package Subtitle */}
-        {pkg.subtitle && (
-          <p className={`text-sm mb-2 ${pkg.highlighted ? 'text-white/70' : 'text-gray-500'}`}>
-            {pkg.subtitle}
-          </p>
-        )}
-
+        {/* Pricing Section - Prominent with € symbol styling */}
         <div className="mb-6">
           {/* Original Price (strikethrough) */}
           {pkg.originalPrice && (
-            <span className={`text-lg line-through mr-2 ${pkg.highlighted ? 'text-white/60' : 'text-gray-400'}`}>
-              {pkg.originalPrice}
-            </span>
+            <div className="mb-1">
+              <span className={`text-lg line-through ${pkg.highlighted ? 'text-white/60' : 'text-gray-400'}`}>
+                {pkg.originalPrice}
+              </span>
+            </div>
           )}
-          <span
-            className="text-4xl font-bold"
-            style={{ color: getPriceColor(pkg) }}
-          >
-            {getPrice(pkg)}
-          </span>
-          {pkg.period && (
-            <span className={`text-sm ${pkg.highlighted ? 'text-white/80' : 'text-gray-500'}`}>
-              /{pkg.period}
+          <div className="flex items-baseline gap-1 flex-wrap">
+            <span
+              className="text-4xl md:text-5xl font-bold leading-none"
+              style={{ color: getPriceColor(pkg) }}
+            >
+              {getPrice(pkg).replace(/€/g, '')}
             </span>
+            <span 
+              className="text-2xl md:text-3xl font-semibold align-baseline"
+              style={{ color: getPriceColor(pkg), verticalAlign: 'baseline' }}
+            >
+              €
+            </span>
+            {pkg.period && (
+              <span className={`text-base md:text-lg ${pkg.highlighted ? 'text-white/80' : 'text-gray-500'}`}>
+                /{pkg.period}
+              </span>
+            )}
+          </div>
+          {/* Partner Package Label */}
+          {pkg.isPartner && (
+            <div className="mt-2">
+              <span className={`text-sm ${pkg.highlighted ? 'text-white/90' : 'text-gray-600'}`}>
+                für 2 Personen / Gesamtpreis
+              </span>
+            </div>
           )}
         </div>
 
@@ -446,7 +498,8 @@ export default function PricingBlock({ block }: BlockProps) {
           </p>
         )}
 
-        <ul className="space-y-3 mb-8">
+        {/* Features List - Improved spacing and alignment */}
+        <ul className="space-y-4 mb-8">
           {packageFeatures.map((feature, idx) => renderFeature(feature, idx, pkg.highlighted || false, pkg.style))}
         </ul>
 
