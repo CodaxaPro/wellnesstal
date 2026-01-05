@@ -307,29 +307,30 @@ export default function EmbedBlock({ block }: BlockProps) {
   }
 
   // Container padding style
+  const hasCustomPadding = content.container?.padding?.left || content.container?.padding?.right
   const containerStyle: React.CSSProperties = {
-    paddingTop: content.container?.padding?.top || '64px',
-    paddingBottom: content.container?.padding?.bottom || '64px',
-    paddingLeft: content.container?.padding?.left || '16px',
-    paddingRight: content.container?.padding?.right || '16px',
+    paddingTop: content.container?.padding?.top || '5rem',
+    paddingBottom: content.container?.padding?.bottom || '5rem',
+    ...(hasCustomPadding ? {
+      paddingLeft: content.container?.padding?.left || '1rem',
+      paddingRight: content.container?.padding?.right || '1rem'
+    } : {}),
     marginTop: content.container?.margin?.top || '0px',
     marginBottom: content.container?.margin?.bottom || '0px',
     ...(content.container?.maxWidth === 'custom' && content.container?.customMaxWidth
       ? { maxWidth: content.container.customMaxWidth }
-      : {}),
-    ...getBackgroundStyle()
+      : {})
   }
 
   return (
     <section
       id={content.sectionId || 'booking'}
       data-booking-section
-      className={content.customClass || ''}
-      id={content.sectionId}
+      className={`${content.customClass || ''} w-full`}
       style={getBackgroundStyle()}
     >
       <div
-        className={`${getMaxWidthClass()} ${getAlignmentClass()} px-4 sm:px-6 lg:px-8`}
+        className={`${getMaxWidthClass()} ${getAlignmentClass()} w-full ${!hasCustomPadding ? 'px-4 sm:px-6 lg:px-8' : ''}`}
         style={containerStyle}
       >
         {/* Section Header */}
@@ -384,16 +385,16 @@ export default function EmbedBlock({ block }: BlockProps) {
 
         {/* Embed Frame */}
         <div
-          className={`relative ${getShadowClass()} bg-gray-900`}
+          className={`relative ${getShadowClass()} bg-gray-900 w-full`}
           style={{
             ...getFrameStyle(),
             paddingBottom: content.frame?.aspectRatio === 'auto'
               ? undefined
               : getAspectRatioStyle(),
             height: content.frame?.aspectRatio === 'auto'
-              ? (content.frame?.height || '400px')
+              ? (content.frame?.height || '600px')
               : 0,
-            minHeight: content.frame?.minHeight,
+            minHeight: content.frame?.minHeight || (content.frame?.aspectRatio === 'auto' ? '600px' : undefined),
             maxHeight: content.frame?.maxHeight
           }}
         >
