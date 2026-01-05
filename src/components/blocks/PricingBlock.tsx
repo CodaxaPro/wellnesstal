@@ -391,7 +391,7 @@ export default function PricingBlock({ block }: BlockProps) {
         {pkg.popular && (
           <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
             <span className="bg-amber-500 text-white text-xs font-bold px-3 py-1 rounded-full">
-              En Popüler
+              Beliebteste
             </span>
           </div>
         )}
