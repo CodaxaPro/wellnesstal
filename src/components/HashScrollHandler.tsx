@@ -65,18 +65,53 @@ export default function HashScrollHandler() {
         // This ensures the page starts at the hero section when hash is present
         const isHeroBlock = element.tagName === 'SECTION' || 
                            element.classList.contains('hero') ||
-                           element.closest('section')?.id === id
+                           element.closest('section')?.id === id ||
+                           (element as HTMLElement).classList.contains('bg-cream-gradient') // Hero block has this class
         
-        // If element is already at the top of viewport (within 10px) and it's not a hero block, don't scroll
-        if (!isHeroBlock && rect.top >= -10 && rect.top < 10 && scrollDifference < 10) {
-          console.log(`[HashScrollHandler] ✅ Already at #${id} (current: ${currentScroll}, target: ${targetScroll}, rect.top: ${rect.top})`)
+        // For hero blocks, always scroll to ensure it's at the very top
+        if (isHeroBlock) {
+          console.log(`[HashScrollHandler] 🎯 Hero block detected (#${id}), forcing scroll to top`)
+          // Force scroll to element's top position
+          const heroTop = elementAbsoluteTop < 0 ? 0 : elementAbsoluteTop
+          
+          if (typeof window.scrollTo === 'function') {
+            try {
+              window.scrollTo({ top: heroTop, behavior: 'instant' })
+            } catch (e) {
+              window.scrollTo(0, heroTop)
+            }
+          }
+          
+          // Also use scrollIntoView
+          if (typeof (element as HTMLElement).scrollIntoView === 'function') {
+            try {
+              (element as HTMLElement).scrollIntoView({ behavior: 'instant', block: 'start' })
+            } catch (e) {
+              (element as HTMLElement).scrollIntoView(true)
+            }
+          }
+          
+          // Smooth scroll after instant
+          setTimeout(() => {
+            if (typeof window.scrollTo === 'function') {
+              try {
+                window.scrollTo({ top: heroTop, behavior: 'smooth' })
+              } catch (e) {
+                window.scrollTo(0, heroTop)
+              }
+            }
+          }, 50)
+          
+          console.log(`[HashScrollHandler] ✅ Scrolled hero block #${id} to position ${heroTop}`)
           hasScrolledRef.current = true
           return true
         }
         
-        // For hero blocks or if we need to scroll, always scroll to element
-        if (isHeroBlock) {
-          console.log(`[HashScrollHandler] 🎯 Hero block detected, scrolling to top of #${id}`)
+        // For non-hero blocks, only scroll if not already at target
+        if (rect.top >= -10 && rect.top < 10 && scrollDifference < 10) {
+          console.log(`[HashScrollHandler] ✅ Already at #${id} (current: ${currentScroll}, target: ${targetScroll}, rect.top: ${rect.top})`)
+          hasScrolledRef.current = true
+          return true
         }
         
         console.log(`[HashScrollHandler] 📍 Scrolling to #${id}: current=${currentScroll}, target=${targetScroll}, rect.top=${rect.top}, diff=${scrollDifference}`)
