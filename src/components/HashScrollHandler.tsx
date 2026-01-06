@@ -36,26 +36,42 @@ export default function HashScrollHandler() {
       const isVisible = rect.width > 0 && rect.height > 0
       
       if (isVisible) {
-        // Calculate absolute position using multiple methods
-        const elementTop = (element as HTMLElement).offsetTop || 
-                          (rect.top + (window.pageYOffset || window.scrollY || 0)) ||
-                          0
+        // Calculate absolute position - use getBoundingClientRect which is more reliable
+        const scrollY = window.pageYOffset || window.scrollY || 0
+        const elementTop = rect.top + scrollY
+        
+        // If elementTop is 0 or very small, element might be at top already
+        // But we still want to scroll to ensure it's visible
+        const targetScroll = elementTop > 0 ? elementTop : 0
+        
+        // Only scroll if we're not already at the target position
+        const currentScroll = scrollY
+        const scrollDifference = Math.abs(targetScroll - currentScroll)
+        
+        // If we're already close to the target (within 10px), don't scroll
+        if (scrollDifference < 10 && rect.top >= 0 && rect.top < 100) {
+          console.log(`[HashScrollHandler] ✅ Already at #${id} (current: ${currentScroll}, target: ${targetScroll})`)
+          hasScrolledRef.current = true
+          return true
+        }
+        
+        console.log(`[HashScrollHandler] 📍 Scrolling to #${id}: current=${currentScroll}, target=${targetScroll}, rect.top=${rect.top}`)
         
         // Safety check for scrollTo
         if (typeof window.scrollTo === 'function') {
           try {
             // Method 1: Direct scroll to position (most reliable)
-            window.scrollTo({ top: elementTop, behavior: 'instant' })
+            window.scrollTo({ top: targetScroll, behavior: 'instant' })
           } catch (e) {
             // Fallback for older browsers
-            window.scrollTo(0, elementTop)
+            window.scrollTo(0, targetScroll)
           }
         } else if (window.scroll) {
           // Fallback method
-          window.scroll(0, elementTop)
+          window.scroll(0, targetScroll)
         }
         
-        // Method 2: scrollIntoView
+        // Method 2: scrollIntoView (as backup)
         if (typeof (element as HTMLElement).scrollIntoView === 'function') {
           try {
             (element as HTMLElement).scrollIntoView({ behavior: 'instant', block: 'start' })
@@ -68,14 +84,14 @@ export default function HashScrollHandler() {
         if (typeof window.scrollTo === 'function') {
           setTimeout(() => {
             try {
-              window.scrollTo({ top: elementTop, behavior: 'smooth' })
+              window.scrollTo({ top: targetScroll, behavior: 'smooth' })
             } catch (e) {
-              window.scrollTo(0, elementTop)
+              window.scrollTo(0, targetScroll)
             }
           }, 50)
         }
         
-        console.log(`[HashScrollHandler] ✅ Scrolled to #${id} at position ${elementTop}`)
+        console.log(`[HashScrollHandler] ✅ Scrolled to #${id} at position ${targetScroll}`)
         hasScrolledRef.current = true
         return true
       } else if (attempt < 50) {

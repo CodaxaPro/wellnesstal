@@ -99,17 +99,39 @@ export default function HeroBlock({ block }: BlockProps) {
       if (element) {
         const rect = element.getBoundingClientRect()
         if (rect.width > 0 && rect.height > 0) {
-          // Force scroll - use instant first, then smooth
-          const scrollTop = window.pageYOffset + rect.top
-          window.scrollTo({ top: scrollTop, behavior: 'instant' })
+          // Calculate scroll position
+          const currentScroll = window.pageYOffset || window.scrollY || 0
+          const scrollTop = currentScroll + rect.top
           
-          // Then smooth scroll after a moment
-          setTimeout(() => {
-            window.scrollTo({ top: scrollTop, behavior: 'smooth' })
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }, 50)
-          
-          console.log('[HeroBlock] Scrolled to hash:', id, 'scrollTop:', scrollTop)
+          // Only scroll if element is not already at top
+          if (rect.top < -10 || rect.top > 100) {
+            // Force scroll - use instant first, then smooth
+            if (typeof window.scrollTo === 'function') {
+              try {
+                window.scrollTo({ top: scrollTop, behavior: 'instant' })
+              } catch (e) {
+                window.scrollTo(0, scrollTop)
+              }
+            }
+            
+            // Then smooth scroll after a moment
+            setTimeout(() => {
+              if (typeof window.scrollTo === 'function') {
+                try {
+                  window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+                } catch (e) {
+                  window.scrollTo(0, scrollTop)
+                }
+              }
+              if (typeof element.scrollIntoView === 'function') {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+              }
+            }, 50)
+            
+            console.log('[HeroBlock] Scrolled to hash:', id, 'scrollTop:', scrollTop, 'rect.top:', rect.top)
+          } else {
+            console.log('[HeroBlock] Already at hash:', id, 'rect.top:', rect.top)
+          }
           return true
         }
       }
