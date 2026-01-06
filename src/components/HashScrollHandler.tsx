@@ -25,11 +25,22 @@ export default function HashScrollHandler() {
       return false
     }
     
-    // Try multiple selectors
-    const element = document.getElementById(id) || 
-                   document.querySelector(`[id="${id}"]`) ||
-                   document.querySelector(`#${id}`) ||
-                   document.querySelector(`[data-section="${id}"]`) as HTMLElement
+    // Try multiple selectors - prioritize hero blocks
+    // First try to find hero block with this id
+    let element = document.querySelector(`section[id="${id}"]`) as HTMLElement ||
+                  document.querySelector(`section#${id}`) as HTMLElement ||
+                  document.getElementById(id) || 
+                  document.querySelector(`[id="${id}"]`) ||
+                  document.querySelector(`#${id}`) ||
+                  document.querySelector(`[data-section="${id}"]`) as HTMLElement
+    
+    // If not found, try to find any element with this id
+    if (!element) {
+      element = document.getElementById(id) || 
+               document.querySelector(`[id="${id}"]`) ||
+               document.querySelector(`#${id}`) ||
+               document.querySelector(`[data-section="${id}"]`) as HTMLElement
+    }
     
     if (element) {
       const rect = element.getBoundingClientRect()
@@ -50,11 +61,22 @@ export default function HashScrollHandler() {
         const currentScroll = scrollY
         const scrollDifference = Math.abs(targetScroll - currentScroll)
         
-        // If element is already at the top of viewport (within 50px), don't scroll
-        if (rect.top >= -10 && rect.top < 50 && scrollDifference < 50) {
+        // For hero blocks, always scroll to top (even if already visible)
+        // This ensures the page starts at the hero section when hash is present
+        const isHeroBlock = element.tagName === 'SECTION' || 
+                           element.classList.contains('hero') ||
+                           element.closest('section')?.id === id
+        
+        // If element is already at the top of viewport (within 10px) and it's not a hero block, don't scroll
+        if (!isHeroBlock && rect.top >= -10 && rect.top < 10 && scrollDifference < 10) {
           console.log(`[HashScrollHandler] ✅ Already at #${id} (current: ${currentScroll}, target: ${targetScroll}, rect.top: ${rect.top})`)
           hasScrolledRef.current = true
           return true
+        }
+        
+        // For hero blocks or if we need to scroll, always scroll to element
+        if (isHeroBlock) {
+          console.log(`[HashScrollHandler] 🎯 Hero block detected, scrolling to top of #${id}`)
         }
         
         console.log(`[HashScrollHandler] 📍 Scrolling to #${id}: current=${currentScroll}, target=${targetScroll}, rect.top=${rect.top}, diff=${scrollDifference}`)

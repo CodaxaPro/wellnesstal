@@ -211,7 +211,10 @@ export default function HeroBlock({ block }: BlockProps) {
   if (typeof window !== 'undefined' && window.location.hash) {
     const hashId = window.location.hash.substring(1)
     if (hashId && hashId !== sectionId) {
-      console.warn(`[HeroBlock] Hash mismatch: hash=${hashId}, sectionId=${sectionId}`)
+      console.warn(`[HeroBlock] ⚠️ Hash mismatch: hash=${hashId}, sectionId=${sectionId}`)
+      console.warn(`[HeroBlock] 💡 Fix: Set sectionId to "${hashId}" in admin panel or it will be auto-set from page slug`)
+    } else if (hashId === sectionId) {
+      console.log(`[HeroBlock] ✅ Hash matches sectionId: ${sectionId}`)
     }
   }
   
