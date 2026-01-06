@@ -77,18 +77,6 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate, pageSl
           )
         }
 
-        // For Hero blocks, ensure sectionId matches page slug if not set
-        let blockToRender = block
-        if (block.block_type === 'hero' && pageSlug && !block.content?.sectionId) {
-          blockToRender = {
-            ...block,
-            content: {
-              ...block.content,
-              sectionId: pageSlug
-            }
-          }
-        }
-
         return (
           <div
             key={block.id}
@@ -97,7 +85,7 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate, pageSl
             data-block-type={block.block_type}
           >
             <BlockComponent
-              block={blockToRender}
+              block={block}
               isEditing={isEditing}
               onUpdate={onBlockUpdate ? (content) => onBlockUpdate(block.id, content) : undefined}
             />
