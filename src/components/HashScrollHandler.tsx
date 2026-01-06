@@ -226,37 +226,56 @@ export default function HashScrollHandler() {
     
     hasScrolledRef.current = false
     
-    // Immediate scroll attempt (before React hydration completes)
-    const hash = window.location.hash
-    console.log(`[HashScrollHandler] 🔍 useLayoutEffect: hash="${hash}", pathname="${pathname}"`)
-    
-    if (hash) {
-      const id = hash.substring(1)
-      if (id) {
-        console.log(`[HashScrollHandler] 🎯 Starting aggressive scroll to #${id}`)
-        
-        // Try immediately (don't wait for requestAnimationFrame)
-        forceScrollToHash(id, 0)
-        
-        // Wait a tiny bit to ensure DOM is ready, then try again
-        requestAnimationFrame(() => {
+    // Wait a bit for hash to be available (sometimes it's not immediately available)
+    const checkHash = () => {
+      const hash = window.location.hash
+      console.log(`[HashScrollHandler] 🔍 useLayoutEffect: hash="${hash}", pathname="${pathname}"`)
+      
+      if (hash) {
+        const id = hash.substring(1)
+        if (id) {
+          console.log(`[HashScrollHandler] 🎯 Starting aggressive scroll to #${id}`)
+          
+          // Try immediately
           forceScrollToHash(id, 0)
-        })
-        
-        // Try with multiple delays
-        setTimeout(() => forceScrollToHash(id, 0), 50)
-        setTimeout(() => forceScrollToHash(id, 0), 100)
-        setTimeout(() => forceScrollToHash(id, 0), 200)
-        setTimeout(() => forceScrollToHash(id, 0), 300)
-        setTimeout(() => forceScrollToHash(id, 0), 500)
-        setTimeout(() => forceScrollToHash(id, 0), 800)
-        setTimeout(() => forceScrollToHash(id, 0), 1200)
+          
+          // Wait a tiny bit to ensure DOM is ready, then try again
+          requestAnimationFrame(() => {
+            forceScrollToHash(id, 0)
+          })
+          
+          // Try with multiple delays
+          setTimeout(() => forceScrollToHash(id, 0), 50)
+          setTimeout(() => forceScrollToHash(id, 0), 100)
+          setTimeout(() => forceScrollToHash(id, 0), 200)
+          setTimeout(() => forceScrollToHash(id, 0), 300)
+          setTimeout(() => forceScrollToHash(id, 0), 500)
+          setTimeout(() => forceScrollToHash(id, 0), 800)
+          setTimeout(() => forceScrollToHash(id, 0), 1200)
+        } else {
+          console.log('[HashScrollHandler] ⚠️ Hash is empty after substring')
+        }
       } else {
-        console.log('[HashScrollHandler] ⚠️ Hash is empty after substring')
+        // If no hash initially, check again after a short delay
+        // Sometimes hash is set after initial render
+        setTimeout(() => {
+          const delayedHash = window.location.hash
+          if (delayedHash) {
+            console.log(`[HashScrollHandler] 🔄 Found delayed hash: "${delayedHash}"`)
+            const delayedId = delayedHash.substring(1)
+            if (delayedId) {
+              forceScrollToHash(delayedId, 0)
+            }
+          }
+        }, 100)
       }
-    } else {
-      console.log('[HashScrollHandler] ℹ️ No hash in URL')
     }
+    
+    // Check immediately
+    checkHash()
+    
+    // Also check after a short delay (hash might be set after navigation)
+    setTimeout(checkHash, 50)
   }, [pathname])
 
   useEffect(() => {
