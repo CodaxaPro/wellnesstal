@@ -6,6 +6,7 @@ import Footer from '@/components/layout/Footer'
 import BlockRenderer from '@/components/blocks/BlockRenderer'
 import { PageBlock } from '@/components/blocks/types'
 import WhatsAppButton from '@/components/ui/WhatsAppButton'
+import PageLoader from '@/components/ui/PageLoader'
 
 // Content Sections
 import LandingHeroSection from '@/components/sections/LandingHeroSection'
@@ -177,14 +178,7 @@ export default function Home() {
   } : {}
 
   if (blocksLoading || sectionsLoading) {
-    return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto mb-4"></div>
-          <p className="text-slate-600">Sayfa yükleniyor...</p>
-        </div>
-      </div>
-    )
+    return <PageLoader brandName="WellnessTal" />
   }
 
   // Render section component based on section_key

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, use } from 'react'
+import PageLoader from '@/components/ui/PageLoader'
 
 interface ServicePageProps {
   params: Promise<{
@@ -60,11 +61,7 @@ export default function ServiceLandingPage({ params }: ServicePageProps) {
   }, [resolvedParams.slug])
 
   if (loading) {
-    return (
-      <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
-      </div>
-    )
+    return <PageLoader brandName="WellnessTal" />
   }
 
   if (!service) {
