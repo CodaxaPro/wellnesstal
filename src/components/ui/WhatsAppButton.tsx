@@ -354,11 +354,6 @@ const WhatsAppButton = () => {
 
           {/* Pulse Animation */}
           <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75"></span>
-
-          {/* Online Indicator */}
-          <div className="absolute -top-1 -right-1 w-4 h-4 bg-green-400 rounded-full border-2 border-white flex items-center justify-center">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          </div>
         </Link>
       </div>
     )
@@ -458,19 +453,6 @@ const WhatsAppButton = () => {
             className={`absolute inset-0 ${borderRadius} animate-ping opacity-75`}
             style={{ backgroundColor: settings.appearance.buttonColor }}
           />
-        )}
-
-        {/* Online/Offline Indicator */}
-        {settings.availability.showIndicator && (
-          <div
-            className={`absolute -top-1 -right-1 ${sizes.indicator} rounded-full border-2 border-white flex items-center justify-center`}
-            style={{ backgroundColor: isOnline ? settings.availability.onlineColor : settings.availability.offlineColor }}
-          >
-            <div
-              className="w-1/2 h-1/2 rounded-full animate-pulse"
-              style={{ backgroundColor: isOnline ? settings.availability.onlineColor : settings.availability.offlineColor }}
-            />
-          </div>
         )}
       </Link>
     </div>
