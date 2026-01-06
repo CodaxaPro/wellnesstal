@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useLayoutEffect } from 'react'
+import { useEffect, useLayoutEffect, useRef } from 'react'
 import { usePathname } from 'next/navigation'
 
 /**
@@ -10,143 +10,133 @@ import { usePathname } from 'next/navigation'
  */
 export default function HashScrollHandler() {
   const pathname = usePathname()
+  const hasScrolledRef = useRef(false)
+
+  // Aggressive scroll function
+  const forceScrollToHash = (id: string, attempt = 0) => {
+    if (hasScrolledRef.current && attempt > 5) return // Stop after successful scroll
+    
+    const element = document.getElementById(id)
+    
+    if (element) {
+      const rect = element.getBoundingClientRect()
+      const isVisible = rect.width > 0 && rect.height > 0
+      
+      if (isVisible) {
+        // Calculate absolute position
+        const elementTop = element.offsetTop || (rect.top + window.pageYOffset)
+        
+        // Force scroll - multiple methods
+        window.scrollTo({ top: elementTop, behavior: 'instant' })
+        element.scrollIntoView({ behavior: 'instant', block: 'start' })
+        
+        // Also try smooth after instant
+        setTimeout(() => {
+          window.scrollTo({ top: elementTop, behavior: 'smooth' })
+        }, 100)
+        
+        console.log(`[HashScrollHandler] ✅ Scrolled to #${id} at position ${elementTop}`)
+        hasScrolledRef.current = true
+        return true
+      } else if (attempt < 30) {
+        // Element exists but not visible yet, retry
+        setTimeout(() => forceScrollToHash(id, attempt + 1), 100)
+      }
+    } else if (attempt < 30) {
+      // Element not found, retry
+      setTimeout(() => forceScrollToHash(id, attempt + 1), 100)
+    } else {
+      // Try alternative selectors
+      const fallback = document.querySelector(`[id="${id}"]`) || 
+                      document.querySelector(`#${id}`) ||
+                      document.querySelector(`[data-section="${id}"]`)
+      
+      if (fallback) {
+        const fallbackTop = (fallback as HTMLElement).offsetTop || 
+                          ((fallback as HTMLElement).getBoundingClientRect().top + window.pageYOffset)
+        window.scrollTo({ top: fallbackTop, behavior: 'instant' })
+        console.log(`[HashScrollHandler] ✅ Scrolled to #${id} via fallback selector`)
+        hasScrolledRef.current = true
+      } else {
+        console.warn(`[HashScrollHandler] ❌ Could not find element #${id} after ${attempt} attempts`)
+      }
+    }
+    
+    return false
+  }
 
   // Use useLayoutEffect for immediate execution before paint
   useLayoutEffect(() => {
+    hasScrolledRef.current = false
+    
     // Immediate scroll attempt (before React hydration completes)
     const hash = typeof window !== 'undefined' ? window.location.hash : ''
     if (hash) {
       const id = hash.substring(1)
       if (id) {
-        // Try immediate scroll (for fast-rendering pages)
-        const tryScroll = () => {
-          const element = document.getElementById(id)
-          if (element) {
-            const rect = element.getBoundingClientRect()
-            if (rect.width > 0 && rect.height > 0) {
-              // Element is visible, scroll immediately
-              window.scrollTo({
-                top: window.pageYOffset + rect.top,
-                behavior: 'instant'
-              })
-              return true
-            }
-          }
-          return false
-        }
+        console.log(`[HashScrollHandler] 🎯 Starting aggressive scroll to #${id}`)
         
-        // Try multiple times with short delays
-        if (!tryScroll()) {
-          setTimeout(() => tryScroll(), 50)
-          setTimeout(() => tryScroll(), 150)
-          setTimeout(() => tryScroll(), 300)
-        }
+        // Try immediately
+        forceScrollToHash(id, 0)
+        
+        // Try with multiple delays
+        setTimeout(() => forceScrollToHash(id, 0), 50)
+        setTimeout(() => forceScrollToHash(id, 0), 150)
+        setTimeout(() => forceScrollToHash(id, 0), 300)
+        setTimeout(() => forceScrollToHash(id, 0), 500)
+        setTimeout(() => forceScrollToHash(id, 0), 1000)
       }
     }
-  }, [])
+  }, [pathname])
 
   useEffect(() => {
-    // Wait for page to render, then handle hash scrolling
-    const handleHashScroll = () => {
-      if (typeof window === 'undefined') return
+    // Reset scroll flag on pathname change
+    hasScrolledRef.current = false
+    
+    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    if (!hash) return
 
-      const hash = window.location.hash
-      if (!hash) return
+    const id = hash.substring(1)
+    if (!id) return
 
-      // Remove the # character
-      const id = hash.substring(1)
-      if (!id) return
+    console.log(`[HashScrollHandler] 🔄 useEffect: Starting scroll to #${id}`)
 
-      console.log('[HashScrollHandler] Attempting to scroll to:', id)
-
-      // Wait for content to render, then scroll
-      // Try multiple times with increasing delays to handle slow rendering (especially for hero blocks with animations)
-      const attemptScroll = (attempt = 0) => {
-        const element = document.getElementById(id)
-        
-        if (element) {
-          // Check if element is visible (not just in DOM, but actually rendered)
-          const rect = element.getBoundingClientRect()
-          const isVisible = rect.width > 0 && rect.height > 0
-          
-          console.log(`[HashScrollHandler] Attempt ${attempt}: Element found, visible: ${isVisible}`, {
-            width: rect.width,
-            height: rect.height,
-            top: rect.top
-          })
-          
-          if (isVisible) {
-            // Calculate scroll position with offset for fixed headers
-            const elementTop = element.getBoundingClientRect().top + window.pageYOffset
-            const offset = 0 // No offset needed for hero blocks
-            
-            // Use both scrollIntoView and window.scrollTo for maximum compatibility
-            setTimeout(() => {
-              // Method 1: scrollIntoView
-              element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              
-              // Method 2: window.scrollTo (fallback)
-              setTimeout(() => {
-                window.scrollTo({
-                  top: elementTop - offset,
-                  behavior: 'smooth'
-                })
-              }, 100)
-              
-              console.log('[HashScrollHandler] Scrolled to element')
-            }, 200)
-          } else if (attempt < 20) {
-            // Element exists but not visible yet (likely still animating), retry
-            setTimeout(() => attemptScroll(attempt + 1), 250)
-          } else {
-            console.warn(`[HashScrollHandler] Element found but not visible after ${attempt} attempts`)
-          }
-        } else if (attempt < 20) {
-          // Retry up to 20 times with increasing delays (for slow-rendering hero blocks)
-          if (attempt % 3 === 0) {
-            console.log(`[HashScrollHandler] Attempt ${attempt}: Element not found, retrying...`)
-          }
-          setTimeout(() => attemptScroll(attempt + 1), 400)
-        } else {
-          // Final attempt: try to find element by any means
-          console.warn(`[HashScrollHandler] Could not find element with id: ${id} after ${attempt} attempts`)
-          // Try querySelector as fallback
-          const fallbackElement = document.querySelector(`[id="${id}"]`) || document.querySelector(`#${id}`)
-          if (fallbackElement) {
-            console.log('[HashScrollHandler] Found element via querySelector fallback')
-            fallbackElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }
-        }
-      }
-
-      // Start scrolling after initial delay (increased for hero blocks with animations)
-      // Also wait for Next.js hydration to complete
-      const startScroll = () => {
-        // Wait for DOM to be ready
-        if (document.readyState === 'complete') {
-          attemptScroll()
-        } else {
-          window.addEventListener('load', () => {
-            setTimeout(() => attemptScroll(), 500)
-          })
-          // Also try immediately
-          attemptScroll()
-        }
-      }
+    // Wait for DOM to be fully ready
+    const startScrolling = () => {
+      // Try immediately
+      forceScrollToHash(id, 0)
       
-      // Try multiple times with increasing delays
-      setTimeout(() => startScroll(), 100)
-      setTimeout(() => startScroll(), 500)
-      setTimeout(() => startScroll(), 1000)
-      setTimeout(() => startScroll(), 2000)
+      // Try with delays to catch late-rendering elements
+      const delays = [100, 200, 300, 500, 800, 1200, 2000]
+      delays.forEach(delay => {
+        setTimeout(() => {
+          if (!hasScrolledRef.current) {
+            forceScrollToHash(id, 0)
+          }
+        }, delay)
+      })
     }
 
-    // Handle hash scroll on pathname change
-    handleHashScroll()
+    // Start when DOM is ready
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      startScrolling()
+    } else {
+      window.addEventListener('load', startScrolling, { once: true })
+      // Also try immediately
+      startScrolling()
+    }
 
-    // Also handle it when hash changes (in case user clicks a hash link on the same page)
+    // Handle hash changes
     const handleHashChange = () => {
-      handleHashScroll()
+      hasScrolledRef.current = false
+      const newHash = window.location.hash
+      if (newHash) {
+        const newId = newHash.substring(1)
+        if (newId) {
+          console.log(`[HashScrollHandler] 🔄 Hash changed to #${newId}`)
+          forceScrollToHash(newId, 0)
+        }
+      }
     }
 
     window.addEventListener('hashchange', handleHashChange)
