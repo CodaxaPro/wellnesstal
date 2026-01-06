@@ -23,36 +23,80 @@ export default function HashScrollHandler() {
       const id = hash.substring(1)
       if (!id) return
 
+      console.log('[HashScrollHandler] Attempting to scroll to:', id)
+
       // Wait for content to render, then scroll
       // Try multiple times with increasing delays to handle slow rendering (especially for hero blocks with animations)
       const attemptScroll = (attempt = 0) => {
         const element = document.getElementById(id)
+        
         if (element) {
           // Check if element is visible (not just in DOM, but actually rendered)
           const rect = element.getBoundingClientRect()
           const isVisible = rect.width > 0 && rect.height > 0
           
+          console.log(`[HashScrollHandler] Attempt ${attempt}: Element found, visible: ${isVisible}`, {
+            width: rect.width,
+            height: rect.height,
+            top: rect.top
+          })
+          
           if (isVisible) {
-            // Small delay to ensure element is fully rendered and animations are complete
+            // Calculate scroll position with offset for fixed headers
+            const elementTop = element.getBoundingClientRect().top + window.pageYOffset
+            const offset = 0 // No offset needed for hero blocks
+            
+            // Use both scrollIntoView and window.scrollTo for maximum compatibility
             setTimeout(() => {
-              // Scroll with smooth behavior
+              // Method 1: scrollIntoView
               element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-            }, 150)
-          } else if (attempt < 15) {
+              
+              // Method 2: window.scrollTo (fallback)
+              setTimeout(() => {
+                window.scrollTo({
+                  top: elementTop - offset,
+                  behavior: 'smooth'
+                })
+              }, 100)
+              
+              console.log('[HashScrollHandler] Scrolled to element')
+            }, 200)
+          } else if (attempt < 20) {
             // Element exists but not visible yet (likely still animating), retry
-            setTimeout(() => attemptScroll(attempt + 1), 200)
+            setTimeout(() => attemptScroll(attempt + 1), 250)
+          } else {
+            console.warn(`[HashScrollHandler] Element found but not visible after ${attempt} attempts`)
           }
-        } else if (attempt < 15) {
-          // Retry up to 15 times with increasing delays (for slow-rendering hero blocks)
-          setTimeout(() => attemptScroll(attempt + 1), 300 * (attempt + 1))
+        } else if (attempt < 20) {
+          // Retry up to 20 times with increasing delays (for slow-rendering hero blocks)
+          if (attempt % 3 === 0) {
+            console.log(`[HashScrollHandler] Attempt ${attempt}: Element not found, retrying...`)
+          }
+          setTimeout(() => attemptScroll(attempt + 1), 400)
         } else {
           // Final attempt: try to find element by any means
           console.warn(`[HashScrollHandler] Could not find element with id: ${id} after ${attempt} attempts`)
+          // Try querySelector as fallback
+          const fallbackElement = document.querySelector(`[id="${id}"]`) || document.querySelector(`#${id}`)
+          if (fallbackElement) {
+            console.log('[HashScrollHandler] Found element via querySelector fallback')
+            fallbackElement.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }
         }
       }
 
       // Start scrolling after initial delay (increased for hero blocks with animations)
-      setTimeout(() => attemptScroll(), 300)
+      // Also wait for Next.js hydration to complete
+      setTimeout(() => {
+        // Wait for DOM to be ready
+        if (document.readyState === 'complete') {
+          attemptScroll()
+        } else {
+          window.addEventListener('load', () => {
+            setTimeout(() => attemptScroll(), 500)
+          })
+        }
+      }, 500)
     }
 
     // Handle hash scroll on pathname change
