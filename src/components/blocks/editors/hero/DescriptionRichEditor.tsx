@@ -45,13 +45,14 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
         codeBlock: false,
         horizontalRule: false,
         link: false,
+        underline: false, // Disable underline from StarterKit to avoid duplicate
       }),
       TextStyle,
       Color,
       Highlight.configure({
         multicolor: true,
       }),
-      Underline,
+      Underline, // Add underline separately
       TextAlign.configure({
         types: ['paragraph'],
         defaultAlignment: 'left',
