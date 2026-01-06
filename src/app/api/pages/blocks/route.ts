@@ -28,7 +28,7 @@ function deepMerge(target: any, source: any): any {
   if (!source || typeof source !== 'object') return out
   
   // Fields that should always be updated, even if empty (user explicitly cleared them)
-  const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'secondaryButton', 'trustIndicator', 'trustIndicatorSubtext', 'trustIndicatorSecondary', 'trustIndicatorSecondarySubtext']
+  const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext', 'trustIndicatorSecondary', 'trustIndicatorSecondarySubtext']
   
   // Array fields that should always be preserved (even if empty)
   const alwaysUpdateArrays = ['buttons', 'hideOnMobile']
@@ -42,10 +42,6 @@ function deepMerge(target: any, source: any): any {
   
   for (const key of Object.keys(source)) {
     const s = source[key]
-    // Skip null/undefined
-    if (s === null || s === undefined) {
-      continue
-    }
     
     // Special handling: Always update array fields (descriptions, buttons, etc.)
     if (alwaysUpdateArrays.includes(key) && Array.isArray(s)) {
@@ -53,10 +49,15 @@ function deepMerge(target: any, source: any): any {
       continue
     }
     
-    // Special handling: Always update these fields if they exist in source (even if empty)
-    // This allows users to explicitly clear fields like subtitle
-    if (alwaysUpdateFields.includes(key) && typeof s === 'string') {
-      out[key] = s // Always preserve, even if empty string
+    // Special handling: Always update these fields if they exist in source (even if empty or null)
+    // This allows users to explicitly clear fields like subtitle, buttons, etc.
+    if (alwaysUpdateFields.includes(key)) {
+      out[key] = s // Always preserve, even if empty string or null
+      continue
+    }
+    
+    // Skip null/undefined for other fields (but not for alwaysUpdateFields above)
+    if (s === null || s === undefined) {
       continue
     }
     

@@ -199,7 +199,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       const out = Array.isArray(target) ? [...target] : { ...target }
       
       // Fields that should always be updated, even if empty (user explicitly cleared them)
-      const alwaysUpdateFields = ['title']
+      const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext']
       
       // Array fields that should always be preserved (even if empty)
       const alwaysUpdateArrays = ['buttons', 'hideOnMobile', 'navItems']
@@ -214,13 +214,13 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
           continue
         }
         
-        // CRITICAL: Always update these fields if they exist in source (even if empty string)
-        if (alwaysUpdateFields.includes(key) && typeof s === 'string') {
-          out[key] = s // Always preserve, even if empty string
+        // CRITICAL: Always update these fields if they exist in source (even if empty string or null)
+        if (alwaysUpdateFields.includes(key)) {
+          out[key] = s // Always preserve, even if empty string or null
           continue
         }
         
-        // Skip null/undefined (but not empty strings for non-critical fields)
+        // Skip null/undefined for other fields (but not for alwaysUpdateFields above)
         if (s === null || s === undefined) {
           continue
         }
