@@ -12,53 +12,57 @@ export default function HashScrollHandler() {
   const pathname = usePathname()
   const hasScrolledRef = useRef(false)
 
-  // Aggressive scroll function
+  // Aggressive scroll function - tries multiple methods
   const forceScrollToHash = (id: string, attempt = 0) => {
-    if (hasScrolledRef.current && attempt > 5) return // Stop after successful scroll
+    // Stop after too many attempts
+    if (attempt > 50) {
+      console.warn(`[HashScrollHandler] ❌ Max attempts reached for #${id}`)
+      return false
+    }
     
-    const element = document.getElementById(id)
+    // Try multiple selectors
+    const element = document.getElementById(id) || 
+                   document.querySelector(`[id="${id}"]`) ||
+                   document.querySelector(`#${id}`) ||
+                   document.querySelector(`[data-section="${id}"]`) as HTMLElement
     
     if (element) {
       const rect = element.getBoundingClientRect()
       const isVisible = rect.width > 0 && rect.height > 0
       
       if (isVisible) {
-        // Calculate absolute position
-        const elementTop = element.offsetTop || (rect.top + window.pageYOffset)
+        // Calculate absolute position using multiple methods
+        const elementTop = (element as HTMLElement).offsetTop || 
+                          (element as HTMLElement).getBoundingClientRect().top + window.pageYOffset ||
+                          (element as HTMLElement).scrollTop ||
+                          0
         
-        // Force scroll - multiple methods
+        // Method 1: Direct scroll to position (most reliable)
         window.scrollTo({ top: elementTop, behavior: 'instant' })
-        element.scrollIntoView({ behavior: 'instant', block: 'start' })
         
-        // Also try smooth after instant
+        // Method 2: scrollIntoView
+        (element as HTMLElement).scrollIntoView({ behavior: 'instant', block: 'start' })
+        
+        // Method 3: Smooth scroll after instant (for better UX)
         setTimeout(() => {
           window.scrollTo({ top: elementTop, behavior: 'smooth' })
-        }, 100)
+        }, 50)
         
         console.log(`[HashScrollHandler] ✅ Scrolled to #${id} at position ${elementTop}`)
         hasScrolledRef.current = true
         return true
-      } else if (attempt < 30) {
+      } else if (attempt < 50) {
         // Element exists but not visible yet, retry
-        setTimeout(() => forceScrollToHash(id, attempt + 1), 100)
+        setTimeout(() => forceScrollToHash(id, attempt + 1), 50)
       }
-    } else if (attempt < 30) {
-      // Element not found, retry
-      setTimeout(() => forceScrollToHash(id, attempt + 1), 100)
+    } else if (attempt < 50) {
+      // Element not found, retry with shorter delay
+      setTimeout(() => forceScrollToHash(id, attempt + 1), 50)
     } else {
-      // Try alternative selectors
-      const fallback = document.querySelector(`[id="${id}"]`) || 
-                      document.querySelector(`#${id}`) ||
-                      document.querySelector(`[data-section="${id}"]`)
-      
-      if (fallback) {
-        const fallbackTop = (fallback as HTMLElement).offsetTop || 
-                          ((fallback as HTMLElement).getBoundingClientRect().top + window.pageYOffset)
-        window.scrollTo({ top: fallbackTop, behavior: 'instant' })
-        console.log(`[HashScrollHandler] ✅ Scrolled to #${id} via fallback selector`)
-        hasScrolledRef.current = true
-      } else {
-        console.warn(`[HashScrollHandler] ❌ Could not find element #${id} after ${attempt} attempts`)
+      console.warn(`[HashScrollHandler] ❌ Could not find element #${id} after ${attempt} attempts`)
+      // Last resort: try to scroll to top of page (maybe element is at top)
+      if (attempt === 50) {
+        window.scrollTo({ top: 0, behavior: 'instant' })
       }
     }
     
