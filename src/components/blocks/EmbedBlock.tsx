@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useRef, useEffect } from 'react'
 import { BlockProps, EmbedContent } from './types'
 
 // Default content for new embed blocks
@@ -50,6 +50,87 @@ export default function EmbedBlock({ block }: BlockProps) {
   const [isLoaded, setIsLoaded] = useState(!content.clickToLoad)
   const [hasError, setHasError] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
+  const [iframeHeight, setIframeHeight] = useState<string | null>(null)
+  const iframeRef = useRef<HTMLIFrameElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  // Auto-resize iframe based on content
+  useEffect(() => {
+    if (!iframeRef.current || !containerRef.current) return
+
+    const iframe = iframeRef.current
+    const container = containerRef.current
+
+    // Listen for postMessage from iframe (if supported)
+    const handleMessage = (event: MessageEvent) => {
+      // Security: Only accept messages from the iframe's origin
+      try {
+        const iframeUrl = new URL(iframe.src)
+        if (event.origin !== iframeUrl.origin) return
+      } catch (e) {
+        // If URL parsing fails, skip
+        return
+      }
+
+      // Check if message contains height information
+      if (event.data && typeof event.data === 'object' && 'height' in event.data) {
+        const height = event.data.height
+        if (typeof height === 'number' && height > 0) {
+          setIframeHeight(`${height}px`)
+        }
+      } else if (typeof event.data === 'string' && event.data.includes('height:')) {
+        const match = event.data.match(/height:\s*(\d+)px/)
+        if (match) {
+          setIframeHeight(`${match[1]}px`)
+        }
+      }
+    }
+
+    // Try to get iframe content height (only works for same-origin)
+    const tryGetHeight = () => {
+      try {
+        if (iframe.contentWindow && iframe.contentDocument) {
+          const doc = iframe.contentDocument
+          const body = doc.body
+          const html = doc.documentElement
+
+          if (body && html) {
+            const height = Math.max(
+              body.scrollHeight,
+              body.offsetHeight,
+              html.clientHeight,
+              html.scrollHeight,
+              html.offsetHeight
+            )
+            if (height > 0) {
+              setIframeHeight(`${height}px`)
+            }
+          }
+        }
+      } catch (e) {
+        // Cross-origin: can't access iframe content
+        // Will rely on postMessage or manual height setting
+      }
+    }
+
+    // Listen for messages
+    window.addEventListener('message', handleMessage)
+
+    // Try to get height when iframe loads
+    iframe.addEventListener('load', () => {
+      setIsLoading(false)
+      // Try immediately
+      tryGetHeight()
+      // Try again after a delay (content might load dynamically)
+      setTimeout(tryGetHeight, 500)
+      setTimeout(tryGetHeight, 1000)
+      setTimeout(tryGetHeight, 2000)
+    })
+
+    return () => {
+      window.removeEventListener('message', handleMessage)
+    }
+  }, [content.provider, content.embedUrl])
 
   // Get max width class
   const getMaxWidthClass = () => {
@@ -266,14 +347,101 @@ export default function EmbedBlock({ block }: BlockProps) {
     </div>
   )
 
+  // Process custom embed code to make iframes responsive
+  const processEmbedCode = (html: string): string => {
+    // Add global CSS to force all iframes to be responsive
+    const responsiveCSS = `
+      <style>
+        iframe {
+          width: 100% !important;
+          height: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          border: none !important;
+          display: block !important;
+          position: absolute !important;
+          top: 0 !important;
+          left: 0 !important;
+        }
+        * iframe {
+          width: 100% !important;
+          height: 100% !important;
+        }
+      </style>
+    `
+    
+    // Process iframe tags - remove all width/height attributes and inline styles
+    let processed = html
+      // Remove width attribute (all variations including invalid ones like "100%px")
+      .replace(/width\s*=\s*["'][^"']*["']/gi, '')
+      .replace(/width\s*=\s*[^\s>]+/gi, '')
+      // Remove height attribute (all variations)
+      .replace(/height\s*=\s*["'][^"']*["']/gi, '')
+      .replace(/height\s*=\s*[^\s>]+/gi, '')
+      // Remove marginwidth/marginheight
+      .replace(/marginwidth\s*=\s*["'][^"']*["']/gi, '')
+      .replace(/marginheight\s*=\s*["'][^"']*["']/gi, '')
+      // Remove width/height from inline styles (including invalid values like "100%px")
+      .replace(/style\s*=\s*["']([^"']*)["']/gi, (match, styles) => {
+        let cleanStyles = styles
+          .replace(/width\s*:\s*[^;]+;?/gi, '')
+          .replace(/height\s*:\s*[^;]+;?/gi, '')
+          .replace(/marginwidth\s*:\s*[^;]+;?/gi, '')
+          .replace(/marginheight\s*:\s*[^;]+;?/gi, '')
+          .trim()
+        
+        // Add responsive styles
+        if (cleanStyles && !cleanStyles.endsWith(';')) {
+          cleanStyles += ';'
+        }
+        cleanStyles += ' width: 100% !important; height: 100% !important; position: absolute !important; top: 0 !important; left: 0 !important;'
+        
+        return `style="${cleanStyles}"`
+      })
+      // Clean up iframe tag
+      .replace(/<iframe\s+([^>]*)>/gi, (match, attrs) => {
+        // Remove width/height attributes again (in case they weren't caught)
+        let cleanAttrs = attrs
+          .replace(/width\s*=\s*["'][^"']*["']/gi, '')
+          .replace(/width\s*=\s*[^\s>]+/gi, '')
+          .replace(/height\s*=\s*["'][^"']*["']/gi, '')
+          .replace(/height\s*=\s*[^\s>]+/gi, '')
+          .replace(/marginwidth\s*=\s*["'][^"']*["']/gi, '')
+          .replace(/marginheight\s*=\s*["'][^"']*["']/gi, '')
+          .trim()
+        
+        // Clean up extra spaces
+        cleanAttrs = cleanAttrs.replace(/\s+/g, ' ')
+        
+        // Add class for styling
+        if (!cleanAttrs.includes('class=')) {
+          cleanAttrs += ' class="embed-responsive-iframe"'
+        }
+        
+        return `<iframe ${cleanAttrs}>`
+      })
+    
+    return responsiveCSS + processed
+  }
+
   // Render the embed content
   const renderEmbed = () => {
     // Custom HTML/JS embed
     if (content.provider === 'custom' && content.embedCode) {
+      const processedCode = processEmbedCode(content.embedCode)
       return (
         <div
-          className="absolute inset-0"
-          dangerouslySetInnerHTML={{ __html: content.embedCode }}
+          className="absolute inset-0 w-full h-full overflow-hidden"
+          style={{
+            width: '100%',
+            height: '100%',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0
+          }}
+          dangerouslySetInnerHTML={{ __html: processedCode }}
         />
       )
     }
@@ -290,14 +458,20 @@ export default function EmbedBlock({ block }: BlockProps) {
 
     return (
       <iframe
+        ref={iframeRef}
         src={embedSrc}
         className="absolute inset-0 w-full h-full border-0"
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
+          right: 0,
+          bottom: 0,
           width: '100%',
           height: '100%',
+          maxWidth: '100%',
+          border: 'none',
+          display: 'block'
         }}
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
         allowFullScreen
@@ -392,17 +566,22 @@ export default function EmbedBlock({ block }: BlockProps) {
 
         {/* Embed Frame */}
         <div
-          className={`relative ${getShadowClass()} bg-gray-900 w-full`}
+          ref={containerRef}
+          className={`relative ${getShadowClass()} bg-gray-900 w-full overflow-hidden`}
           style={{
             ...getFrameStyle(),
             paddingBottom: content.frame?.aspectRatio === 'auto'
               ? undefined
               : getAspectRatioStyle(),
             height: content.frame?.aspectRatio === 'auto'
-              ? (content.frame?.height || '600px')
-              : 0,
+              ? (iframeHeight || content.frame?.height || '1900px')
+              : undefined,
             minHeight: content.frame?.minHeight || (content.frame?.aspectRatio === 'auto' ? '600px' : undefined),
-            maxHeight: content.frame?.maxHeight
+            maxHeight: content.frame?.maxHeight,
+            width: '100%',
+            position: 'relative',
+            boxSizing: 'border-box',
+            transition: iframeHeight ? 'height 0.3s ease-in-out' : undefined
           }}
         >
           {/* Click to load overlay */}

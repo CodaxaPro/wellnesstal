@@ -83,104 +83,8 @@ export default function HeroBlock({ block }: BlockProps) {
     setIsVisible(true)
   }, [])
 
-  // Handle hash scroll when hero block is rendered and visible
-  useEffect(() => {
-    if (!isVisible) return
-    
-    const hash = typeof window !== 'undefined' ? window.location.hash : ''
-    if (!hash) return
-    
-    const id = hash.substring(1)
-    if (!id || content.sectionId !== id) return
-    
-    // Multiple scroll attempts to ensure it works
-    const scrollToHero = () => {
-      const element = document.getElementById(id)
-      if (element) {
-        const rect = element.getBoundingClientRect()
-        if (rect.width > 0 && rect.height > 0) {
-          // Calculate scroll position - use offsetTop for more accuracy
-          const currentScroll = window.pageYOffset || window.scrollY || 0
-          const elementOffsetTop = element.offsetTop || 0
-          const rectBasedTop = currentScroll + rect.top
-          
-          // Use offsetTop if available, otherwise use rect-based calculation
-          const scrollTop = elementOffsetTop > 0 ? elementOffsetTop : rectBasedTop
-          
-          console.log('[HeroBlock] 📊 Scroll calculation:', {
-            id,
-            currentScroll,
-            elementOffsetTop,
-            rectTop: rect.top,
-            rectBasedTop,
-            finalScrollTop: scrollTop
-          })
-          
-          // Always scroll for hero blocks when hash matches (even if already visible)
-          // Force scroll - use instant first, then smooth
-          if (typeof window.scrollTo === 'function') {
-            try {
-              window.scrollTo({ top: scrollTop, behavior: 'instant' })
-              console.log('[HeroBlock] ✅ Instant scroll to:', scrollTop)
-            } catch (e) {
-              window.scrollTo(0, scrollTop)
-              console.log('[HeroBlock] ✅ Fallback scroll to:', scrollTop)
-            }
-          }
-          
-          // Also use scrollIntoView for better compatibility
-          if (typeof element.scrollIntoView === 'function') {
-            try {
-              element.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'nearest' })
-              console.log('[HeroBlock] ✅ scrollIntoView called')
-            } catch (e) {
-              element.scrollIntoView(true)
-            }
-          }
-          
-          // Then smooth scroll after a moment
-          setTimeout(() => {
-            if (typeof window.scrollTo === 'function') {
-              try {
-                window.scrollTo({ top: scrollTop, behavior: 'smooth' })
-              } catch (e) {
-                window.scrollTo(0, scrollTop)
-              }
-            }
-          }, 100)
-          
-          console.log('[HeroBlock] ✅ Scrolled to hash:', id, 'scrollTop:', scrollTop, 'rect.top:', rect.top)
-          return true
-        } else {
-          console.log('[HeroBlock] ⚠️ Element not visible yet, rect:', rect)
-        }
-      }
-      return false
-    }
-    
-    // Try immediately and with delays - more aggressive
-    const tryScroll = () => {
-      const result = scrollToHero()
-      if (!result) {
-        console.log('[HeroBlock] Scroll attempt failed, retrying...')
-      }
-      return result
-    }
-    
-    // Immediate attempts
-    if (!tryScroll()) {
-      setTimeout(() => tryScroll(), 50)
-      setTimeout(() => tryScroll(), 100)
-      setTimeout(() => tryScroll(), 200)
-      setTimeout(() => tryScroll(), 300)
-      setTimeout(() => tryScroll(), 500)
-      setTimeout(() => tryScroll(), 800)
-      setTimeout(() => tryScroll(), 1200)
-    } else {
-      // Also retry after animations complete
-      setTimeout(() => tryScroll(), 1500)
-    }
-  }, [isVisible, content.sectionId])
+  // Hash scroll is handled by HashScrollHandler component
+  // No need for HeroBlock to handle it separately
 
   const styles = content.styles || {}
   const imageStyles = content.imageStyles || defaultImageStyles
@@ -237,18 +141,11 @@ export default function HeroBlock({ block }: BlockProps) {
   // Ensure sectionId is set for hash scrolling
   // If sectionId is not set, try to use a default based on common patterns
   // This helps with hash scrolling when sectionId is missing
-  const sectionId = content.sectionId || 'home'
+  // Handle both string and object formats
+  const sectionId = typeof content.sectionId === 'string' 
+    ? content.sectionId 
+    : (content.sectionId?.text || content.sectionId || 'home')
   
-  // Debug: Log sectionId for troubleshooting
-  if (typeof window !== 'undefined' && window.location.hash) {
-    const hashId = window.location.hash.substring(1)
-    if (hashId && hashId !== sectionId) {
-      console.warn(`[HeroBlock] ⚠️ Hash mismatch: hash=${hashId}, sectionId=${sectionId}`)
-      console.warn(`[HeroBlock] 💡 Fix: Set sectionId to "${hashId}" in admin panel or it will be auto-set from page slug`)
-    } else if (hashId === sectionId) {
-      console.log(`[HeroBlock] ✅ Hash matches sectionId: ${sectionId}`)
-    }
-  }
   
   return (
     <section id={sectionId} data-section={sectionId} className="bg-cream-gradient py-20 lg:py-32 min-h-screen flex items-center">

@@ -501,7 +501,7 @@ a {
 
 /* Scroll behavior */
 html {
-  scroll-behavior: smooth;
+  /* scroll-behavior: smooth; - Removed to allow natural mouse scrolling */
   -webkit-overflow-scrolling: touch; /* Safari smooth scrolling */
 }
 
