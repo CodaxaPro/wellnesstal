@@ -717,12 +717,16 @@ export default function ContactBlock({ block }: BlockProps) {
                       { key: 'saturday', label: 'Samstag' },
                       { key: 'sunday', label: 'Sonntag' }
                     ]
+                    // getDay() returns: 0=Sunday, 1=Monday, 2=Tuesday, ..., 6=Saturday
+                    // dayMapping index: 0=Monday, 1=Tuesday, ..., 5=Saturday, 6=Sunday
                     const todayIndex = new Date().getDay()
+                    // Convert: Sunday(0) -> 6, Monday(1) -> 0, Tuesday(2) -> 1, etc.
                     const adjustedTodayIndex = todayIndex === 0 ? 6 : todayIndex - 1
                     return dayMapping.map((dayInfo, index) => {
                       const dayData = contactData.openingHours[dayInfo.key]
                       const hours = dayData?.closed ? sectionContent.openingHours.closedLabel : `${dayData?.open || '09:00'} - ${dayData?.close || '19:00'}`
-                      return { day: dayInfo.label, hours, today: index === adjustedTodayIndex, closed: dayData?.closed }
+                      const isToday = index === adjustedTodayIndex
+                      return { day: dayInfo.label, hours, today: isToday, closed: dayData?.closed }
                     })
                   })().map((schedule, index) => (
                     <div
@@ -755,7 +759,7 @@ export default function ContactBlock({ block }: BlockProps) {
                               backgroundColor: sectionContent.styles?.todayBadge?.backgroundColor || defaultStyles.todayBadge?.backgroundColor,
                             }}
                           >
-                            {sectionContent.openingHours.todayLabel}
+                            {' '}{sectionContent.openingHours.todayLabel}
                           </span>
                         )}
                       </span>
