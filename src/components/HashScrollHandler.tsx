@@ -121,7 +121,7 @@ export default function HashScrollHandler() {
 
       // Start scrolling after initial delay (increased for hero blocks with animations)
       // Also wait for Next.js hydration to complete
-      setTimeout(() => {
+      const startScroll = () => {
         // Wait for DOM to be ready
         if (document.readyState === 'complete') {
           attemptScroll()
@@ -129,8 +129,16 @@ export default function HashScrollHandler() {
           window.addEventListener('load', () => {
             setTimeout(() => attemptScroll(), 500)
           })
+          // Also try immediately
+          attemptScroll()
         }
-      }, 500)
+      }
+      
+      // Try multiple times with increasing delays
+      setTimeout(() => startScroll(), 100)
+      setTimeout(() => startScroll(), 500)
+      setTimeout(() => startScroll(), 1000)
+      setTimeout(() => startScroll(), 2000)
     }
 
     // Handle hash scroll on pathname change

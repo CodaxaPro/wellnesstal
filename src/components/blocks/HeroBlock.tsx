@@ -81,7 +81,31 @@ export default function HeroBlock({ block }: BlockProps) {
 
   useEffect(() => {
     setIsVisible(true)
-  }, [])
+    
+    // Handle hash scroll when hero block is rendered
+    // This ensures scroll happens after the element is in the DOM
+    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    if (hash) {
+      const id = hash.substring(1)
+      if (id && content.sectionId === id) {
+        // Wait for element to be fully rendered
+        setTimeout(() => {
+          const element = document.getElementById(id)
+          if (element) {
+            const rect = element.getBoundingClientRect()
+            if (rect.width > 0 && rect.height > 0) {
+              // Scroll to hero block
+              window.scrollTo({
+                top: window.pageYOffset + rect.top,
+                behavior: 'smooth'
+              })
+              console.log('[HeroBlock] Scrolled to hash:', id)
+            }
+          }
+        }, 100)
+      }
+    }
+  }, [content.sectionId])
 
   const styles = content.styles || {}
   const imageStyles = content.imageStyles || defaultImageStyles
