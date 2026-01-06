@@ -24,20 +24,26 @@ export default function HashScrollHandler() {
       if (!id) return
 
       // Wait for content to render, then scroll
-      // Try multiple times with increasing delays to handle slow rendering
+      // Try multiple times with increasing delays to handle slow rendering (especially for hero blocks with animations)
       const attemptScroll = (attempt = 0) => {
         const element = document.getElementById(id)
         if (element) {
-          // Scroll with smooth behavior
-          element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-        } else if (attempt < 5) {
-          // Retry up to 5 times with increasing delays
-          setTimeout(() => attemptScroll(attempt + 1), 200 * (attempt + 1))
+          // Small delay to ensure element is fully rendered
+          setTimeout(() => {
+            // Scroll with smooth behavior
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 100)
+        } else if (attempt < 10) {
+          // Retry up to 10 times with increasing delays (for slow-rendering hero blocks)
+          setTimeout(() => attemptScroll(attempt + 1), 300 * (attempt + 1))
+        } else {
+          // Final attempt: try to find element by any means
+          console.warn(`[HashScrollHandler] Could not find element with id: ${id} after ${attempt} attempts`)
         }
       }
 
-      // Start scrolling after initial delay
-      setTimeout(() => attemptScroll(), 100)
+      // Start scrolling after initial delay (increased for hero blocks)
+      setTimeout(() => attemptScroll(), 200)
     }
 
     // Handle hash scroll on pathname change
