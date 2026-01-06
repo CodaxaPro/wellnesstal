@@ -698,7 +698,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                   label="Sehir"
                   value={local.address?.addressLocality || ''}
                   onChange={(v) => updateAddress('addressLocality', v)}
-                  placeholder="Koln"
+                  placeholder="Baesweiler"
                   required
                 />
                 <FormInput
