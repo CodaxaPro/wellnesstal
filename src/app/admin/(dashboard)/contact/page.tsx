@@ -260,9 +260,15 @@ export default function ContactSettingsPage() {
       // Clear message after 3 seconds
       setTimeout(() => setSaveMessage(null), 3000)
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Save error:', error)
-      setSaveMessage({ type: 'error', text: 'Fehler beim Speichern. Bitte versuchen Sie es erneut.' })
+      const errorMessage = error?.message || 'Fehler beim Speichern. Bitte versuchen Sie es erneut.'
+      setSaveMessage({ type: 'error', text: errorMessage })
+      
+      // If unauthorized, redirect to login
+      if (errorMessage.includes('Unauthorized') || errorMessage.includes('401')) {
+        setTimeout(() => router.push('/admin'), 2000)
+      }
     } finally {
       setIsSaving(false)
     }
