@@ -207,10 +207,20 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
     const contentStr = JSON.stringify(initialContent)
     const localStr = JSON.stringify(content)
     if (contentStr !== localStr) {
-      setContent({
-        ...getDefaultContent(),
-        ...initialContent
-      })
+      // Merge with defaults but preserve null/empty values from user
+      const merged = { ...getDefaultContent() }
+      for (const [key, value] of Object.entries(initialContent || {})) {
+        // If value is null or empty string, keep it (user cleared the field)
+        if (value === null || value === '') {
+          (merged as any)[key] = value
+        } else if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
+          // Deep merge for objects
+          (merged as any)[key] = { ...(merged as any)[key], ...value }
+        } else {
+          (merged as any)[key] = value
+        }
+      }
+      setContent(merged)
     }
   }, [initialContent])
 
@@ -228,7 +238,17 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
   // Handle content updates
   const updateContent = useCallback((updates: Partial<HeroContent>) => {
     setContent(prev => {
-      const newContent = { ...prev, ...updates }
+      // Clean updates: convert empty strings to null to preserve user's intent to clear fields
+      const cleanedUpdates: Partial<HeroContent> = {}
+      for (const [key, value] of Object.entries(updates)) {
+        // For string fields, preserve empty strings as null to prevent default values from reappearing
+        if (typeof value === 'string' && value.trim() === '') {
+          (cleanedUpdates as any)[key] = null
+        } else {
+          (cleanedUpdates as any)[key] = value
+        }
+      }
+      const newContent = { ...prev, ...cleanedUpdates }
       debouncedUpdate(newContent)
       return newContent
     })
@@ -601,8 +621,8 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
             <label className="block text-xs font-medium text-gray-500 mb-1">Metin</label>
             <input
               type="text"
-              value={content.primaryButton || ''}
-              onChange={(e) => updateContent({ primaryButton: e.target.value })}
+              value={content.primaryButton ?? ''}
+              onChange={(e) => updateContent({ primaryButton: e.target.value.trim() || null })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
@@ -610,8 +630,8 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
             <label className="block text-xs font-medium text-gray-500 mb-1">Link</label>
             <input
               type="text"
-              value={content.primaryButtonLink || ''}
-              onChange={(e) => updateContent({ primaryButtonLink: e.target.value })}
+              value={content.primaryButtonLink ?? ''}
+              onChange={(e) => updateContent({ primaryButtonLink: e.target.value.trim() || null })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
@@ -745,8 +765,8 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
             <label className="block text-xs font-medium text-gray-500 mb-1">Metin</label>
             <input
               type="text"
-              value={content.secondaryButton || ''}
-              onChange={(e) => updateContent({ secondaryButton: e.target.value })}
+              value={content.secondaryButton ?? ''}
+              onChange={(e) => updateContent({ secondaryButton: e.target.value.trim() || null })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
@@ -754,8 +774,8 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
             <label className="block text-xs font-medium text-gray-500 mb-1">Link</label>
             <input
               type="text"
-              value={content.secondaryButtonLink || ''}
-              onChange={(e) => updateContent({ secondaryButtonLink: e.target.value })}
+              value={content.secondaryButtonLink ?? ''}
+              onChange={(e) => updateContent({ secondaryButtonLink: e.target.value.trim() || null })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
