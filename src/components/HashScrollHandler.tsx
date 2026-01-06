@@ -282,38 +282,63 @@ export default function HashScrollHandler() {
     // Reset scroll flag on pathname change
     hasScrolledRef.current = false
     
-    const hash = typeof window !== 'undefined' ? window.location.hash : ''
-    if (!hash) return
-
-    const id = hash.substring(1)
-    if (!id) return
-
-    console.log(`[HashScrollHandler] 🔄 useEffect: Starting scroll to #${id}`)
-
-    // Wait for DOM to be fully ready
-    const startScrolling = () => {
-      // Try immediately
-      forceScrollToHash(id, 0)
+    // Function to check and scroll to hash
+    const checkAndScroll = () => {
+      const hash = typeof window !== 'undefined' ? window.location.hash : ''
+      console.log(`[HashScrollHandler] 🔄 useEffect: hash="${hash}", pathname="${pathname}"`)
       
-      // Try with delays to catch late-rendering elements
-      const delays = [100, 200, 300, 500, 800, 1200, 2000]
-      delays.forEach(delay => {
+      if (!hash) {
+        // If no hash, check again after a delay (hash might be set later)
         setTimeout(() => {
-          if (!hasScrolledRef.current) {
-            forceScrollToHash(id, 0)
+          const delayedHash = window.location.hash
+          if (delayedHash) {
+            console.log(`[HashScrollHandler] 🔄 Found delayed hash in useEffect: "${delayedHash}"`)
+            const delayedId = delayedHash.substring(1)
+            if (delayedId) {
+              forceScrollToHash(delayedId, 0)
+            }
           }
-        }, delay)
-      })
+        }, 100)
+        return
+      }
+
+      const id = hash.substring(1)
+      if (!id) return
+
+      console.log(`[HashScrollHandler] 🔄 useEffect: Starting scroll to #${id}`)
+
+      // Wait for DOM to be fully ready
+      const startScrolling = () => {
+        // Try immediately
+        forceScrollToHash(id, 0)
+        
+        // Try with delays to catch late-rendering elements
+        const delays = [50, 100, 200, 300, 500, 800, 1200, 2000]
+        delays.forEach(delay => {
+          setTimeout(() => {
+            if (!hasScrolledRef.current) {
+              forceScrollToHash(id, 0)
+            }
+          }, delay)
+        })
+      }
+
+      // Start when DOM is ready
+      if (document.readyState === 'complete' || document.readyState === 'interactive') {
+        startScrolling()
+      } else {
+        window.addEventListener('load', startScrolling, { once: true })
+        // Also try immediately
+        startScrolling()
+      }
     }
 
-    // Start when DOM is ready
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      startScrolling()
-    } else {
-      window.addEventListener('load', startScrolling, { once: true })
-      // Also try immediately
-      startScrolling()
-    }
+    // Check immediately
+    checkAndScroll()
+    
+    // Also check after a short delay (hash might be set after navigation)
+    setTimeout(checkAndScroll, 50)
+    setTimeout(checkAndScroll, 200)
 
     // Handle hash changes
     const handleHashChange = () => {
