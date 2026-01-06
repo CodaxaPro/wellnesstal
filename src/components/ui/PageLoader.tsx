@@ -14,8 +14,8 @@ export default function PageLoader({
       <div className="text-center">
         {/* Brand Logo/Icon */}
         {showBrand && (
-          <div className="mb-8 animate-in fade-in slide-in-from-top-4 duration-600">
-            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-sage-500 shadow-lg mb-4">
+          <div className="mb-8 opacity-0 animate-[fadeIn_0.6s_ease-out_0.2s_forwards]">
+            <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-sage-500 shadow-lg mb-4 transform translate-y-[-10px] animate-[slideDown_0.6s_ease-out_0.2s_forwards]">
               <span className="text-4xl text-white font-bold">W</span>
             </div>
             <h1 className="text-3xl md:text-4xl font-bold text-charcoal tracking-tight">
