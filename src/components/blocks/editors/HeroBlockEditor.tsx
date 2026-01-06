@@ -1800,7 +1800,8 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
               onChange={(e) => {
                 // Remove # character if user types it
                 const value = e.target.value.replace(/^#/, '')
-                updateContent({ sectionId: value })
+                // If empty, set to null to allow clearing
+                updateContent({ sectionId: value.trim() === '' ? null : value })
               }}
               placeholder="home"
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent font-mono"
