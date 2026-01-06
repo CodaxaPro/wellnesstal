@@ -28,13 +28,22 @@ export default function HashScrollHandler() {
       const attemptScroll = (attempt = 0) => {
         const element = document.getElementById(id)
         if (element) {
-          // Small delay to ensure element is fully rendered
-          setTimeout(() => {
-            // Scroll with smooth behavior
-            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-          }, 100)
-        } else if (attempt < 10) {
-          // Retry up to 10 times with increasing delays (for slow-rendering hero blocks)
+          // Check if element is visible (not just in DOM, but actually rendered)
+          const rect = element.getBoundingClientRect()
+          const isVisible = rect.width > 0 && rect.height > 0
+          
+          if (isVisible) {
+            // Small delay to ensure element is fully rendered and animations are complete
+            setTimeout(() => {
+              // Scroll with smooth behavior
+              element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }, 150)
+          } else if (attempt < 15) {
+            // Element exists but not visible yet (likely still animating), retry
+            setTimeout(() => attemptScroll(attempt + 1), 200)
+          }
+        } else if (attempt < 15) {
+          // Retry up to 15 times with increasing delays (for slow-rendering hero blocks)
           setTimeout(() => attemptScroll(attempt + 1), 300 * (attempt + 1))
         } else {
           // Final attempt: try to find element by any means
@@ -42,8 +51,8 @@ export default function HashScrollHandler() {
         }
       }
 
-      // Start scrolling after initial delay (increased for hero blocks)
-      setTimeout(() => attemptScroll(), 200)
+      // Start scrolling after initial delay (increased for hero blocks with animations)
+      setTimeout(() => attemptScroll(), 300)
     }
 
     // Handle hash scroll on pathname change
