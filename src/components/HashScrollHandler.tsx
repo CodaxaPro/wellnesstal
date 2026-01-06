@@ -71,9 +71,28 @@ export default function HashScrollHandler() {
         // For hero blocks, always scroll to ensure it's at the very top
         if (isHeroBlock) {
           console.log(`[HashScrollHandler] 🎯 Hero block detected (#${id}), forcing scroll to top`)
-          // Force scroll to element's top position
-          const heroTop = elementAbsoluteTop < 0 ? 0 : elementAbsoluteTop
           
+          // Calculate hero block's absolute position using multiple methods
+          const heroElement = element as HTMLElement
+          const heroOffsetTop = heroElement.offsetTop || 0
+          const heroRectTop = rect.top + scrollY
+          const heroScrollTop = heroElement.scrollTop || 0
+          
+          // Use the most accurate position
+          // offsetTop is usually most reliable for absolute positioning
+          let heroTop = heroOffsetTop
+          
+          // If offsetTop is 0 but we're not at top, use rect calculation
+          if (heroOffsetTop === 0 && scrollY > 0) {
+            heroTop = heroRectTop
+          }
+          
+          // Ensure we don't scroll to negative position
+          heroTop = Math.max(0, heroTop)
+          
+          console.log(`[HashScrollHandler] 📊 Hero position: offsetTop=${heroOffsetTop}, rectTop=${heroRectTop}, scrollY=${scrollY}, final=${heroTop}`)
+          
+          // Method 1: Direct scroll to calculated position
           if (typeof window.scrollTo === 'function') {
             try {
               window.scrollTo({ top: heroTop, behavior: 'instant' })
@@ -82,16 +101,16 @@ export default function HashScrollHandler() {
             }
           }
           
-          // Also use scrollIntoView
-          if (typeof (element as HTMLElement).scrollIntoView === 'function') {
+          // Method 2: scrollIntoView (more reliable for getting element to top)
+          if (typeof heroElement.scrollIntoView === 'function') {
             try {
-              (element as HTMLElement).scrollIntoView({ behavior: 'instant', block: 'start' })
+              heroElement.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'nearest' })
             } catch (e) {
-              (element as HTMLElement).scrollIntoView(true)
+              heroElement.scrollIntoView(true)
             }
           }
           
-          // Smooth scroll after instant
+          // Method 3: Smooth scroll after instant (for better UX)
           setTimeout(() => {
             if (typeof window.scrollTo === 'function') {
               try {
@@ -100,7 +119,7 @@ export default function HashScrollHandler() {
                 window.scrollTo(0, heroTop)
               }
             }
-          }, 50)
+          }, 100)
           
           console.log(`[HashScrollHandler] ✅ Scrolled hero block #${id} to position ${heroTop}`)
           hasScrolledRef.current = true
