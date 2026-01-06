@@ -25,21 +25,43 @@ export default function HashScrollHandler() {
       return false
     }
     
-    // Try multiple selectors - prioritize hero blocks
-    // First try to find hero block with this id
-    let element = document.querySelector(`section[id="${id}"]`) as HTMLElement ||
-                  document.querySelector(`section#${id}`) as HTMLElement ||
-                  document.getElementById(id) || 
-                  document.querySelector(`[id="${id}"]`) ||
-                  document.querySelector(`#${id}`) ||
-                  document.querySelector(`[data-section="${id}"]`) as HTMLElement
+    // Try multiple selectors - prioritize hero blocks (section elements)
+    let element: HTMLElement | null = null
     
-    // If not found, try to find any element with this id
+    // Method 1: Try section with id (most likely for hero blocks)
+    element = document.querySelector(`section[id="${id}"]`) as HTMLElement
+    
+    // Method 2: Try section#id
     if (!element) {
-      element = document.getElementById(id) || 
-               document.querySelector(`[id="${id}"]`) ||
-               document.querySelector(`#${id}`) ||
-               document.querySelector(`[data-section="${id}"]`) as HTMLElement
+      element = document.querySelector(`section#${id}`) as HTMLElement
+    }
+    
+    // Method 3: Try getElementById
+    if (!element) {
+      element = document.getElementById(id)
+    }
+    
+    // Method 4: Try any element with id attribute
+    if (!element) {
+      element = document.querySelector(`[id="${id}"]`) as HTMLElement
+    }
+    
+    // Method 5: Try data-section attribute
+    if (!element) {
+      element = document.querySelector(`[data-section="${id}"]`) as HTMLElement
+    }
+    
+    // Debug: Log what we found
+    if (element) {
+      console.log(`[HashScrollHandler] 🔍 Found element #${id}:`, {
+        tagName: element.tagName,
+        id: element.id,
+        className: element.className,
+        offsetTop: element.offsetTop,
+        getBoundingClientRect: element.getBoundingClientRect()
+      })
+    } else {
+      console.warn(`[HashScrollHandler] ⚠️ Element #${id} not found, attempt ${attempt}`)
     }
     
     if (element) {

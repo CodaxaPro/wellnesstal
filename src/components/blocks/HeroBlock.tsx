@@ -99,54 +99,86 @@ export default function HeroBlock({ block }: BlockProps) {
       if (element) {
         const rect = element.getBoundingClientRect()
         if (rect.width > 0 && rect.height > 0) {
-          // Calculate scroll position
+          // Calculate scroll position - use offsetTop for more accuracy
           const currentScroll = window.pageYOffset || window.scrollY || 0
-          const scrollTop = currentScroll + rect.top
+          const elementOffsetTop = element.offsetTop || 0
+          const rectBasedTop = currentScroll + rect.top
           
-          // Only scroll if element is not already at top
-          if (rect.top < -10 || rect.top > 100) {
-            // Force scroll - use instant first, then smooth
+          // Use offsetTop if available, otherwise use rect-based calculation
+          const scrollTop = elementOffsetTop > 0 ? elementOffsetTop : rectBasedTop
+          
+          console.log('[HeroBlock] 📊 Scroll calculation:', {
+            id,
+            currentScroll,
+            elementOffsetTop,
+            rectTop: rect.top,
+            rectBasedTop,
+            finalScrollTop: scrollTop
+          })
+          
+          // Always scroll for hero blocks when hash matches (even if already visible)
+          // Force scroll - use instant first, then smooth
+          if (typeof window.scrollTo === 'function') {
+            try {
+              window.scrollTo({ top: scrollTop, behavior: 'instant' })
+              console.log('[HeroBlock] ✅ Instant scroll to:', scrollTop)
+            } catch (e) {
+              window.scrollTo(0, scrollTop)
+              console.log('[HeroBlock] ✅ Fallback scroll to:', scrollTop)
+            }
+          }
+          
+          // Also use scrollIntoView for better compatibility
+          if (typeof element.scrollIntoView === 'function') {
+            try {
+              element.scrollIntoView({ behavior: 'instant', block: 'start', inline: 'nearest' })
+              console.log('[HeroBlock] ✅ scrollIntoView called')
+            } catch (e) {
+              element.scrollIntoView(true)
+            }
+          }
+          
+          // Then smooth scroll after a moment
+          setTimeout(() => {
             if (typeof window.scrollTo === 'function') {
               try {
-                window.scrollTo({ top: scrollTop, behavior: 'instant' })
+                window.scrollTo({ top: scrollTop, behavior: 'smooth' })
               } catch (e) {
                 window.scrollTo(0, scrollTop)
               }
             }
-            
-            // Then smooth scroll after a moment
-            setTimeout(() => {
-              if (typeof window.scrollTo === 'function') {
-                try {
-                  window.scrollTo({ top: scrollTop, behavior: 'smooth' })
-                } catch (e) {
-                  window.scrollTo(0, scrollTop)
-                }
-              }
-              if (typeof element.scrollIntoView === 'function') {
-                element.scrollIntoView({ behavior: 'smooth', block: 'start' })
-              }
-            }, 50)
-            
-            console.log('[HeroBlock] Scrolled to hash:', id, 'scrollTop:', scrollTop, 'rect.top:', rect.top)
-          } else {
-            console.log('[HeroBlock] Already at hash:', id, 'rect.top:', rect.top)
-          }
+          }, 100)
+          
+          console.log('[HeroBlock] ✅ Scrolled to hash:', id, 'scrollTop:', scrollTop, 'rect.top:', rect.top)
           return true
+        } else {
+          console.log('[HeroBlock] ⚠️ Element not visible yet, rect:', rect)
         }
       }
       return false
     }
     
-    // Try immediately and with delays
-    if (!scrollToHero()) {
-      setTimeout(() => scrollToHero(), 100)
-      setTimeout(() => scrollToHero(), 300)
-      setTimeout(() => scrollToHero(), 600)
-      setTimeout(() => scrollToHero(), 1000)
+    // Try immediately and with delays - more aggressive
+    const tryScroll = () => {
+      const result = scrollToHero()
+      if (!result) {
+        console.log('[HeroBlock] Scroll attempt failed, retrying...')
+      }
+      return result
+    }
+    
+    // Immediate attempts
+    if (!tryScroll()) {
+      setTimeout(() => tryScroll(), 50)
+      setTimeout(() => tryScroll(), 100)
+      setTimeout(() => tryScroll(), 200)
+      setTimeout(() => tryScroll(), 300)
+      setTimeout(() => tryScroll(), 500)
+      setTimeout(() => tryScroll(), 800)
+      setTimeout(() => tryScroll(), 1200)
     } else {
       // Also retry after animations complete
-      setTimeout(() => scrollToHero(), 1200)
+      setTimeout(() => tryScroll(), 1500)
     }
   }, [isVisible, content.sectionId])
 
