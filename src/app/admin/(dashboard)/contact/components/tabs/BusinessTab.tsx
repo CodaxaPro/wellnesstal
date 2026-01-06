@@ -99,7 +99,7 @@ export function BusinessTab({
           value={settings.businessInfo.tagline}
           onChange={(e) => handleInputChange('businessInfo', 'tagline', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="z.B. Premium Wellness & Headspa in Köln"
+          placeholder="z.B. Premium Wellness & Headspa in Baesweiler"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color

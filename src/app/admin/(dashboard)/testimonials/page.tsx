@@ -25,7 +25,7 @@ export default function TestimonialsManagement() {
     {
       id: '1',
       name: 'Sarah Müller',
-      location: 'Köln',
+      location: 'Baesweiler',
       avatar: 'SM',
       rating: 5,
       service: 'Premium Headspa',
@@ -67,7 +67,7 @@ export default function TestimonialsManagement() {
     {
       id: '4',
       name: 'Thomas Schmidt',
-      location: 'Köln',
+      location: 'Baesweiler',
       avatar: 'TS',
       rating: 4,
       service: 'Gesichtspflege',
@@ -406,7 +406,7 @@ export default function TestimonialsManagement() {
                     type="text"
                     defaultValue={editingTestimonial?.location || ''}
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                    placeholder="z.B. Köln"
+                    placeholder="z.B. Baesweiler"
                   />
                 </div>
               </div>

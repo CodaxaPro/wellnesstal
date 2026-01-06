@@ -114,11 +114,11 @@ const defaultStyles: FooterStyles = {
 const defaultFooterContent: FooterContent = {
   brandName: 'Wellnesstal',
   brandEmoji: '🌿',
-  description: 'Ihre Oase der Entspannung im Herzen von Köln. Professionelle Wellness-Behandlungen für Körper und Seele.',
+  description: 'Ihre Oase der Entspannung im Herzen von Baesweiler. Professionelle Wellness-Behandlungen für Körper und Seele.',
   socialMedia: {
     instagram: 'https://instagram.com/wellnesstal',
     facebook: 'https://facebook.com/wellnesstal',
-    whatsapp: 'https://wa.me/4922112345678'
+    whatsapp: 'https://wa.me/491733828581'
   },
   newsletter: {
     enabled: true,
@@ -146,14 +146,14 @@ const defaultFooterContent: FooterContent = {
 
 const defaultContactContent: ContactContent = {
   businessName: 'Wellnesstal',
-  phone: '+49 221 12345678',
-  email: 'info@wellnesstal.de',
-  address: {
-    street: 'Musterstraße 123',
-    city: 'Köln',
-    postalCode: '50667',
-    country: 'Deutschland'
-  },
+    phone: '+49 1733828581',
+    email: 'info@wellnesstal.de',
+    address: {
+      street: 'Reyplatz 10',
+      city: 'Baesweiler',
+      postalCode: '52499',
+      country: 'Deutschland'
+    },
   openingHours: {
     monday: { open: '09:00', close: '19:00', closed: false },
     tuesday: { open: '09:00', close: '19:00', closed: false },

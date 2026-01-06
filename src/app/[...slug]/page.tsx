@@ -196,7 +196,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       'apple-mobile-web-app-title': seoContent.title || page.title,
       // Additional search engine hints
       'geo.region': 'DE-NW',
-      'geo.placename': 'Köln',
+      'geo.placename': 'Baesweiler',
       'geo.position': '50.9375;6.9603',
       'ICBM': '50.9375, 6.9603',
     }

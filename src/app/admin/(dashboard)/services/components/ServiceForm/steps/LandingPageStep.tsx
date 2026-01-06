@@ -315,7 +315,7 @@ export default function LandingPageStep({
               value={(seo.keywords || []).join(', ')}
               onChange={(e) => handleSeoChange('keywords', e.target.value.split(',').map(k => k.trim()).filter(Boolean))}
               className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-              placeholder="wellness, massage, köln, spa"
+              placeholder="wellness, massage, baesweiler, spa"
             />
             <p className="text-xs text-gray-500 mt-1">Virgülle ayırın</p>
           </div>

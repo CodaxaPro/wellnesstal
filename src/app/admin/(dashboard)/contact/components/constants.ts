@@ -78,7 +78,7 @@ export const defaultContent: ContactSettings = {
   businessInfo: {
     name: 'Wellnesstal',
     tagline: 'Premium Wellness & Headspa in Baesweiler',
-    description: 'Ihre Oase der Entspannung im Herzen von Köln. Professionelle Wellness-Behandlungen für Körper und Seele.'
+    description: 'Ihre Oase der Entspannung im Herzen von Baesweiler. Professionelle Wellness-Behandlungen für Körper und Seele.'
   },
   contact: {
     phone: '+49 1733828581',
@@ -109,8 +109,8 @@ export const defaultContent: ContactSettings = {
   },
   seo: {
     metaTitle: 'Wellnesstal - Premium Wellness & Headspa in Baesweiler',
-    metaDescription: 'Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!',
-    keywords: ['wellness', 'headspa', 'massage', 'köln', 'entspannung', 'aromatherapie', 'spa']
+    metaDescription: 'Entspannung und Wellness in Baesweiler. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden. Jetzt Termin vereinbaren!',
+    keywords: ['wellness', 'headspa', 'massage', 'baesweiler', 'entspannung', 'aromatherapie', 'spa']
   },
   notifications: {
     emailNotifications: true,

@@ -25,7 +25,7 @@ export function ContactTab({ settings, handleInputChange }: ContactTabProps) {
           value={settings.contact.phone}
           onChange={(e) => handleInputChange('contact', 'phone', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="+49 221 12345678"
+          placeholder="+49 1733828581"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color
@@ -71,7 +71,7 @@ export function ContactTab({ settings, handleInputChange }: ContactTabProps) {
           value={settings.contact.whatsapp}
           onChange={(e) => handleInputChange('contact', 'whatsapp', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="+49 221 12345678"
+          placeholder="+49 1733828581"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color

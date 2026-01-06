@@ -518,10 +518,10 @@ export function HeaderEditor({
             disabled={!isEditing}
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
             placeholder={
-              content.ctaButtonType === 'whatsapp' ? '+49123456789' :
+              content.ctaButtonType === 'whatsapp' ? '+491733828581' :
               content.ctaButtonType === 'url' ? 'https://example.com' :
-              content.ctaButtonType === 'email' ? 'info@example.com' :
-              '+49 221 12345678'
+              content.ctaButtonType === 'email' ? 'info@wellnesstal.de' :
+              '+49 1733828581'
             }
           />
         </div>

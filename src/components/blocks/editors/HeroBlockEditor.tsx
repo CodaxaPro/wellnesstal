@@ -11,12 +11,12 @@ interface HeroBlockEditorProps {
 
 // Default content
 const getDefaultContent = (): HeroContent => ({
-  badge: '🌿 Willkommen in Köln',
+  badge: '🌿 Willkommen in Baesweiler',
   badgeEnabled: true,
-  mainTitle: 'Wellness & Entspannung in Köln',
+  mainTitle: 'Wellness & Entspannung in Baesweiler',
   subtitle: '',
   primaryButton: 'Jetzt anrufen',
-  primaryButtonLink: 'tel:+4922112345678',
+  primaryButtonLink: 'tel:+491733828581',
   secondaryButton: 'Leistungen entdecken',
   secondaryButtonLink: '#services',
   trustIndicator: '500+ zufriedene Kunden',

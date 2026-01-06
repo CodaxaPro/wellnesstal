@@ -71,7 +71,7 @@ export function SocialTab({ settings, handleInputChange }: SocialTabProps) {
           value={settings.socialMedia.whatsapp}
           onChange={(e) => handleInputChange('socialMedia', 'whatsapp', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="https://wa.me/4922112345678"
+          placeholder="https://wa.me/491733828581"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color

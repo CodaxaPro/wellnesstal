@@ -125,7 +125,7 @@ const TestimonialsSection = () => {
     {
       id: 1,
       name: "Sarah Müller",
-      location: "Köln",
+      location: "Baesweiler",
       avatar: "SM",
       rating: 5,
       date: "vor 2 Wochen",
@@ -142,7 +142,7 @@ const TestimonialsSection = () => {
       rating: 5,
       date: "vor 1 Woche",
       service: "Wellness Massage",
-      text: "Die Atmosphäre ist wunderbar entspannend und die Behandlungen sind erstklassig. Meine Verspannungen sind wie weggeblasen. Ich komme regelmäßig hierher und kann Wellnesstal nur empfehlen! Beste Wellness-Oase in Köln.",
+      text: "Die Atmosphäre ist wunderbar entspannend und die Behandlungen sind erstklassig. Meine Verspannungen sind wie weggeblasen. Ich komme regelmäßig hierher und kann Wellnesstal nur empfehlen! Beste Wellness-Oase in Baesweiler.",
       verified: true,
       source: "Google"
     },
@@ -161,7 +161,7 @@ const TestimonialsSection = () => {
     {
       id: 4,
       name: "Thomas Schmidt",
-      location: "Köln",
+      location: "Baesweiler",
       avatar: "TS",
       rating: 5,
       date: "vor 4 Tagen",

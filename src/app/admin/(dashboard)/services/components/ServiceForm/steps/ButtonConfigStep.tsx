@@ -71,8 +71,8 @@ export default function ButtonConfigStep({
                   onChange={(e) => onInputChange('primaryButtonValue', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
                   placeholder={
-                    formData.primaryButtonType === 'phone' ? '+4922112345678' :
-                    formData.primaryButtonType === 'whatsapp' ? '+4922112345678' :
+                    formData.primaryButtonType === 'phone' ? '+491733828581' :
+                    formData.primaryButtonType === 'whatsapp' ? '+491733828581' :
                     'https://example.com'
                   }
                 />
@@ -130,8 +130,8 @@ export default function ButtonConfigStep({
                     onChange={(e) => onInputChange('primaryModalLeftButtonValue', e.target.value)}
                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg"
                     placeholder={
-                      formData.primaryModalLeftButtonType === 'phone' ? '+4922112345678' :
-                      formData.primaryModalLeftButtonType === 'whatsapp' ? '+4922112345678' :
+                      formData.primaryModalLeftButtonType === 'phone' ? '+491733828581' :
+                      formData.primaryModalLeftButtonType === 'whatsapp' ? '+491733828581' :
                       'https://example.com'
                     }
                   />
@@ -162,8 +162,8 @@ export default function ButtonConfigStep({
                     onChange={(e) => onInputChange('primaryModalRightButtonValue', e.target.value)}
                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg"
                     placeholder={
-                      formData.primaryModalRightButtonType === 'phone' ? '+4922112345678' :
-                      formData.primaryModalRightButtonType === 'whatsapp' ? '+4922112345678' :
+                      formData.primaryModalRightButtonType === 'phone' ? '+491733828581' :
+                      formData.primaryModalRightButtonType === 'whatsapp' ? '+491733828581' :
                       'https://example.com'
                     }
                   />
@@ -228,8 +228,8 @@ export default function ButtonConfigStep({
                   onChange={(e) => onInputChange('secondaryButtonValue', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
                   placeholder={
-                    formData.secondaryButtonType === 'phone' ? '+4922112345678' :
-                    formData.secondaryButtonType === 'whatsapp' ? '+4922112345678' :
+                    formData.secondaryButtonType === 'phone' ? '+491733828581' :
+                    formData.secondaryButtonType === 'whatsapp' ? '+491733828581' :
                     'https://example.com'
                   }
                 />
@@ -287,8 +287,8 @@ export default function ButtonConfigStep({
                     onChange={(e) => onInputChange('secondaryModalLeftButtonValue', e.target.value)}
                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg"
                     placeholder={
-                      formData.secondaryModalLeftButtonType === 'phone' ? '+4922112345678' :
-                      formData.secondaryModalLeftButtonType === 'whatsapp' ? '+4922112345678' :
+                      formData.secondaryModalLeftButtonType === 'phone' ? '+491733828581' :
+                      formData.secondaryModalLeftButtonType === 'whatsapp' ? '+491733828581' :
                       'https://example.com'
                     }
                   />
@@ -319,8 +319,8 @@ export default function ButtonConfigStep({
                     onChange={(e) => onInputChange('secondaryModalRightButtonValue', e.target.value)}
                     className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg"
                     placeholder={
-                      formData.secondaryModalRightButtonType === 'phone' ? '+4922112345678' :
-                      formData.secondaryModalRightButtonType === 'whatsapp' ? '+4922112345678' :
+                      formData.secondaryModalRightButtonType === 'phone' ? '+491733828581' :
+                      formData.secondaryModalRightButtonType === 'whatsapp' ? '+491733828581' :
                       'https://example.com'
                     }
                   />

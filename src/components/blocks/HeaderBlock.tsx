@@ -156,7 +156,7 @@ const defaultContent: HeaderBlockContent = {
   ],
   ctaButtonText: 'Termin vereinbaren',
   ctaButtonType: 'phone',
-  ctaButtonLink: '+4922112345678',
+  ctaButtonLink: '+491733828581',
   ctaButtonVisible: true
 }
 

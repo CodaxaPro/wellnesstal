@@ -255,12 +255,12 @@ const defaultSectionContent: ContactSectionContent = {
 
 const defaultContactData: ContactDataContent = {
   businessName: 'Wellnesstal',
-  phone: '+49 221 12345678',
+  phone: '+49 1733828581',
   email: 'info@wellnesstal.de',
   address: {
-    street: 'Musterstraße 123',
-    city: 'Köln',
-    postalCode: '50667',
+    street: 'Reyplatz 10',
+    city: 'Baesweiler',
+    postalCode: '52499',
     country: 'Deutschland'
   },
   openingHours: {

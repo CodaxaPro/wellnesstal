@@ -124,14 +124,14 @@ const defaultStyles: HeroStyles = {
 }
 
 const defaultContent: HeroContent = {
-  mainTitle: 'Wellness & Entspannung in Köln',
+  mainTitle: 'Wellness & Entspannung in Baesweiler',
   subtitle: 'Entdecken Sie professionelle Headspa-Behandlungen und Wellness-Therapien für Ihr körperliches und seelisches Wohlbefinden.',
   primaryButton: 'Jetzt anrufen',
-  primaryButtonLink: 'tel:+4922112345678',
+  primaryButtonLink: 'tel:+491733828581',
   secondaryButton: 'Leistungen entdecken',
   secondaryButtonLink: '#services',
   trustIndicator: '500+ zufriedene Kunden',
-  badge: '🌿 Willkommen in Köln',
+  badge: '🌿 Willkommen in Baesweiler',
   image: defaultImage,
   imageStyles: defaultImageStyles,
   styles: defaultStyles
@@ -277,7 +277,7 @@ const HeroSection = () => {
                   color: content.styles?.mainTitle?.color || defaultStyles.mainTitle?.color,
                 }}
               >
-                {content.mainTitle.split(' ').slice(3).join(' ') || 'in Köln'}
+                {content.mainTitle.split(' ').slice(3).join(' ') || 'in Baesweiler'}
               </span>
             </h1>
 

@@ -285,14 +285,14 @@ function ContactSectionRenderer({ section }: SectionRendererProps) {
                 <svg className="w-5 h-5 text-sage-400" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                 </svg>
-                <span>Musterstraße 123, 50667 Köln</span>
+                <span>Reyplatz 10, 52499 Baesweiler</span>
               </div>
               <div className="flex items-center gap-3">
                 <svg className="w-5 h-5 text-sage-400" fill="currentColor" viewBox="0 0 20 20">
                   <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                 </svg>
-                <a href="tel:+4922112345678" className="hover:text-sage-400 transition-colors">
-                  +49 221 12345678
+                <a href="tel:+491733828581" className="hover:text-sage-400 transition-colors">
+                  +49 1733828581
                 </a>
               </div>
               <div className="flex items-center gap-3">
@@ -387,10 +387,10 @@ export default function PageRenderer({ page }: PageRendererProps) {
               Buchen Sie noch heute Ihren Termin und erleben Sie pure Entspannung.
             </p>
             <a
-              href="tel:+4922112345678"
+              href="tel:+491733828581"
               className="inline-block bg-white text-sage-600 px-8 py-4 rounded-xl font-medium hover:bg-gray-100 transition-colors text-lg"
             >
-              Jetzt anrufen: +49 221 12345678
+              Jetzt anrufen: +49 1733828581
             </a>
           </div>
         </div>

@@ -25,7 +25,7 @@ export function AddressTab({ settings, handleInputChange }: AddressTabProps) {
           value={settings.address.street}
           onChange={(e) => handleInputChange('address', 'street', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="Musterstraße 123"
+          placeholder="Reyplatz 10"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color
@@ -49,7 +49,7 @@ export function AddressTab({ settings, handleInputChange }: AddressTabProps) {
             value={settings.address.postalCode}
             onChange={(e) => handleInputChange('address', 'postalCode', e.target.value)}
             className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-            placeholder="50667"
+            placeholder="52499"
             style={{
               borderColor: settings.styles?.input?.borderColor,
               color: settings.styles?.input?.color
@@ -72,7 +72,7 @@ export function AddressTab({ settings, handleInputChange }: AddressTabProps) {
             value={settings.address.city}
             onChange={(e) => handleInputChange('address', 'city', e.target.value)}
             className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-            placeholder="Köln"
+            placeholder="Baesweiler"
             style={{
               borderColor: settings.styles?.input?.borderColor,
               color: settings.styles?.input?.color

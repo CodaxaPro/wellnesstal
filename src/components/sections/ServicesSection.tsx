@@ -75,10 +75,10 @@ const defaultSectionContent: SectionContent = {
     description: 'Unsere Wellness-Experten beraten Sie gerne kostenlos und unverbindlich. Gemeinsam finden wir die perfekte Behandlung für Ihre Bedürfnisse.',
     primaryButtonText: 'Kostenlose Beratung',
     primaryButtonType: 'phone',
-    primaryButtonLink: '+4922112345678',
+    primaryButtonLink: '+491733828581',
     secondaryButtonText: 'WhatsApp Nachricht',
     secondaryButtonType: 'whatsapp',
-    secondaryButtonLink: '+4922112345678'
+    secondaryButtonLink: '+491733828581'
   }
 }
 
@@ -124,20 +124,20 @@ const ServicesSection = () => {
       leftButton: buttonType === 'primary' ? {
         text: service.primaryModalLeftButtonText || 'Jetzt anrufen',
         type: service.primaryModalLeftButtonType || 'phone',
-        value: service.primaryModalLeftButtonValue || '+4922112345678'
+        value: service.primaryModalLeftButtonValue || '+491733828581'
       } : {
         text: service.secondaryModalLeftButtonText || 'Jetzt anrufen',
         type: service.secondaryModalLeftButtonType || 'phone', 
-        value: service.secondaryModalLeftButtonValue || '+4922112345678'
+        value: service.secondaryModalLeftButtonValue || '+491733828581'
       },
       rightButton: buttonType === 'primary' ? {
         text: service.primaryModalRightButtonText || 'WhatsApp schreiben',
         type: service.primaryModalRightButtonType || 'whatsapp',
-        value: service.primaryModalRightButtonValue || '+4922112345678'
+        value: service.primaryModalRightButtonValue || '+491733828581'
       } : {
         text: service.secondaryModalRightButtonText || 'WhatsApp schreiben',
         type: service.secondaryModalRightButtonType || 'whatsapp',
-        value: service.secondaryModalRightButtonValue || '+4922112345678'
+        value: service.secondaryModalRightButtonValue || '+491733828581'
       }
     }
     setModalContent(modalData)
@@ -531,7 +531,7 @@ const ServicesSection = () => {
                 {(!service.primaryButtonText || !service.primaryButtonValue) && (
                   <>
                     <a
-                      href="tel:+4922112345678"
+                      href="tel:+491733828581"
                       className="flex-1 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-medium hover:-translate-y-1 text-center"
                     >
                       Jetzt buchen

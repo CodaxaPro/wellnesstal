@@ -3,7 +3,7 @@ import { WhatsAppSettings, TabItem } from './types'
 export const defaultSettings: WhatsAppSettings = {
   basic: {
     enabled: true,
-    phoneNumber: '+49 221 12345678',
+    phoneNumber: '+49 1733828581',
     useOriginalStyle: false,
     position: 'bottom-right'
   },

@@ -24,9 +24,9 @@ const defaultContent: ContactBlockContent = {
   openingHoursLabels: { title: 'Öffnungszeiten', todayLabel: 'Heute', closedLabel: 'Geschlossen' },
   contact: {
     businessName: 'Wellnesstal',
-    phone: '+49 221 12345678',
+    phone: '+49 1733828581',
     email: 'info@wellnesstal.de',
-    address: { street: 'Musterstraße 123', city: 'Köln', postalCode: '50667', country: 'Deutschland' },
+    address: { street: 'Reyplatz 10', city: 'Baesweiler', postalCode: '52499', country: 'Deutschland' },
     openingHours: {
       monday: { open: '09:00', close: '19:00', closed: false },
       tuesday: { open: '09:00', close: '19:00', closed: false },

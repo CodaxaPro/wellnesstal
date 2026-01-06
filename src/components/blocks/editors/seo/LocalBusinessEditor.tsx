@@ -515,7 +515,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                       const error = validatePhone(v)
                       setErrors(prev => ({ ...prev, telephone: error || '' }))
                     }}
-                    placeholder="+49 221 12345678"
+                    placeholder="+49 1733828581"
                     type="tel"
                     required
                   />
@@ -689,7 +689,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                 label="Sokak Adresi"
                 value={local.address?.streetAddress || ''}
                 onChange={(v) => updateAddress('streetAddress', v)}
-                placeholder="Musterstrasse 123"
+                placeholder="Reyplatz 10"
                 required
               />
 
@@ -714,7 +714,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
                   label="Posta Kodu"
                   value={local.address?.postalCode || ''}
                   onChange={(v) => updateAddress('postalCode', v)}
-                  placeholder="50667"
+                  placeholder="52499"
                   required
                 />
                 <FormInput

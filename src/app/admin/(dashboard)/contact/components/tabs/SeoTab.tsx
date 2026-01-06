@@ -26,7 +26,7 @@ export function SeoTab({ settings, handleInputChange, handleKeywordChange }: Seo
           value={settings.seo.metaTitle}
           onChange={(e) => handleInputChange('seo', 'metaTitle', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="Wellnesstal - Premium Wellness & Headspa in Köln"
+          placeholder="Wellnesstal - Premium Wellness & Headspa in Baesweiler"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color
@@ -58,7 +58,7 @@ export function SeoTab({ settings, handleInputChange, handleKeywordChange }: Seo
           value={settings.seo.metaDescription}
           onChange={(e) => handleInputChange('seo', 'metaDescription', e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="Entspannung und Wellness in Köln. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden."
+          placeholder="Entspannung und Wellness in Baesweiler. Professionelle Headspa-Behandlungen für Ihr Wohlbefinden."
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color
@@ -90,7 +90,7 @@ export function SeoTab({ settings, handleInputChange, handleKeywordChange }: Seo
           value={settings.seo.keywords.join(', ')}
           onChange={(e) => handleKeywordChange(e.target.value)}
           className="w-full px-4 py-3 border rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-          placeholder="wellness, headspa, massage, köln, entspannung"
+          placeholder="wellness, headspa, massage, baesweiler, entspannung"
           style={{
             borderColor: settings.styles?.input?.borderColor,
             color: settings.styles?.input?.color

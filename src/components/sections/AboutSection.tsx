@@ -123,7 +123,7 @@ const defaultAboutContent: AboutContent = {
 }
 
 const defaultContactContent: ContactContent = {
-  phone: '+49 221 12345678'
+  phone: '+49 1733828581'
 }
 
 export default function AboutSection() {

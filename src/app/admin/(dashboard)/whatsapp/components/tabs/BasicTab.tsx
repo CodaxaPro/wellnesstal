@@ -54,7 +54,7 @@ export function BasicTab({ settings, updateBasic }: BasicTabProps) {
           value={settings.basic.phoneNumber}
           onChange={(e) => updateBasic('phoneNumber', e.target.value)}
           className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
-          placeholder="+49 221 12345678"
+          placeholder="+49 1733828581"
         />
         <p className="text-sm text-gray-500 mt-2">
           Mit Ländervorwahl eingeben (z.B. +49 für Deutschland)

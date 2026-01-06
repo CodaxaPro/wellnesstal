@@ -67,7 +67,7 @@ const defaultContent: HeaderBlockContent = {
   ],
   ctaButtonText: 'Termin vereinbaren',
   ctaButtonType: 'phone',
-  ctaButtonLink: '+4922112345678',
+  ctaButtonLink: '+491733828581',
   ctaButtonVisible: true
 }
 
@@ -521,10 +521,10 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
             onChange={(e) => updateField('ctaButtonLink', e.target.value)}
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             placeholder={
-              localContent.ctaButtonType === 'whatsapp' ? '+49123456789' :
+              localContent.ctaButtonType === 'whatsapp' ? '+491733828581' :
               localContent.ctaButtonType === 'url' ? 'https://example.com' :
-              localContent.ctaButtonType === 'email' ? 'info@example.com' :
-              '+49 221 12345678'
+              localContent.ctaButtonType === 'email' ? 'info@wellnesstal.de' :
+              '+49 1733828581'
             }
           />
         </div>

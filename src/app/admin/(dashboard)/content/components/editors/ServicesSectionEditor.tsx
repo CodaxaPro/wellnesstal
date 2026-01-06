@@ -230,10 +230,10 @@ export function ServicesSectionEditor({
                   disabled={!isEditing}
                   className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
                   placeholder={
-                    content.cta?.primaryButtonType === 'whatsapp' ? '+49123456789' :
+                    content.cta?.primaryButtonType === 'whatsapp' ? '+491733828581' :
                     content.cta?.primaryButtonType === 'url' ? 'https://example.com' :
-                    content.cta?.primaryButtonType === 'email' ? 'info@example.com' :
-                    '+49 221 12345678'
+                    content.cta?.primaryButtonType === 'email' ? 'info@wellnesstal.de' :
+                    '+49 1733828581'
                   }
                 />
               </div>
@@ -289,8 +289,8 @@ export function ServicesSectionEditor({
                   placeholder={
                     content.cta?.secondaryButtonType === 'phone' ? '+49 221 12345678' :
                     content.cta?.secondaryButtonType === 'url' ? 'https://example.com' :
-                    content.cta?.secondaryButtonType === 'email' ? 'info@example.com' :
-                    '+49123456789'
+                    content.cta?.secondaryButtonType === 'email' ? 'info@wellnesstal.de' :
+                    '+491733828581'
                   }
                 />
               </div>

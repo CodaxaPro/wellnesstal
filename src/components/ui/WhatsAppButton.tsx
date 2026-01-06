@@ -60,7 +60,7 @@ interface WhatsAppSettings {
 const defaultSettings: WhatsAppSettings = {
   basic: {
     enabled: true,
-    phoneNumber: '+49 221 12345678',
+    phoneNumber: '+49 1733828581',
     useOriginalStyle: false,
     position: 'bottom-right'
   },
@@ -320,7 +320,7 @@ const WhatsAppButton = () => {
   // If useOriginalStyle is true, render the original unchanged component
   // ============================================
   if (settings.basic.useOriginalStyle) {
-    const originalPhoneNumber = formattedPhone || "4922112345678"
+    const originalPhoneNumber = formattedPhone || "491733828581"
     const originalMessage = settings.message.defaultMessage || "Hallo, ich interessiere mich für eine Wellness-Behandlung bei Wellnesstal."
 
     return (

@@ -112,7 +112,7 @@ export const pageTemplates: PageTemplate[] = [
         subtitle: 'Service Beschreibung',
         image: '',
         ctaText: 'Jetzt buchen',
-        ctaLink: 'tel:+4922112345678',
+        ctaLink: 'tel:+491733828581',
         backgroundType: 'image'
       },
       sections: [
