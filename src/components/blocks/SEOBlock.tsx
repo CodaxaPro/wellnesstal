@@ -10,7 +10,7 @@ const defaultSEOContent: SEOContent = {
   useGlobalSEO: true,
   title: 'Wellnesstal - Ihre Wellness Oase',
   titleTemplate: '%s | Wellnesstal',
-  description: 'WellnessTal ist ein Premium-Headspa- und Wellnesszentrum in Baesweiler und Umgebung (Aachen, Köln, Düsseldorf). Japanisches Head Spa, Aromatherapie-Massagen und professionelle Gesichtsbehandlungen.',
+  description: 'WellnessTal ist ein Premium-Headspa- und Wellnesszentrum in Baesweiler und Umgebung (Aachen, Düsseldorf). Japanisches Head Spa, Aromatherapie-Massagen und professionelle Gesichtsbehandlungen.',
   keywords: ['wellness', 'spa', 'massage', 'entspannung', 'baesweiler'],
   author: 'Wellnesstal',
   canonicalUrl: '',
