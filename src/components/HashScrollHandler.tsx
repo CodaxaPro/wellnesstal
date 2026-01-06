@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect } from 'react'
+import { useEffect, useLayoutEffect } from 'react'
 import { usePathname } from 'next/navigation'
 
 /**
@@ -10,6 +10,40 @@ import { usePathname } from 'next/navigation'
  */
 export default function HashScrollHandler() {
   const pathname = usePathname()
+
+  // Use useLayoutEffect for immediate execution before paint
+  useLayoutEffect(() => {
+    // Immediate scroll attempt (before React hydration completes)
+    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    if (hash) {
+      const id = hash.substring(1)
+      if (id) {
+        // Try immediate scroll (for fast-rendering pages)
+        const tryScroll = () => {
+          const element = document.getElementById(id)
+          if (element) {
+            const rect = element.getBoundingClientRect()
+            if (rect.width > 0 && rect.height > 0) {
+              // Element is visible, scroll immediately
+              window.scrollTo({
+                top: window.pageYOffset + rect.top,
+                behavior: 'instant'
+              })
+              return true
+            }
+          }
+          return false
+        }
+        
+        // Try multiple times with short delays
+        if (!tryScroll()) {
+          setTimeout(() => tryScroll(), 50)
+          setTimeout(() => tryScroll(), 150)
+          setTimeout(() => tryScroll(), 300)
+        }
+      }
+    }
+  }, [])
 
   useEffect(() => {
     // Wait for page to render, then handle hash scrolling
