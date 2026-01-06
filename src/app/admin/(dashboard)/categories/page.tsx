@@ -762,18 +762,6 @@ export default function CategoriesManagement() {
         )}
 
       </main>
-
-      {/* Template Engine Status */}
-      {templateConfig && (
-        <div className="fixed bottom-4 left-4 bg-white border border-gray-200 rounded-lg px-4 py-2 shadow-lg text-xs text-gray-600 z-40">
-          <div className="flex items-center gap-2">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span>
-              Categories Template: <strong>{templateConfig.name}</strong> v{templateConfig.version}
-            </span>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
