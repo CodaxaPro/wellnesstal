@@ -710,8 +710,10 @@ export default function ContactSection({ brandName = 'Wellnesstal Studio' }: Con
                     ]
                     // getDay() returns: 0=Sunday, 1=Monday, 2=Tuesday, ..., 6=Saturday
                     // dayMapping index: 0=Monday, 1=Tuesday, ..., 5=Saturday, 6=Sunday
-                    const todayIndex = new Date().getDay()
-                    // Convert: Sunday(0) -> 6, Monday(1) -> 0, Tuesday(2) -> 1, etc.
+                    const now = new Date()
+                    const todayIndex = now.getDay()
+                    // Convert JavaScript day index to our dayMapping index:
+                    // Sunday(0) -> 6, Monday(1) -> 0, Tuesday(2) -> 1, Wednesday(3) -> 2, etc.
                     const adjustedTodayIndex = todayIndex === 0 ? 6 : todayIndex - 1
                     return dayMapping.map((dayInfo, index) => {
                       const dayData = contactContent.openingHours[dayInfo.key]
