@@ -14,6 +14,11 @@ export default function HashScrollHandler() {
 
   // Aggressive scroll function - tries multiple methods
   const forceScrollToHash = (id: string, attempt = 0) => {
+    // Safety check: ensure we're in browser
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return false
+    }
+    
     // Stop after too many attempts
     if (attempt > 50) {
       console.warn(`[HashScrollHandler] ❌ Max attempts reached for #${id}`)
@@ -33,20 +38,42 @@ export default function HashScrollHandler() {
       if (isVisible) {
         // Calculate absolute position using multiple methods
         const elementTop = (element as HTMLElement).offsetTop || 
-                          (element as HTMLElement).getBoundingClientRect().top + window.pageYOffset ||
-                          (element as HTMLElement).scrollTop ||
+                          (rect.top + (window.pageYOffset || window.scrollY || 0)) ||
                           0
         
-        // Method 1: Direct scroll to position (most reliable)
-        window.scrollTo({ top: elementTop, behavior: 'instant' })
+        // Safety check for scrollTo
+        if (typeof window.scrollTo === 'function') {
+          try {
+            // Method 1: Direct scroll to position (most reliable)
+            window.scrollTo({ top: elementTop, behavior: 'instant' })
+          } catch (e) {
+            // Fallback for older browsers
+            window.scrollTo(0, elementTop)
+          }
+        } else if (window.scroll) {
+          // Fallback method
+          window.scroll(0, elementTop)
+        }
         
         // Method 2: scrollIntoView
-        (element as HTMLElement).scrollIntoView({ behavior: 'instant', block: 'start' })
+        if (typeof (element as HTMLElement).scrollIntoView === 'function') {
+          try {
+            (element as HTMLElement).scrollIntoView({ behavior: 'instant', block: 'start' })
+          } catch (e) {
+            (element as HTMLElement).scrollIntoView(true)
+          }
+        }
         
         // Method 3: Smooth scroll after instant (for better UX)
-        setTimeout(() => {
-          window.scrollTo({ top: elementTop, behavior: 'smooth' })
-        }, 50)
+        if (typeof window.scrollTo === 'function') {
+          setTimeout(() => {
+            try {
+              window.scrollTo({ top: elementTop, behavior: 'smooth' })
+            } catch (e) {
+              window.scrollTo(0, elementTop)
+            }
+          }, 50)
+        }
         
         console.log(`[HashScrollHandler] ✅ Scrolled to #${id} at position ${elementTop}`)
         hasScrolledRef.current = true
@@ -61,8 +88,12 @@ export default function HashScrollHandler() {
     } else {
       console.warn(`[HashScrollHandler] ❌ Could not find element #${id} after ${attempt} attempts`)
       // Last resort: try to scroll to top of page (maybe element is at top)
-      if (attempt === 50) {
-        window.scrollTo({ top: 0, behavior: 'instant' })
+      if (attempt === 50 && typeof window.scrollTo === 'function') {
+        try {
+          window.scrollTo({ top: 0, behavior: 'instant' })
+        } catch (e) {
+          window.scrollTo(0, 0)
+        }
       }
     }
     
@@ -71,24 +102,32 @@ export default function HashScrollHandler() {
 
   // Use useLayoutEffect for immediate execution before paint
   useLayoutEffect(() => {
+    // Safety check: only run in browser
+    if (typeof window === 'undefined' || typeof document === 'undefined') {
+      return
+    }
+    
     hasScrolledRef.current = false
     
     // Immediate scroll attempt (before React hydration completes)
-    const hash = typeof window !== 'undefined' ? window.location.hash : ''
+    const hash = window.location.hash
     if (hash) {
       const id = hash.substring(1)
       if (id) {
         console.log(`[HashScrollHandler] 🎯 Starting aggressive scroll to #${id}`)
         
-        // Try immediately
-        forceScrollToHash(id, 0)
-        
-        // Try with multiple delays
-        setTimeout(() => forceScrollToHash(id, 0), 50)
-        setTimeout(() => forceScrollToHash(id, 0), 150)
-        setTimeout(() => forceScrollToHash(id, 0), 300)
-        setTimeout(() => forceScrollToHash(id, 0), 500)
-        setTimeout(() => forceScrollToHash(id, 0), 1000)
+        // Wait a tiny bit to ensure DOM is ready
+        requestAnimationFrame(() => {
+          // Try immediately
+          forceScrollToHash(id, 0)
+          
+          // Try with multiple delays
+          setTimeout(() => forceScrollToHash(id, 0), 50)
+          setTimeout(() => forceScrollToHash(id, 0), 150)
+          setTimeout(() => forceScrollToHash(id, 0), 300)
+          setTimeout(() => forceScrollToHash(id, 0), 500)
+          setTimeout(() => forceScrollToHash(id, 0), 1000)
+        })
       }
     }
   }, [pathname])
