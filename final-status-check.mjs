@@ -3,6 +3,7 @@ import dotenv from 'dotenv'
 import { fileURLToPath } from 'url'
 import { dirname, join } from 'path'
 import { execSync } from 'child_process'
+import { existsSync } from 'fs'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
@@ -171,8 +172,7 @@ const importantFiles = [
 
 importantFiles.forEach(file => {
   try {
-    const fs = await import('fs')
-    if (fs.existsSync(join(__dirname, file))) {
+    if (existsSync(join(__dirname, file))) {
       console.log(`  ✅ ${file}`)
     } else {
       console.log(`  ❌ ${file} bulunamadı!`)
