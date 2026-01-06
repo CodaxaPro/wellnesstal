@@ -220,6 +220,7 @@ export default function HashScrollHandler() {
   useLayoutEffect(() => {
     // Safety check: only run in browser
     if (typeof window === 'undefined' || typeof document === 'undefined') {
+      console.warn('[HashScrollHandler] ⚠️ Not in browser environment')
       return
     }
     
@@ -227,24 +228,34 @@ export default function HashScrollHandler() {
     
     // Immediate scroll attempt (before React hydration completes)
     const hash = window.location.hash
+    console.log(`[HashScrollHandler] 🔍 useLayoutEffect: hash="${hash}", pathname="${pathname}"`)
+    
     if (hash) {
       const id = hash.substring(1)
       if (id) {
         console.log(`[HashScrollHandler] 🎯 Starting aggressive scroll to #${id}`)
         
-        // Wait a tiny bit to ensure DOM is ready
+        // Try immediately (don't wait for requestAnimationFrame)
+        forceScrollToHash(id, 0)
+        
+        // Wait a tiny bit to ensure DOM is ready, then try again
         requestAnimationFrame(() => {
-          // Try immediately
           forceScrollToHash(id, 0)
-          
-          // Try with multiple delays
-          setTimeout(() => forceScrollToHash(id, 0), 50)
-          setTimeout(() => forceScrollToHash(id, 0), 150)
-          setTimeout(() => forceScrollToHash(id, 0), 300)
-          setTimeout(() => forceScrollToHash(id, 0), 500)
-          setTimeout(() => forceScrollToHash(id, 0), 1000)
         })
+        
+        // Try with multiple delays
+        setTimeout(() => forceScrollToHash(id, 0), 50)
+        setTimeout(() => forceScrollToHash(id, 0), 100)
+        setTimeout(() => forceScrollToHash(id, 0), 200)
+        setTimeout(() => forceScrollToHash(id, 0), 300)
+        setTimeout(() => forceScrollToHash(id, 0), 500)
+        setTimeout(() => forceScrollToHash(id, 0), 800)
+        setTimeout(() => forceScrollToHash(id, 0), 1200)
+      } else {
+        console.log('[HashScrollHandler] ⚠️ Hash is empty after substring')
       }
+    } else {
+      console.log('[HashScrollHandler] ℹ️ No hash in URL')
     }
   }, [pathname])
 
