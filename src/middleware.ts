@@ -16,7 +16,8 @@ const securityHeaders = {
   // Content Security Policy
   'Content-Security-Policy': [
     "default-src 'self'",
-    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.timify.com https://*.studiobookr.com",
+    "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.timify.com https://*.studiobookr.com https://static.cloudflareinsights.com",
+    "script-src-elem 'self' 'unsafe-inline' https://*.timify.com https://*.studiobookr.com https://static.cloudflareinsights.com",
     "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.timify.com https://*.studiobookr.com",
     "img-src 'self' data: https: blob:",
     "font-src 'self' data: https://fonts.gstatic.com",
