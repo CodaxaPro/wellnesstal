@@ -257,7 +257,7 @@ export default async function DynamicPage({ params }: PageProps) {
   return (
     <main className="min-h-screen">
       <HashScrollHandler />
-      <BlockRenderer blocks={page.blocks} />
+      <BlockRenderer blocks={page.blocks} pageSlug={slugPath} />
     </main>
   )
 }

@@ -27,6 +27,7 @@ interface BlockRendererProps {
   blocks: PageBlock[]
   isEditing?: boolean
   onBlockUpdate?: (blockId: string, content: Record<string, any>) => void
+  pageSlug?: string // Add page slug to help with hash scrolling
 }
 
 // Component mapping
@@ -54,7 +55,7 @@ const blockComponents: Record<string, React.ComponentType<BlockProps>> = {
   'sticky-button': StickyButtonBlock,
 }
 
-export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: BlockRendererProps) {
+export default function BlockRenderer({ blocks, isEditing, onBlockUpdate, pageSlug }: BlockRendererProps) {
   // Sort blocks by position
   const sortedBlocks = [...blocks].sort((a, b) => a.position - b.position)
 
@@ -76,6 +77,18 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: Bloc
           )
         }
 
+        // For Hero blocks, ensure sectionId matches page slug if not set
+        let blockToRender = block
+        if (block.block_type === 'hero' && pageSlug && !block.content?.sectionId) {
+          blockToRender = {
+            ...block,
+            content: {
+              ...block.content,
+              sectionId: pageSlug
+            }
+          }
+        }
+
         return (
           <div
             key={block.id}
@@ -84,7 +97,7 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: Bloc
             data-block-type={block.block_type}
           >
             <BlockComponent
-              block={block}
+              block={blockToRender}
               isEditing={isEditing}
               onUpdate={onBlockUpdate ? (content) => onBlockUpdate(block.id, content) : undefined}
             />

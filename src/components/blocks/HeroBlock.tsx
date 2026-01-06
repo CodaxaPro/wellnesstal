@@ -203,7 +203,17 @@ export default function HeroBlock({ block }: BlockProps) {
   }
 
   // Ensure sectionId is set for hash scrolling
+  // If sectionId is not set, try to use a default based on common patterns
+  // This helps with hash scrolling when sectionId is missing
   const sectionId = content.sectionId || 'home'
+  
+  // Debug: Log sectionId for troubleshooting
+  if (typeof window !== 'undefined' && window.location.hash) {
+    const hashId = window.location.hash.substring(1)
+    if (hashId && hashId !== sectionId) {
+      console.warn(`[HeroBlock] Hash mismatch: hash=${hashId}, sectionId=${sectionId}`)
+    }
+  }
   
   return (
     <section id={sectionId} data-section={sectionId} className="bg-cream-gradient py-20 lg:py-32 min-h-screen flex items-center">
