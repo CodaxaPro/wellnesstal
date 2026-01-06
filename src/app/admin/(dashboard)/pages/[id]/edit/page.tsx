@@ -199,7 +199,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       const out = Array.isArray(target) ? [...target] : { ...target }
       
       // Fields that should always be updated, even if empty (user explicitly cleared them)
-      const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext']
+      const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext', 'sectionId']
       
       // Array fields that should always be preserved (even if empty)
       const alwaysUpdateArrays = ['buttons', 'hideOnMobile', 'navItems']
