@@ -39,7 +39,7 @@ const defaultSEOContent: SEOContent = {
       enabled: true,
       '@type': 'DaySpa',
       name: 'Wellnesstal',
-      description: 'WellnessTal ist ein Premium-Headspa- und Wellnesszentrum, das in Baesweiler und Umgebung (Aachen, Köln, Düsseldorf) Dienstleistungen anbietet. Unser Expertenteam bietet Japanisches Head Spa (Kopfhaut-Detox), Aromatherapie-Massagen und professionelle Gesichtsbehandlungen. Wir verbinden modernste Techniken für geistige und körperliche Reinigung mit einer entspannenden Atmosphäre. Belohnen Sie sich und vereinbaren Sie noch heute einen Termin.',
+      description: 'WellnessTal ist ein Premium-Headspa- und Wellnesszentrum, das in Baesweiler und Umgebung (Aachen, Düsseldorf) Dienstleistungen anbietet. Unser Expertenteam bietet Japanisches Head Spa (Kopfhaut-Detox), Aromatherapie-Massagen und professionelle Gesichtsbehandlungen. Wir verbinden modernste Techniken für geistige und körperliche Reinigung mit einer entspannenden Atmosphäre. Belohnen Sie sich und vereinbaren Sie noch heute einen Termin.',
       priceRange: '€€',
       currenciesAccepted: 'EUR'
     }
