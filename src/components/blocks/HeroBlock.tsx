@@ -81,31 +81,52 @@ export default function HeroBlock({ block }: BlockProps) {
 
   useEffect(() => {
     setIsVisible(true)
+  }, [])
+
+  // Handle hash scroll when hero block is rendered and visible
+  useEffect(() => {
+    if (!isVisible) return
     
-    // Handle hash scroll when hero block is rendered
-    // This ensures scroll happens after the element is in the DOM
     const hash = typeof window !== 'undefined' ? window.location.hash : ''
-    if (hash) {
-      const id = hash.substring(1)
-      if (id && content.sectionId === id) {
-        // Wait for element to be fully rendered
-        setTimeout(() => {
-          const element = document.getElementById(id)
-          if (element) {
-            const rect = element.getBoundingClientRect()
-            if (rect.width > 0 && rect.height > 0) {
-              // Scroll to hero block
-              window.scrollTo({
-                top: window.pageYOffset + rect.top,
-                behavior: 'smooth'
-              })
-              console.log('[HeroBlock] Scrolled to hash:', id)
-            }
-          }
-        }, 100)
+    if (!hash) return
+    
+    const id = hash.substring(1)
+    if (!id || content.sectionId !== id) return
+    
+    // Multiple scroll attempts to ensure it works
+    const scrollToHero = () => {
+      const element = document.getElementById(id)
+      if (element) {
+        const rect = element.getBoundingClientRect()
+        if (rect.width > 0 && rect.height > 0) {
+          // Force scroll - use instant first, then smooth
+          const scrollTop = window.pageYOffset + rect.top
+          window.scrollTo({ top: scrollTop, behavior: 'instant' })
+          
+          // Then smooth scroll after a moment
+          setTimeout(() => {
+            window.scrollTo({ top: scrollTop, behavior: 'smooth' })
+            element.scrollIntoView({ behavior: 'smooth', block: 'start' })
+          }, 50)
+          
+          console.log('[HeroBlock] Scrolled to hash:', id, 'scrollTop:', scrollTop)
+          return true
+        }
       }
+      return false
     }
-  }, [content.sectionId])
+    
+    // Try immediately and with delays
+    if (!scrollToHero()) {
+      setTimeout(() => scrollToHero(), 100)
+      setTimeout(() => scrollToHero(), 300)
+      setTimeout(() => scrollToHero(), 600)
+      setTimeout(() => scrollToHero(), 1000)
+    } else {
+      // Also retry after animations complete
+      setTimeout(() => scrollToHero(), 1200)
+    }
+  }, [isVisible, content.sectionId])
 
   const styles = content.styles || {}
   const imageStyles = content.imageStyles || defaultImageStyles
