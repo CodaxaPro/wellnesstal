@@ -38,24 +38,26 @@ export default function HashScrollHandler() {
       if (isVisible) {
         // Calculate absolute position - use getBoundingClientRect which is more reliable
         const scrollY = window.pageYOffset || window.scrollY || 0
-        const elementTop = rect.top + scrollY
+        // rect.top is relative to viewport, so add current scroll to get absolute position
+        const elementAbsoluteTop = rect.top + scrollY
         
-        // If elementTop is 0 or very small, element might be at top already
-        // But we still want to scroll to ensure it's visible
-        const targetScroll = elementTop > 0 ? elementTop : 0
+        // Target scroll position: scroll to element's top
+        // If rect.top is negative, element is above viewport, so we need to scroll up
+        // If rect.top is positive, element is below viewport, so we need to scroll down
+        const targetScroll = elementAbsoluteTop
         
         // Only scroll if we're not already at the target position
         const currentScroll = scrollY
         const scrollDifference = Math.abs(targetScroll - currentScroll)
         
-        // If we're already close to the target (within 10px), don't scroll
-        if (scrollDifference < 10 && rect.top >= 0 && rect.top < 100) {
-          console.log(`[HashScrollHandler] ✅ Already at #${id} (current: ${currentScroll}, target: ${targetScroll})`)
+        // If element is already at the top of viewport (within 50px), don't scroll
+        if (rect.top >= -10 && rect.top < 50 && scrollDifference < 50) {
+          console.log(`[HashScrollHandler] ✅ Already at #${id} (current: ${currentScroll}, target: ${targetScroll}, rect.top: ${rect.top})`)
           hasScrolledRef.current = true
           return true
         }
         
-        console.log(`[HashScrollHandler] 📍 Scrolling to #${id}: current=${currentScroll}, target=${targetScroll}, rect.top=${rect.top}`)
+        console.log(`[HashScrollHandler] 📍 Scrolling to #${id}: current=${currentScroll}, target=${targetScroll}, rect.top=${rect.top}, diff=${scrollDifference}`)
         
         // Safety check for scrollTo
         if (typeof window.scrollTo === 'function') {
