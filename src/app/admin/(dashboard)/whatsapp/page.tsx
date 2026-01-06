@@ -59,9 +59,19 @@ export default function WhatsAppSettingsPage() {
     setSaveMessage(null)
 
     try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        setSaveMessage({ type: 'error', text: 'Nicht autorisiert. Bitte erneut anmelden.' })
+        router.push('/admin')
+        return
+      }
+
       const response = await fetch('/api/content', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           section: 'whatsapp-settings',
           content: settings
@@ -69,16 +79,23 @@ export default function WhatsAppSettingsPage() {
       })
 
       if (!response.ok) {
-        throw new Error('Failed to save settings')
+        const errorData = await response.json().catch(() => ({}))
+        throw new Error(errorData.error || 'Failed to save settings')
       }
 
       setHasChanges(false)
       setSaveMessage({ type: 'success', text: 'Einstellungen erfolgreich gespeichert!' })
       setTimeout(() => setSaveMessage(null), 3000)
 
-    } catch (error) {
+    } catch (error: any) {
       console.error('Save error:', error)
-      setSaveMessage({ type: 'error', text: 'Fehler beim Speichern. Bitte versuchen Sie es erneut.' })
+      const errorMessage = error?.message || 'Fehler beim Speichern. Bitte versuchen Sie es erneut.'
+      setSaveMessage({ type: 'error', text: errorMessage })
+      
+      // If unauthorized, redirect to login
+      if (errorMessage.includes('Unauthorized') || errorMessage.includes('401')) {
+        setTimeout(() => router.push('/admin'), 2000)
+      }
     } finally {
       setIsSaving(false)
     }
