@@ -167,10 +167,20 @@ export default function ContactSettingsPage() {
     setSaveMessage(null)
 
     try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+        setSaveMessage({ type: 'error', text: 'Nicht autorisiert. Bitte erneut anmelden.' })
+        router.push('/admin')
+        return
+      }
+
       // Save contact-settings to API
       const settingsResponse = await fetch('/api/content', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           section: 'contact-settings',
           content: settings
@@ -184,7 +194,10 @@ export default function ContactSettingsPage() {
       // Sync contact section for homepage
       await fetch('/api/content', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           section: 'contact',
           content: {
@@ -205,7 +218,10 @@ export default function ContactSettingsPage() {
       // Sync footer section for homepage
       await fetch('/api/content', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           section: 'footer',
           content: {
@@ -223,7 +239,10 @@ export default function ContactSettingsPage() {
       // Sync meta/SEO section
       await fetch('/api/content', {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
         body: JSON.stringify({
           section: 'meta',
           content: {
