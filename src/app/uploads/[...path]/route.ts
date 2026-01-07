@@ -30,13 +30,13 @@ export async function GET(
     // Eğer uploads/ klasöründe yoksa, media/ klasöründe dene
     if (error && pathParts.length > 0) {
       const mediaPath = `media/${pathParts.join('/')}`
-      const result = await supabaseAdmin.storage
+      const mediaResult = await supabaseAdmin.storage
         .from(STORAGE_BUCKET)
         .download(mediaPath)
       
-      if (!result.error && result.data) {
+      if (!mediaResult.error && mediaResult.data) {
         imagePath = mediaPath
-        data = result.data
+        data = mediaResult.data
         error = null
       }
     }
