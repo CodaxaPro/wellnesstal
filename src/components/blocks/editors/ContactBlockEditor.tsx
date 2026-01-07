@@ -23,7 +23,7 @@ const defaultContent: ContactBlockContent = {
   map: { buttonText: 'In Google Maps öffnen' },
   openingHoursLabels: { title: 'Öffnungszeiten', todayLabel: 'Heute', closedLabel: 'Geschlossen' },
   contact: {
-    businessName: 'Wellnesstal',
+    businessName: 'WellnessTal Studio',
     phone: '+49 1733828581',
     email: 'info@wellnesstal.de',
     address: { street: 'Reyplatz 10', city: 'Baesweiler', postalCode: '52499', country: 'Deutschland' },
