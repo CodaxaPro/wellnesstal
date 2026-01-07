@@ -1,6 +1,6 @@
 'use client'
 
-import Image from 'next/image'
+import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
 import { BlockProps, HeroContent, HeroTextStyle } from './types'
@@ -531,12 +531,10 @@ export default function HeroBlock({ block }: BlockProps) {
                   onMouseEnter={() => setImageHover(true)}
                   onMouseLeave={() => setImageHover(false)}
                 >
-                  <Image
-                    src={content.image.url}
-                    alt={content.image.alt || 'Hero görsel'}
-                    fill
-                    sizes="100vw"
-                    className="object-cover transition-all duration-700"
+                  {/* Use normalized img tag for reliable proxy support */}
+                  <img
+                    {...getImageProps(content.image.url, content.image.alt || 'Hero görsel')}
+                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
                     style={{
                       opacity: parseInt(imageStyles.opacity || defaultImageStyles.opacity) / 100,
                       transform: imageHover
@@ -544,7 +542,7 @@ export default function HeroBlock({ block }: BlockProps) {
                         : 'scale(1)',
                       filter: `brightness(${imageStyles.brightness || defaultImageStyles.brightness}%) contrast(${imageStyles.contrast || defaultImageStyles.contrast}%) saturate(${imageStyles.saturation || defaultImageStyles.saturation}%)`,
                     }}
-                    priority
+                    loading="eager"
                   />
 
                   {/* Gradient Overlay */}
