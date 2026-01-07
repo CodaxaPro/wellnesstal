@@ -157,7 +157,7 @@ const defaultContent: FooterBlockContent = {
   copyright: '© 2024 Wellnesstal. Alle Rechte vorbehalten.',
   styles: defaultStyles,
   contact: {
-    businessName: 'Wellnesstal',
+    businessName: 'WellnessTal Studio',
     phone: '+49 1733828581',
     email: 'info@wellnesstal.de',
     address: {
@@ -458,7 +458,7 @@ export default function FooterBlock({ block }: BlockProps) {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <div className="text-gray-300">
-                    <div className="font-medium">{content.contact.businessName} Studio</div>
+                    <div className="font-medium">{content.contact.businessName}</div>
                     <div>{content.contact.address.street}</div>
                     <div>{content.contact.address.postalCode} {content.contact.address.city}</div>
                   </div>

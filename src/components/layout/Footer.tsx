@@ -145,7 +145,7 @@ const defaultFooterContent: FooterContent = {
 }
 
 const defaultContactContent: ContactContent = {
-  businessName: 'Wellnesstal',
+  businessName: 'WellnessTal Studio',
     phone: '+49 1733828581',
     email: 'info@wellnesstal.de',
     address: {
@@ -444,7 +444,7 @@ const Footer = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <div className="text-gray-300">
-                    <div className="font-medium">{contactContent.businessName} Studio</div>
+                    <div className="font-medium">{contactContent.businessName}</div>
                     <div>{contactContent.address.street}</div>
                     <div>{contactContent.address.postalCode} {contactContent.address.city}</div>
                   </div>
