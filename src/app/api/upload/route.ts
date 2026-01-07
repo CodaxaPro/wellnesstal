@@ -1,14 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, unlink, mkdir } from 'fs/promises'
-import { existsSync } from 'fs'
-import path from 'path'
+import { supabaseAdmin } from '@/lib/supabase-server'
 import { verifyAdmin } from '@/lib/auth'
 
 // Allowed image types
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-const MAX_FILE_SIZE = 5 * 1024 * 1024 // 5MB
+const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB (artırıldı)
+const STORAGE_BUCKET = 'wellnesstal'
 
-// POST - Upload image (requires authentication)
+// POST - Upload image to Supabase Storage (requires authentication)
 export async function POST(request: NextRequest) {
   try {
     // Verify admin authentication
@@ -42,7 +41,7 @@ export async function POST(request: NextRequest) {
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
       return NextResponse.json(
-        { success: false, error: 'Datei zu groß. Maximum: 5MB' },
+        { success: false, error: `Datei zu groß. Maximum: ${MAX_FILE_SIZE / 1024 / 1024}MB` },
         { status: 400 }
       )
     }
@@ -55,29 +54,43 @@ export async function POST(request: NextRequest) {
     const randomStr = Math.random().toString(36).substring(2, 8)
     const ext = file.name.split('.').pop()?.toLowerCase() || 'jpg'
     const filename = `${timestamp}-${randomStr}.${ext}`
+    const filePath = `uploads/${sanitizedFolder}/${filename}`
 
-    // Ensure upload directory exists
-    const uploadDir = path.join(process.cwd(), 'public', 'uploads', sanitizedFolder)
-    if (!existsSync(uploadDir)) {
-      await mkdir(uploadDir, { recursive: true })
+    // Convert file to buffer
+    const arrayBuffer = await file.arrayBuffer()
+    const buffer = Buffer.from(arrayBuffer)
+
+    // Upload to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .upload(filePath, buffer, {
+        contentType: file.type,
+        cacheControl: '31536000', // 1 year cache
+        upsert: true // Overwrite if exists
+      })
+
+    if (uploadError) {
+      console.error('Supabase Storage upload error:', uploadError)
+      return NextResponse.json(
+        { success: false, error: 'Fehler beim Hochladen zu Supabase Storage' },
+        { status: 500 }
+      )
     }
 
-    // Save file
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-    const filepath = path.join(uploadDir, filename)
-    await writeFile(filepath, buffer)
+    // Get public URL from Supabase Storage
+    const { data: { publicUrl } } = supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .getPublicUrl(filePath)
 
-    // Return public URL
-    const publicUrl = `/uploads/${sanitizedFolder}/${filename}`
-
+    // Return full Supabase Storage URL
     return NextResponse.json({
       success: true,
       data: {
-        url: publicUrl,
+        url: publicUrl, // Tam Supabase Storage URL
         filename,
         size: file.size,
-        type: file.type
+        type: file.type,
+        path: filePath
       }
     })
   } catch (error) {
@@ -89,7 +102,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-// DELETE - Remove image (requires authentication)
+// DELETE - Remove image from Supabase Storage (requires authentication)
 export async function DELETE(request: NextRequest) {
   try {
     // Verify admin authentication
@@ -111,35 +124,44 @@ export async function DELETE(request: NextRequest) {
       )
     }
 
-    // Security check - only allow deleting from uploads folder
-    if (!fileUrl.startsWith('/uploads/')) {
+    // Extract path from Supabase Storage URL
+    let filePath = ''
+    
+    // If it's a Supabase Storage URL, extract the path
+    if (fileUrl.includes('/storage/v1/object/public/')) {
+      const urlParts = fileUrl.split('/storage/v1/object/public/wellnesstal/')
+      if (urlParts.length > 1) {
+        filePath = urlParts[1]
+      }
+    } else if (fileUrl.startsWith('/uploads/')) {
+      // Legacy local path
+      filePath = fileUrl.replace('/uploads/', 'uploads/')
+    } else {
       return NextResponse.json(
         { success: false, error: 'Ungültiger Dateipfad' },
         { status: 400 }
       )
     }
 
-    // Additional security: prevent path traversal
-    if (fileUrl.includes('..')) {
+    if (!filePath || filePath.includes('..')) {
       return NextResponse.json(
         { success: false, error: 'Invalid file path' },
         { status: 400 }
       )
     }
 
-    // Construct file path
-    const filepath = path.join(process.cwd(), 'public', fileUrl)
+    // Delete from Supabase Storage
+    const { error: deleteError } = await supabaseAdmin.storage
+      .from(STORAGE_BUCKET)
+      .remove([filePath])
 
-    // Check if file exists
-    if (!existsSync(filepath)) {
+    if (deleteError) {
+      console.error('Supabase Storage delete error:', deleteError)
       return NextResponse.json(
-        { success: false, error: 'Datei nicht gefunden' },
-        { status: 404 }
+        { success: false, error: 'Fehler beim Löschen aus Supabase Storage' },
+        { status: 500 }
       )
     }
-
-    // Delete file
-    await unlink(filepath)
 
     return NextResponse.json({
       success: true,
