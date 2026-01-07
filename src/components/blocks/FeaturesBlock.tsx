@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { BlockProps, FeaturesContent, FeatureItem } from './types'
 import { PRESET_ICONS } from './editors/features/defaults'
+import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
 
 // Shadow class mapping
 const shadowClasses: Record<string, string> = {
@@ -601,11 +602,16 @@ export default function FeaturesBlock({ block }: BlockProps) {
                   }}
                 >
                   <Image
-                    src={feature.image.url}
+                    src={normalizeImageUrl(feature.image.url)}
                     alt={feature.image.alt || feature.title}
                     fill
                     className={`object-${feature.image.objectFit || 'cover'}`}
                     sizes="(max-width: 768px) 100vw, 50vw"
+                    onError={(e) => {
+                      console.error('Image load error:', normalizeImageUrl(feature.image.url))
+                      const target = e.target as HTMLImageElement
+                      target.src = `https://via.placeholder.com/800x450/9CAF88/FFFFFF?text=${encodeURIComponent(feature.image.alt || feature.title || 'Image')}`
+                    }}
                   />
                 </div>
               </div>

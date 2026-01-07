@@ -3,6 +3,7 @@
 import { useState, useMemo } from 'react'
 import Image from 'next/image'
 import { BlockProps, GalleryContent, GalleryImage } from './types'
+import { normalizeImageUrl } from '@/lib/image-utils'
 
 // Default values for enterprise gallery
 const defaultLayout = {
@@ -253,7 +254,7 @@ export default function GalleryBlock({ block }: BlockProps) {
                   onClick={() => openLightbox(globalIndex)}
                 >
                   <Image
-                    src={image.url}
+                    src={normalizeImageUrl(image.url)}
                     alt={image.alt || `Gallery image ${index + 1}`}
                     width={400}
                     height={getMasonryHeight(image.id, globalIndex)}
@@ -566,7 +567,7 @@ export default function GalleryBlock({ block }: BlockProps) {
                     }`}
                   >
                     <Image
-                      src={image.url}
+                      src={normalizeImageUrl(image.url)}
                       alt={image.alt || `Thumbnail ${index + 1}`}
                       fill
                       className="object-cover"
