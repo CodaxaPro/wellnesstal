@@ -18,14 +18,30 @@ export async function GET(
     // Next.js 15 - params bir Promise
     const resolvedParams = await params
     // Path'i birleştir: ['about', 'image.jpg'] → 'uploads/about/image.jpg'
+    // veya ['hero', 'image.jpg'] → önce uploads/hero/ sonra media/hero/ kontrol et
     const pathParts = resolvedParams.path
-    const imagePath = `uploads/${pathParts.join('/')}`
-
-    // Supabase Storage'dan resmi çek
-    const { data, error } = await supabaseAdmin.storage
+    let imagePath = `uploads/${pathParts.join('/')}`
+    
+    // Önce uploads/ klasöründe kontrol et, yoksa media/ klasöründe dene
+    let { data, error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .download(imagePath)
+    
+    // Eğer uploads/ klasöründe yoksa, media/ klasöründe dene
+    if (error && pathParts.length > 0) {
+      const mediaPath = `media/${pathParts.join('/')}`
+      const result = await supabaseAdmin.storage
+        .from(STORAGE_BUCKET)
+        .download(mediaPath)
+      
+      if (!result.error && result.data) {
+        imagePath = mediaPath
+        data = result.data
+        error = null
+      }
+    }
 
+    // data ve error yukarıda zaten kontrol edildi
     if (error || !data) {
       console.error('Supabase Storage download error:', error)
       return NextResponse.json(
