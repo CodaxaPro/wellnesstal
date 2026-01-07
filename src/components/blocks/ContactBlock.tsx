@@ -339,10 +339,24 @@ export default function ContactBlock({ block }: BlockProps) {
             })
           }
           if (contactRes.success && contactRes.data?.content) {
+            const apiContact = contactRes.data.content
             setGlobalContactData({
               ...defaultContactData,
-              ...contactRes.data.content
+              ...apiContact,
+              // Ensure address structure
+              address: {
+                ...defaultContactData.address,
+                ...apiContact.address
+              },
+              // Ensure openingHours structure
+              openingHours: {
+                ...defaultContactData.openingHours,
+                ...apiContact.openingHours
+              }
             })
+            console.log('✅ Global contact data loaded:', apiContact)
+          } else {
+            console.error('❌ Failed to load global contact:', contactRes)
           }
           if (settingsRes.success && settingsRes.data?.content?.address?.googleMapsUrl) {
             setGoogleMapsUrl(settingsRes.data.content.address.googleMapsUrl)
