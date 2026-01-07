@@ -18,7 +18,13 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'www.wellnesstal.de',
         port: '',
-        pathname: '/**',
+        pathname: '/uploads/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'www.wellnesstal.de',
+        port: '',
+        pathname: '/media/**',
       },
       {
         protocol: 'http',
