@@ -160,7 +160,7 @@ export default function GalleryBlock({ block }: BlockProps) {
           onClick={() => openLightbox(index)}
         >
           <Image
-            src={image.url}
+            src={normalizeImageUrl(image.url)}
             alt={image.alt || `Gallery image ${index + 1}`}
             fill
             className={`object-cover transition-all duration-500 ${getHoverClass()}`}
@@ -305,7 +305,7 @@ export default function GalleryBlock({ block }: BlockProps) {
                 onClick={() => openLightbox(index)}
               >
                 <Image
-                  src={image.url}
+                  src={normalizeImageUrl(image.url)}
                   alt={image.alt || `Gallery image ${index + 1}`}
                   fill
                   className="object-cover"
@@ -377,7 +377,7 @@ export default function GalleryBlock({ block }: BlockProps) {
           onClick={() => openLightbox(index)}
         >
           <Image
-            src={image.url}
+            src={normalizeImageUrl(image.url)}
             alt={image.alt || `Gallery image ${index + 1}`}
             fill
             className={`object-cover transition-all duration-500 ${getHoverClass()}`}
