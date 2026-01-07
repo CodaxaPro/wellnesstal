@@ -354,9 +354,10 @@ export default function ContactBlock({ block }: BlockProps) {
                 ...apiContact.openingHours
               }
             })
-            console.log('✅ Global contact data loaded:', apiContact)
           } else {
             console.error('❌ Failed to load global contact:', contactRes)
+            // Fallback to default if API fails
+            setGlobalContactData(defaultContactData)
           }
           if (settingsRes.success && settingsRes.data?.content?.address?.googleMapsUrl) {
             setGoogleMapsUrl(settingsRes.data.content.address.googleMapsUrl)
