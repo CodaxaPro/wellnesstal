@@ -390,9 +390,11 @@ export default function ContactBlock({ block }: BlockProps) {
       }
 
   // Get contact data
-  const contactData: ContactDataContent = useGlobalContact && globalContactData
-    ? globalContactData
-    : block.content?.contact || defaultContactData
+  // Global mode: use API data if available, otherwise fallback to default
+  // Custom mode: use block content, otherwise fallback to default
+  const contactData: ContactDataContent = useGlobalContact
+    ? (globalContactData || defaultContactData)
+    : (block.content?.contact || defaultContactData)
 
   // Get maps URL
   const mapsUrl = useGlobalContact ? googleMapsUrl : (block.content?.googleMapsUrl || '')
