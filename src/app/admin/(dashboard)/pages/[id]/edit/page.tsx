@@ -48,6 +48,7 @@ interface PageData {
   meta_description?: string
   category_id?: string
   page_categories?: PageCategory
+  active?: boolean
   blocks: PageBlock[]
 }
 
@@ -72,6 +73,8 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   const [activeBlockId, setActiveBlockId] = useState<string | null>(null)
   const [showBlockLibrary, setShowBlockLibrary] = useState(false)
   const [showPreview, setShowPreview] = useState(false)
+  const [editingSlug, setEditingSlug] = useState(false)
+  const [slugValue, setSlugValue] = useState('')
 
   useEffect(() => {
     fetchPage()
@@ -101,6 +104,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       if (response.ok) {
         const data = await response.json()
         setPage(data.data)
+        setSlugValue(data.data.slug || '')
       } else {
         router.push('/admin/pages')
       }
@@ -201,6 +205,10 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       // Fields that should always be updated, even if empty (user explicitly cleared them)
       const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext', 'sectionId']
       
+      // Nested objects that should always be fully replaced (not merged) when present in source
+      // This is important for block types with complex nested structures like WhatsApp
+      const alwaysReplaceObjects = ['basic', 'appearance', 'message', 'display', 'availability', 'ctaBubble']
+      
       // Array fields that should always be preserved (even if empty)
       const alwaysUpdateArrays = ['buttons', 'hideOnMobile', 'navItems']
       
@@ -232,7 +240,22 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
         }
         
         if (typeof s === 'object' && s !== null && !Array.isArray(s) && typeof t === 'object' && t !== null && !Array.isArray(t)) {
-          out[key] = deepMerge(t, s)
+          // For nested objects like WhatsApp block's 'appearance', 'ctaBubble', etc., 
+          // we need to deep merge but ensure all properties are updated
+          // If the nested object is in alwaysReplaceObjects, do a deeper merge of its properties
+          if (alwaysReplaceObjects.includes(key)) {
+            // Deep merge nested object properties to preserve all fields
+            out[key] = { ...t, ...s }
+            // Then merge nested properties recursively
+            for (const nestedKey in s) {
+              if (typeof s[nestedKey] === 'object' && s[nestedKey] !== null && !Array.isArray(s[nestedKey]) && 
+                  typeof t[nestedKey] === 'object' && t[nestedKey] !== null && !Array.isArray(t[nestedKey])) {
+                out[key][nestedKey] = deepMerge(t[nestedKey], s[nestedKey])
+              }
+            }
+          } else {
+            out[key] = deepMerge(t, s)
+          }
         } else {
           out[key] = s
         }
@@ -472,6 +495,111 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     }
   }
 
+  const generateSlug = (text: string) => {
+    return text
+      .toLowerCase()
+      .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+      .replace(/ğ/g, 'g').replace(/ş/g, 's').replace(/ı/g, 'i').replace(/ç/g, 'c')
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .trim()
+  }
+
+  const handleUpdatePageInfo = async (field: 'title' | 'slug', value: string) => {
+    if (!page) return
+
+    try {
+      const token = localStorage.getItem('adminToken')
+      
+      // If updating title and slug is empty or auto-generated, update slug too
+      const updateData: any = { id: page.id }
+      if (field === 'title') {
+        updateData.title = value
+        // Only auto-update slug if it matches the old title's slug
+        const oldTitleSlug = generateSlug(page.title)
+        if (page.slug === oldTitleSlug || !page.slug) {
+          updateData.slug = generateSlug(value)
+        }
+      } else {
+        // Clean and validate slug format
+        const cleanedSlug = generateSlug(value)
+        if (!cleanedSlug || cleanedSlug.length === 0) {
+          toast.error('Slug boş olamaz')
+          return
+        }
+        updateData.slug = cleanedSlug
+      }
+
+      const response = await fetch('/api/pages', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(updateData)
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPage(prev => prev ? { 
+          ...prev, 
+          title: data.data.title || prev.title,
+          slug: data.data.slug || prev.slug
+        } : null)
+        toast.success(field === 'title' ? 'Başlık güncellendi' : 'Slug güncellendi')
+        if (field === 'slug') {
+          setEditingSlug(false)
+          setSlugValue(data.data.slug || page.slug)
+        }
+      } else {
+        const errorData = await response.json()
+        toast.error(errorData.error || 'Güncelleme başarısız')
+      }
+    } catch (error) {
+      console.error('Failed to update page info:', error)
+      toast.error('Güncelleme sırasında hata oluştu')
+    }
+  }
+
+  const handleSaveSlug = () => {
+    if (!slugValue || slugValue.trim() === '') {
+      toast.error('Slug boş olamaz')
+      return
+    }
+    handleUpdatePageInfo('slug', slugValue)
+  }
+
+  const handleToggleActive = async () => {
+    if (!page) return
+
+    const newActive = !(page.active !== false) // Default to true if undefined
+
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/pages', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ id: page.id, active: newActive })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        setPage(prev => prev ? { ...prev, active: data.data.active !== false } : null)
+        toast.success(newActive ? 'Sayfa aktif edildi' : 'Sayfa pasif edildi')
+      } else {
+        const errorData = await response.json()
+        toast.error(errorData.error || 'Güncelleme başarısız')
+      }
+    } catch (error) {
+      console.error('Failed to toggle active:', error)
+      toast.error('Aktif/pasif durumu güncellenirken hata oluştu')
+    }
+  }
+
   const activeBlock = page?.blocks.find(b => b.id === activeBlockId)
 
   if (isLoading) {
@@ -524,9 +652,145 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
             </svg>
             Sayfalara Dön
           </Link>
-          <h1 className="font-semibold text-slate-800 truncate">{page.title}</h1>
-          <p className="text-xs text-slate-400 mt-1">/{page.slug}</p>
           
+          {/* Page Title - Editable */}
+          <div className="mb-2">
+            <label className="block text-xs font-medium text-slate-500 mb-1">
+              Sayfa Başlığı
+            </label>
+            <input
+              type="text"
+              value={page.title}
+              onChange={(e) => setPage(prev => prev ? { ...prev, title: e.target.value } : null)}
+              onBlur={(e) => {
+                if (e.target.value !== page.title) {
+                  handleUpdatePageInfo('title', e.target.value)
+                }
+              }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {
+                  e.currentTarget.blur()
+                }
+              }}
+              className="w-full px-3 py-2 text-sm font-semibold text-slate-800 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white"
+            />
+          </div>
+
+          {/* Page Slug - Editable */}
+          <div className="mb-3">
+            <label className="block text-xs font-medium text-slate-500 mb-1">
+              URL Slug
+            </label>
+            {!editingSlug ? (
+              <div className="flex items-center gap-2">
+                <div className="flex-1 flex items-center">
+                  <span className="text-xs text-slate-400 px-2 py-2 border border-r-0 border-slate-200 rounded-l-lg bg-slate-50">
+                    /
+                  </span>
+                  <span className="flex-1 px-3 py-2 text-xs text-slate-600 border border-l-0 border-slate-200 rounded-r-lg bg-slate-50">
+                    {page.slug}
+                  </span>
+                </div>
+                <button
+                  onClick={() => {
+                    setSlugValue(page.slug)
+                    setEditingSlug(true)
+                  }}
+                  className="p-1.5 text-slate-400 hover:text-sage-600 hover:bg-sage-50 rounded transition-all"
+                  title="Slug'ı düzenle"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                  </svg>
+                </button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <div className="flex items-center">
+                  <span className="text-xs text-slate-400 px-2 py-2 border border-r-0 border-slate-200 rounded-l-lg bg-slate-50">
+                    /
+                  </span>
+                  <input
+                    type="text"
+                    value={slugValue}
+                    onChange={(e) => {
+                      const newSlug = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '')
+                      setSlugValue(newSlug)
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter') {
+                        e.preventDefault()
+                        handleSaveSlug()
+                      }
+                      if (e.key === 'Escape') {
+                        setEditingSlug(false)
+                        setSlugValue(page.slug)
+                      }
+                    }}
+                    autoFocus
+                    className="flex-1 px-3 py-2 text-xs text-slate-600 border border-slate-200 rounded-r-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white"
+                    placeholder="sayfa-slug"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={handleSaveSlug}
+                    className="flex-1 px-2 py-1.5 text-xs font-medium bg-sage-500 hover:bg-sage-600 text-white rounded-lg transition-colors"
+                  >
+                    Kaydet
+                  </button>
+                  <button
+                    onClick={() => {
+                      setEditingSlug(false)
+                      setSlugValue(page.slug)
+                    }}
+                    className="px-2 py-1.5 text-xs font-medium border border-slate-200 text-slate-600 hover:bg-slate-50 rounded-lg transition-colors"
+                  >
+                    İptal
+                  </button>
+                </div>
+                <p className="text-[10px] text-slate-400">Sadece küçük harf, rakam ve tire. Enter ile kaydet, Esc ile iptal</p>
+              </div>
+            )}
+          </div>
+          
+          {/* Active/Inactive Toggle */}
+          <div className="mt-3">
+            <label className="block text-xs font-medium text-slate-500 mb-1.5">
+              Durum
+            </label>
+            <button
+              onClick={handleToggleActive}
+              className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                page.active !== false
+                  ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200'
+                  : 'bg-gray-50 text-gray-500 hover:bg-gray-100 border border-gray-200'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                {page.active !== false ? (
+                  <>
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                    </svg>
+                    Aktif
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                    </svg>
+                    Pasif
+                  </>
+                )}
+              </span>
+              <span className="text-xs opacity-70">
+                {page.active !== false ? 'Görünür' : 'Gizli'}
+              </span>
+            </button>
+            <p className="text-[10px] text-slate-400 mt-1">Sayfanın görünürlüğünü kontrol eder</p>
+          </div>
+
           {/* Category Selector */}
           <div className="mt-3">
             <label className="block text-xs font-medium text-slate-500 mb-1.5">

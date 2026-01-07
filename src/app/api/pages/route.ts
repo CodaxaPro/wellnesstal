@@ -63,6 +63,7 @@ export async function GET(request: NextRequest) {
         .select('*')
         .eq('slug', slug)
         .eq('status', 'published')
+        .eq('active', true) // Only show active pages
         .single()
 
       if (error || !page) {
@@ -223,7 +224,41 @@ export async function GET(request: NextRequest) {
   }
 }
 
-// POST /api/pages - Create new page
+// Helper function to generate unique slug
+async function generateUniqueSlug(baseSlug: string): Promise<string> {
+  let finalSlug = baseSlug
+  let counter = 1
+
+  while (true) {
+    const { data: existing } = await supabase
+      .from('pages')
+      .select('id')
+      .eq('slug', finalSlug)
+      .single()
+
+    if (!existing) {
+      return finalSlug
+    }
+
+    // Try with -copy, -copy-2, -copy-3, etc.
+    if (counter === 1) {
+      finalSlug = `${baseSlug}-copy`
+    } else {
+      finalSlug = `${baseSlug}-copy-${counter}`
+    }
+    counter++
+    
+    // Safety limit
+    if (counter > 100) {
+      finalSlug = `${baseSlug}-copy-${Date.now()}`
+      break
+    }
+  }
+
+  return finalSlug
+}
+
+// POST /api/pages - Create new page or duplicate existing page
 export async function POST(request: NextRequest) {
   try {
     const user = verifyToken(request)
@@ -235,8 +270,112 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { title, slug, status = 'draft', template = 'default', meta_title, meta_description, category_id } = body
+    const { duplicate, title, slug, status = 'draft', template = 'default', meta_title, meta_description, category_id } = body
 
+    // Handle duplicate page
+    if (duplicate) {
+      const sourcePageId = duplicate
+      
+      // Fetch source page with blocks
+      const { data: sourcePage, error: fetchError } = await supabase
+        .from('pages')
+        .select('*')
+        .eq('id', sourcePageId)
+        .single()
+
+      if (fetchError || !sourcePage) {
+        return NextResponse.json(
+          { success: false, error: 'Source page not found' },
+          { status: 404 }
+        )
+      }
+
+      // Fetch source page blocks
+      const { data: sourceBlocks } = await supabase
+        .from('page_blocks')
+        .select('*')
+        .eq('page_id', sourcePageId)
+        .order('position', { ascending: true })
+
+      // Generate unique slug
+      const baseSlug = sourcePage.slug || sourcePage.title
+        .toLowerCase()
+        .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/-+/g, '-')
+        .trim()
+      
+      const uniqueSlug = await generateUniqueSlug(baseSlug)
+
+      // Create new page
+      const newTitle = title || `${sourcePage.title} (Copy)`
+      const { data: newPage, error: createError } = await supabase
+        .from('pages')
+        .insert({
+          title: newTitle,
+          slug: uniqueSlug,
+          status: 'draft', // Always create duplicates as draft
+          template: sourcePage.template || 'default',
+          meta_title: sourcePage.meta_title || newTitle,
+          meta_description: sourcePage.meta_description || null,
+          category_id: sourcePage.category_id || null,
+          published_at: null,
+          created_by: (user as any).username
+        })
+        .select()
+        .single()
+
+      if (createError) {
+        throw createError
+      }
+
+      // Duplicate blocks
+      if (sourceBlocks && sourceBlocks.length > 0) {
+        const newBlocks = sourceBlocks.map((block: any, index: number) => ({
+          page_id: newPage.id,
+          block_type: block.block_type,
+          content: block.content,
+          position: index,
+          visible: block.visible !== false
+        }))
+
+        const { error: blocksError } = await supabase
+          .from('page_blocks')
+          .insert(newBlocks)
+
+        if (blocksError) {
+          console.error('Error duplicating blocks:', blocksError)
+          // Continue even if blocks fail - page is created
+        }
+      }
+
+      // Fetch category separately if needed
+      let pageWithCategory = newPage
+      if (newPage && newPage.category_id) {
+        try {
+          const { data: category } = await supabase
+            .from('page_categories')
+            .select('id, name, slug, color, icon')
+            .eq('id', newPage.category_id)
+            .single()
+          
+          if (category) {
+            pageWithCategory = { ...newPage, page_categories: category }
+          }
+        } catch (e) {
+          console.log('Could not fetch category:', e)
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: pageWithCategory || newPage,
+        message: 'Page duplicated successfully'
+      })
+    }
+
+    // Regular page creation
     if (!title) {
       return NextResponse.json(
         { success: false, error: 'Title is required' },
@@ -245,7 +384,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Generate slug if not provided
-    const finalSlug = slug || title
+    const baseSlug = slug || title
       .toLowerCase()
       .replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss')
       .replace(/[^a-z0-9\s-]/g, '')
@@ -253,19 +392,7 @@ export async function POST(request: NextRequest) {
       .replace(/-+/g, '-')
       .trim()
 
-    // Check if slug exists
-    const { data: existing } = await supabase
-      .from('pages')
-      .select('id')
-      .eq('slug', finalSlug)
-      .single()
-
-    if (existing) {
-      return NextResponse.json(
-        { success: false, error: 'A page with this slug already exists' },
-        { status: 409 }
-      )
-    }
+    const finalSlug = await generateUniqueSlug(baseSlug)
 
     const { data: page, error } = await supabase
       .from('pages')
@@ -373,12 +500,67 @@ export async function PUT(request: NextRequest) {
 
     updateData.updated_by = (user as any).username
 
+    // Remove undefined values to avoid Supabase errors
+    Object.keys(updateData).forEach(key => {
+      if (updateData[key] === undefined) {
+        delete updateData[key]
+      }
+    })
+
     const { data: page, error } = await supabase
       .from('pages')
       .update(updateData)
       .eq('id', id)
       .select()
       .single()
+
+    // If error is about missing column (active), try without it
+    if (error && error.message && error.message.includes('active')) {
+      console.warn('Active column not found, attempting update without it')
+      const { active, ...updateDataWithoutActive } = updateData
+      const { data: pageRetry, error: retryError } = await supabase
+        .from('pages')
+        .update(updateDataWithoutActive)
+        .eq('id', id)
+        .select()
+        .single()
+      
+      if (retryError) {
+        throw retryError
+      }
+      
+      // Return page with active set to true (default) if column doesn't exist
+      const pageWithDefaultActive = { ...pageRetry, active: true }
+      
+      // Fetch category separately if needed
+      let pageWithCategory = pageWithDefaultActive
+      if (pageWithDefaultActive && (updateDataWithoutActive.category_id !== undefined || pageWithDefaultActive.category_id)) {
+        try {
+          const categoryId = updateDataWithoutActive.category_id || pageWithDefaultActive.category_id
+          if (categoryId) {
+            const { data: category } = await supabase
+              .from('page_categories')
+              .select('id, name, slug, color, icon')
+              .eq('id', categoryId)
+              .single()
+            
+            if (category) {
+              pageWithCategory = { ...pageWithDefaultActive, page_categories: category }
+            }
+          } else {
+            pageWithCategory = { ...pageWithDefaultActive, page_categories: null }
+          }
+        } catch (e) {
+          console.log('Could not fetch category:', e)
+        }
+      }
+
+      return NextResponse.json({
+        success: true,
+        data: pageWithCategory || pageWithDefaultActive,
+        message: 'Page updated successfully (active column not available - please run migration)'
+      })
+    }
 
     // Fetch category separately if needed
     let pageWithCategory = page
@@ -413,10 +595,27 @@ export async function PUT(request: NextRequest) {
       message: 'Page updated successfully'
     })
 
-  } catch (error) {
+  } catch (error: any) {
     console.error('Pages PUT error:', error)
+    
+    // Check if error is about missing column
+    if (error?.message && (error.message.includes('active') || error.message.includes('column') || error.message.includes('does not exist'))) {
+      return NextResponse.json(
+        { 
+          success: false, 
+          error: 'Active column not found. Please run migration: supabase/migrations/016_add_pages_active_field.sql',
+          details: error.message
+        },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
-      { success: false, error: 'Failed to update page' },
+      { 
+        success: false, 
+        error: error?.message || 'Failed to update page',
+        details: process.env.NODE_ENV === 'development' ? error?.stack : undefined
+      },
       { status: 500 }
     )
   }

@@ -20,33 +20,65 @@ export default function AppearanceTab({ content, updateContent }: AppearanceTabP
       {/* Colors */}
       <div className="space-y-4">
         <h4 className="text-sm font-medium text-slate-700">Renkler</h4>
-        <div className="grid grid-cols-3 gap-4">
+        <div className="space-y-4">
+          {/* Button Color */}
           <div>
             <label className="block text-xs text-slate-600 mb-1">Buton Rengi</label>
-            <input
-              type="color"
-              value={content.appearance.buttonColor}
-              onChange={(e) => updateAppearance('buttonColor', e.target.value)}
-              className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-            />
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={content.appearance.buttonColor}
+                onChange={(e) => updateAppearance('buttonColor', e.target.value)}
+                className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={content.appearance.buttonColor}
+                onChange={(e) => updateAppearance('buttonColor', e.target.value)}
+                className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="#25D366"
+              />
+            </div>
           </div>
+
+          {/* Hover Color */}
           <div>
             <label className="block text-xs text-slate-600 mb-1">Hover Rengi</label>
-            <input
-              type="color"
-              value={content.appearance.buttonHoverColor}
-              onChange={(e) => updateAppearance('buttonHoverColor', e.target.value)}
-              className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-            />
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={content.appearance.buttonHoverColor}
+                onChange={(e) => updateAppearance('buttonHoverColor', e.target.value)}
+                className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={content.appearance.buttonHoverColor}
+                onChange={(e) => updateAppearance('buttonHoverColor', e.target.value)}
+                className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="#20BA5A"
+              />
+            </div>
           </div>
+
+          {/* Icon Color */}
           <div>
             <label className="block text-xs text-slate-600 mb-1">Ikon Rengi</label>
-            <input
-              type="color"
-              value={content.appearance.iconColor}
-              onChange={(e) => updateAppearance('iconColor', e.target.value)}
-              className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-            />
+            <div className="flex gap-2">
+              <input
+                type="color"
+                value={content.appearance.iconColor}
+                onChange={(e) => updateAppearance('iconColor', e.target.value)}
+                className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+              />
+              <input
+                type="text"
+                value={content.appearance.iconColor}
+                onChange={(e) => updateAppearance('iconColor', e.target.value)}
+                className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                placeholder="#FFFFFF"
+              />
+            </div>
           </div>
         </div>
       </div>

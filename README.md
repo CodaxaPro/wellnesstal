@@ -1,36 +1,153 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🧘 Wellnesstal - Premium Wellness & Headspa Website
 
-## Getting Started
+Modern, enterprise-level wellness center website built with Next.js, Supabase, and deployed on Vercel.
 
-First, run the development server:
+## 🚀 Tech Stack
+
+- **Framework:** [Next.js 15](https://nextjs.org/) with App Router
+- **Database:** [Supabase](https://supabase.com) (PostgreSQL)
+- **Deployment:** [Vercel](https://vercel.com)
+- **Styling:** Tailwind CSS
+- **Authentication:** Custom admin auth with Supabase
+- **Content Management:** Custom admin panel with TipTap editor
+
+## 📋 Prerequisites
+
+- Node.js >= 18.0.0
+- npm >= 8.0.0
+- Supabase account
+- Vercel account (for deployment)
+
+## 🛠️ Getting Started
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/CodaxaPro/wellnesstal.git
+cd wellnesstal
+```
+
+### 2. Install Dependencies
+
+```bash
+npm install
+```
+
+### 3. Environment Variables Setup
+
+Create a `.env.local` file in the root directory. See [ENV_SETUP.md](./ENV_SETUP.md) for detailed instructions.
+
+Required variables:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `NEXT_PUBLIC_SITE_URL`
+- `ADMIN_PASSWORD`
+- `JWT_SECRET`
+
+### 4. Supabase Database Setup
+
+Run the database migrations in Supabase Dashboard:
+
+1. Go to [Supabase Dashboard](https://app.supabase.com)
+2. Select your project
+3. Open SQL Editor
+4. Run migrations from `supabase/migrations/` folder in order
+
+See [SUPABASE_SETUP.md](./SUPABASE_SETUP.md) for detailed instructions.
+
+### 5. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+Open [http://localhost:3001](http://localhost:3001) with your browser.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 📁 Project Structure
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+wellnesstal/
+├── src/
+│   ├── app/              # Next.js App Router pages
+│   ├── components/       # React components
+│   ├── lib/              # Utilities and Supabase client
+│   └── contexts/         # React contexts
+├── supabase/
+│   ├── migrations/       # Database migrations
+│   └── config.toml       # Supabase config
+├── public/               # Static assets
+└── scripts/              # Utility scripts
+```
 
-## Learn More
+## 🚀 Deployment
 
-To learn more about Next.js, take a look at the following resources:
+### Vercel Deployment
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The project is configured for automatic deployment on Vercel:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Push to `main` branch → Automatic deployment
+2. Or manually deploy: `vercel --prod`
 
-## Deploy on Vercel
+See [VERCEL_DEPLOYMENT_STATUS.md](./VERCEL_DEPLOYMENT_STATUS.md) for deployment status.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+**Production URL:** https://www.wellnesstal.de
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 📚 Documentation
+
+- [Environment Variables Setup](./ENV_SETUP.md)
+- [Supabase Setup Guide](./SUPABASE_SETUP.md)
+- [Vercel Deployment Status](./VERCEL_DEPLOYMENT_STATUS.md)
+- [Local-Production Sync Guide](./SYNC_LOCAL_PRODUCTION.md)
+- [API Documentation](./API_DOCUMENTATION.md)
+- [Component Documentation](./COMPONENT_DOCUMENTATION.md)
+
+## 🧪 Testing
+
+```bash
+# Unit tests
+npm run test
+
+# E2E tests
+npm run test:e2e
+
+# Type checking
+npm run type-check
+
+# Linting
+npm run lint
+```
+
+## 🔐 Admin Panel
+
+Access the admin panel at `/admin` after setting up the admin user.
+
+Default credentials are set via `ADMIN_PASSWORD` environment variable.
+
+## 📝 Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run ESLint
+- `npm run type-check` - TypeScript type checking
+- `npm run test` - Run unit tests
+- `npm run test:e2e` - Run E2E tests
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 📄 License
+
+This project is private and proprietary.
+
+## 🔗 Links
+
+- **Production:** https://www.wellnesstal.de
+- **GitHub:** https://github.com/CodaxaPro/wellnesstal
+- **Vercel Dashboard:** https://vercel.com/treuepays-projects/wellnesstal

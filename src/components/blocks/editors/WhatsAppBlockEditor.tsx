@@ -47,9 +47,48 @@ export default function WhatsAppBlockEditor({ content: initialContent, onUpdate 
   const mergedContent = deepMerge(defaultWhatsAppContent, initialContent as Partial<WhatsAppContent>)
   const [content, setContent] = useState<WhatsAppContent>(mergedContent)
 
+  // Sync content when initialContent changes (from parent/API)
+  const initialContentRef = useRef(initialContent)
+  useEffect(() => {
+    if (isInitialMount.current) {
+      initialContentRef.current = initialContent
+      return
+    }
+    
+    // Only update if initialContent actually changed
+    const prevStr = JSON.stringify(initialContentRef.current)
+    const currentStr = JSON.stringify(initialContent)
+    if (prevStr !== currentStr) {
+      initialContentRef.current = initialContent
+      const newMerged = deepMerge(defaultWhatsAppContent, initialContent as Partial<WhatsAppContent>)
+      // Debug log to see what's being merged
+      if (process.env.NODE_ENV === 'development') {
+        console.log('[WhatsAppBlockEditor] Syncing content from parent:', {
+          message: newMerged.message,
+          appearance: newMerged.appearance
+        })
+      }
+      setContent(newMerged)
+    }
+  }, [initialContent])
+
   // Debounce ref
   const debounceRef = useRef<NodeJS.Timeout | null>(null)
   const isInitialMount = useRef(true)
+  const onUpdateRef = useRef(onUpdate)
+
+  // Keep onUpdate ref up to date
+  useEffect(() => {
+    onUpdateRef.current = onUpdate
+  }, [onUpdate])
+
+  // Set isInitialMount to false after first render
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      isInitialMount.current = false
+    }, 100)
+    return () => clearTimeout(timer)
+  }, [])
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: WhatsAppContent) => {
@@ -58,9 +97,15 @@ export default function WhatsAppBlockEditor({ content: initialContent, onUpdate 
       clearTimeout(debounceRef.current)
     }
     debounceRef.current = setTimeout(() => {
-      onUpdate(newContent as unknown as Record<string, unknown>)
+      onUpdateRef.current(newContent as unknown as Record<string, unknown>)
     }, 300)
-  }, [onUpdate])
+  }, [])
+
+  // Keep a ref of the latest content for cleanup
+  const contentRef = useRef(content)
+  useEffect(() => {
+    contentRef.current = content
+  }, [content])
 
   // Update content handler
   const updateContent = useCallback((updates: Partial<WhatsAppContent>) => {
@@ -71,14 +116,27 @@ export default function WhatsAppBlockEditor({ content: initialContent, onUpdate 
     })
   }, [debouncedUpdate])
 
-  // Cleanup on unmount
+  // Cleanup on unmount - flush pending debounced update synchronously
   useEffect(() => {
     return () => {
       if (debounceRef.current) {
+        // Clear the timeout
         clearTimeout(debounceRef.current)
+        debounceRef.current = null
+        
+        // Flush pending update synchronously before unmount
+        // This ensures changes are saved when user navigates away
+        if (!isInitialMount.current) {
+          try {
+            onUpdateRef.current(contentRef.current as unknown as Record<string, unknown>)
+          } catch (error) {
+            // Ignore errors during unmount
+            console.warn('Error flushing WhatsApp block update on unmount:', error)
+          }
+        }
       }
     }
-  }, [])
+  }, []) // Empty deps - only cleanup on unmount
 
   // Render current tab content
   const renderTabContent = () => {
@@ -108,16 +166,16 @@ export default function WhatsAppBlockEditor({ content: initialContent, onUpdate 
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
+            className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group whitespace-nowrap ${
               activeTab === tab.id
-                ? 'bg-white text-green-600 shadow-sm'
-                : 'text-slate-600 hover:text-slate-800 hover:bg-slate-50'
+                ? 'bg-gradient-to-r from-sage-500 to-sage-600 text-white shadow-lg shadow-sage-500/30'
+                : 'text-slate-600 hover:bg-slate-100 hover:text-slate-900'
             }`}
           >
-            <span className="w-6 h-6 flex items-center justify-center bg-slate-200 rounded text-xs font-bold">
+            <span className={`flex-shrink-0 ${activeTab === tab.id ? 'text-white' : 'text-slate-400 group-hover:text-sage-600'}`}>
               {tab.icon}
             </span>
-            {tab.label}
+            <span className="font-medium">{tab.label}</span>
           </button>
         ))}
       </div>

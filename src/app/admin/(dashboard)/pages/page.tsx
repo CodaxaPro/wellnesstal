@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import toast from 'react-hot-toast'
 
 interface PageCategory {
   id: string
@@ -22,6 +23,7 @@ interface Page {
   meta_description?: string
   category_id?: string
   page_categories?: PageCategory
+  active?: boolean
   created_at: string
   updated_at: string
   published_at?: string
@@ -65,7 +67,36 @@ export default function PagesManagement() {
   useEffect(() => {
     fetchCategories()
     fetchPages()
+    // Check and run migration if needed
+    checkAndRunMigration()
   }, [selectedStatus, selectedCategory])
+
+  const checkAndRunMigration = async () => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) return
+
+      // Check if active column exists by trying to fetch a page with active field
+      const response = await fetch('/api/pages/migrate-active', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+      
+      if (!data.success && data.sql) {
+        // Migration needed - show instructions
+        console.log('Migration gerekli:', data.message)
+        // Optionally show a toast or modal with instructions
+      }
+    } catch (error) {
+      // Silent fail - migration check is optional
+      console.log('Migration check failed (non-critical):', error)
+    }
+  }
 
   const fetchCategories = async () => {
     try {
@@ -142,6 +173,32 @@ export default function PagesManagement() {
     }
   }
 
+  const handleDuplicatePage = async (pageId: string, title: string) => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/pages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ duplicate: pageId })
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        fetchPages()
+        // Navigate to the duplicated page editor
+        router.push(`/admin/pages/${data.data.id}/edit`)
+      } else {
+        const error = await response.json()
+        alert(`Hata: ${error.error}`)
+      }
+    } catch (error) {
+      alert('Sayfa çoğaltılırken hata oluştu')
+    }
+  }
+
   const handleDeletePage = async (pageId: string, title: string) => {
     if (!confirm(`"${title}" sayfasını silmek istediğinizden emin misiniz?`)) {
       return
@@ -184,6 +241,32 @@ export default function PagesManagement() {
     }
   }
 
+  const handleToggleActive = async (page: Page) => {
+    const newActive = !(page.active !== false) // Default to true if undefined
+
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/pages', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({ id: page.id, active: newActive })
+      })
+
+      if (response.ok) {
+        fetchPages()
+        toast.success(newActive ? 'Sayfa aktif edildi' : 'Sayfa pasif edildi')
+      } else {
+        const errorData = await response.json()
+        toast.error(errorData.error || 'Güncelleme başarısız')
+      }
+    } catch (error) {
+      toast.error('Aktif/pasif durumu güncellenirken hata oluştu')
+    }
+  }
+
   const generateSlug = (title: string) => {
     return title
       .toLowerCase()
@@ -211,15 +294,71 @@ export default function PagesManagement() {
           <h1 className="text-2xl font-bold text-slate-800">Sayfa Yönetimi</h1>
           <p className="text-slate-500 mt-1">Tüm sayfalarınızı yönetin ve düzenleyin</p>
         </div>
-        <button
-          onClick={() => setIsCreateModalOpen(true)}
-          className="inline-flex items-center gap-2 bg-gradient-to-r from-sage-500 to-sage-600 hover:from-sage-600 hover:to-forest-600 text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-lg shadow-sage-500/20"
-        >
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-          </svg>
-          Yeni Sayfa
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={async () => {
+              const token = localStorage.getItem('adminToken')
+              if (!token) {
+                toast.error('Giriş yapmanız gerekiyor')
+                return
+              }
+              
+              const run = confirm(
+                'Migration çalıştırılacak. Active kolonu eklenecek.\n\n' +
+                'Devam etmek istiyor musunuz?'
+              )
+              
+              if (!run) return
+              
+              try {
+                const response = await fetch('/api/pages/migrate-active', {
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                  }
+                })
+                
+                const data = await response.json()
+                
+                if (data.success) {
+                  toast.success('✅ Migration başarıyla tamamlandı!')
+                  fetchPages()
+                } else if (data.dashboardUrl) {
+                  const open = confirm(
+                    `Migration manuel olarak çalıştırılmalı.\n\n` +
+                    `Supabase Dashboard açılsın mı?\n\n` +
+                    `SQL:\n${data.sql?.substring(0, 150)}...`
+                  )
+                  if (open) {
+                    window.open(data.dashboardUrl, '_blank')
+                    toast.info('Supabase Dashboard açıldı. SQL Editor\'da migration\'ı çalıştırın.')
+                  }
+                } else {
+                  toast.error(data.error || 'Migration başarısız')
+                }
+              } catch (error) {
+                toast.error('Migration çalıştırılırken hata oluştu')
+              }
+            }}
+            className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+            title="Active kolonu migration'ını çalıştır"
+          >
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+            </svg>
+            Migration Çalıştır
+          </button>
+          <button
+            onClick={() => setIsCreateModalOpen(true)}
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-sage-500 to-sage-600 hover:from-sage-600 hover:to-forest-600 text-white px-5 py-2.5 rounded-xl font-medium transition-all shadow-lg shadow-sage-500/20"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+            </svg>
+            Yeni Sayfa
+          </button>
+        </div>
       </div>
 
       {/* Stats */}
@@ -372,16 +511,43 @@ export default function PagesManagement() {
                     </span>
                   </td>
                   <td className="px-6 py-4">
-                    <button
-                      onClick={() => handleToggleStatus(page)}
-                      className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
-                        page.status === 'published'
-                          ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                          : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
-                      }`}
-                    >
-                      {page.status === 'published' ? 'Yayında' : 'Taslak'}
-                    </button>
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => handleToggleStatus(page)}
+                        className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
+                          page.status === 'published'
+                            ? 'bg-green-100 text-green-700 hover:bg-green-200'
+                            : 'bg-orange-100 text-orange-700 hover:bg-orange-200'
+                        }`}
+                      >
+                        {page.status === 'published' ? 'Yayında' : 'Taslak'}
+                      </button>
+                      <button
+                        onClick={() => handleToggleActive(page)}
+                        className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
+                          page.active !== false
+                            ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
+                            : 'bg-gray-100 text-gray-500 hover:bg-gray-200'
+                        }`}
+                        title={page.active !== false ? 'Aktif - Pasif yap' : 'Pasif - Aktif yap'}
+                      >
+                        {page.active !== false ? (
+                          <>
+                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                            </svg>
+                            Aktif
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                            </svg>
+                            Pasif
+                          </>
+                        )}
+                      </button>
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-sm text-slate-500">
                     {new Date(page.updated_at).toLocaleDateString('tr-TR')}
@@ -399,6 +565,15 @@ export default function PagesManagement() {
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                         </svg>
                       </Link>
+                      <button
+                        onClick={() => handleDuplicatePage(page.id, page.title)}
+                        className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
+                        title="Çoğalt"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </button>
                       <Link
                         href={`/admin/pages/${page.id}/edit`}
                         className="p-2 text-slate-400 hover:text-sage-600 hover:bg-sage-50 rounded-lg transition-all"

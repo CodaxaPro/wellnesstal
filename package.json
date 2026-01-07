@@ -18,7 +18,9 @@
     "test:coverage": "vitest run --coverage",
     "test:watch": "vitest --watch",
     "test:e2e": "playwright test",
-    "test:e2e:ui": "playwright test --ui"
+    "test:e2e:ui": "playwright test --ui",
+    "deploy": "git add . && git commit -m 'chore: auto deployment' && git push origin main",
+    "deploy:msg": "node -e \"require('readline').createInterface({input:process.stdin}).question('Commit message: ', (m) => {const {execSync} = require('child_process'); execSync(`git add . && git commit -m '${m}' && git push origin main`, {stdio:'inherit'})})\""
   },
   "dependencies": {
     "@headlessui/react": "^2.2.8",

@@ -8,9 +8,18 @@ interface MessageTabProps {
 }
 
 export default function MessageTab({ content, updateContent }: MessageTabProps) {
+  // Ensure message object exists with defaults
+  const messageContent = content.message || {
+    defaultMessage: '',
+    tooltipText: '',
+    tooltipDelay: 0,
+    showTooltipOnLoad: false,
+    autoShowTooltipAfter: 0
+  }
+
   const updateMessage = (field: keyof WhatsAppContent['message'], value: any) => {
     updateContent({
-      message: { ...content.message, [field]: value }
+      message: { ...messageContent, [field]: value }
     })
   }
 
@@ -22,7 +31,7 @@ export default function MessageTab({ content, updateContent }: MessageTabProps) 
           Varsayilan Mesaj
         </label>
         <textarea
-          value={content.message.defaultMessage}
+          value={messageContent.defaultMessage || ''}
           onChange={(e) => updateMessage('defaultMessage', e.target.value)}
           className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
           rows={3}
@@ -40,7 +49,7 @@ export default function MessageTab({ content, updateContent }: MessageTabProps) 
         </label>
         <input
           type="text"
-          value={content.message.tooltipText}
+          value={messageContent.tooltipText || ''}
           onChange={(e) => updateMessage('tooltipText', e.target.value)}
           className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
           placeholder="WhatsApp ile yazin"
@@ -57,7 +66,7 @@ export default function MessageTab({ content, updateContent }: MessageTabProps) 
         </label>
         <input
           type="number"
-          value={content.message.tooltipDelay}
+          value={messageContent.tooltipDelay || 0}
           onChange={(e) => updateMessage('tooltipDelay', parseInt(e.target.value) || 0)}
           className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
           min={0}
@@ -74,7 +83,7 @@ export default function MessageTab({ content, updateContent }: MessageTabProps) 
         <label className="relative inline-flex items-center cursor-pointer">
           <input
             type="checkbox"
-            checked={content.message.showTooltipOnLoad}
+            checked={messageContent.showTooltipOnLoad || false}
             onChange={(e) => updateMessage('showTooltipOnLoad', e.target.checked)}
             className="sr-only peer"
           />
@@ -83,14 +92,14 @@ export default function MessageTab({ content, updateContent }: MessageTabProps) 
       </div>
 
       {/* Auto Show After */}
-      {content.message.showTooltipOnLoad && (
+      {messageContent.showTooltipOnLoad && (
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-2">
             Otomatik Gosterme Gecikmesi (ms)
           </label>
           <input
             type="number"
-            value={content.message.autoShowTooltipAfter}
+            value={messageContent.autoShowTooltipAfter || 0}
             onChange={(e) => updateMessage('autoShowTooltipAfter', parseInt(e.target.value) || 0)}
             className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent"
             min={0}

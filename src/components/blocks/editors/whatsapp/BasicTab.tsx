@@ -17,6 +17,20 @@ export default function BasicTab({ content, updateContent }: BasicTabProps) {
 
   return (
     <div className="space-y-6">
+      {/* Info message - always uses homepage settings */}
+      <div className="p-5 bg-gradient-to-r from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">
+        <div className="flex items-start gap-3">
+          <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-emerald-500 rounded-xl flex items-center justify-center text-white text-2xl shadow-lg flex-shrink-0">
+            🏠
+          </div>
+          <div>
+            <h3 className="font-semibold text-slate-800 mb-1">Anasayfa WhatsApp Ayarları Kullanılıyor</h3>
+            <p className="text-sm text-slate-600">
+              Bu WhatsApp bloğu, anasayfadaki WhatsApp ayarlarını kullanır. Ayarları değiştirmek için <a href="/admin/pages" className="text-green-600 hover:underline font-medium">Admin → Sayfalar → Home</a> sayfasındaki WhatsApp bloğunu düzenleyin.
+            </p>
+          </div>
+        </div>
+      </div>
       {/* Enabled Toggle */}
       <div className="flex items-center justify-between p-4 bg-slate-50 rounded-xl">
         <div>

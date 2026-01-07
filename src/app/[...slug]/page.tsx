@@ -29,6 +29,7 @@ async function getPageBySlug(slug: string) {
       .select('*')
       .eq('slug', slug)
       .eq('status', 'published')
+      .eq('active', true) // Only show active pages
       .single()
 
     if (error || !page) {

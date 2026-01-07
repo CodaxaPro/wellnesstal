@@ -79,24 +79,45 @@ export default function AvailabilityTab({ content, updateContent }: Availability
       {content.availability.showIndicator && (
         <div className="space-y-4">
           <h4 className="text-sm font-medium text-slate-700">Gosterge Renkleri</h4>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="space-y-4">
+            {/* Online Color */}
             <div>
               <label className="block text-xs text-slate-600 mb-1">Cevrimici Rengi</label>
-              <input
-                type="color"
-                value={content.availability.onlineColor}
-                onChange={(e) => updateAvailability('onlineColor', e.target.value)}
-                className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={content.availability.onlineColor}
+                  onChange={(e) => updateAvailability('onlineColor', e.target.value)}
+                  className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={content.availability.onlineColor}
+                  onChange={(e) => updateAvailability('onlineColor', e.target.value)}
+                  className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="#10B981"
+                />
+              </div>
             </div>
+
+            {/* Offline Color */}
             <div>
               <label className="block text-xs text-slate-600 mb-1">Cevrimdisi Rengi</label>
-              <input
-                type="color"
-                value={content.availability.offlineColor}
-                onChange={(e) => updateAvailability('offlineColor', e.target.value)}
-                className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-              />
+              <div className="flex gap-2">
+                <input
+                  type="color"
+                  value={content.availability.offlineColor}
+                  onChange={(e) => updateAvailability('offlineColor', e.target.value)}
+                  className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                />
+                <input
+                  type="text"
+                  value={content.availability.offlineColor}
+                  onChange={(e) => updateAvailability('offlineColor', e.target.value)}
+                  className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  placeholder="#EF4444"
+                />
+              </div>
             </div>
           </div>
         </div>

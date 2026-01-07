@@ -66,33 +66,65 @@ export default function CtaTab({ content, updateContent }: CtaTabProps) {
           {/* Colors */}
           <div className="space-y-4">
             <h4 className="text-sm font-medium text-slate-700">Renkler</h4>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="space-y-4">
+              {/* Background Color */}
               <div>
                 <label className="block text-xs text-slate-600 mb-1">Arkaplan</label>
-                <input
-                  type="color"
-                  value={content.ctaBubble.backgroundColor}
-                  onChange={(e) => updateCtaBubble('backgroundColor', e.target.value)}
-                  className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={content.ctaBubble.backgroundColor}
+                    onChange={(e) => updateCtaBubble('backgroundColor', e.target.value)}
+                    className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={content.ctaBubble.backgroundColor}
+                    onChange={(e) => updateCtaBubble('backgroundColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
+
+              {/* Title Color */}
               <div>
                 <label className="block text-xs text-slate-600 mb-1">Baslik Rengi</label>
-                <input
-                  type="color"
-                  value={content.ctaBubble.titleColor}
-                  onChange={(e) => updateCtaBubble('titleColor', e.target.value)}
-                  className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={content.ctaBubble.titleColor}
+                    onChange={(e) => updateCtaBubble('titleColor', e.target.value)}
+                    className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={content.ctaBubble.titleColor}
+                    onChange={(e) => updateCtaBubble('titleColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
+
+              {/* Text Color */}
               <div>
                 <label className="block text-xs text-slate-600 mb-1">Metin Rengi</label>
-                <input
-                  type="color"
-                  value={content.ctaBubble.textColor}
-                  onChange={(e) => updateCtaBubble('textColor', e.target.value)}
-                  className="w-full h-10 rounded-lg border border-slate-200 cursor-pointer"
-                />
+                <div className="flex gap-2">
+                  <input
+                    type="color"
+                    value={content.ctaBubble.textColor}
+                    onChange={(e) => updateCtaBubble('textColor', e.target.value)}
+                    className="w-12 h-10 rounded-lg border border-slate-200 cursor-pointer"
+                  />
+                  <input
+                    type="text"
+                    value={content.ctaBubble.textColor}
+                    onChange={(e) => updateCtaBubble('textColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm font-mono focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                    placeholder="#000000"
+                  />
+                </div>
               </div>
             </div>
           </div>

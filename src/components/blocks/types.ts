@@ -2599,6 +2599,7 @@ export interface WhatsAppCtaBubbleSettings {
 }
 
 export interface WhatsAppContent {
+  useHomepageWhatsApp?: boolean // true = use homepage WhatsApp block, false = use custom content
   basic: WhatsAppBasicSettings
   appearance: WhatsAppAppearanceSettings
   message: WhatsAppMessageSettings

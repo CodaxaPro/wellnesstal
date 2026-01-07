@@ -37,7 +37,9 @@ function deepMerge(target: any, source: any): any {
   const nestedObjectFields = [
     'titleHighlight', 'titleStyles',
     'image', 'video', 'imageStyles', 'gradientColors', 'backgroundOverlay',
-    'animations', 'responsive', 'elementAlignments', 'trustIndicator', 'padding', 'scrollIndicator', 'imageFloatingElements'
+    'animations', 'responsive', 'elementAlignments', 'trustIndicator', 'padding', 'scrollIndicator', 'imageFloatingElements',
+    // WhatsApp block nested objects
+    'basic', 'appearance', 'message', 'display', 'availability', 'ctaBubble'
   ]
   
   for (const key of Object.keys(source)) {

@@ -15,11 +15,12 @@ export async function GET() {
       ? `https://${process.env.VERCEL_URL}` 
       : 'https://wellnesstal.de'
 
-    // Fetch all published pages (automatically included when status = 'published')
+    // Fetch all published and active pages (automatically included when status = 'published' and active = true)
     const { data: pages, error } = await supabase
       .from('pages')
       .select('id, slug, updated_at, published_at, meta_title, meta_description, created_at')
       .eq('status', 'published')
+      .eq('active', true) // Only include active pages
       .order('updated_at', { ascending: false })
 
     if (error) {
