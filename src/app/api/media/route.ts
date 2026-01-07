@@ -144,10 +144,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get public URL
-    const { data: { publicUrl } } = supabaseAdmin.storage
-      .from('wellnesstal')
-      .getPublicUrl(filePath)
+    // Use our own domain URL (proxy through /api/images)
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wellnesstal.de'
+    const proxyUrl = `${siteUrl}/api/images/${filePath}`
 
     // Save to database
     const { data: mediaFile, error: dbError } = await supabaseAdmin
@@ -155,7 +154,7 @@ export async function POST(request: NextRequest) {
       .insert({
         file_name: fileName,
         original_name: file.name,
-        file_path: publicUrl,
+        file_path: proxyUrl, // Kendi domain'imizden
         thumbnail_path: publicUrl, // For now, same as original
         medium_path: publicUrl,
         large_path: publicUrl,

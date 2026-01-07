@@ -77,16 +77,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get public URL from Supabase Storage
-    const { data: { publicUrl } } = supabaseAdmin.storage
-      .from(STORAGE_BUCKET)
-      .getPublicUrl(filePath)
+    // Return our own domain URL (proxy through /api/images)
+    // Örnek: /api/images/uploads/hero/image.jpg
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wellnesstal.de'
+    const proxyUrl = `${siteUrl}/api/images/${filePath}`
 
-    // Return full Supabase Storage URL
     return NextResponse.json({
       success: true,
       data: {
-        url: publicUrl, // Tam Supabase Storage URL
+        url: proxyUrl, // Kendi domain'imizden: https://www.wellnesstal.de/api/images/uploads/...
         filename,
         size: file.size,
         type: file.type,

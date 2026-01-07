@@ -16,6 +16,18 @@ const nextConfig = {
       },
       {
         protocol: 'https',
+        hostname: 'www.wellnesstal.de',
+        port: '',
+        pathname: '/api/images/**',
+      },
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+        port: '3001',
+        pathname: '/api/images/**',
+      },
+      {
+        protocol: 'https',
         hostname: 'rtudfkccbzbblfmeoyop.supabase.co',
         port: '',
         pathname: '/**',
