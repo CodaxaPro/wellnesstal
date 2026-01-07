@@ -6,34 +6,25 @@
 
 /**
  * Resim URL'ini normalize eder
- * - Supabase URL'lerini kendi domain'e çevirir
- * - Relative URL'leri full URL'e çevirir
+ * - Supabase URL'lerini olduğu gibi kullan (direkt çalışır)
+ * - Relative URL'leri Supabase URL'e çevir
  */
 export function normalizeImageUrl(url: string | null | undefined): string {
   if (!url) return ''
   
-  const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 
-                  (typeof window !== 'undefined' ? window.location.origin : 'https://www.wellnesstal.de')
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://rtudfkccbzbblfmeoyop.supabase.co'
   
-  // Eğer zaten kendi domain'imizden ise, olduğu gibi dön
-  if (url.includes('wellnesstal.de/api/images/') || url.includes('localhost:3001/api/images/')) {
+  // Zaten tam URL ise olduğu gibi dön
+  if (url.startsWith('http://') || url.startsWith('https://')) {
     return url
   }
   
-  // Supabase URL'ini kendi domain'e çevir
-  if (url.includes('/storage/v1/object/public/wellnesstal/')) {
-    const pathMatch = url.match(/\/storage\/v1\/object\/public\/wellnesstal\/(.+)$/)
-    if (pathMatch && pathMatch[1]) {
-      return `${siteUrl}/api/images/${pathMatch[1]}`
-    }
-  }
-  
-  // Relative URL'leri full URL'e çevir
+  // Relative URL'leri Supabase Storage URL'e çevir
   if (url.startsWith('/uploads/') || url.startsWith('/media/')) {
-    return `${siteUrl}/api/images${url}`
+    const path = url.substring(1) // Remove leading /
+    return `${supabaseUrl}/storage/v1/object/public/wellnesstal/${path}`
   }
   
-  // Diğer durumlarda olduğu gibi dön
   return url
 }
 
