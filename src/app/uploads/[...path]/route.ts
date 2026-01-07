@@ -12,11 +12,13 @@ const STORAGE_BUCKET = 'wellnesstal'
  */
 export async function GET(
   request: NextRequest,
-  { params }: { params: { path: string[] } }
+  { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
+    // Next.js 15 - params bir Promise
+    const resolvedParams = await params
     // Path'i birleştir: ['about', 'image.jpg'] → 'uploads/about/image.jpg'
-    const pathParts = params.path
+    const pathParts = resolvedParams.path
     const imagePath = `uploads/${pathParts.join('/')}`
 
     // Supabase Storage'dan resmi çek
