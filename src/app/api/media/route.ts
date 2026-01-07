@@ -144,10 +144,9 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Get public URL from Supabase Storage (direkt çalışır)
-    const { data: { publicUrl } } = supabaseAdmin.storage
-      .from('wellnesstal')
-      .getPublicUrl(filePath)
+    // Kendi domain'inden URL döndür
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wellnesstal.de'
+    const ownDomainUrl = `${siteUrl}/api/images/${filePath}`
 
     // Save to database
     const { data: mediaFile, error: dbError } = await supabaseAdmin
@@ -155,7 +154,7 @@ export async function POST(request: NextRequest) {
       .insert({
         file_name: fileName,
         original_name: file.name,
-        file_path: publicUrl, // Direkt Supabase Storage URL
+        file_path: ownDomainUrl, // wellnesstal.de/api/images/... formatında
         thumbnail_path: publicUrl, // For now, same as original
         medium_path: publicUrl,
         large_path: publicUrl,
