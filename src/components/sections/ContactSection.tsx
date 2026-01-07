@@ -233,7 +233,7 @@ const defaultContactSectionContent: ContactSectionContent = {
 }
 
 const defaultContactContent: ContactContent = {
-  businessName: 'Wellnesstal',
+  businessName: 'WellnessTal Studio',
   phone: '+49 1733828581',
   email: 'info@wellnesstal.de',
   address: {

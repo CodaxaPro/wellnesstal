@@ -10,7 +10,7 @@ interface ContactBlockEditorProps {
 
 const defaultContent: ContactBlockContent = {
   useGlobalContact: true,
-  brandName: 'Wellnesstal Studio',
+  brandName: 'WellnessTal Studio',
   badge: '📞 Kontakt',
   sectionTitle: 'Bereit für Ihre',
   highlightedText: 'Auszeit',

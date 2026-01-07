@@ -76,7 +76,7 @@ export const defaultStyles: ContactStyles = {
 // Default content
 export const defaultContent: ContactSettings = {
   businessInfo: {
-    name: 'Wellnesstal',
+    name: 'WellnessTal Studio',
     tagline: 'Premium Wellness & Headspa in Baesweiler',
     description: 'Ihre Oase der Entspannung im Herzen von Baesweiler. Professionelle Wellness-Behandlungen für Körper und Seele.'
   },
