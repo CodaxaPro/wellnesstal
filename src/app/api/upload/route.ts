@@ -77,14 +77,15 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Kendi domain'inden URL döndür
+    // /uploads/ formatında URL döndür
     const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wellnesstal.de'
-    const ownDomainUrl = `${siteUrl}/api/images/${filePath}`
+    const urlPath = filePath.replace('uploads/', '') // 'uploads/about/file.jpg' → 'about/file.jpg'
+    const ownDomainUrl = `${siteUrl}/uploads/${urlPath}`
 
     return NextResponse.json({
       success: true,
       data: {
-        url: ownDomainUrl, // wellnesstal.de/api/images/... formatında
+        url: ownDomainUrl, // wellnesstal.de/uploads/about/... formatında
         filename,
         size: file.size,
         type: file.type,
