@@ -2,9 +2,10 @@
 'use client';
 
 import React, { useEffect, useRef } from 'react';
+
+import type { LayerPanelProps } from './layer.types';
 import { LayerTreeItem } from './LayerTreeItem';
 import { useLayerTree } from './useLayerTree';
-import type { LayerPanelProps } from './layer.types';
 
 export function LayerPanel({
   sections,
@@ -58,7 +59,9 @@ export function LayerPanel({
     if (selectedId && scrollContainerRef.current) {
       setTimeout(() => {
         const container = scrollContainerRef.current;
-        if (!container) return;
+        if (!container) {
+return;
+}
         
         const selectedElement = container.querySelector(
           `[data-node-id="${selectedId}"]`
@@ -79,7 +82,9 @@ export function LayerPanel({
           // Method 2: scrollIntoView (backup)
           setTimeout(() => {
             const currentContainer = scrollContainerRef.current;
-            if (!currentContainer) return;
+            if (!currentContainer) {
+return;
+}
             
             if (currentContainer.scrollTop === 0) {
               console.log('Method 1 failed, trying scrollIntoView...');
@@ -94,17 +99,21 @@ export function LayerPanel({
           // Method 3: Manual animation (last resort)
           setTimeout(() => {
             const currentContainer = scrollContainerRef.current;
-            if (!currentContainer) return;
+            if (!currentContainer) {
+return;
+}
             
             if (currentContainer.scrollTop === 0) {
               console.log('Method 2 failed, trying manual scroll...');
-              let start = 0;
+              const start = 0;
               const target = offset - 100;
               const duration = 300;
               const startTime = performance.now();
               
               function animate(currentTime: number) {
-                if (!currentContainer) return;
+                if (!currentContainer) {
+return;
+}
                 
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);

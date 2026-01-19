@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
-import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
+
 import { logger } from '@/lib/logger'
+import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -352,7 +354,7 @@ export async function POST(request: NextRequest) {
 
       // Fetch category separately if needed
       let pageWithCategory = newPage
-      if (newPage && newPage.category_id) {
+      if (newPage?.category_id) {
         try {
           const { data: category } = await supabase
             .from('page_categories')

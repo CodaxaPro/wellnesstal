@@ -1,12 +1,15 @@
 'use client';
 
-import { motion } from 'framer-motion';
 import { Editor } from '@tiptap/react';
-import FormatButtons from './FormatButtons';
-import FontSelector from './FontSelector';
-import ColorPicker from './ColorPicker';
-import SizeSlider from './SizeSlider';
+import { motion } from 'framer-motion';
+
 import { TextConfig } from '../../types/textConfig.types';
+
+import ColorPicker from './ColorPicker';
+import FontSelector from './FontSelector';
+import FormatButtons from './FormatButtons';
+import SizeSlider from './SizeSlider';
+
 
 interface TextEditorToolbarProps {
   editor: Editor | null;
@@ -15,7 +18,9 @@ interface TextEditorToolbarProps {
 }
 
 export default function TextEditorToolbar({ editor, config, updateConfig }: TextEditorToolbarProps) {
-  if (!editor) return null;
+  if (!editor) {
+return null;
+}
 
   const alignmentButtons = [
     { icon: '⬅️', value: 'left' as const, label: 'Align Left' },

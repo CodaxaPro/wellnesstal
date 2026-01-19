@@ -1,10 +1,13 @@
 'use client';
 
-import { useContentStore } from '../store/useContentStore';
-import TextEditor from './editors/TextEditor';
-import ImageEditor from './editors/ImageEditor';
 import { useState, useEffect } from 'react';
+
 import toast from 'react-hot-toast';
+
+import { useContentStore } from '../store/useContentStore';
+
+import ImageEditor from './editors/ImageEditor';
+import TextEditor from './editors/TextEditor';
 
 export default function InlineEditor() {
   const { activeField, content, updateContent, setActiveField } = useContentStore();
@@ -12,7 +15,9 @@ export default function InlineEditor() {
 
   // Calculate position based on overlay
   const updatePosition = () => {
-    if (!activeField) return;
+    if (!activeField) {
+return;
+}
     
     const overlay = document.querySelector(`[data-path="${activeField}"]`);
     if (overlay) {
@@ -58,7 +63,9 @@ export default function InlineEditor() {
 
   // Get current value from store
   const getCurrentValue = (): string => {
-    if (!activeField) return '';
+    if (!activeField) {
+return '';
+}
     
     const keys = activeField.split('.');
     
@@ -78,12 +85,14 @@ export default function InlineEditor() {
 
   // Get current imageConfig from store
   const getCurrentImageConfig = () => {
-    if (!activeField || !activeField.includes('image')) return undefined;
+    if (!activeField?.includes('image')) {
+return undefined;
+}
     
     const [sectionType] = activeField.split('.');
     const section = content.sections?.find(s => s.type === sectionType);
     
-    if (section && section.content.imageConfig) {
+    if (section?.content.imageConfig) {
       console.log('📦 Found existing imageConfig:', section.content.imageConfig);
       return section.content.imageConfig;
     }
@@ -94,7 +103,9 @@ export default function InlineEditor() {
 
   // Get current textConfig from store
   const getCurrentTextConfig = () => {
-    if (!activeField || activeField.includes('image')) return undefined;
+    if (!activeField || activeField.includes('image')) {
+return undefined;
+}
     
     const configPath = `${activeField}Config`;
     const [sectionType, fieldName] = activeField.split('.');
@@ -114,7 +125,9 @@ export default function InlineEditor() {
 
   // Save handler - FIXED IMAGE & TEXT CONFIG SUPPORT
   const handleSave = (newValue: string, config?: any) => {
-    if (!activeField) return;
+    if (!activeField) {
+return;
+}
 
     console.log('💾 InlineEditor Save:', { 
       activeField, 
@@ -164,7 +177,9 @@ export default function InlineEditor() {
 
   // Determine editor type based on field path
   const getEditorType = (): 'text' | 'image' => {
-    if (!activeField) return 'text';
+    if (!activeField) {
+return 'text';
+}
     
     // Image fields
     if (activeField.includes('image') || 
@@ -178,7 +193,9 @@ export default function InlineEditor() {
     return 'text';
   };
 
-  if (!activeField) return null;
+  if (!activeField) {
+return null;
+}
 
   const editorType = getEditorType();
   const currentValue = getCurrentValue();

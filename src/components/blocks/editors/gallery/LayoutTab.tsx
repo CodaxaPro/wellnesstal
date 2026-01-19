@@ -1,6 +1,7 @@
 'use client'
 
 import { GalleryContent } from '../../types'
+
 import {
   LAYOUT_TYPE_OPTIONS,
   COLUMN_OPTIONS,

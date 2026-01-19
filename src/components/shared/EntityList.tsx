@@ -7,7 +7,9 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+
 import { Search, Filter, Plus, MoreHorizontal, Edit, Trash2, Eye, Star, ArrowUpDown, Download, Upload } from 'lucide-react';
+
 import { EntityConfig, FieldConfig, FieldType } from '../../types/templates';
 
 // Generic entity data type
@@ -562,7 +564,7 @@ export default function EntityList({
       {/* Content */}
       {loading ? (
         <div className="bg-white border border-gray-200 rounded-lg p-12 text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto mb-4" />
           <p className="text-gray-600">Loading {entityConfig.plural.toLowerCase()}...</p>
         </div>
       ) : data.length === 0 ? (
@@ -607,7 +609,9 @@ export default function EntityList({
             {/* Page numbers */}
             {Array.from({ length: Math.min(5, pagination.totalPages) }, (_, i) => {
               const pageNum = pagination.page - 2 + i;
-              if (pageNum < 1 || pageNum > pagination.totalPages) return null;
+              if (pageNum < 1 || pageNum > pagination.totalPages) {
+return null;
+}
               
               return (
                 <button

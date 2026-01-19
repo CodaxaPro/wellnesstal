@@ -1,6 +1,7 @@
 'use client'
 
 import { TeamContent, TeamAnimations, TeamResponsive, TeamCTA, TeamCarouselSettings } from '../../types'
+
 import { ANIMATION_TYPE_OPTIONS, CTA_BUTTON_STYLE_OPTIONS } from './defaults'
 
 interface AdvancedTabProps {

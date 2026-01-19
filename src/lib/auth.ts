@@ -1,6 +1,8 @@
 import { NextRequest } from 'next/server'
-import jwt from 'jsonwebtoken'
+
 import bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+
 import { supabaseAdmin } from './supabase-server'
 
 const JWT_SECRET = process.env.JWT_SECRET!
@@ -21,7 +23,7 @@ export interface JWTPayload {
 export async function verifyToken(request: NextRequest): Promise<JWTPayload | null> {
   try {
     const authHeader = request.headers.get('Authorization')
-    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    if (!authHeader?.startsWith('Bearer ')) {
       return null
     }
 

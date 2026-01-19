@@ -1,6 +1,7 @@
 'use client'
 
 import { TextContent, TextLayoutType } from '../../types'
+
 import { LAYOUT_OPTIONS } from './defaults'
 
 interface LayoutTabProps {

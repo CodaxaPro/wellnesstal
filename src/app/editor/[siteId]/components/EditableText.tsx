@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+
 import { useContentStore } from '../store/useContentStore';
 
 interface EditableTextProps {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { Service, ServiceFilters, ServiceResponse, ServiceFormData, BulkOperation, ServiceStats } from '../../../../types/services'
 import { Category } from '../../categories/types'
 
@@ -66,13 +67,27 @@ export function useServicesEnhanced() {
       }
 
       const params = new URLSearchParams()
-      if (filters.search) params.append('search', filters.search)
-      if (filters.category) params.append('category', filters.category)
-      if (filters.active !== undefined) params.append('active', filters.active.toString())
-      if (filters.popular !== undefined) params.append('popular', filters.popular.toString())
-      if (filters.featured !== undefined) params.append('featured', filters.featured.toString())
-      if (filters.sortBy) params.append('sortBy', filters.sortBy)
-      if (filters.sortOrder) params.append('sortOrder', filters.sortOrder)
+      if (filters.search) {
+params.append('search', filters.search)
+}
+      if (filters.category) {
+params.append('category', filters.category)
+}
+      if (filters.active !== undefined) {
+params.append('active', filters.active.toString())
+}
+      if (filters.popular !== undefined) {
+params.append('popular', filters.popular.toString())
+}
+      if (filters.featured !== undefined) {
+params.append('featured', filters.featured.toString())
+}
+      if (filters.sortBy) {
+params.append('sortBy', filters.sortBy)
+}
+      if (filters.sortOrder) {
+params.append('sortOrder', filters.sortOrder)
+}
 
       const response = await fetch(`/api/services?${params}`, { headers })
       const data: ServiceResponse = await response.json()
@@ -346,21 +361,27 @@ export function useServicesEnhanced() {
   // Toggle service status
   const toggleActive = async (id: string): Promise<boolean> => {
     const service = services.find(s => s.id === id)
-    if (!service) return false
+    if (!service) {
+return false
+}
 
     return await updateService(id, { active: !service.active })
   }
 
   const togglePopular = async (id: string): Promise<boolean> => {
     const service = services.find(s => s.id === id)
-    if (!service) return false
+    if (!service) {
+return false
+}
 
     return await updateService(id, { popular: !service.popular })
   }
 
   const toggleFeatured = async (id: string): Promise<boolean> => {
     const service = services.find(s => s.id === id)
-    if (!service) return false
+    if (!service) {
+return false
+}
 
     return await updateService(id, { featured: !service.featured })
   }

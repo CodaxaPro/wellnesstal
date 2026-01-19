@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
-import { Metadata } from 'next'
+
 import { createClient } from '@supabase/supabase-js'
+import { Metadata } from 'next'
+
 import BlockRenderer from '@/components/blocks/BlockRenderer'
 import HashScrollHandler from '@/components/HashScrollHandler'
 

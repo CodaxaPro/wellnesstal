@@ -1,6 +1,7 @@
 'use client'
 
 import Image from 'next/image'
+
 import { BlockProps, ServicesContent } from './types'
 
 export default function ServicesBlock({ block }: BlockProps) {

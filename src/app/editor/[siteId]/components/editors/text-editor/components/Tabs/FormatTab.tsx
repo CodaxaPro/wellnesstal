@@ -2,8 +2,9 @@
 
 'use client';
 
-import { motion } from 'framer-motion';
 import { Editor } from '@tiptap/react';
+import { motion } from 'framer-motion';
+
 import { getTabSwitchAnimation } from '../../utils/animationHelpers';
 
 interface FormatTabProps {
@@ -11,7 +12,9 @@ interface FormatTabProps {
 }
 
 export default function FormatTab({ editor }: FormatTabProps) {
-  if (!editor) return null;
+  if (!editor) {
+return null;
+}
 
   const headingButtons = [
     { level: 1, label: 'H1', size: 'text-3xl' },

@@ -1,15 +1,17 @@
 'use client'
 
-import { useEditor, EditorContent } from '@tiptap/react'
-import StarterKit from '@tiptap/starter-kit'
-import { Link } from '@tiptap/extension-link'
-import { TextStyle } from '@tiptap/extension-text-style'
+import { useEffect, useState, useRef } from 'react'
+
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
-import { Underline } from '@tiptap/extension-underline'
+import { Link } from '@tiptap/extension-link'
 import { Placeholder } from '@tiptap/extension-placeholder'
 import { TextAlign } from '@tiptap/extension-text-align'
-import { useEffect, useState, useRef } from 'react'
+import { TextStyle } from '@tiptap/extension-text-style'
+import { Underline } from '@tiptap/extension-underline'
+import { useEditor, EditorContent } from '@tiptap/react'
+import StarterKit from '@tiptap/starter-kit'
+
 
 interface DescriptionRichEditorProps {
   content: string
@@ -298,7 +300,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
         editor.commands.setContent(html, false)
         // Try to restore selection
         try {
-          if (selection && selection.from !== undefined) {
+          if (selection?.from !== undefined) {
             editor.commands.setTextSelection(selection)
           }
         } catch (e) {
@@ -413,11 +415,15 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
         }
       `
       const oldStyle = document.getElementById('description-editor-styles')
-      if (oldStyle) oldStyle.remove()
+      if (oldStyle) {
+oldStyle.remove()
+}
       document.head.appendChild(style)
       return () => {
         const styleToRemove = document.getElementById('description-editor-styles')
-        if (styleToRemove) styleToRemove.remove()
+        if (styleToRemove) {
+styleToRemove.remove()
+}
       }
     }
   }, [editor, bulletListStyle, orderedListStyle, linkColor, linkStyle])
@@ -972,7 +978,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
                       autoTrimWhitespace 
                         ? 'bg-sage-500' 
                         : 'bg-gray-200'
-                    } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+                    } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
                   </label>
                 </div>
 
@@ -1013,7 +1019,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
                       removeEmptyParagraphs 
                         ? 'bg-sage-500' 
                         : 'bg-gray-200'
-                    } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+                    } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
                   </label>
                 </div>
 

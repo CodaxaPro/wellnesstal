@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { TEXT_COLORS } from '../../types/textConfig.types';
 import { getColorGridAnimation } from '../../utils/animationHelpers';
 

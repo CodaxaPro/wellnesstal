@@ -54,7 +54,7 @@ export function StyleEditor({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
         {label}
-        {hasChanges && <span className="w-2 h-2 bg-amber-500 rounded-full"></span>}
+        {hasChanges && <span className="w-2 h-2 bg-amber-500 rounded-full" />}
       </button>
 
       {isExpanded && (
@@ -344,7 +344,7 @@ export function IconStyleEditor({
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
         </svg>
         {label}
-        {hasChanges && <span className="w-2 h-2 bg-amber-500 rounded-full"></span>}
+        {hasChanges && <span className="w-2 h-2 bg-amber-500 rounded-full" />}
       </button>
 
       {isExpanded && (

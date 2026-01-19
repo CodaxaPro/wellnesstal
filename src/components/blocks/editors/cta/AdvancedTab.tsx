@@ -1,6 +1,7 @@
 'use client'
 
 import { CTAContent, CTAAnimations, CTAResponsive, CTATypography } from '../../types'
+
 import { getDefaultCTAContent, CTA_STYLE_PRESETS, ANIMATION_OPTIONS } from './defaults'
 
 interface AdvancedTabProps {

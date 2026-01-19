@@ -46,8 +46,7 @@ export const contentTabs = [
   { id: 'services-section', label: 'Leistungen Bölümü', icon: '💆' },
   { id: 'about', label: 'Über Uns', icon: '👥' },
   { id: 'contact-section', label: 'Kontakt Bölümü', icon: '📍' },
-  { id: 'contact', label: 'Kontakt Daten', icon: '📞' },
   { id: 'footer', label: 'Footer', icon: '🦶' },
   { id: 'meta', label: 'SEO Meta', icon: '🔍' },
-  { id: 'testimonials-section', label: 'Kundenstimmen', icon: '💬' }
+  { id: 'homepage-testimonials-block', label: 'Ana Sayfa Yorumlar Block', icon: '⭐' }
 ]

@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { HeroContent } from '../types'
+
 import DescriptionRichEditor from './hero/DescriptionRichEditor'
 
 interface HeroBlockEditorProps {
@@ -226,7 +228,9 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: HeroContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -292,13 +296,15 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
   // Handle image delete
   const handleHeroImageDelete = async () => {
     const imageUrl = content.image?.url
-    if (!imageUrl || !imageUrl.startsWith('/uploads/')) {
+    if (!imageUrl?.startsWith('/uploads/')) {
       updateContent({
         image: { ...content.image, url: '' }
       })
       return
     }
-    if (!confirm('Hero görseli silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?')) return
+    if (!confirm('Hero görseli silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
+return
+}
     try {
       const token = localStorage.getItem('adminToken')
       const response = await fetch(`/api/upload?url=${encodeURIComponent(imageUrl)}`, {
@@ -511,7 +517,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
               onChange={(e) => updateContent({ badgeEnabled: e.target.checked })}
               className="sr-only peer"
             />
-            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-sage-500"></div>
+            <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-sage-500" />
             <span className="ml-3 text-sm font-medium text-gray-700">
               {content.badgeEnabled !== false ? 'Aktif' : 'Pasif'}
             </span>
@@ -689,7 +695,9 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                   const filtered = icons.filter(icon => 
                     iconSearch === '' || icon.name.toLowerCase().includes(iconSearch.toLowerCase())
                   )
-                  if (filtered.length === 0) return null
+                  if (filtered.length === 0) {
+return null
+}
                   return (
                     <div key={category} className="mb-4">
                       <div className="text-xs font-semibold text-gray-500 mb-2 uppercase">{category}</div>
@@ -833,7 +841,9 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                   const filtered = icons.filter(icon => 
                     iconSearch === '' || icon.name.toLowerCase().includes(iconSearch.toLowerCase())
                   )
-                  if (filtered.length === 0) return null
+                  if (filtered.length === 0) {
+return null
+}
                   return (
                     <div key={category} className="mb-4">
                       <div className="text-xs font-semibold text-gray-500 mb-2 uppercase">{category}</div>
@@ -975,7 +985,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
               content.scrollIndicator?.enabled !== false 
                 ? 'bg-sage-500' 
                 : 'bg-gray-200'
-            } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+            } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
           </label>
         </div>
 
@@ -1098,12 +1108,14 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                     className="hidden"
                     onChange={(e) => {
                       const file = e.target.files?.[0]
-                      if (file) handleHeroImageUpload(file)
+                      if (file) {
+handleHeroImageUpload(file)
+}
                     }}
                     disabled={uploadingHeroImage}
                   />
                   {uploadingHeroImage ? (
-                    <div className="animate-spin h-5 w-5 border-2 border-sage-500 border-t-transparent rounded-full"></div>
+                    <div className="animate-spin h-5 w-5 border-2 border-sage-500 border-t-transparent rounded-full" />
                   ) : (
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -1131,13 +1143,15 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                 className="hidden"
                 onChange={(e) => {
                   const file = e.target.files?.[0]
-                  if (file) handleHeroImageUpload(file)
+                  if (file) {
+handleHeroImageUpload(file)
+}
                 }}
                 disabled={uploadingHeroImage}
               />
               {uploadingHeroImage ? (
                 <div className="flex flex-col items-center">
-                  <div className="animate-spin h-10 w-10 border-3 border-sage-500 border-t-transparent rounded-full mb-2"></div>
+                  <div className="animate-spin h-10 w-10 border-3 border-sage-500 border-t-transparent rounded-full mb-2" />
                   <span className="text-sm text-sage-600">Yükleniyor...</span>
                 </div>
               ) : (
@@ -1361,7 +1375,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                 content.imageFloatingElements?.statusBadge?.enabled !== false 
                   ? 'bg-sage-500' 
                   : 'bg-gray-200'
-              } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+              } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
             </label>
           </div>
 
@@ -1471,7 +1485,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                 content.imageFloatingElements?.premiumCard?.enabled !== false 
                   ? 'bg-sage-500' 
                   : 'bg-gray-200'
-              } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+              } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
             </label>
           </div>
 
@@ -1527,7 +1541,9 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                           const filtered = emojis.filter(emoji => 
                             emojiSearch === '' || emoji.includes(emojiSearch)
                           )
-                          if (filtered.length === 0) return null
+                          if (filtered.length === 0) {
+return null
+}
                           return (
                             <div key={category} className="mb-4">
                               <div className="text-xs font-semibold text-gray-500 mb-2 uppercase">{category}</div>
@@ -1542,7 +1558,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                                           ...content.imageFloatingElements,
                                           premiumCard: {
                                             ...content.imageFloatingElements?.premiumCard,
-                                            emoji: emoji,
+                                            emoji,
                                             enabled: true,
                                             position: content.imageFloatingElements?.premiumCard?.position || { vertical: 'bottom', horizontal: 'left' }
                                           }
@@ -1687,7 +1703,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
                 content.imageFloatingElements?.reviewsBadge?.enabled !== false 
                   ? 'bg-sage-500' 
                   : 'bg-gray-200'
-              } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`}></div>
+              } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
             </label>
           </div>
 

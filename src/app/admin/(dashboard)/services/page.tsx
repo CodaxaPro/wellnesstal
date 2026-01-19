@@ -1,17 +1,20 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useServicesEnhanced } from './hooks/useServicesEnhanced'
-import { Service, ServiceFormData, BulkOperation } from '../../../../types/services'
-import ServiceForm from './components/ServiceForm/ServiceFormModular'
+
 
 // Template Engine Imports
 import EntityList from '../../../../components/shared/EntityList'
 import { configLoader } from '../../../../lib/config-loader'
 import { templateEngine } from '../../../../lib/template-engine'
+import { Service, ServiceFormData, BulkOperation } from '../../../../types/services'
 import { TemplateConfig } from '../../../../types/templates'
+
+import ServiceForm from './components/ServiceForm/ServiceFormModular'
+import { useServicesEnhanced } from './hooks/useServicesEnhanced'
 
 // Local EntityData type to match EntityList component
 interface LocalEntityData {
@@ -434,7 +437,7 @@ export default function ServicesManagement() {
                 {/* Template Status */}
                 {templateConfig && (
                   <div className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-200 rounded-full">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-green-500 rounded-full" />
                     <span className="text-xs font-medium text-green-800">
                       {templateConfig.name} Aktif
                     </span>
@@ -472,8 +475,8 @@ export default function ServicesManagement() {
       {(isLoading || templateLoading) && (
         <div className="fixed top-4 right-4 bg-sage-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center gap-2">
           <svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
           </svg>
           {templateLoading ? 'Template yükleniyor...' : 'İşlem devam ediyor...'}
         </div>
@@ -516,10 +519,10 @@ export default function ServicesManagement() {
             onDelete={handleEntityDelete}
             onView={handleEntityView}
             onBulkAction={handleEntityBulkAction}
-            showSearch={true}
-            showFilters={true}
-            showBulkActions={true}
-            showCreateButton={true}
+            showSearch
+            showFilters
+            showBulkActions
+            showCreateButton
             showImportExport={false}
             layout="table"
           />

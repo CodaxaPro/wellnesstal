@@ -126,7 +126,7 @@ export default function GallerySection() {
         {/* Loading State */}
         {loading && (
           <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
           </div>
         )}
 

@@ -1,8 +1,9 @@
 'use client'
 
 import { FeaturesContent, FeatureItem } from '../../types'
-import FeatureItemEditor from './shared/FeatureItemEditor'
+
 import { getDefaultFeatureItem } from './defaults'
+import FeatureItemEditor from './shared/FeatureItemEditor'
 
 interface FeaturesTabProps {
   content: FeaturesContent
@@ -17,7 +18,26 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
 
   const updateFeature = (index: number, updates: Partial<FeatureItem>) => {
     const newFeatures = [...content.features]
-    newFeatures[index] = { ...newFeatures[index], ...updates }
+    const currentFeature = newFeatures[index]
+
+    // Deep merge for nested objects like image
+    const mergedUpdates: Partial<FeatureItem> = { ...updates }
+
+    // If updating image, merge with existing image object (if it exists)
+    if (updates.image) {
+      if (currentFeature.image) {
+        // Merge with existing image - preserve all properties
+        mergedUpdates.image = {
+          ...currentFeature.image,
+          ...updates.image
+        }
+      } else {
+        // Use new image directly if no existing image
+        mergedUpdates.image = updates.image
+      }
+    }
+
+    newFeatures[index] = { ...currentFeature, ...mergedUpdates }
     updateContent({ features: newFeatures })
   }
 
@@ -27,7 +47,9 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
   }
 
   const moveFeature = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= content.features.length) return
+    if (toIndex < 0 || toIndex >= content.features.length) {
+return
+}
     const newFeatures = [...content.features]
     const [movedItem] = newFeatures.splice(fromIndex, 1)
     newFeatures.splice(toIndex, 0, movedItem)
@@ -36,9 +58,11 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
 
   const duplicateFeature = (index: number) => {
     const feature = content.features[index]
+    // Create unique ID with timestamp and random number to avoid collisions
+    const uniqueId = `feature-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
     const duplicated = {
       ...feature,
-      id: `feature-${Date.now()}`,
+      id: uniqueId,
       title: `${feature.title} (Kopya)`
     }
     const newFeatures = [...content.features]
@@ -114,9 +138,13 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
             </button>
           </div>
         ) : (
-          content.features.map((feature, index) => (
-            <div key={feature.id || index} className="group relative">
+          content.features.map((feature, index) => {
+            // Ensure unique key - use id if exists, otherwise create stable key from index
+            const uniqueKey = feature.id || `feature-${index}-${feature.title?.substring(0, 10) || 'item'}`
+            return (
+            <div key={uniqueKey} className="group relative">
               <FeatureItemEditor
+                key={uniqueKey}
                 feature={feature}
                 index={index}
                 onUpdate={updateFeature}
@@ -139,7 +167,8 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
                 </button>
               </div>
             </div>
-          ))
+            )
+          })
         )}
       </div>
 

@@ -1,14 +1,16 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { TextContent } from '../types'
+
+import AdvancedTab from './text/AdvancedTab'
+import BackgroundTab from './text/BackgroundTab'
+import ContentTab from './text/ContentTab'
 import { getDefaultTextContent } from './text/defaults'
 import LayoutTab from './text/LayoutTab'
-import ContentTab from './text/ContentTab'
-import TypographyTab from './text/TypographyTab'
-import BackgroundTab from './text/BackgroundTab'
-import AdvancedTab from './text/AdvancedTab'
 import { LayoutIcon, ContentIcon, TypographyIcon, BackgroundIcon, AdvancedIcon } from './text/shared/TabIcons'
+import TypographyTab from './text/TypographyTab'
 
 interface TextBlockEditorProps {
   content: TextContent
@@ -47,7 +49,9 @@ export default function TextBlockEditor({ content, onUpdate }: TextBlockEditorPr
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: TextContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

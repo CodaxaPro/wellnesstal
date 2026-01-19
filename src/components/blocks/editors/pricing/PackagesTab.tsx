@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { PricingContent, PricingPackage } from '../../types'
+
 import { getDefaultPackage } from './defaults'
 
 interface PackagesTabProps {
@@ -20,7 +22,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
   
   // Auto-set order property based on current array order if missing (only once on mount)
   useEffect(() => {
-    if (packages.length === 0) return
+    if (packages.length === 0) {
+return
+}
     
     // Check if any package is missing order property
     const hasMissingOrder = packages.some(pkg => pkg.order === undefined)
@@ -53,7 +57,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
   }
 
   const removePackage = (id: string) => {
-    if (packages.length <= 1) return
+    if (packages.length <= 1) {
+return
+}
     const newPackages = packages.filter(p => p.id !== id)
     updateContent({ packages: newPackages })
     if (activePackageId === id) {
@@ -69,7 +75,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const updatePackageBadge = (id: string, updates: Partial<NonNullable<PricingPackage['badge']>>) => {
     const pkg = packages.find(p => p.id === id)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     updatePackage(id, {
       badge: {
         enabled: pkg.badge?.enabled ?? false,
@@ -82,7 +90,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const updatePackageStyle = (id: string, updates: Partial<NonNullable<PricingPackage['style']>>) => {
     const pkg = packages.find(p => p.id === id)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     updatePackage(id, {
       style: { ...pkg.style, ...updates }
     })
@@ -90,9 +100,15 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const movePackage = (id: string, direction: 'up' | 'down') => {
     const index = packages.findIndex(p => p.id === id)
-    if (index === -1) return
-    if (direction === 'up' && index === 0) return
-    if (direction === 'down' && index === packages.length - 1) return
+    if (index === -1) {
+return
+}
+    if (direction === 'up' && index === 0) {
+return
+}
+    if (direction === 'down' && index === packages.length - 1) {
+return
+}
 
     const newPackages = [...packages]
     const targetIndex = direction === 'up' ? index - 1 : index + 1
@@ -109,7 +125,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const addFeature = (packageId: string) => {
     const pkg = packages.find(p => p.id === packageId)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
     features.push({
       id: `feat-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
@@ -121,7 +139,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const updateFeature = (packageId: string, index: number, value: string | { text: string; included: boolean }) => {
     const pkg = packages.find(p => p.id === packageId)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
     if (typeof value === 'string') {
       // If current feature is object, update text, otherwise replace with string
@@ -139,7 +159,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const toggleFeatureIncluded = (packageId: string, index: number) => {
     const pkg = packages.find(p => p.id === packageId)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
     const feature = features[index]
     if (typeof feature === 'string') {
@@ -152,7 +174,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const removeFeature = (packageId: string, index: number) => {
     const pkg = packages.find(p => p.id === packageId)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     const features = [...(Array.isArray(pkg.features) ? pkg.features : [])]
     features.splice(index, 1)
     updatePackage(packageId, { features })
@@ -160,7 +184,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
 
   const duplicatePackage = (id: string) => {
     const pkg = packages.find(p => p.id === id)
-    if (!pkg) return
+    if (!pkg) {
+return
+}
     const newPackage = {
       ...pkg,
       id: `pkg-${Date.now()}`,
@@ -200,7 +226,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
             <div className="flex items-center gap-2">
               <div className="flex flex-col gap-0.5">
                 <button
-                  onClick={(e) => { e.stopPropagation(); movePackage(pkg.id, 'up') }}
+                  onClick={(e) => {
+ e.stopPropagation(); movePackage(pkg.id, 'up') 
+}}
                   disabled={index === 0}
                   className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
                 >
@@ -209,7 +237,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
                   </svg>
                 </button>
                 <button
-                  onClick={(e) => { e.stopPropagation(); movePackage(pkg.id, 'down') }}
+                  onClick={(e) => {
+ e.stopPropagation(); movePackage(pkg.id, 'down') 
+}}
                   disabled={index === packages.length - 1}
                   className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
                 >
@@ -433,7 +463,9 @@ export default function PackagesTab({ content, updateContent }: PackagesTabProps
                 <span className="text-sm font-semibold text-slate-700 flex items-center gap-2">
                   <span className="w-6 h-6 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">✓</span>
                   Özellikler ({Array.isArray(activePackage.features) ? activePackage.features.filter(f => {
-                    if (typeof f === 'string') return true
+                    if (typeof f === 'string') {
+return true
+}
                     return f.included === true
                   }).length : 0})
                 </span>

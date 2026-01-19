@@ -2,6 +2,7 @@
 // Paragraph/Text component
 
 import React from 'react';
+
 import type { TextConfig } from './content.types';
 
 interface ContentTextProps {

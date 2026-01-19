@@ -2,6 +2,7 @@
 // Spacer component for vertical spacing
 
 import React from 'react';
+
 import type { SpacerConfig } from './content.types';
 
 interface ContentSpacerProps {

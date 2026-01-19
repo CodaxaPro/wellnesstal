@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
 import toast from 'react-hot-toast'
 
 interface PageCategory {
@@ -74,7 +76,9 @@ export default function PagesManagement() {
   const checkAndRunMigration = async () => {
     try {
       const token = localStorage.getItem('adminToken')
-      if (!token) return
+      if (!token) {
+return
+}
 
       // Check if active column exists by trying to fetch a page with active field
       const response = await fetch('/api/pages/migrate-active', {
@@ -281,7 +285,7 @@ export default function PagesManagement() {
   if (isLoading) {
     return (
       <div className="p-8 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }
@@ -308,7 +312,9 @@ export default function PagesManagement() {
                 'Devam etmek istiyor musunuz?'
               )
               
-              if (!run) return
+              if (!run) {
+return
+}
               
               try {
                 const response = await fetch('/api/pages/migrate-active', {

@@ -67,10 +67,10 @@ export default function CategoryStats({ stats, isLoading = false }: CategoryStat
           <div key={index} className="bg-white rounded-xl p-6 shadow-soft">
             <div className="animate-pulse">
               <div className="flex items-center justify-between mb-4">
-                <div className="h-4 bg-gray-200 rounded w-20"></div>
-                <div className="h-6 w-6 bg-gray-200 rounded"></div>
+                <div className="h-4 bg-gray-200 rounded w-20" />
+                <div className="h-6 w-6 bg-gray-200 rounded" />
               </div>
-              <div className="h-8 bg-gray-200 rounded w-12"></div>
+              <div className="h-8 bg-gray-200 rounded w-12" />
             </div>
           </div>
         ))}
@@ -108,7 +108,7 @@ export default function CategoryStats({ stats, isLoading = false }: CategoryStat
                 <div
                   className="bg-sage-500 h-2 rounded-full transition-all duration-300"
                   style={{ width: `${stat.value}%` }}
-                ></div>
+                 />
               </div>
             </div>
           )}

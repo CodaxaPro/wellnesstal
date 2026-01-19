@@ -1,6 +1,8 @@
 'use client'
 import { createContext, useContext, useEffect, useState } from 'react'
+
 import { User } from '@supabase/supabase-js'
+
 import { createClient } from '@/lib/supabase'
 
 interface AuthContextType {
@@ -37,7 +39,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     const { error } = await supabase.auth.signInWithPassword({ email, password })
-    if (error) throw error
+    if (error) {
+throw error
+}
   }
 
   const signUp = async (email: string, password: string, tenantName: string) => {
@@ -47,8 +51,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       password
     })
 
-    if (authError) throw authError
-    if (!authData.user) throw new Error('User creation failed')
+    if (authError) {
+throw authError
+}
+    if (!authData.user) {
+throw new Error('User creation failed')
+}
 
     // 2. SONRA tenant oluştur (anon key ile, RLS: WITH CHECK (true))
     const { data: tenant, error: tenantError } = await supabase
@@ -60,14 +68,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       .select()
       .single()
 
-    if (tenantError) throw tenantError
+    if (tenantError) {
+throw tenantError
+}
 
     // 3. User metadata'ya tenant_id ekle
     const { error: updateError } = await supabase.auth.updateUser({
       data: { tenant_id: tenant.id }
     })
 
-    if (updateError) throw updateError
+    if (updateError) {
+throw updateError
+}
 
     // 4. tenant_users'a ekle
     const { error: linkError } = await supabase.from('tenant_users').insert({
@@ -76,7 +88,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       role: 'owner'
     })
 
-    if (linkError) throw linkError
+    if (linkError) {
+throw linkError
+}
   }
 
   const signOut = async () => {
@@ -92,6 +106,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
 export const useAuth = () => {
   const context = useContext(AuthContext)
-  if (!context) throw new Error('useAuth must be used within AuthProvider')
+  if (!context) {
+throw new Error('useAuth must be used within AuthProvider')
+}
   return context
 }

@@ -2,12 +2,13 @@
 // Complete Hero example using Section > Container > Stack > Content components
 
 import React, { useState } from 'react';
-import { Section, Container, Stack } from './primitives.index';
+
 import { ContentHeading, ContentText, ContentButton } from './content.index';
-import { SelectableBlockWrapper } from './SelectableBlockWrapper';
-import { PrimitivePropertiesPanel } from './PrimitivePropertiesPanel';
-import type { SectionConfig, ContainerConfig, StackConfig, LayoutElement } from './primitives.types';
 import type { HeadingConfig, TextConfig, ButtonConfig } from './content.types';
+import { PrimitivePropertiesPanel } from './PrimitivePropertiesPanel';
+import { Section, Container, Stack } from './primitives.index';
+import type { SectionConfig, ContainerConfig, StackConfig, LayoutElement } from './primitives.types';
+import { SelectableBlockWrapper } from './SelectableBlockWrapper';
 
 export function HeroWithContent() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -122,14 +123,30 @@ export function HeroWithContent() {
   const selectedElement = selectedId ? allElements[selectedId] || null : null;
 
   const handleUpdate = (updated: any) => {
-    if (updated.id === 'hero-section') setHeroSection(updated as SectionConfig);
-    if (updated.id === 'hero-container') setHeroContainer(updated as ContainerConfig);
-    if (updated.id === 'hero-stack-main') setMainStack(updated as StackConfig);
-    if (updated.id === 'hero-stack-buttons') setButtonStack(updated as StackConfig);
-    if (updated.id === 'hero-heading') setHeading(updated as HeadingConfig);
-    if (updated.id === 'hero-subtext') setSubtext(updated as TextConfig);
-    if (updated.id === 'hero-button-primary') setPrimaryButton(updated as ButtonConfig);
-    if (updated.id === 'hero-button-secondary') setSecondaryButton(updated as ButtonConfig);
+    if (updated.id === 'hero-section') {
+setHeroSection(updated as SectionConfig);
+}
+    if (updated.id === 'hero-container') {
+setHeroContainer(updated as ContainerConfig);
+}
+    if (updated.id === 'hero-stack-main') {
+setMainStack(updated as StackConfig);
+}
+    if (updated.id === 'hero-stack-buttons') {
+setButtonStack(updated as StackConfig);
+}
+    if (updated.id === 'hero-heading') {
+setHeading(updated as HeadingConfig);
+}
+    if (updated.id === 'hero-subtext') {
+setSubtext(updated as TextConfig);
+}
+    if (updated.id === 'hero-button-primary') {
+setPrimaryButton(updated as ButtonConfig);
+}
+    if (updated.id === 'hero-button-secondary') {
+setSecondaryButton(updated as ButtonConfig);
+}
   };
 
   return (

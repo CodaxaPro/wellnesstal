@@ -1,6 +1,7 @@
 'use client'
 
 import { CTAContent, CTABackground, CTABorderSettings, CTATypography } from '../../types'
+
 import { BACKGROUND_TYPE_OPTIONS, PATTERN_OPTIONS, GRADIENT_DIRECTION_OPTIONS } from './defaults'
 
 interface BackgroundTabProps {
@@ -217,7 +218,7 @@ export default function BackgroundTab({ content, updateContent }: BackgroundTabP
                   ? `radial-gradient(circle, ${content.background.gradientFrom} 0%, ${content.background.gradientVia || content.background.gradientFrom} 50%, ${content.background.gradientTo} 100%)`
                   : content.background.gradientType === 'conic'
                   ? `conic-gradient(from 0deg, ${content.background.gradientFrom}, ${content.background.gradientVia || content.background.gradientFrom}, ${content.background.gradientTo})`
-                  : `linear-gradient(${content.background.gradientDirection?.replace('to-', 'to ')}, ${content.background.gradientFrom}, ${content.background.gradientVia ? content.background.gradientVia + ',' : ''} ${content.background.gradientTo})`
+                  : `linear-gradient(${content.background.gradientDirection?.replace('to-', 'to ')}, ${content.background.gradientFrom}, ${content.background.gradientVia ? `${content.background.gradientVia  },` : ''} ${content.background.gradientTo})`
               }}
             />
           </div>

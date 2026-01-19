@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { GalleryContent } from '../types'
+
 import {
   ImagesTab,
   LayoutTab,
@@ -51,7 +53,9 @@ export default function GalleryBlockEditor({ content: initialContent, onUpdate }
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: GalleryContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

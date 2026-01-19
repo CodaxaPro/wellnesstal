@@ -1,10 +1,13 @@
 'use client'
 
 import { useState, useRef } from 'react'
-import { FeatureItem } from '../../../types'
-import IconSelector, { FeatureIcon } from './IconSelector'
-import { PRESET_ICONS } from '../defaults'
+
 import Image from 'next/image'
+
+import { FeatureItem } from '../../../types'
+import { PRESET_ICONS } from '../defaults'
+
+import IconSelector, { FeatureIcon } from './IconSelector'
 
 interface FeatureItemEditorProps {
   feature: FeatureItem
@@ -69,7 +72,9 @@ export default function FeatureItemEditor({
 
   // Handle image delete
   const handleImageDelete = () => {
-    if (!confirm('Resmi silmek istediğinizden emin misiniz?')) return
+    if (!confirm('Resmi silmek istediğinizden emin misiniz?')) {
+return
+}
     onUpdate(index, { image: undefined })
   }
 
@@ -97,18 +102,62 @@ export default function FeatureItemEditor({
 
         {/* Title & Description Preview */}
         <div className="flex-1 min-w-0">
-          <input
-            type="text"
-            value={feature.title}
-            onChange={(e) => onUpdate(index, { title: e.target.value })}
-            className="w-full bg-transparent border-none p-0 font-medium text-slate-700 focus:ring-0 focus:outline-none"
-            placeholder="Özellik başlığı"
-          />
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              value={feature.title}
+              onChange={(e) => onUpdate(index, { title: e.target.value })}
+              className="flex-1 bg-transparent border-none p-0 font-medium text-slate-700 focus:ring-0 focus:outline-none"
+              placeholder="Özellik başlığı"
+            />
+            {feature.image?.url && (
+              <div className="relative w-8 h-8 rounded-md overflow-hidden border border-slate-200 flex-shrink-0">
+                <Image
+                  src={feature.image.url}
+                  alt={feature.image.alt || feature.title || ''}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+          </div>
           <p className="text-sm text-slate-500 truncate">{feature.description || 'Açıklama ekleyin...'}</p>
         </div>
 
         {/* Actions */}
         <div className="flex items-center gap-1">
+          {/* Image Upload Button - Quick Access */}
+          <button
+            onClick={() => {
+              if (feature.image?.url) {
+                // If image exists, show delete option
+                if (confirm('Resmi silmek istediğinizden emin misiniz?')) {
+                  onUpdate(index, { image: undefined })
+                }
+              } else {
+                // If no image, trigger upload
+                imageInputRef.current?.click()
+              }
+            }}
+            className={`p-2 rounded-lg transition-colors ${
+              feature.image?.url
+                ? 'text-sage-500 bg-sage-50 hover:bg-sage-100'
+                : 'text-slate-400 hover:text-sage-500 hover:bg-slate-100'
+            }`}
+            title={feature.image?.url ? 'Resmi Sil' : 'Resim Ekle'}
+          >
+            {feature.image?.url ? (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            ) : (
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            )}
+          </button>
+
           {/* Visibility Toggle */}
           <button
             onClick={() => onUpdate(index, { visible: !feature.visible })}
@@ -304,38 +353,77 @@ export default function FeatureItemEditor({
               accept="image/jpeg,image/png,image/webp,image/gif"
               onChange={(e) => {
                 const file = e.target.files?.[0]
-                if (file) handleImageUpload(file)
+                if (file) {
+handleImageUpload(file)
+}
               }}
               className="hidden"
               disabled={uploadingImage}
             />
-            
+
             {feature.image?.url ? (
-              <div className="relative group">
-                <div className="relative w-full h-48 rounded-xl overflow-hidden border border-slate-200">
-                  <Image
-                    src={feature.image.url}
-                    alt={feature.image.alt || feature.title || ''}
-                    fill
-                    className="object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <button
-                      onClick={() => imageInputRef.current?.click()}
-                      disabled={uploadingImage}
-                      className="px-4 py-2 bg-white text-slate-700 rounded-lg hover:bg-slate-100 transition-colors disabled:opacity-50"
-                    >
-                      {uploadingImage ? 'Yükleniyor...' : 'Değiştir'}
-                    </button>
-                    <button
-                      onClick={handleImageDelete}
-                      className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                    >
-                      Sil
-                    </button>
+              <div className="space-y-3">
+                <div className="relative group">
+                  <div className="relative w-full h-48 rounded-xl overflow-hidden border border-slate-200">
+                    <Image
+                      src={feature.image.url}
+                      alt={feature.image.alt || feature.title || ''}
+                      fill
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                      <button
+                        onClick={() => imageInputRef.current?.click()}
+                        disabled={uploadingImage}
+                        className="px-4 py-2 bg-white text-slate-700 rounded-lg hover:bg-slate-100 transition-colors disabled:opacity-50"
+                      >
+                        {uploadingImage ? 'Yükleniyor...' : 'Değiştir'}
+                      </button>
+                      <button
+                        onClick={handleImageDelete}
+                        className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
+                      >
+                        Sil
+                      </button>
+                    </div>
                   </div>
                 </div>
-                <div className="mt-2">
+
+                {/* Image Position Control (for zigzag layout) */}
+                <div>
+                  <label className="block text-xs font-medium text-slate-600 mb-1">
+                    Resim Pozisyonu {feature.image?.position && `(Şu an: ${feature.image.position})`}
+                  </label>
+                  <div className="grid grid-cols-3 gap-2">
+                    {[
+                      { value: 'auto', label: 'Otomatik', icon: '🔄' },
+                      { value: 'left', label: 'Sol', icon: '⬅️' },
+                      { value: 'right', label: 'Sağ', icon: '➡️' },
+                    ].map(pos => (
+                      <button
+                        key={pos.value}
+                        onClick={() => {
+                          onUpdate(index, {
+                            image: { ...feature.image!, position: pos.value as 'left' | 'right' | 'auto' }
+                          })
+                        }}
+                        className={`p-2 rounded-lg border-2 text-xs transition-all ${
+                          (feature.image?.position || 'auto') === pos.value
+                            ? 'border-sage-500 bg-sage-50 text-sage-700'
+                            : 'border-slate-200 hover:border-slate-300 text-slate-600'
+                        }`}
+                      >
+                        <div className="text-base mb-0.5">{pos.icon}</div>
+                        <div className="font-medium">{pos.label}</div>
+                      </button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-slate-400 mt-1">
+                    Zigzag düzeninde resmin sağda mı solda mı görüneceğini belirler
+                  </p>
+                </div>
+
+                <div>
                   <input
                     type="text"
                     value={feature.image.alt || ''}

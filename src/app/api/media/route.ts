@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-server'
+
 import { verifyAdmin } from '@/lib/auth'
+import { supabaseAdmin } from '@/lib/supabase-server'
 
 // Media file interface
 interface MediaFile {
@@ -161,7 +162,7 @@ export async function POST(request: NextRequest) {
         file_size: file.size,
         mime_type: file.type,
         alt_text: altText || file.name.split('.')[0],
-        category: category
+        category
       })
       .select()
       .single()
@@ -289,10 +290,18 @@ export async function PUT(request: NextRequest) {
     }
 
     const updateObj: Record<string, any> = {}
-    if (alt_text !== undefined) updateObj.alt_text = alt_text
-    if (category !== undefined) updateObj.category = category
-    if (is_featured !== undefined) updateObj.is_featured = is_featured
-    if (tags !== undefined) updateObj.tags = tags
+    if (alt_text !== undefined) {
+updateObj.alt_text = alt_text
+}
+    if (category !== undefined) {
+updateObj.category = category
+}
+    if (is_featured !== undefined) {
+updateObj.is_featured = is_featured
+}
+    if (tags !== undefined) {
+updateObj.tags = tags
+}
 
     const { data, error } = await supabaseAdmin
       .from('media_files')

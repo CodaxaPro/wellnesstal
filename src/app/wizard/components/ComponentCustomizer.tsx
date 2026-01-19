@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { useWizardStore } from '../store/useWizardStore';
 
 const componentVariants = {

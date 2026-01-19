@@ -1,6 +1,7 @@
 'use client'
 
 import { FeaturesContent, FeaturesAnimations, FeaturesResponsive } from '../../types'
+
 import { getDefaultFeaturesContent } from './defaults'
 
 interface AdvancedTabProps {

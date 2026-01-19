@@ -1,4 +1,5 @@
 import { useEffect, useRef, useCallback } from 'react'
+
 import { useContentStore } from '../store/useContentStore'
 
 interface UseAutoSaveOptions {
@@ -114,7 +115,9 @@ export function useAutoSave({
 
   // Debounced save function
   const debouncedSave = useCallback(() => {
-    if (!enabled) return
+    if (!enabled) {
+return
+}
 
     if (debounceTimerRef.current) {
       clearTimeout(debounceTimerRef.current)
@@ -132,7 +135,9 @@ export function useAutoSave({
 
   // Auto-save on content changes
   useEffect(() => {
-    if (!enabled) return
+    if (!enabled) {
+return
+}
 
     debouncedSave()
 
@@ -145,7 +150,9 @@ export function useAutoSave({
 
   // Save on page unload
   useEffect(() => {
-    if (!enabled) return
+    if (!enabled) {
+return
+}
 
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       // Cancel any pending debounced saves and save immediately

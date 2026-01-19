@@ -194,7 +194,7 @@ export interface HeroContent {
   trustIndicatorSubtext?: string // "⭐ 4.9/5 Bewertungen" gibi alt metin
   trustIndicatorSecondary?: string // "Kostenlose Beratung" gibi ikinci trust indicator
   trustIndicatorSecondarySubtext?: string // "Unverbindlich & persönlich" gibi ikinci alt metin
-  
+
   // Scroll Indicator
   scrollIndicator?: {
     enabled?: boolean
@@ -204,7 +204,7 @@ export interface HeroContent {
       horizontal: 'left' | 'center' | 'right'
     }
   }
-  
+
   // Image Floating Elements
   imageFloatingElements?: {
     // Status Badge (Jetzt geöffnet)
@@ -238,14 +238,14 @@ export interface HeroContent {
       }
     }
   }
-  
+
   // Image
   image?: HeroImage
   imageStyles?: HeroImageStyles
-  
+
   // Styles
   styles?: HeroStyles
-  
+
   // Section ID for navigation
   sectionId?: string
 }
@@ -465,7 +465,7 @@ export interface TextContent {
   containerPadding?: string
   containerBackground?: string
   containerBorderRadius?: string
-  
+
   // Content Wrapper (center-content-wrapper / center-block)
   contentWrapper?: 'none' | 'center-content-wrapper' | 'center-block'
   wrapperMaxWidth?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'full' | 'custom'
@@ -591,6 +591,7 @@ export interface FeatureImage {
   aspectRatio?: '16:9' | '4:3' | '1:1' | '3:2' | 'auto'
   objectFit?: 'cover' | 'contain' | 'fill'
   borderRadius?: string
+  position?: 'left' | 'right' | 'auto' // For zigzag layout: left, right, or auto (based on index)
 }
 
 // Individual Feature Item Styles
@@ -1347,6 +1348,7 @@ export interface TestimonialsContent {
   autoSlideDelay?: number
   autoPlay?: boolean
   showRatings?: boolean
+  showStats?: boolean
   maxDisplayCount?: number
   stats?: StatItem[]
   styles?: TestimonialsBlockStyles

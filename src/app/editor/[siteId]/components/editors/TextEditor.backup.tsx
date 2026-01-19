@@ -1,17 +1,18 @@
 'use client';
 
 import { useEffect, useState, useRef } from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import { TextStyle } from '@tiptap/extension-text-style';
+
+import CharacterCount from '@tiptap/extension-character-count';
 import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
-import TextAlign from '@tiptap/extension-text-align';
 import Link from '@tiptap/extension-link';
-import Typography from '@tiptap/extension-typography';
 import Placeholder from '@tiptap/extension-placeholder';
-import CharacterCount from '@tiptap/extension-character-count';
+import TextAlign from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
+import Typography from '@tiptap/extension-typography';
+import Underline from '@tiptap/extension-underline';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface TextEditorProps {
@@ -41,9 +42,15 @@ export default function TextEditor({
 
   // Field type detection
   const getFieldType = (path: string): 'title' | 'button' | 'contact' | 'normal' => {
-    if (path.includes('cta') || path.includes('button')) return 'button';
-    if (path.includes('phone') || path.includes('email')) return 'contact';
-    if (path.includes('title')) return 'title';
+    if (path.includes('cta') || path.includes('button')) {
+return 'button';
+}
+    if (path.includes('phone') || path.includes('email')) {
+return 'contact';
+}
+    if (path.includes('title')) {
+return 'title';
+}
     return 'normal';
   };
 
@@ -186,7 +193,9 @@ export default function TextEditor({
 
   // Link handlers
   const handleSetLink = () => {
-    if (!editor) return;
+    if (!editor) {
+return;
+}
 
     if (linkUrl) {
       editor
@@ -202,7 +211,9 @@ export default function TextEditor({
   };
 
   const handleUnsetLink = () => {
-    if (!editor) return;
+    if (!editor) {
+return;
+}
     editor.chain().focus().unsetLink().run();
     setShowLinkDialog(false);
   };
@@ -258,7 +269,9 @@ export default function TextEditor({
     { label: '3X Large', value: '1.875rem', class: 'text-3xl' },
   ];
 
-  if (!editor) return null;
+  if (!editor) {
+return null;
+}
 
   const wordCount = editor.storage.characterCount.words();
   const charCount = editor.storage.characterCount.characters();
@@ -650,8 +663,12 @@ export default function TextEditor({
                     className="w-full px-3 py-2 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
                     autoFocus
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter') handleSetLink();
-                      if (e.key === 'Escape') setShowLinkDialog(false);
+                      if (e.key === 'Enter') {
+handleSetLink();
+}
+                      if (e.key === 'Escape') {
+setShowLinkDialog(false);
+}
                     }}
                   />
                 </div>

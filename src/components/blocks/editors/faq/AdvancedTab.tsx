@@ -1,6 +1,7 @@
 'use client'
 
 import { FAQContent, FAQAnimations, FAQResponsive, FAQSearchConfig, FAQHelpfulVotes, FAQContactCTA } from '../../types'
+
 import {
   ANIMATION_TYPE_OPTIONS,
   EXPAND_ANIMATION_OPTIONS,

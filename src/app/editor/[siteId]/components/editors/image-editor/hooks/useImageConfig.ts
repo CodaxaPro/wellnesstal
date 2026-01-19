@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { ImageConfig, DEFAULT_IMAGE_CONFIG } from '../types/imageConfig.types';
+
 import toast from 'react-hot-toast';
+
+import { ImageConfig, DEFAULT_IMAGE_CONFIG } from '../types/imageConfig.types';
 
 interface UseImageConfigProps {
   initialUrl: string;

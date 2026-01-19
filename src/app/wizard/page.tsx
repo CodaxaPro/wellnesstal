@@ -1,11 +1,11 @@
 'use client';
 
-import { useWizardStore } from './store/useWizardStore';  // ✅ ../ yerine ./
-import WizardProgress from './components/WizardProgress';
 import CategorySelector from './components/CategorySelector';
-import ThemeSelector from './components/ThemeSelector';
 import ComponentCustomizer from './components/ComponentCustomizer';
 import PreviewPanel from './components/PreviewPanel';
+import ThemeSelector from './components/ThemeSelector';
+import WizardProgress from './components/WizardProgress';
+import { useWizardStore } from './store/useWizardStore';  // ✅ ../ yerine ./
 
 export default function WizardPage() {
   const { mode, currentStep, setMode } = useWizardStore();

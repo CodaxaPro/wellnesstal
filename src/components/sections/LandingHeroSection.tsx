@@ -133,13 +133,13 @@ export default function LandingHeroSection() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {landingHeroLoading ? (
           <div className="text-center animate-pulse">
-            <div className="h-8 bg-sage-200 rounded-full w-48 mx-auto mb-6"></div>
-            <div className="h-16 bg-sage-200 rounded w-3/4 mx-auto mb-4"></div>
-            <div className="h-16 bg-sage-300 rounded w-1/2 mx-auto mb-8"></div>
-            <div className="h-6 bg-sage-200 rounded w-2/3 mx-auto mb-12"></div>
+            <div className="h-8 bg-sage-200 rounded-full w-48 mx-auto mb-6" />
+            <div className="h-16 bg-sage-200 rounded w-3/4 mx-auto mb-4" />
+            <div className="h-16 bg-sage-300 rounded w-1/2 mx-auto mb-8" />
+            <div className="h-6 bg-sage-200 rounded w-2/3 mx-auto mb-12" />
             <div className="flex justify-center gap-6 mb-16">
-              <div className="h-14 bg-sage-300 rounded-xl w-48"></div>
-              <div className="h-14 bg-sage-200 rounded-xl w-40"></div>
+              <div className="h-14 bg-sage-300 rounded-xl w-48" />
+              <div className="h-14 bg-sage-200 rounded-xl w-40" />
             </div>
           </div>
         ) : (

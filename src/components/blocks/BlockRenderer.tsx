@@ -1,27 +1,27 @@
 'use client'
 
-import { PageBlock, BlockProps } from './types'
-import TextBlock from './TextBlock'
-import FeaturesBlock from './FeaturesBlock'
-import GalleryBlock from './GalleryBlock'
-import ServicesBlock from './ServicesBlock'
-import PricingBlock from './PricingBlock'
-import TestimonialsBlock from './TestimonialsBlock'
 import AboutBlock from './AboutBlock'
 import ContactBlock from './ContactBlock'
 import CtaBlock from './CtaBlock'
-import FaqBlock from './FaqBlock'
-import VideoBlock from './VideoBlock'
-import TeamBlock from './TeamBlock'
-import StatsBlock from './StatsBlock'
 import DividerBlock from './DividerBlock'
-import WhatsAppBlock from './WhatsAppBlock'
 import EmbedBlock from './EmbedBlock'
-import HeaderBlock from './HeaderBlock'
+import FaqBlock from './FaqBlock'
+import FeaturesBlock from './FeaturesBlock'
 import FooterBlock from './FooterBlock'
-import SEOBlock from './SEOBlock'
+import GalleryBlock from './GalleryBlock'
+import HeaderBlock from './HeaderBlock'
 import HeroBlock from './HeroBlock'
+import PricingBlock from './PricingBlock'
+import SEOBlock from './SEOBlock'
+import ServicesBlock from './ServicesBlock'
+import StatsBlock from './StatsBlock'
 import StickyButtonBlock from './StickyButtonBlock'
+import TeamBlock from './TeamBlock'
+import TestimonialsBlock from './TestimonialsBlock'
+import TextBlock from './TextBlock'
+import { PageBlock, BlockProps } from './types'
+import VideoBlock from './VideoBlock'
+import WhatsAppBlock from './WhatsAppBlock'
 
 interface BlockRendererProps {
   blocks: PageBlock[]
@@ -62,7 +62,9 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate, pageSl
   return (
     <div className="block-renderer">
       {sortedBlocks.map((block) => {
-        if (!block.visible && !isEditing) return null
+        if (!block.visible && !isEditing) {
+return null
+}
 
         const BlockComponent = blockComponents[block.block_type]
 

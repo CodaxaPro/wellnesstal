@@ -1,8 +1,8 @@
 // templates/themes/headspa.ts
 // Headspa Premium Template - Wellness & Spa Landing Page
 
-import type { Template } from '../types';
 import type { HeadingConfig, TextConfig, ButtonConfig } from '../../../content.types';
+import type { Template } from '../types';
 
 /**
  * Premium Headspa Template

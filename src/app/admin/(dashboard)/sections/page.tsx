@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface HomepageSection {
   id: string
@@ -67,7 +68,9 @@ export default function SectionsPage() {
     const newSections = [...sections]
     const newIndex = direction === 'up' ? index - 1 : index + 1
 
-    if (newIndex < 0 || newIndex >= newSections.length) return
+    if (newIndex < 0 || newIndex >= newSections.length) {
+return
+}
 
     // Swap positions
     const temp = newSections[index]
@@ -199,7 +202,9 @@ export default function SectionsPage() {
   const updateSection = async () => {
     const token = localStorage.getItem('adminToken')
 
-    if (!editingSection) return
+    if (!editingSection) {
+return
+}
 
     try {
       const response = await fetch('/api/sections', {
@@ -243,7 +248,7 @@ export default function SectionsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }
@@ -378,7 +383,7 @@ export default function SectionsPage() {
                       onChange={(e) => toggleSection(section.id, e.target.checked)}
                       className="sr-only peer"
                     />
-                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500"></div>
+                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500" />
                   </label>
 
                   {/* Move Buttons */}

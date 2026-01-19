@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
+
 import Image from 'next/image'
+
 import { GalleryContent, GalleryImage } from '../../types'
 
 interface ImagesTabProps {
@@ -17,7 +19,9 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
 
   // Handle image upload
   const handleImageUpload = async (files: FileList | null) => {
-    if (!files || files.length === 0) return
+    if (!files || files.length === 0) {
+return
+}
 
     setUploading(true)
     const newImages: GalleryImage[] = []
@@ -67,7 +71,9 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
 
   // Delete image
   const handleDeleteImage = (imageId: string) => {
-    if (!confirm('Bu gorseli silmek istediginizden emin misiniz?')) return
+    if (!confirm('Bu gorseli silmek istediginizden emin misiniz?')) {
+return
+}
     updateContent({
       images: content.images.filter(img => img.id !== imageId)
     })
@@ -89,7 +95,9 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
 
   const handleDragOver = (e: React.DragEvent, index: number) => {
     e.preventDefault()
-    if (draggedIndex === null || draggedIndex === index) return
+    if (draggedIndex === null || draggedIndex === index) {
+return
+}
 
     const newImages = [...content.images]
     const draggedItem = newImages[draggedIndex]
@@ -150,7 +158,7 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
         <label htmlFor="gallery-upload" className="cursor-pointer">
           <div className="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
             {uploading ? (
-              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500"></div>
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500" />
             ) : (
               <svg className="w-8 h-8 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -266,7 +274,9 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
 
             {(() => {
               const image = content.images.find(img => img.id === editingImage)
-              if (!image) return null
+              if (!image) {
+return null
+}
 
               return (
                 <div className="p-6 space-y-4">

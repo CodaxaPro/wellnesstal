@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+
 import { ContactBlockContent } from '../ContactBlock'
 
 interface ContactBlockEditorProps {
@@ -61,8 +62,12 @@ export default function ContactBlockEditor({ content, onUpdate }: ContactBlockEd
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: ContactBlockContent) => {
-    if (isInitialMount.current) return
-    if (debounceRef.current) clearTimeout(debounceRef.current)
+    if (isInitialMount.current) {
+return
+}
+    if (debounceRef.current) {
+clearTimeout(debounceRef.current)
+}
     debounceRef.current = setTimeout(() => onUpdate(newContent), 300)
   }, [onUpdate])
 

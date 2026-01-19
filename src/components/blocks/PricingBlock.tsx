@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { BlockProps, PricingContent, PricingPackage, PricingFeatureItem, PricingResponsive, PricingSectionHeader, PricingBackground, PricingAnimations, PricingPackageStyle } from './types'
 
 const defaultResponsive: PricingResponsive = {
@@ -67,8 +68,12 @@ export default function PricingBlock({ block }: BlockProps) {
     }
     
     // If only one has order, it comes first
-    if (a.order !== undefined) return -1
-    if (b.order !== undefined) return 1
+    if (a.order !== undefined) {
+return -1
+}
+    if (b.order !== undefined) {
+return 1
+}
     
     // Neither has order - use original array index
     const aIdx = originalIndices.get(a.id) ?? Infinity
@@ -100,7 +105,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Pattern overlay for background type 'pattern'
   const getPatternStyle = (): React.CSSProperties | null => {
-    if (background.type !== 'pattern') return null
+    if (background.type !== 'pattern') {
+return null
+}
     const patternColor = background.patternColor || '#e2e8f0'
     const opacity = (background.patternOpacity || 10) / 100
 
@@ -155,7 +162,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Animation styles
   const getAnimationStyle = (index: number): React.CSSProperties => {
-    if (!animations.enabled || animations.type === 'none') return {}
+    if (!animations.enabled || animations.type === 'none') {
+return {}
+}
 
     const baseDelay = animations.delay || 0
     const staggerDelay = (animations.stagger || 100) * index
@@ -180,7 +189,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Animation keyframes CSS
   const getAnimationKeyframes = () => {
-    if (!animations.enabled || animations.type === 'none') return ''
+    if (!animations.enabled || animations.type === 'none') {
+return ''
+}
 
     return `
       @keyframes pricing-fadeUp {
@@ -286,9 +297,15 @@ export default function PricingBlock({ block }: BlockProps) {
     const style = pkg.style || defaultPackageStyle
     const cardStyle: React.CSSProperties = {}
 
-    if (style.backgroundColor) cardStyle.backgroundColor = style.backgroundColor
-    if (style.borderColor) cardStyle.borderColor = style.borderColor
-    if (style.borderWidth !== undefined) cardStyle.borderWidth = `${style.borderWidth}px`
+    if (style.backgroundColor) {
+cardStyle.backgroundColor = style.backgroundColor
+}
+    if (style.borderColor) {
+cardStyle.borderColor = style.borderColor
+}
+    if (style.borderWidth !== undefined) {
+cardStyle.borderWidth = `${style.borderWidth}px`
+}
     // borderRadius can be a string like '1rem' or a number
     if (style.borderRadius) {
       cardStyle.borderRadius = typeof style.borderRadius === 'number'
@@ -301,7 +318,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Get price color
   const getPriceColor = (pkg: PricingPackage) => {
-    if (pkg.highlighted) return '#ffffff'
+    if (pkg.highlighted) {
+return '#ffffff'
+}
     const style = pkg.style || defaultPackageStyle
     // If priceColor is the old green color, use the new sage color
     const priceColor = style.priceColor || defaultPackageStyle.priceColor
@@ -335,7 +354,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Get hover effect class based on settings
   const getHoverEffectClass = (pkgStyle?: PricingPackageStyle) => {
-    if (animations.hoverEffects === false) return ''
+    if (animations.hoverEffects === false) {
+return ''
+}
 
     const effect = pkgStyle?.hoverEffect || defaultPackageStyle.hoverEffect || 'lift'
 
@@ -531,7 +552,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Render comparison table layout
   const renderComparisonTable = () => {
-    if (!comparisonTable?.enabled && layout !== 'comparison') return null
+    if (!comparisonTable?.enabled && layout !== 'comparison') {
+return null
+}
 
     // Collect all unique features
     const allFeatures = new Set<string>()
@@ -619,7 +642,9 @@ export default function PricingBlock({ block }: BlockProps) {
 
   // Render FAQ section
   const renderFAQ = () => {
-    if (!faq?.enabled || !faq.items?.length) return null
+    if (!faq?.enabled || !faq.items?.length) {
+return null
+}
 
     const faqLayout = faq.layout || 'accordion'
 

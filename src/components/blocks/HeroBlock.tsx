@@ -1,8 +1,11 @@
 'use client'
 
-import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
+import Link from 'next/link'
+
+import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
+
 import { BlockProps, HeroContent, HeroTextStyle } from './types'
 
 // Default styles
@@ -91,9 +94,15 @@ export default function HeroBlock({ block }: BlockProps) {
 
   // Helper function to safely get string value (handle both string and object)
   const getStringValue = (value: any): string => {
-    if (typeof value === 'string') return value
-    if (typeof value === 'object' && value !== null && 'text' in value) return value.text || ''
-    if (typeof value === 'object' && value !== null && typeof value.toString === 'function') return value.toString()
+    if (typeof value === 'string') {
+return value
+}
+    if (typeof value === 'object' && value !== null && 'text' in value) {
+return value.text || ''
+}
+    if (typeof value === 'object' && value !== null && typeof value.toString === 'function') {
+return value.toString()
+}
     return ''
   }
 
@@ -114,7 +123,7 @@ export default function HeroBlock({ block }: BlockProps) {
     let verticalClass = ''
     let horizontalClass = ''
     let transformClass = ''
-    
+
     // Vertical positioning
     if (position.vertical === 'top') {
       verticalClass = useNegative ? '-top-6' : 'top-6'
@@ -124,7 +133,7 @@ export default function HeroBlock({ block }: BlockProps) {
     } else {
       verticalClass = useNegative ? '-bottom-6' : 'bottom-6'
     }
-    
+
     // Horizontal positioning
     if (position.horizontal === 'left') {
       horizontalClass = useNegative ? '-left-6' : 'left-6'
@@ -134,7 +143,7 @@ export default function HeroBlock({ block }: BlockProps) {
     } else {
       horizontalClass = useNegative ? '-right-6' : 'right-6'
     }
-    
+
     return `${verticalClass} ${horizontalClass} ${transformClass}`.trim()
   }
 
@@ -142,17 +151,17 @@ export default function HeroBlock({ block }: BlockProps) {
   // If sectionId is not set, try to use a default based on common patterns
   // This helps with hash scrolling when sectionId is missing
   // Handle both string and object formats
-  const sectionId = typeof content.sectionId === 'string' 
-    ? content.sectionId 
+  const sectionId = typeof content.sectionId === 'string'
+    ? content.sectionId
     : (content.sectionId?.text || content.sectionId || 'home')
-  
-  
+
+
   return (
     <section id={sectionId} data-section={sectionId} className="relative bg-cream-gradient py-20 lg:py-32 min-h-screen flex items-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Text Content */}
-          <div 
+          <div
             className={`relative z-10 transition-all duration-1000 ${
               isVisible ? 'opacity-100' : 'opacity-0'
             }`}
@@ -178,26 +187,32 @@ export default function HeroBlock({ block }: BlockProps) {
                 </span>
               </div>
             )}
-            
+
             {/* Main Title with Highlighted Words */}
             {mainTitle && (() => {
               const words = mainTitle.split(' ')
               const highlightedIndices = content.highlightedWordIndices || []
-              
+
               // Eğer hiç vurgulanan kelime yoksa, eski davranışı koru (3. kelime)
               const defaultHighlightIndex = highlightedIndices.length === 0 ? 2 : null
-              
+
               return (
-                <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight mb-6">
+                <h1
+                  className="leading-tight mb-6"
+                  style={{
+                    fontSize: styles.mainTitle?.fontSize || defaultStyles.mainTitle.fontSize,
+                  }}
+                >
                   {words.map((word, index) => {
                     const isHighlighted = highlightedIndices.includes(index) || (defaultHighlightIndex !== null && index === defaultHighlightIndex)
-                    
+
                     if (isHighlighted) {
                       return (
                         <span key={index} className="relative inline-block">
                           <span
                             style={{
                               fontFamily: styles.highlightedText?.fontFamily || defaultStyles.highlightedText.fontFamily,
+                              fontSize: styles.highlightedText?.fontSize || defaultStyles.highlightedText.fontSize,
                               fontWeight: styles.highlightedText?.fontWeight || defaultStyles.highlightedText.fontWeight,
                               color: styles.highlightedText?.color || defaultStyles.highlightedText.color,
                             }}
@@ -222,6 +237,7 @@ export default function HeroBlock({ block }: BlockProps) {
                           key={index}
                           style={{
                             fontFamily: styles.mainTitle?.fontFamily || defaultStyles.mainTitle.fontFamily,
+                            fontSize: styles.mainTitle?.fontSize || defaultStyles.mainTitle.fontSize,
                             fontWeight: styles.mainTitle?.fontWeight || defaultStyles.mainTitle.fontWeight,
                             color: styles.mainTitle?.color || defaultStyles.mainTitle.color,
                           }}
@@ -238,9 +254,10 @@ export default function HeroBlock({ block }: BlockProps) {
             {/* Subtitle */}
             {subtitle && (
               <p
-                className="text-xl lg:text-2xl leading-relaxed mb-8 max-w-lg"
+                className="leading-relaxed mb-8 max-w-lg"
                 style={{
                   fontFamily: styles.subtitle?.fontFamily || defaultStyles.subtitle.fontFamily,
+                  fontSize: styles.subtitle?.fontSize || defaultStyles.subtitle.fontSize,
                   fontWeight: styles.subtitle?.fontWeight || defaultStyles.subtitle.fontWeight,
                   color: styles.subtitle?.color || defaultStyles.subtitle.color,
                 }}
@@ -252,9 +269,10 @@ export default function HeroBlock({ block }: BlockProps) {
             {/* Description */}
             {description && (
               <div
-                className="text-lg leading-relaxed mb-8 max-w-2xl prose prose-lg"
+                className="leading-relaxed mb-8 max-w-2xl prose prose-lg"
                 style={{
                   fontFamily: styles.description?.fontFamily || defaultStyles.description.fontFamily,
+                  fontSize: styles.description?.fontSize || defaultStyles.description.fontSize,
                   fontWeight: styles.description?.fontWeight || defaultStyles.description.fontWeight,
                   color: styles.description?.color || defaultStyles.description.color,
                 }}
@@ -289,10 +307,10 @@ export default function HeroBlock({ block }: BlockProps) {
                     padding-left: 0;
                   }
                   .hero-description ul[data-marker="check"] li::before { content: "✓"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="check-circle"] li::before { 
-                    content: "✓"; 
-                    position: absolute; 
-                    left: 0; 
+                  .hero-description ul[data-marker="check-circle"] li::before {
+                    content: "✓";
+                    position: absolute;
+                    left: 0;
                     display: inline-flex;
                     align-items: center;
                     justify-content: center;
@@ -368,7 +386,7 @@ export default function HeroBlock({ block }: BlockProps) {
                       {content.primaryButtonIconPosition === 'right' ? (
                         <>
                           {primaryButton}
-                          <div 
+                          <div
                             className={`h-5 w-5 transition-transform ${primaryBtnHover ? 'scale-110' : ''}`}
                             dangerouslySetInnerHTML={{ __html: content.primaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -376,7 +394,7 @@ export default function HeroBlock({ block }: BlockProps) {
                         </>
                       ) : (
                         <>
-                          <div 
+                          <div
                             className={`h-5 w-5 transition-transform ${primaryBtnHover ? 'scale-110' : ''}`}
                             dangerouslySetInnerHTML={{ __html: content.primaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -420,7 +438,7 @@ export default function HeroBlock({ block }: BlockProps) {
                       {content.secondaryButtonIconPosition === 'right' ? (
                         <>
                           {secondaryButton}
-                          <div 
+                          <div
                             className={`h-5 w-5 transition-transform ${secondaryBtnHover ? 'scale-110' : ''}`}
                             dangerouslySetInnerHTML={{ __html: content.secondaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -428,7 +446,7 @@ export default function HeroBlock({ block }: BlockProps) {
                         </>
                       ) : (
                         <>
-                          <div 
+                          <div
                             className={`h-5 w-5 transition-transform ${secondaryBtnHover ? 'scale-110' : ''}`}
                             dangerouslySetInnerHTML={{ __html: content.secondaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
@@ -484,7 +502,7 @@ export default function HeroBlock({ block }: BlockProps) {
 
                 {(trustIndicatorSecondary || trustIndicatorSecondarySubtext) && (
                   <>
-                    <div className="hidden sm:block w-px h-12 bg-gray-200"></div>
+                    <div className="hidden sm:block w-px h-12 bg-gray-200" />
 
                     <div className="text-sm">
                       {trustIndicatorSecondary && (
@@ -512,7 +530,7 @@ export default function HeroBlock({ block }: BlockProps) {
 
           {/* Image Content */}
           {content.image?.url && (
-            <div 
+            <div
               className={`relative z-0 transition-all duration-1000 delay-300 ${
                 isVisible ? 'opacity-100' : 'opacity-0'
               }`}
@@ -551,26 +569,28 @@ export default function HeroBlock({ block }: BlockProps) {
                     style={{
                       background: `linear-gradient(to top, ${imageStyles.overlayColor || defaultImageStyles.overlayColor}${Math.round((parseInt(imageStyles.overlayOpacity || defaultImageStyles.overlayOpacity) / 100) * 255).toString(16).padStart(2, '0')}, transparent)`,
                     }}
-                  ></div>
-                  
+                   />
+
                   {/* Status Badge - Inside image container */}
                   {(() => {
                     // Use editable values if available, otherwise use original hardcoded values
                     const statusBadge = content.imageFloatingElements?.statusBadge
                     const isEnabled = statusBadge?.enabled !== false
                     const shouldShow = content.imageFloatingElements ? isEnabled : true // Default to true if not defined
-                    
-                    if (!shouldShow) return null
-                    
+
+                    if (!shouldShow) {
+return null
+}
+
                     const text = statusBadge?.text || 'Jetzt geöffnet'
                     // Use custom position if set, otherwise use original hardcoded position
                     const position = statusBadge?.position
                     const positionClass = position ? getPositionClasses(position, false) : 'top-6 left-6'
-                    
+
                     return (
                       <div className={`absolute ${positionClass} bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-medium`}>
                         <div className="flex items-center gap-2">
-                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                          <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                           <span className="text-sm font-medium text-charcoal">{text}</span>
                         </div>
                       </div>
@@ -583,16 +603,18 @@ export default function HeroBlock({ block }: BlockProps) {
                   const premiumCard = content.imageFloatingElements?.premiumCard
                   const isEnabled = premiumCard?.enabled !== false
                   const shouldShow = content.imageFloatingElements ? isEnabled : true // Default to true if not defined
-                  
-                  if (!shouldShow) return null
-                  
+
+                  if (!shouldShow) {
+return null
+}
+
                   const emoji = premiumCard?.emoji || '🧘🏻‍♀️'
                   const title = premiumCard?.title || 'Premium Headspa'
                   const subtitle = premiumCard?.subtitle || '90 Min • ab 85€'
                   // Use custom position if set, otherwise use original hardcoded position
                   const position = premiumCard?.position
                   const positionClass = position ? getPositionClasses(position, true) : '-bottom-6 -left-6'
-                  
+
                   return (
                     <div className={`absolute ${positionClass} bg-white p-4 rounded-2xl shadow-medium max-w-xs`}>
                       <div className="flex items-center gap-3">
@@ -613,15 +635,17 @@ export default function HeroBlock({ block }: BlockProps) {
                   const reviewsBadge = content.imageFloatingElements?.reviewsBadge
                   const isEnabled = reviewsBadge?.enabled !== false
                   const shouldShow = content.imageFloatingElements ? isEnabled : true // Default to true if not defined
-                  
-                  if (!shouldShow) return null
-                  
+
+                  if (!shouldShow) {
+return null
+}
+
                   const rating = reviewsBadge?.rating || '4.9'
                   const text = reviewsBadge?.text || 'Google Reviews'
                   // Use custom position if set, otherwise use original hardcoded position
                   const position = reviewsBadge?.position
                   const positionClass = position ? getPositionClasses(position, true) : '-top-6 -right-6'
-                  
+
                   return (
                     <div className={`absolute ${positionClass} bg-sage-500 text-white p-4 rounded-2xl shadow-medium`}>
                       <div className="text-center">
@@ -640,8 +664,8 @@ export default function HeroBlock({ block }: BlockProps) {
                 })()}
 
                 {/* Decorative Elements */}
-                <div className="absolute -z-10 top-20 -left-20 w-40 h-40 bg-sage-200 rounded-full opacity-20 animate-float"></div>
-                <div className="absolute -z-10 bottom-20 -right-20 w-32 h-32 bg-earth-200 rounded-full opacity-20 animate-float" style={{animationDelay: '1s'}}></div>
+                <div className="absolute -z-10 top-20 -left-20 w-40 h-40 bg-sage-200 rounded-full opacity-20 animate-float" />
+                <div className="absolute -z-10 bottom-20 -right-20 w-32 h-32 bg-earth-200 rounded-full opacity-20 animate-float" style={{animationDelay: '1s'}} />
               </div>
             </div>
           )}
@@ -652,12 +676,12 @@ export default function HeroBlock({ block }: BlockProps) {
       {content.scrollIndicator?.enabled !== false && (() => {
         const position = content.scrollIndicator?.position || { vertical: 'bottom', horizontal: 'center' }
         const text = content.scrollIndicator?.text || 'Scrollen Sie nach unten'
-        
+
         // Position classes - build dynamically to handle center positioning correctly
         let verticalClass = ''
         let horizontalClass = ''
         let transformClass = ''
-        
+
         // Vertical positioning
         if (position.vertical === 'top') {
           verticalClass = 'top-8'
@@ -667,7 +691,7 @@ export default function HeroBlock({ block }: BlockProps) {
         } else {
           verticalClass = 'bottom-8'
         }
-        
+
         // Horizontal positioning
         if (position.horizontal === 'left') {
           horizontalClass = 'left-8'
@@ -677,10 +701,10 @@ export default function HeroBlock({ block }: BlockProps) {
         } else {
           horizontalClass = 'right-8'
         }
-        
+
         // Combine all classes
         const positionClasses = `${verticalClass} ${horizontalClass} ${transformClass}`.trim()
-        
+
         return (
           <div className={`absolute ${positionClasses}`}>
             <div className="flex flex-col items-center gap-2 animate-bounce">

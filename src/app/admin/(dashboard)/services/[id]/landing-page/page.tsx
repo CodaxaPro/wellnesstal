@@ -1,11 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
+
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
+
+import { PageBuilder } from './components/Canvas/FreeForm/PageBuilder'
 import { EditorProvider } from './contexts/EditorContext'
 import { SelectionProvider } from './contexts/SelectionContext'
-import { PageBuilder } from './components/Canvas/FreeForm/PageBuilder'
 
 interface ServiceData {
   id: string
@@ -84,7 +86,7 @@ export default function LandingPageBuilder() {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto" />
           <p className="mt-4 text-gray-600">Loading...</p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useCallback, useEffect, useRef } from 'react'
+
 import { SchemaLocalBusiness } from '../../types'
 
 interface LocalBusinessEditorProps {
@@ -209,7 +210,9 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
 
   // Validation functions
   const validateUrl = (url: string): string | null => {
-    if (!url) return null
+    if (!url) {
+return null
+}
     try {
       new URL(url)
       return null
@@ -219,13 +222,17 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
   }
 
   const validateEmail = (email: string): string | null => {
-    if (!email) return null
+    if (!email) {
+return null
+}
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi girin'
   }
 
   const validatePhone = (phone: string): string | null => {
-    if (!phone) return null
+    if (!phone) {
+return null
+}
     const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
     return phoneRegex.test(phone.replace(/\s/g, '')) ? null : 'Geçerli bir telefon numarası girin'
   }
@@ -242,7 +249,9 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       return
     }
     const t = setTimeout(() => {
-      try { console.debug('[debug][LocalBusinessEditor] debounced full onUpdate', { preview: { name: local.name, description: local.description } }) } catch (e) {}
+      try {
+ console.debug('[debug][LocalBusinessEditor] debounced full onUpdate', { preview: { name: local.name, description: local.description } }) 
+} catch (e) {}
       onUpdate(local)
     }, 300)
     return () => clearTimeout(t)
@@ -264,21 +273,27 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
         [field]: value
       }
     }
-    try { console.debug('[debug][LocalBusinessEditor] updateAddress', { field, value, payloadPreview: { streetAddress: next.address.streetAddress, addressLocality: next.address.addressLocality } }) } catch (e) {}
+    try {
+ console.debug('[debug][LocalBusinessEditor] updateAddress', { field, value, payloadPreview: { streetAddress: next.address.streetAddress, addressLocality: next.address.addressLocality } }) 
+} catch (e) {}
     setLocal(prev => ({ ...prev, ...next }))
   }, [])
 
   // Update geo coordinates
   const updateGeo = useCallback((field: 'latitude' | 'longitude', value: number) => {
     const next = { geo: { latitude: local.geo?.latitude || 0, longitude: local.geo?.longitude || 0, ...(local.geo || {}), [field]: value } }
-    try { console.debug('[debug][LocalBusinessEditor] updateGeo', { field, value, payload: next }) } catch (e) {}
+    try {
+ console.debug('[debug][LocalBusinessEditor] updateGeo', { field, value, payload: next }) 
+} catch (e) {}
     setLocal(prev => ({ ...prev, ...next }))
   }, [])
 
   // Update aggregate rating
   const updateRating = useCallback((field: string, value: number) => {
     const next = { aggregateRating: { ratingValue: local.aggregateRating?.ratingValue || 0, reviewCount: local.aggregateRating?.reviewCount || 0, ...(local.aggregateRating || {}), [field]: value } }
-    try { console.debug('[debug][LocalBusinessEditor] updateRating', { field, value, payload: next }) } catch (e) {}
+    try {
+ console.debug('[debug][LocalBusinessEditor] updateRating', { field, value, payload: next }) 
+} catch (e) {}
     setLocal(prev => ({ ...prev, ...next }))
   }, [])
 
@@ -288,7 +303,9 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
     if (hours[index]) {
       hours[index] = { ...hours[index], [field]: value }
     }
-    try { console.debug('[debug][LocalBusinessEditor] updateOpeningHours', { index, field, value, payloadPreview: hours[index] }) } catch (e) {}
+    try {
+ console.debug('[debug][LocalBusinessEditor] updateOpeningHours', { index, field, value, payloadPreview: hours[index] }) 
+} catch (e) {}
     setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
   }, [])
 
@@ -296,7 +313,9 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
   const addOpeningHours = useCallback(() => {
     const hours = [...(local.openingHoursSpecification || [])]
     hours.push({ dayOfWeek: 'Monday', opens: '09:00', closes: '18:00' })
-    try { console.debug('[debug][LocalBusinessEditor] addOpeningHours', { payload: hours }) } catch (e) {}
+    try {
+ console.debug('[debug][LocalBusinessEditor] addOpeningHours', { payload: hours }) 
+} catch (e) {}
     setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
   }, [])
 
@@ -463,7 +482,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       {/* Basic Info Tab */}
       {activeTab === 'basic' && (
         <div className="space-y-4">
-          <CollapsibleSection title="Isletme Bilgileri" icon="🏢" defaultOpen={true}>
+          <CollapsibleSection title="Isletme Bilgileri" icon="🏢" defaultOpen>
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
                 <FormSelect
@@ -683,7 +702,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       {/* Address Tab */}
       {activeTab === 'address' && (
         <div className="space-y-4">
-          <CollapsibleSection title="Fiziksel Adres" icon="🏠" defaultOpen={true}>
+          <CollapsibleSection title="Fiziksel Adres" icon="🏠" defaultOpen>
             <div className="space-y-4">
               <FormInput
                 label="Sokak Adresi"
@@ -768,7 +787,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       {/* Opening Hours Tab */}
       {activeTab === 'hours' && (
         <div className="space-y-4">
-          <CollapsibleSection title="Calisma Saatleri" icon="🕐" defaultOpen={true}>
+          <CollapsibleSection title="Calisma Saatleri" icon="🕐" defaultOpen>
             <div className="space-y-4">
               <div className="p-3 bg-green-50 rounded-lg text-sm text-green-800">
                 <strong>Oneri:</strong> Google Business Profile'daki saatlerle ayni olmali.
@@ -869,7 +888,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       {/* Social Media Tab */}
       {activeTab === 'social' && (
         <div className="space-y-4">
-          <CollapsibleSection title="Sosyal Medya & Web Profilleri" icon="🔗" defaultOpen={true}>
+          <CollapsibleSection title="Sosyal Medya & Web Profilleri" icon="🔗" defaultOpen>
             <div className="space-y-4">
               <div className="p-3 bg-purple-50 rounded-lg text-sm text-purple-800">
                 <strong>Onerilir:</strong> Tum aktif sosyal medya profillerinizi ekleyin. Bu Google'in isletmenizi dogrulamasina yardimci olur.
@@ -918,7 +937,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       {/* Services Tab */}
       {activeTab === 'services' && (
         <div className="space-y-4">
-          <CollapsibleSection title="Sunulan Hizmetler" icon="💆" defaultOpen={true}>
+          <CollapsibleSection title="Sunulan Hizmetler" icon="💆" defaultOpen>
             <div className="space-y-4">
               <div className="p-3 bg-pink-50 rounded-lg text-sm text-pink-800">
                 <strong>SEO Avantaji:</strong> Hizmetlerinizi eklemek, Google'da aranabilirliginizi arttirir.
@@ -988,7 +1007,7 @@ export default function LocalBusinessEditor({ data, onUpdate }: LocalBusinessEdi
       {/* Amenities Tab */}
       {activeTab === 'amenities' && (
         <div className="space-y-4">
-          <CollapsibleSection title="Isletme Olanaklari" icon="✨" defaultOpen={true}>
+          <CollapsibleSection title="Isletme Olanaklari" icon="✨" defaultOpen>
             <div className="space-y-4">
               <div className="p-3 bg-teal-50 rounded-lg text-sm text-teal-800">
                 <strong>Ipucu:</strong> Musterilerin aradigi ozellikleri ekleyin (WiFi, Otopark, Engelli Erisimi vs.)

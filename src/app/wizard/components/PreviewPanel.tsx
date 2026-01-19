@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+
 import { useWizardStore } from '../store/useWizardStore';
 import { getVariantComponent } from '../templates/variantRegistry';
 
@@ -147,9 +148,9 @@ export default function PreviewPanel() {
       <div className="bg-white rounded-xl shadow-2xl overflow-hidden mb-8">
         <div className="bg-gray-100 p-4 border-b">
           <div className="flex items-center gap-2">
-            <div className="w-3 h-3 rounded-full bg-red-500"></div>
-            <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-            <div className="w-3 h-3 rounded-full bg-green-500"></div>
+            <div className="w-3 h-3 rounded-full bg-red-500" />
+            <div className="w-3 h-3 rounded-full bg-yellow-500" />
+            <div className="w-3 h-3 rounded-full bg-green-500" />
             <div className="ml-4 text-sm text-gray-600">
               🌐 preview.yourbusiness.com
             </div>

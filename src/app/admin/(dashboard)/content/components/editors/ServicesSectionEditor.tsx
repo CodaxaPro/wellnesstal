@@ -1,7 +1,7 @@
 'use client'
 
-import { ContentSection } from '../types'
 import { StyleEditor } from '../StyleEditors'
+import { ContentSection } from '../types'
 
 interface ServicesSectionEditorProps {
   section: ContentSection
@@ -147,10 +147,10 @@ export function ServicesSectionEditor({
               />
               <div className={`w-11 h-6 rounded-full transition-colors ${
                 content.cta?.visible !== false ? 'bg-sage-500' : 'bg-gray-300'
-              } ${!isEditing ? 'opacity-50' : ''}`}></div>
+              } ${!isEditing ? 'opacity-50' : ''}`} />
               <div className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
                 content.cta?.visible !== false ? 'translate-x-5' : 'translate-x-0'
-              }`}></div>
+              }`} />
             </div>
           </label>
         </div>
@@ -186,7 +186,7 @@ export function ServicesSectionEditor({
           {/* Primary Button */}
           <div className="p-3 bg-white rounded-lg border border-amber-100">
             <h4 className="text-sm font-semibold text-charcoal mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 bg-sage-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-sage-500 rounded-full" />
               Ana Buton
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
@@ -243,7 +243,7 @@ export function ServicesSectionEditor({
           {/* Secondary Button */}
           <div className="p-3 bg-white rounded-lg border border-amber-100">
             <h4 className="text-sm font-semibold text-charcoal mb-3 flex items-center gap-2">
-              <span className="w-2 h-2 bg-amber-500 rounded-full"></span>
+              <span className="w-2 h-2 bg-amber-500 rounded-full" />
               İkincil Buton
             </h4>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

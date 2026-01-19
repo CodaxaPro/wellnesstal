@@ -1,5 +1,6 @@
 // Stack.tsx
 import React from 'react';
+
 import type { StackConfig } from './primitives.types';
 
 interface StackProps {

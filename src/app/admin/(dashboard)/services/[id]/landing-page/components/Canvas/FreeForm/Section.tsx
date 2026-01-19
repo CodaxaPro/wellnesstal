@@ -1,5 +1,6 @@
 // Section.tsx
 import React from 'react';
+
 import type { SectionConfig } from './primitives.types';
 
 interface SectionProps {

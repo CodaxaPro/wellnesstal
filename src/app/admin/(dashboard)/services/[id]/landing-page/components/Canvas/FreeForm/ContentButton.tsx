@@ -2,6 +2,7 @@
 // Button component with variants and states
 
 import React from 'react';
+
 import type { ButtonConfig } from './content.types';
 
 interface ContentButtonProps {

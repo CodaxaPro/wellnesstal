@@ -1,6 +1,7 @@
 // SelectableBlockWrapper.tsx - FİNAL VERSİYON
 
 import React, { useState } from 'react';
+
 import type { LayoutElement, SectionConfig, ContainerConfig, StackConfig, GridConfig } from './primitives.types';
 
 interface SelectableBlockWrapperProps {

@@ -217,7 +217,9 @@ export function createSafeTransformer<TFrom extends Record<string, any>, TTo ext
   const transformer = createTransformer(mapping)
 
   return (data: TFrom | null | undefined): TTo | null => {
-    if (!data) return null
+    if (!data) {
+return null
+}
 
     try {
       return transformer(data)
@@ -303,7 +305,9 @@ export function transformNested<T>(
  * Performance optimized - no regex
  */
 export function snakeToCamel(str: string): string {
-  if (!str || typeof str !== 'string') return str
+  if (!str || typeof str !== 'string') {
+return str
+}
 
   let result = ''
   let capitalizeNext = false
@@ -333,7 +337,9 @@ export function snakeToCamel(str: string): string {
  * Performance optimized - no regex
  */
 export function camelToSnake(str: string): string {
-  if (!str || typeof str !== 'string') return str
+  if (!str || typeof str !== 'string') {
+return str
+}
 
   let result = ''
   const length = str.length
@@ -344,7 +350,9 @@ export function camelToSnake(str: string): string {
 
     // Check if uppercase letter (A-Z = 65-90)
     if (code >= 65 && code <= 90) {
-      if (i > 0) result += '_'
+      if (i > 0) {
+result += '_'
+}
       result += char.toLowerCase()
     } else {
       result += char
@@ -427,10 +435,14 @@ export function hasRequiredFields<T extends Record<string, any>>(
   data: any,
   requiredFields: Array<keyof T>
 ): data is T {
-  if (!data || typeof data !== 'object') return false
+  if (!data || typeof data !== 'object') {
+return false
+}
 
   for (const field of requiredFields) {
-    if (!(field in data)) return false
+    if (!(field in data)) {
+return false
+}
   }
 
   return true

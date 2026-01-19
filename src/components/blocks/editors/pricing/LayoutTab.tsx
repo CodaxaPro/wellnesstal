@@ -1,6 +1,7 @@
 'use client'
 
 import { PricingContent, PricingPackageStyle, PricingResponsive } from '../../types'
+
 import { PRICING_LAYOUT_OPTIONS, SHADOW_OPTIONS, HOVER_EFFECT_OPTIONS } from './defaults'
 
 interface LayoutTabProps {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, CSSProperties } from 'react'
+
 import { BlockProps, CTAContent } from './types'
 
 // Default content for backwards compatibility
@@ -211,7 +212,9 @@ export default function CtaBlock({ block }: BlockProps) {
 
   // Animation helpers
   const getAnimationTransform = (type: string): string => {
-    if (isVisible) return 'translate(0, 0) scale(1)'
+    if (isVisible) {
+return 'translate(0, 0) scale(1)'
+}
     switch (type) {
       case 'fade': return 'translate(0, 0) scale(1)'
       case 'slide-up': return 'translate(0, 30px) scale(1)'
@@ -282,7 +285,9 @@ export default function CtaBlock({ block }: BlockProps) {
     const words = title.split(' ')
     return words.map((word, index) => {
       const isHighlighted = titleHighlight.words.includes(index)
-      if (!isHighlighted) return <span key={index}>{word} </span>
+      if (!isHighlighted) {
+return <span key={index}>{word} </span>
+}
 
       const highlightStyle: CSSProperties = {}
       switch (titleHighlight.style) {
@@ -313,7 +318,9 @@ export default function CtaBlock({ block }: BlockProps) {
 
   // Render badge
   const renderBadge = () => {
-    if (!showBadge || !badge?.text) return null
+    if (!showBadge || !badge?.text) {
+return null
+}
 
     const badgeAnimClass = badge.animation === 'pulse' ? 'animate-pulse' :
                            badge.animation === 'bounce' ? 'animate-bounce' :
@@ -338,7 +345,9 @@ export default function CtaBlock({ block }: BlockProps) {
 
   // Render urgency element
   const renderUrgency = () => {
-    if (!urgency?.enabled) return null
+    if (!urgency?.enabled) {
+return null
+}
 
     return (
       <div
@@ -357,7 +366,9 @@ export default function CtaBlock({ block }: BlockProps) {
 
   // Render trust elements
   const renderTrustElements = () => {
-    if (!trustElements?.enabled || !trustElements.items?.length) return null
+    if (!trustElements?.enabled || !trustElements.items?.length) {
+return null
+}
 
     return (
       <div
@@ -377,7 +388,9 @@ export default function CtaBlock({ block }: BlockProps) {
 
   // Render decoration
   const renderDecoration = () => {
-    if (!showDecoration || !decoration?.enabled) return null
+    if (!showDecoration || !decoration?.enabled) {
+return null
+}
 
     const decorStyle: CSSProperties = {
       position: 'absolute',

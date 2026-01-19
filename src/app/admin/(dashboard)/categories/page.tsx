@@ -1,15 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 // Template Engine imports
+import EntityList, { EntityData } from '../../../../components/shared/EntityList'
 import { templateEngine } from '../../../../lib/template-engine'
 import { TemplateConfig, EntityConfig } from '../../../../types/templates'
 
 // EntityList component
-import EntityList, { EntityData } from '../../../../components/shared/EntityList'
 
 // Types
 interface Category extends EntityData {
@@ -626,7 +627,7 @@ export default function CategoriesManagement() {
   if (!user) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }
@@ -636,7 +637,7 @@ export default function CategoriesManagement() {
       {/* Template Loading */}
       {templateLoading && (
         <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center gap-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
           Template wird geladen...
         </div>
       )}
@@ -682,7 +683,7 @@ export default function CategoriesManagement() {
         {/* Template Status Badge */}
         {templateConfig && (
           <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
-            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
             <span className="text-sm font-medium text-green-800">
               {templateConfig.entities.secondary?.name} Management • Template: {templateConfig.name} v{templateConfig.version}
             </span>
@@ -722,10 +723,10 @@ export default function CategoriesManagement() {
               onDelete={handleDelete}
               onView={handleView}
               onBulkAction={handleBulkAction}
-              showSearch={true}
-              showFilters={true}
-              showBulkActions={true}
-              showCreateButton={true}
+              showSearch
+              showFilters
+              showBulkActions
+              showCreateButton
               showImportExport={false}
               layout="table"
             />

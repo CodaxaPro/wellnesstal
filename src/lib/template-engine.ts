@@ -197,7 +197,9 @@ export class TemplateEngine {
    * Get current active template configuration
    */
   getActiveTemplate(): TemplateConfig | null {
-    if (!this.activeTemplate) return null;
+    if (!this.activeTemplate) {
+return null;
+}
     return this.templates.get(this.activeTemplate) || null;
   }
 
@@ -226,10 +228,14 @@ export class TemplateEngine {
     bulk: string;
   } {
     const template = this.getActiveTemplate();
-    if (!template) throw new Error('No active template');
+    if (!template) {
+throw new Error('No active template');
+}
 
     const entity = this.getEntityConfig(entityKey);
-    if (!entity) throw new Error(`Entity ${entityKey} not found`);
+    if (!entity) {
+throw new Error(`Entity ${entityKey} not found`);
+}
 
     const basePath = `/api/${entityKey}`;
     
@@ -247,7 +253,9 @@ export class TemplateEngine {
    */
   getEntityConfig(entityKey: string): EntityConfig | null {
     const template = this.getActiveTemplate();
-    if (!template) return null;
+    if (!template) {
+return null;
+}
 
     // Check primary entity
     if (template.entities.primary && entityKey === 'primary') {
@@ -272,7 +280,9 @@ export class TemplateEngine {
    */
   validateEntityData(entityKey: string, data: Record<string, any>): ValidationResult {
     const entity = this.getEntityConfig(entityKey);
-    if (!entity) return { valid: false, errors: ['Entity not found'] };
+    if (!entity) {
+return { valid: false, errors: ['Entity not found'] };
+}
 
     const errors: string[] = [];
 
@@ -286,7 +296,9 @@ export class TemplateEngine {
       }
 
       // Skip validation if field is empty and not required
-      if (!value && !field.required) continue;
+      if (!value && !field.required) {
+continue;
+}
 
       // Type-specific validation
       errors.push(...this.validateFieldValue(field, value));

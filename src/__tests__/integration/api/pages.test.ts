@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest'
+
 import { resetMockData } from '../../mocks/handlers'
 
 const API_BASE = 'http://localhost:3001/api'

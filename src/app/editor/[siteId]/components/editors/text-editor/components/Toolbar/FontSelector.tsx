@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { FONT_FAMILIES } from '../../types/textConfig.types';
 import { getSlideInAnimation } from '../../utils/animationHelpers';
 
@@ -55,7 +57,9 @@ export default function FontSelector({ value, onChange }: FontSelectorProps) {
               {/* Group by category */}
               {['Sans Serif', 'Serif', 'Monospace', 'Handwriting', 'Display'].map(category => {
                 const fontsInCategory = FONT_FAMILIES.filter(f => f.category === category);
-                if (fontsInCategory.length === 0) return null;
+                if (fontsInCategory.length === 0) {
+return null;
+}
 
                 return (
                   <div key={category} className="py-2">

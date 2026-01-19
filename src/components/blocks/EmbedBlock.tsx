@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo, useRef, useEffect } from 'react'
+
 import { BlockProps, EmbedContent } from './types'
 
 // Default content for new embed blocks
@@ -56,7 +57,9 @@ export default function EmbedBlock({ block }: BlockProps) {
 
   // Auto-resize iframe based on content
   useEffect(() => {
-    if (!iframeRef.current || !containerRef.current) return
+    if (!iframeRef.current || !containerRef.current) {
+return
+}
 
     const iframe = iframeRef.current
     const container = containerRef.current
@@ -66,7 +69,9 @@ export default function EmbedBlock({ block }: BlockProps) {
       // Security: Only accept messages from the iframe's origin
       try {
         const iframeUrl = new URL(iframe.src)
-        if (event.origin !== iframeUrl.origin) return
+        if (event.origin !== iframeUrl.origin) {
+return
+}
       } catch (e) {
         // If URL parsing fails, skip
         return
@@ -187,7 +192,9 @@ export default function EmbedBlock({ block }: BlockProps) {
   // Get background style
   const getBackgroundStyle = (): React.CSSProperties => {
     const bg = content.background
-    if (!bg || bg.type === 'none') return {}
+    if (!bg || bg.type === 'none') {
+return {}
+}
 
     if (bg.type === 'solid' && bg.color) {
       return { backgroundColor: bg.color }
@@ -215,13 +222,23 @@ export default function EmbedBlock({ block }: BlockProps) {
 
   // Build sandbox attribute
   const getSandboxAttribute = () => {
-    if (!content.security?.sandboxEnabled) return undefined
+    if (!content.security?.sandboxEnabled) {
+return undefined
+}
 
     const permissions: string[] = []
-    if (content.security.allowScripts) permissions.push('allow-scripts')
-    if (content.security.allowSameOrigin) permissions.push('allow-same-origin')
-    if (content.security.allowForms) permissions.push('allow-forms')
-    if (content.security.allowPopups) permissions.push('allow-popups')
+    if (content.security.allowScripts) {
+permissions.push('allow-scripts')
+}
+    if (content.security.allowSameOrigin) {
+permissions.push('allow-same-origin')
+}
+    if (content.security.allowForms) {
+permissions.push('allow-forms')
+}
+    if (content.security.allowPopups) {
+permissions.push('allow-popups')
+}
 
     return permissions.join(' ')
   }
@@ -237,19 +254,33 @@ export default function EmbedBlock({ block }: BlockProps) {
         // Extract video ID from various YouTube URL formats
         const match = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([^&\s?]+)/)
         const videoId = match?.[1] || settings?.youtube?.videoId
-        if (!videoId) return url
+        if (!videoId) {
+return url
+}
 
         const params = new URLSearchParams()
-        if (settings?.youtube?.autoplay) params.set('autoplay', '1')
-        if (settings?.youtube?.muted) params.set('mute', '1')
-        if (settings?.youtube?.loop) params.set('loop', '1')
-        if (settings?.youtube?.controls === false) params.set('controls', '0')
-        if (settings?.youtube?.startTime) params.set('start', String(settings.youtube.startTime))
-        if (settings?.youtube?.showRelated === false) params.set('rel', '0')
+        if (settings?.youtube?.autoplay) {
+params.set('autoplay', '1')
+}
+        if (settings?.youtube?.muted) {
+params.set('mute', '1')
+}
+        if (settings?.youtube?.loop) {
+params.set('loop', '1')
+}
+        if (settings?.youtube?.controls === false) {
+params.set('controls', '0')
+}
+        if (settings?.youtube?.startTime) {
+params.set('start', String(settings.youtube.startTime))
+}
+        if (settings?.youtube?.showRelated === false) {
+params.set('rel', '0')
+}
 
         const domain = settings?.youtube?.enablePrivacyMode ? 'www.youtube-nocookie.com' : 'www.youtube.com'
         const queryString = params.toString()
-        return `https://${domain}/embed/${videoId}${queryString ? '?' + queryString : ''}`
+        return `https://${domain}/embed/${videoId}${queryString ? `?${  queryString}` : ''}`
       }
 
       case 'vimeo': {
@@ -371,7 +402,7 @@ export default function EmbedBlock({ block }: BlockProps) {
     `
     
     // Process iframe tags - remove all width/height attributes and inline styles
-    let processed = html
+    const processed = html
       // Remove width attribute (all variations including invalid ones like "100%px")
       .replace(/width\s*=\s*["'][^"']*["']/gi, '')
       .replace(/width\s*=\s*[^\s>]+/gi, '')

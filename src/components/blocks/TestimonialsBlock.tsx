@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import Image from 'next/image'
+
 import { BlockProps, TestimonialsContent } from './types'
 
 // Style interfaces - Ana sayfadaki ile aynı
@@ -80,14 +82,16 @@ export default function TestimonialsBlock({ block }: BlockProps) {
     stats?: StatItem[]
     styles?: TestimonialsBlockStyles
   }
-  
+
   const testimonials = content.testimonials || []
   const [currentTestimonial, setCurrentTestimonial] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(content.autoPlay !== false)
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying || testimonials.length === 0 || content.autoPlay === false) return
+    if (!isAutoPlaying || testimonials.length === 0 || content.autoPlay === false) {
+return
+}
 
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
@@ -135,7 +139,7 @@ export default function TestimonialsBlock({ block }: BlockProps) {
   const sectionTitle = content.sectionTitle || content.title || 'Was unsere Kunden'
   const highlightedText = content.highlightedText || 'sagen'
   const description = content.description || content.subtitle || 'Echte Bewertungen von zufriedenen Kunden - Ihre Meinung ist uns wichtig'
-  
+
   // Default stats - Ana sayfadaki gibi
   const defaultStats = [
     { value: '500+', label: 'Zufriedene Kunden' },
@@ -177,7 +181,7 @@ export default function TestimonialsBlock({ block }: BlockProps) {
           >
             {badge}
           </div>
-          
+
           {/* Section Title */}
           <h2 className="mb-6">
             <span
@@ -201,7 +205,7 @@ export default function TestimonialsBlock({ block }: BlockProps) {
               {highlightedText}
             </span>
             </h2>
-          
+
           {/* Description */}
           <p
             className="max-w-3xl mx-auto"
@@ -218,10 +222,10 @@ export default function TestimonialsBlock({ block }: BlockProps) {
 
         {/* Main Testimonial Display - Ana sayfadaki gibi */}
         <div className="relative max-w-4xl mx-auto mb-12">
-          <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-large relative overflow-hidden">
+          <div className="bg-white rounded-3xl p-4 sm:p-8 lg:p-12 shadow-large relative overflow-visible">
             {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-sage-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-earth-100 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-sage-100 rounded-full -translate-y-16 translate-x-16 opacity-50" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-earth-100 rounded-full translate-y-12 -translate-x-12 opacity-50" />
 
             {/* Quote Icon */}
             <div className="absolute top-8 left-8 text-6xl text-sage-200 font-serif">"</div>
@@ -284,6 +288,46 @@ export default function TestimonialsBlock({ block }: BlockProps) {
               <blockquote className="text-lg lg:text-xl text-gray-700 leading-relaxed italic mb-8 font-light">
                 "{testimonials[currentTestimonial]?.content || 'Kein Text verfügbar'}"
               </blockquote>
+
+              {/* Read More Link - Google Review */}
+              {testimonials[currentTestimonial]?.readMoreLink?.enabled && testimonials[currentTestimonial]?.readMoreLink?.url && (() => {
+                const url = testimonials[currentTestimonial].readMoreLink?.url || ''
+                // Normalize URL: eğer https:// veya http:// ile başlamıyorsa ekle
+                let normalizedUrl = url.trim()
+                if (normalizedUrl && !normalizedUrl.match(/^https?:\/\//i)) {
+                  // Google Maps için www. ekle
+                  if (normalizedUrl.startsWith('google.com/') || normalizedUrl.startsWith('www.google.com/')) {
+                    normalizedUrl = `https://www.${normalizedUrl.replace(/^(www\.)?/, '')}`
+                  } else {
+                    normalizedUrl = `https://${normalizedUrl}`
+                  }
+                }
+                return (
+                  <div className="mt-4 relative z-20">
+                    <a
+                      href={normalizedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sage-600 hover:text-sage-700 font-medium text-sm sm:text-base transition-colors touch-manipulation"
+                      style={{
+                        minHeight: '44px', // iOS minimum touch target
+                        display: 'inline-flex',
+                        position: 'relative',
+                        zIndex: 20
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        window.open(normalizedUrl, '_blank', 'noopener,noreferrer')
+                      }}
+                    >
+                      <span>{testimonials[currentTestimonial].readMoreLink?.text || 'Weiter lesen'}</span>
+                      <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                )
+              })()}
             </div>
           </div>
 
@@ -321,8 +365,8 @@ export default function TestimonialsBlock({ block }: BlockProps) {
                 key={index}
                 onClick={() => goToTestimonial(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                  index === currentTestimonial 
-                    ? 'bg-sage-500 w-8' 
+                  index === currentTestimonial
+                    ? 'bg-sage-500 w-8'
                     : 'bg-sage-200 hover:bg-sage-300'
                 }`}
                 aria-label={`Zu Testimonial ${index + 1} springen`}
@@ -340,7 +384,7 @@ export default function TestimonialsBlock({ block }: BlockProps) {
               .map((testimonial, index) => {
                 const originalIndex = testimonials.findIndex(t => t.id === testimonial.id)
                 return (
-                  <div 
+                  <div
                     key={testimonial.id}
                     className="bg-white p-6 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer hover:-translate-y-1"
                     onClick={() => goToTestimonial(originalIndex)}
@@ -367,7 +411,7 @@ export default function TestimonialsBlock({ block }: BlockProps) {
                         )}
                       </div>
                     </div>
-                    
+
                     {testimonial.rating && (
                       <div className="flex mb-3">
                         {[...Array(5)].map((_, i) => (
@@ -377,13 +421,54 @@ export default function TestimonialsBlock({ block }: BlockProps) {
                         ))}
                     </div>
                   )}
-                    
+
                     <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
-                      {testimonial.content && testimonial.content.length > 100 
-                        ? `${testimonial.content.substring(0, 100)}...` 
+                      {testimonial.content && testimonial.content.length > 100
+                        ? `${testimonial.content.substring(0, 100)}...`
                         : (testimonial.content || '')}
                     </p>
-                    
+
+                    {/* Read More Link - Google Review */}
+                    {testimonial.readMoreLink?.enabled && testimonial.readMoreLink?.url && (() => {
+                      const url = testimonial.readMoreLink?.url || ''
+                      // Normalize URL: eğer https:// veya http:// ile başlamıyorsa ekle
+                      let normalizedUrl = url.trim()
+                      if (normalizedUrl && !normalizedUrl.match(/^https?:\/\//i)) {
+                        // Google Maps için www. ekle
+                        if (normalizedUrl.startsWith('google.com/') || normalizedUrl.startsWith('www.google.com/')) {
+                          normalizedUrl = `https://www.${normalizedUrl.replace(/^(www\.)?/, '')}`
+                        } else {
+                          normalizedUrl = `https://${normalizedUrl}`
+                        }
+                      }
+                      return (
+                        <div className="mt-2 relative z-20">
+                          <a
+                            href={normalizedUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 text-sage-600 hover:text-sage-700 font-medium text-xs sm:text-sm transition-colors touch-manipulation"
+                            style={{
+                              minHeight: '44px', // iOS minimum touch target
+                              display: 'inline-flex',
+                              position: 'relative',
+                              zIndex: 20
+                            }}
+                            onClick={(e) => {
+                              e.stopPropagation()
+                              e.preventDefault()
+                              window.open(normalizedUrl, '_blank', 'noopener,noreferrer')
+                            }}
+                          >
+                            <span>{testimonial.readMoreLink?.text || 'Weiter lesen'}</span>
+                            <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                          </a>
+                        </div>
+                      )
+                    })()}
+
                     {testimonial.company && (
                       <div className="mt-3 text-xs text-sage-600 font-medium">
                         {testimonial.company}
@@ -396,36 +481,38 @@ export default function TestimonialsBlock({ block }: BlockProps) {
         )}
 
         {/* Stats Section - Ana sayfadaki gibi */}
-        <div className="mt-16 bg-white rounded-3xl p-8 lg:p-12 shadow-large">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div
-                  className="text-3xl lg:text-4xl font-bold text-sage-600 mb-2"
-                  style={{
-                    fontFamily: styles.statsValue?.fontFamily || defaultStyles.statsValue?.fontFamily,
-                    fontSize: styles.statsValue?.fontSize || defaultStyles.statsValue?.fontSize,
-                    fontWeight: (styles.statsValue?.fontWeight as any) || defaultStyles.statsValue?.fontWeight,
-                    color: styles.statsValue?.color || defaultStyles.statsValue?.color
-                  }}
-                >
-                  {stat.value}
+        {content.showStats === true && stats.length > 0 && (
+          <div className="mt-16 bg-white rounded-3xl p-8 lg:p-12 shadow-large">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+              {stats.map((stat, index) => (
+                <div key={index} className="text-center">
+                  <div
+                    className="text-3xl lg:text-4xl font-bold text-sage-600 mb-2"
+                    style={{
+                      fontFamily: styles.statsValue?.fontFamily || defaultStyles.statsValue?.fontFamily,
+                      fontSize: styles.statsValue?.fontSize || defaultStyles.statsValue?.fontSize,
+                      fontWeight: (styles.statsValue?.fontWeight as any) || defaultStyles.statsValue?.fontWeight,
+                      color: styles.statsValue?.color || defaultStyles.statsValue?.color
+                    }}
+                  >
+                    {stat.value}
+                  </div>
+                  <div
+                    className="text-gray-custom font-medium"
+                    style={{
+                      fontFamily: styles.statsLabel?.fontFamily || defaultStyles.statsLabel?.fontFamily,
+                      fontSize: styles.statsLabel?.fontSize || defaultStyles.statsLabel?.fontSize,
+                      fontWeight: (styles.statsLabel?.fontWeight as any) || defaultStyles.statsLabel?.fontWeight,
+                      color: styles.statsLabel?.color || defaultStyles.statsLabel?.color
+                    }}
+                  >
+                    {stat.label}
+                  </div>
                 </div>
-                <div
-                  className="text-gray-custom font-medium"
-                  style={{
-                    fontFamily: styles.statsLabel?.fontFamily || defaultStyles.statsLabel?.fontFamily,
-                    fontSize: styles.statsLabel?.fontSize || defaultStyles.statsLabel?.fontSize,
-                    fontWeight: (styles.statsLabel?.fontWeight as any) || defaultStyles.statsLabel?.fontWeight,
-                    color: styles.statsLabel?.color || defaultStyles.statsLabel?.color
-                  }}
-                >
-                  {stat.label}
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-          </div>
+        )}
       </div>
     </section>
   )

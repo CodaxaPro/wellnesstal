@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import Link from 'next/link'
+
 import { BlockProps } from './types'
 
 // Style interface - exact copy from layout/Footer.tsx
@@ -283,8 +285,8 @@ export default function FooterBlock({ block }: BlockProps) {
       <footer className="bg-charcoal text-white py-16">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <div className="animate-pulse">
-            <div className="h-8 w-48 bg-gray-700 rounded mx-auto mb-4"></div>
-            <div className="h-4 w-96 bg-gray-700 rounded mx-auto"></div>
+            <div className="h-8 w-48 bg-gray-700 rounded mx-auto mb-4" />
+            <div className="h-4 w-96 bg-gray-700 rounded mx-auto" />
           </div>
         </div>
       </footer>
@@ -396,7 +398,7 @@ export default function FooterBlock({ block }: BlockProps) {
                         color: content.styles?.link?.color || defaultStyles.link?.color,
                       }}
                     >
-                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       {link.label}
                     </Link>
                   </li>
@@ -430,7 +432,7 @@ export default function FooterBlock({ block }: BlockProps) {
                         color: content.styles?.link?.color || defaultStyles.link?.color,
                       }}
                     >
-                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       {service.label}
                     </Link>
                   </li>

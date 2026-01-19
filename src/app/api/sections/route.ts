@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-server'
+
 import { verifyAdmin } from '@/lib/auth'
+import { supabaseAdmin } from '@/lib/supabase-server'
 
 // Types
 interface HomepageSection {
@@ -166,9 +167,15 @@ export async function PUT(request: NextRequest) {
 
     // Update section
     const updateObj: Record<string, any> = {}
-    if (enabled !== undefined) updateObj.enabled = enabled
-    if (body.section_name) updateObj.section_name = body.section_name
-    if (body.section_icon) updateObj.section_icon = body.section_icon
+    if (enabled !== undefined) {
+updateObj.enabled = enabled
+}
+    if (body.section_name) {
+updateObj.section_name = body.section_name
+}
+    if (body.section_icon) {
+updateObj.section_icon = body.section_icon
+}
 
     const { data: updated, error } = await supabaseAdmin
       .from('homepage_sections')

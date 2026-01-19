@@ -2,8 +2,9 @@
 // CRUD Operations Hook
 
 import { useCallback } from 'react';
-import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
+
 import type { HeadingConfig, TextConfig, ContentComponent } from '../../content.types';
+import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
 import { findElementById } from '../utils/elementFinders';
 import { regenerateIds } from '../utils/idGenerator';
 
@@ -220,7 +221,9 @@ export function usePageCRUD(
               foundInStack = true;
               return true;
             }
-            if (findParentStack(element.children)) return true;
+            if (findParentStack(element.children)) {
+return true;
+}
           }
         }
         return false;
@@ -259,7 +262,9 @@ export function usePageCRUD(
    * Element sil
    */
   const handleDelete = useCallback((id: string) => {
-    if (!confirm('Are you sure you want to delete this element?')) return;
+    if (!confirm('Are you sure you want to delete this element?')) {
+return;
+}
 
     // Section silme
     const filteredSections = sections.filter((ps) => ps.section.id !== id);
@@ -402,7 +407,9 @@ export function usePageCRUD(
     for (let i = 0; i < sections.length; i++) {
       if (sections[i].section.id === id) {
         const newIndex = i + move;
-        if (newIndex < 0 || newIndex >= sections.length) return;
+        if (newIndex < 0 || newIndex >= sections.length) {
+return;
+}
         const newSections = [...sections];
         [newSections[i], newSections[newIndex]] = [newSections[newIndex], newSections[i]];
         setSections(newSections);
@@ -418,7 +425,9 @@ export function usePageCRUD(
         const index = elements.findIndex((e) => e.id === id);
         if (index !== -1) {
           const newIndex = index + move;
-          if (newIndex < 0 || newIndex >= elements.length) return elements;
+          if (newIndex < 0 || newIndex >= elements.length) {
+return elements;
+}
           const newElements = [...elements];
           [newElements[index], newElements[newIndex]] = [newElements[newIndex], newElements[index]];
           return newElements;
@@ -452,7 +461,9 @@ export function usePageCRUD(
       const gridIndex = pageSection.grids.findIndex((g) => g.id === id);
       if (gridIndex !== -1) {
         const newIndex = gridIndex + move;
-        if (newIndex < 0 || newIndex >= pageSection.grids.length) return pageSection;
+        if (newIndex < 0 || newIndex >= pageSection.grids.length) {
+return pageSection;
+}
         const newGrids = [...pageSection.grids];
         [newGrids[gridIndex], newGrids[newIndex]] = [newGrids[newIndex], newGrids[gridIndex]];
         return { ...pageSection, grids: newGrids };
@@ -462,7 +473,9 @@ export function usePageCRUD(
         const contentIndex = grid.children.findIndex((c) => c.id === id);
         if (contentIndex !== -1) {
           const newIndex = contentIndex + move;
-          if (newIndex < 0 || newIndex >= grid.children.length) return grid;
+          if (newIndex < 0 || newIndex >= grid.children.length) {
+return grid;
+}
           const newChildren = [...grid.children];
           [newChildren[contentIndex], newChildren[newIndex]] = [newChildren[newIndex], newChildren[contentIndex]];
           return { ...grid, children: newChildren };

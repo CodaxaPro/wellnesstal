@@ -2,8 +2,10 @@
 // Custom Hook - PageSections'ı LayerNode tree'ye dönüştürür
 
 import { useMemo, useState, useCallback } from 'react';
-import type { ContainerConfig, StackConfig, GridConfig } from '../Canvas/FreeForm/primitives.types';
+
 import type { PageSection } from '../Canvas/FreeForm/PageBuilder/usePageBuilder';
+import type { ContainerConfig, StackConfig, GridConfig } from '../Canvas/FreeForm/primitives.types';
+
 import type { LayerNode } from './layer.types';
 import { isContentComponent, isStackConfig, isGridConfig } from './layer.types';
 
@@ -56,9 +58,13 @@ export function useLayerTree(sections: PageSection[]): UseLayerTreeReturn {
   const findNode = useCallback((id: string): LayerNode | null => {
     const search = (nodes: LayerNode[]): LayerNode | null => {
       for (const node of nodes) {
-        if (node.id === id) return node;
+        if (node.id === id) {
+return node;
+}
         const found = search(node.children);
-        if (found) return found;
+        if (found) {
+return found;
+}
       }
       return null;
     };

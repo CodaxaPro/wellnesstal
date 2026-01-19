@@ -65,19 +65,27 @@ export function getTypeFromId(id: string): string | null {
  * ID'nin geçerli olup olmadığını kontrol et
  */
 export function isValidId(id: string): boolean {
-  if (!id || typeof id !== 'string') return false;
+  if (!id || typeof id !== 'string') {
+return false;
+}
   
   // Format: type-timestamp-random
   const parts = id.split('-');
   
-  if (parts.length < 3) return false;
+  if (parts.length < 3) {
+return false;
+}
   
   // Timestamp numeric mi?
   const timestamp = parseInt(parts[1], 10);
-  if (isNaN(timestamp)) return false;
+  if (isNaN(timestamp)) {
+return false;
+}
   
   // Random string var mı?
-  if (parts[2].length < 5) return false;
+  if (parts[2].length < 5) {
+return false;
+}
   
   return true;
 }

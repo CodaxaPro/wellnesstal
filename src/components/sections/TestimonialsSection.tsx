@@ -94,99 +94,191 @@ const TestimonialsSection = () => {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
   const [sectionContent, setSectionContent] = useState<SectionContent>(defaultSectionContent)
   const [loading, setLoading] = useState(true)
+  const [testimonials, setTestimonials] = useState<any[]>([])
 
-  // Fetch section content from API
+  // Fetch section content and testimonials from blocks
   useEffect(() => {
-    const fetchSectionContent = async () => {
+    const fetchData = async () => {
       try {
-        const response = await fetch('/api/content?section=testimonials-section')
-        const data = await response.json()
-        if (data.success && data.data?.content) {
+        // Fetch section content
+        const contentResponse = await fetch('/api/content?section=testimonials-section')
+        const contentData = await contentResponse.json()
+        if (contentData.success && contentData.data?.content) {
           setSectionContent({
             ...defaultSectionContent,
-            ...data.data.content,
+            ...contentData.data.content,
             styles: {
               ...defaultSectionContent.styles,
-              ...data.data.content.styles
+              ...contentData.data.content.styles
             }
           })
         }
+
+        // Fetch all testimonials from testimonial blocks
+        const blocksResponse = await fetch('/api/pages/blocks?types=true')
+        const blocksData = await blocksResponse.json()
+
+        // Fetch all pages to find testimonial blocks
+        const pagesResponse = await fetch('/api/pages')
+        const pagesData = await pagesResponse.json()
+
+        // API returns { success: true, data: { pages: [...] } }
+        const pagesArray = pagesData.success && pagesData.data?.pages
+          ? pagesData.data.pages
+          : (Array.isArray(pagesData.data) ? pagesData.data : [])
+
+        if (pagesArray.length > 0) {
+          const allTestimonials: any[] = []
+
+          // Get testimonials from all pages' testimonial blocks
+          for (const page of pagesArray) {
+            if (page.id) {
+              try {
+                const pageBlocksResponse = await fetch(`/api/pages?id=${page.id}&withBlocks=true`)
+                const pageBlocksData = await pageBlocksResponse.json()
+
+                if (pageBlocksData.success && pageBlocksData.data?.blocks) {
+                  const testimonialBlocks = pageBlocksData.data.blocks.filter(
+                    (block: any) => block.block_type === 'testimonials' && block.visible !== false
+                  )
+
+                  console.log(`[TestimonialsSection] Found ${testimonialBlocks.length} testimonial blocks on page: ${page.slug || page.id}`)
+
+                  testimonialBlocks.forEach((block: any) => {
+                    if (block.content?.testimonials && Array.isArray(block.content.testimonials)) {
+                      console.log(`[TestimonialsSection] Found ${block.content.testimonials.length} testimonials in block`)
+                      block.content.testimonials.forEach((testimonial: any) => {
+                        // Convert testimonial block format to section format
+                        allTestimonials.push({
+                          id: testimonial.id || `testimonial-${Date.now()}-${Math.random()}`,
+                          name: testimonial.name || 'Anonym',
+                          location: testimonial.role || testimonial.company || 'Baesweiler',
+                          avatar: testimonial.avatar || (testimonial.name ? testimonial.name.split(' ').map((n: string) => n[0]).join('').substring(0, 2).toUpperCase() : 'A'),
+                          rating: testimonial.rating || 5,
+                          date: 'Vor kurzem',
+                          service: testimonial.company || 'Wellness Service',
+                          text: testimonial.content || '',
+                          verified: true,
+                          source: testimonial.readMoreLink?.url ? 'Google' : 'Website',
+                          readMoreLink: testimonial.readMoreLink
+                        })
+                      })
+                    }
+                  })
+                }
+              } catch (err) {
+                console.error(`Error fetching blocks for page ${page.id}:`, err)
+              }
+            }
+          }
+
+          console.log(`[TestimonialsSection] Total testimonials collected: ${allTestimonials.length}`)
+
+          // Remove duplicates based on name and text
+          const uniqueTestimonials = allTestimonials.filter((test, index, self) =>
+            index === self.findIndex((t) => t.name === test.name && t.text === test.text)
+          )
+
+          console.log('📝 Testimonials fetched:', {
+            totalPages: pagesData.data.length,
+            allTestimonialsCount: allTestimonials.length,
+            uniqueTestimonialsCount: uniqueTestimonials.length,
+            testimonials: uniqueTestimonials
+          })
+
+          setTestimonials(uniqueTestimonials.length > 0 ? uniqueTestimonials : [
+            {
+              id: 1,
+              name: "Sarah Müller",
+              location: "Baesweiler",
+              avatar: "SM",
+              rating: 5,
+              date: "vor 2 Wochen",
+              service: "Premium Headspa",
+              text: "Absolut entspannende Erfahrung! Die Headspa-Behandlung war genau das, was ich nach einem stressigen Arbeitstag gebraucht habe. Das Team ist sehr professionell und die Atmosphäre lädt zum Abschalten ein. Ich komme definitiv wieder!",
+              verified: true,
+              source: "Google"
+            },
+            {
+              id: 2,
+              name: "Michael Klein",
+              location: "Düsseldorf",
+              avatar: "MK",
+              rating: 5,
+              date: "vor 1 Woche",
+              service: "Wellness Massage",
+              text: "Die Atmosphäre ist wunderbar entspannend und die Behandlungen sind erstklassig. Meine Verspannungen sind wie weggeblasen. Ich komme regelmäßig hierher und kann Wellnesstal nur empfehlen! Beste Wellness-Oase in Baesweiler.",
+              verified: true,
+              source: "Google"
+            },
+            {
+              id: 3,
+              name: "Anna Berg",
+              location: "Bonn",
+              avatar: "AB",
+              rating: 5,
+              date: "vor 3 Tagen",
+              service: "Aromatherapie",
+              text: "Endlich ein Ort, wo ich komplett abschalten kann. Die Aromatherapie-Behandlung war ein Traum - die Düfte waren himmlisch und ich bin völlig entspannt nach Hause gefahren. Vielen Dank für diese wundervolle Erfahrung!",
+              verified: true,
+              source: "Facebook"
+            },
+            {
+              id: 4,
+              name: "Thomas Schmidt",
+              location: "Baesweiler",
+              avatar: "TS",
+              rating: 5,
+              date: "vor 4 Tagen",
+              service: "Gesichtspflege",
+              text: "Als Mann war ich zunächst skeptisch, aber das Team hat mich sofort wohlgefühlt. Die Gesichtsbehandlung war fantastisch und meine Haut fühlt sich seitdem viel besser an. Sehr professionell und diskret!",
+              verified: true,
+              source: "Google"
+            },
+            {
+              id: 5,
+              name: "Lisa Wagner",
+              location: "Leverkusen",
+              avatar: "LW",
+              rating: 5,
+              date: "vor 5 Tagen",
+              service: "Premium Headspa",
+              text: "Ich war zum ersten Mal bei einer Headspa-Behandlung und bin total begeistert! Die Kopfhautmassage war so entspannend und die verwendeten Öle haben einen tollen Duft. Kann ich nur weiterempfehlen!",
+              verified: true,
+              source: "Google"
+            }
+          ])
+        }
       } catch (error) {
         console.error('Failed to fetch testimonials section content:', error)
+        // Fallback to default testimonials
+        setTestimonials([
+          {
+            id: 1,
+            name: "Sarah Müller",
+            location: "Baesweiler",
+            avatar: "SM",
+            rating: 5,
+            date: "vor 2 Wochen",
+            service: "Premium Headspa",
+            text: "Absolut entspannende Erfahrung! Die Headspa-Behandlung war genau das, was ich nach einem stressigen Arbeitstag gebraucht habe. Das Team ist sehr professionell und die Atmosphäre lädt zum Abschalten ein. Ich komme definitiv wieder!",
+            verified: true,
+            source: "Google"
+          }
+        ])
       } finally {
         setLoading(false)
       }
     }
 
-    fetchSectionContent()
+    fetchData()
   }, [])
-
-  const testimonials = [
-    {
-      id: 1,
-      name: "Sarah Müller",
-      location: "Baesweiler",
-      avatar: "SM",
-      rating: 5,
-      date: "vor 2 Wochen",
-      service: "Premium Headspa",
-      text: "Absolut entspannende Erfahrung! Die Headspa-Behandlung war genau das, was ich nach einem stressigen Arbeitstag gebraucht habe. Das Team ist sehr professionell und die Atmosphäre lädt zum Abschalten ein. Ich komme definitiv wieder!",
-      verified: true,
-      source: "Google"
-    },
-    {
-      id: 2,
-      name: "Michael Klein",
-      location: "Düsseldorf", 
-      avatar: "MK",
-      rating: 5,
-      date: "vor 1 Woche",
-      service: "Wellness Massage",
-      text: "Die Atmosphäre ist wunderbar entspannend und die Behandlungen sind erstklassig. Meine Verspannungen sind wie weggeblasen. Ich komme regelmäßig hierher und kann Wellnesstal nur empfehlen! Beste Wellness-Oase in Baesweiler.",
-      verified: true,
-      source: "Google"
-    },
-    {
-      id: 3,
-      name: "Anna Berg",
-      location: "Bonn",
-      avatar: "AB",
-      rating: 5,
-      date: "vor 3 Tagen",
-      service: "Aromatherapie",
-      text: "Endlich ein Ort, wo ich komplett abschalten kann. Die Aromatherapie-Behandlung war ein Traum - die Düfte waren himmlisch und ich bin völlig entspannt nach Hause gefahren. Vielen Dank für diese wundervolle Erfahrung!",
-      verified: true,
-      source: "Facebook"
-    },
-    {
-      id: 4,
-      name: "Thomas Schmidt",
-      location: "Baesweiler",
-      avatar: "TS",
-      rating: 5,
-      date: "vor 4 Tagen",
-      service: "Gesichtspflege",
-      text: "Als Mann war ich zunächst skeptisch, aber das Team hat mich sofort wohlgefühlt. Die Gesichtsbehandlung war fantastisch und meine Haut fühlt sich seitdem viel besser an. Sehr professionell und diskret!",
-      verified: true,
-      source: "Google"
-    },
-    {
-      id: 5,
-      name: "Lisa Wagner",
-      location: "Leverkusen",
-      avatar: "LW",
-      rating: 5,
-      date: "vor 5 Tagen",
-      service: "Premium Headspa",
-      text: "Ich war zum ersten Mal bei einer Headspa-Behandlung und bin total begeistert! Die Kopfhautmassage war so entspannend und die verwendeten Öle haben einen tollen Duft. Kann ich nur weiterempfehlen!",
-      verified: true,
-      source: "Google"
-    }
-  ]
 
   // Auto-play functionality
   useEffect(() => {
-    if (!isAutoPlaying) return
+    if (!isAutoPlaying || testimonials.length === 0) {
+      return
+    }
 
     const interval = setInterval(() => {
       setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
@@ -215,30 +307,30 @@ const TestimonialsSection = () => {
       <section className="py-20 lg:py-32 bg-cream">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16 animate-pulse">
-            <div className="h-8 bg-sage-200 rounded-full w-40 mx-auto mb-4"></div>
-            <div className="h-12 bg-sage-200 rounded w-80 mx-auto mb-6"></div>
-            <div className="h-6 bg-sage-100 rounded w-96 mx-auto"></div>
+            <div className="h-8 bg-sage-200 rounded-full w-40 mx-auto mb-4" />
+            <div className="h-12 bg-sage-200 rounded w-80 mx-auto mb-6" />
+            <div className="h-6 bg-sage-100 rounded w-96 mx-auto" />
           </div>
           <div className="relative max-w-4xl mx-auto mb-12 animate-pulse">
             <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-large">
               <div className="flex items-start justify-between mb-8">
                 <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-sage-200 rounded-full"></div>
+                  <div className="w-16 h-16 bg-sage-200 rounded-full" />
                   <div>
-                    <div className="h-6 bg-sage-200 rounded w-32 mb-2"></div>
-                    <div className="h-4 bg-sage-100 rounded w-48"></div>
+                    <div className="h-6 bg-sage-200 rounded w-32 mb-2" />
+                    <div className="h-4 bg-sage-100 rounded w-48" />
                   </div>
                 </div>
                 <div className="flex gap-1">
                   {[...Array(5)].map((_, i) => (
-                    <div key={i} className="w-5 h-5 bg-sage-200 rounded"></div>
+                    <div key={i} className="w-5 h-5 bg-sage-200 rounded" />
                   ))}
                 </div>
               </div>
               <div className="space-y-3">
-                <div className="h-5 bg-sage-100 rounded w-full"></div>
-                <div className="h-5 bg-sage-100 rounded w-full"></div>
-                <div className="h-5 bg-sage-100 rounded w-3/4"></div>
+                <div className="h-5 bg-sage-100 rounded w-full" />
+                <div className="h-5 bg-sage-100 rounded w-full" />
+                <div className="h-5 bg-sage-100 rounded w-3/4" />
               </div>
             </div>
           </div>
@@ -303,8 +395,8 @@ const TestimonialsSection = () => {
         <div className="relative max-w-4xl mx-auto mb-12">
           <div className="bg-white rounded-3xl p-8 lg:p-12 shadow-large relative overflow-hidden">
             {/* Background Decoration */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-sage-100 rounded-full -translate-y-16 translate-x-16 opacity-50"></div>
-            <div className="absolute bottom-0 left-0 w-24 h-24 bg-earth-100 rounded-full translate-y-12 -translate-x-12 opacity-50"></div>
+            <div className="absolute top-0 right-0 w-32 h-32 bg-sage-100 rounded-full -translate-y-16 translate-x-16 opacity-50" />
+            <div className="absolute bottom-0 left-0 w-24 h-24 bg-earth-100 rounded-full translate-y-12 -translate-x-12 opacity-50" />
 
             {/* Quote Icon */}
             <div className="absolute top-8 left-8 text-6xl text-sage-200 font-serif">"</div>
@@ -358,6 +450,44 @@ const TestimonialsSection = () => {
               <blockquote className="text-lg lg:text-xl text-gray-700 leading-relaxed italic mb-8 font-light">
                 {testimonials[currentTestimonial].text}
               </blockquote>
+
+              {/* Read More Link - Google Review */}
+              {testimonials[currentTestimonial]?.readMoreLink?.enabled && testimonials[currentTestimonial]?.readMoreLink?.url && (() => {
+                const url = testimonials[currentTestimonial].readMoreLink?.url || ''
+                let normalizedUrl = url.trim()
+                if (normalizedUrl && !normalizedUrl.match(/^https?:\/\//i)) {
+                  if (normalizedUrl.startsWith('google.com/') || normalizedUrl.startsWith('www.google.com/')) {
+                    normalizedUrl = `https://www.${normalizedUrl.replace(/^(www\.)?/, '')}`
+                  } else {
+                    normalizedUrl = `https://${normalizedUrl}`
+                  }
+                }
+                return (
+                  <div className="mt-4 relative z-20">
+                    <a
+                      href={normalizedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 text-sage-600 hover:text-sage-700 font-medium text-sm sm:text-base transition-colors touch-manipulation"
+                      style={{
+                        minHeight: '44px',
+                        display: 'inline-flex',
+                        position: 'relative',
+                        zIndex: 20
+                      }}
+                      onClick={(e) => {
+                        e.preventDefault()
+                        window.open(normalizedUrl, '_blank', 'noopener,noreferrer')
+                      }}
+                    >
+                      <span>{testimonials[currentTestimonial].readMoreLink?.text || 'Weiter lesen'}</span>
+                      <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                )
+              })()}
             </div>
           </div>
 
@@ -390,8 +520,8 @@ const TestimonialsSection = () => {
               key={index}
               onClick={() => goToTestimonial(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentTestimonial 
-                  ? 'bg-sage-500 w-8' 
+                index === currentTestimonial
+                  ? 'bg-sage-500 w-8'
                   : 'bg-sage-200 hover:bg-sage-300'
               }`}
               aria-label={`Zu Testimonial ${index + 1} springen`}
@@ -402,7 +532,7 @@ const TestimonialsSection = () => {
         {/* Smaller Testimonial Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {testimonials.filter((_, index) => index !== currentTestimonial).slice(0, 3).map((testimonial, index) => (
-            <div 
+            <div
               key={testimonial.id}
               className="bg-white p-6 rounded-2xl shadow-soft hover:shadow-medium transition-all duration-300 cursor-pointer hover:-translate-y-1"
               onClick={() => goToTestimonial(testimonials.findIndex(t => t.id === testimonial.id))}
@@ -416,7 +546,7 @@ const TestimonialsSection = () => {
                   <p className="text-xs text-gray-custom">{testimonial.location}</p>
                 </div>
               </div>
-              
+
               <div className="flex mb-3">
                 {[...Array(5)].map((_, i) => (
                   <svg key={i} className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -424,11 +554,50 @@ const TestimonialsSection = () => {
                   </svg>
                 ))}
               </div>
-              
+
               <p className="text-gray-600 text-sm leading-relaxed line-clamp-3">
                 {testimonial.text.length > 100 ? `${testimonial.text.substring(0, 100)}...` : testimonial.text}
               </p>
-              
+
+              {/* Read More Link - Google Review */}
+              {testimonial.readMoreLink?.enabled && testimonial.readMoreLink?.url && (() => {
+                const url = testimonial.readMoreLink?.url || ''
+                let normalizedUrl = url.trim()
+                if (normalizedUrl && !normalizedUrl.match(/^https?:\/\//i)) {
+                  if (normalizedUrl.startsWith('google.com/') || normalizedUrl.startsWith('www.google.com/')) {
+                    normalizedUrl = `https://www.${normalizedUrl.replace(/^(www\.)?/, '')}`
+                  } else {
+                    normalizedUrl = `https://${normalizedUrl}`
+                  }
+                }
+                return (
+                  <div className="mt-2 relative z-20">
+                    <a
+                      href={normalizedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-sage-600 hover:text-sage-700 font-medium text-xs sm:text-sm transition-colors touch-manipulation"
+                      style={{
+                        minHeight: '44px',
+                        display: 'inline-flex',
+                        position: 'relative',
+                        zIndex: 20
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation()
+                        e.preventDefault()
+                        window.open(normalizedUrl, '_blank', 'noopener,noreferrer')
+                      }}
+                    >
+                      <span>{testimonial.readMoreLink?.text || 'Weiter lesen'}</span>
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </div>
+                )
+              })()}
+
               <div className="mt-3 text-xs text-sage-600 font-medium">
                 {testimonial.service}
               </div>

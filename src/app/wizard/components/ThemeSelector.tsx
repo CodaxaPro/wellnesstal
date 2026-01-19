@@ -57,7 +57,7 @@ export default function ThemeSelector() {
             `}
           >
             <div className="text-6xl mb-3">{t.preview}</div>
-            <div className={`h-16 ${t.color} rounded-lg mb-3`}></div>
+            <div className={`h-16 ${t.color} rounded-lg mb-3`} />
             <h3 className="font-bold text-lg">{t.name}</h3>
             
             {theme === t.id && (

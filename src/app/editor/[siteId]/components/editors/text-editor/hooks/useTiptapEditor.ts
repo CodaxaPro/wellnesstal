@@ -1,14 +1,16 @@
 // src/app/editor/[siteId]/components/editors/text-editor/hooks/useTiptapEditor.ts
 
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import { TextStyle } from '@tiptap/extension-text-style';
+import { useEffect } from 'react';
+
+import { CharacterCount } from '@tiptap/extension-character-count';
 import { Color } from '@tiptap/extension-color';
 import { Highlight } from '@tiptap/extension-highlight';
-import { TextAlign } from '@tiptap/extension-text-align';
-import { CharacterCount } from '@tiptap/extension-character-count';
 import { Placeholder } from '@tiptap/extension-placeholder';
-import { useEffect } from 'react';
+import { TextAlign } from '@tiptap/extension-text-align';
+import { TextStyle } from '@tiptap/extension-text-style';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+
 
 interface UseTiptapEditorProps {
   content: string;

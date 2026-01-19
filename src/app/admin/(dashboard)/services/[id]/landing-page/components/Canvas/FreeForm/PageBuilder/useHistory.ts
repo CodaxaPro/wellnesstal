@@ -28,7 +28,9 @@ export function useHistory<T>(initialState: T): UseHistoryReturn<T> {
   const canRedo = currentIndex < history.length - 1;
 
   const initialize = useCallback((newState: T) => {
-    if (hasBeenInitialized.current) return;
+    if (hasBeenInitialized.current) {
+return;
+}
     
     hasBeenInitialized.current = true;
     setHistory([newState]);

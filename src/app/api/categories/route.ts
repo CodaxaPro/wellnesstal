@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin, DBCategory } from '@/lib/supabase-server'
+
 import { verifyAdmin } from '@/lib/auth'
+import { supabaseAdmin, DBCategory } from '@/lib/supabase-server'
 
 // Types
 interface CategoryResponse {
@@ -260,11 +261,21 @@ export async function PUT(request: NextRequest) {
       updateObj.name = updateData.name.trim()
       updateObj.slug = generateSlug(updateData.name)
     }
-    if (updateData.description !== undefined) updateObj.description = updateData.description?.trim()
-    if (updateData.color !== undefined) updateObj.color = updateData.color
-    if (updateData.icon !== undefined) updateObj.icon = updateData.icon
-    if (updateData.order !== undefined) updateObj.order_num = updateData.order
-    if (updateData.active !== undefined) updateObj.active = updateData.active
+    if (updateData.description !== undefined) {
+updateObj.description = updateData.description?.trim()
+}
+    if (updateData.color !== undefined) {
+updateObj.color = updateData.color
+}
+    if (updateData.icon !== undefined) {
+updateObj.icon = updateData.icon
+}
+    if (updateData.order !== undefined) {
+updateObj.order_num = updateData.order
+}
+    if (updateData.active !== undefined) {
+updateObj.active = updateData.active
+}
 
     const { data: updated, error } = await supabaseAdmin
       .from('categories')

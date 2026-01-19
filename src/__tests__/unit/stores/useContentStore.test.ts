@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest'
+
 import { useContentStore, getSectionById, getSectionsByType } from '@/app/editor/[siteId]/store/useContentStore'
 import type { Section, SectionType } from '@/app/editor/[siteId]/store/useContentStore'
 

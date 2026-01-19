@@ -2,6 +2,7 @@
 // Save/Load/Export/Import Logic
 
 import { useState, useEffect, useCallback, useRef } from 'react';
+
 import { getTemplateById, DEFAULT_TEMPLATE_ID } from '../templates/registry';
 
 // PageSection type'ını buraya kopyala (geçici)
@@ -43,7 +44,9 @@ export function usePageStorage(
    * SADECE İLK MOUNT'TA ÇALIŞIR
    */
   const loadFromLocalStorage = useCallback(() => {
-    if (hasLoadedRef.current) return;
+    if (hasLoadedRef.current) {
+return;
+}
     hasLoadedRef.current = true;
 
     try {
@@ -132,7 +135,9 @@ export function usePageStorage(
   const handleImport = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
-      if (!file) return;
+      if (!file) {
+return;
+}
 
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -163,7 +168,9 @@ export function usePageStorage(
    * AUTO-SAVE - 30 saniyede bir
    */
   useEffect(() => {
-    if (sections.length === 0) return;
+    if (sections.length === 0) {
+return;
+}
 
     const interval = setInterval(() => {
       saveToLocalStorage(sections);

@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useRef } from 'react'
+
 import { TextContent, TextListItem, TextImage } from '../../types'
+
 import { CONTENT_TYPE_OPTIONS } from './defaults'
 
 interface ContentTabProps {
@@ -18,7 +20,9 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
 
   // Handle image upload
   const handleImageUpload = async (file: File, index?: number) => {
-    if (!file) return
+    if (!file) {
+return
+}
     
     setUploadingImage(index ?? -1)
     try {
@@ -70,7 +74,9 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
 
   // Add image via URL
   const addImageByUrl = () => {
-    if (!newImageUrl.trim()) return
+    if (!newImageUrl.trim()) {
+return
+}
     
     const newImage: TextImage = {
       id: `img-${Date.now()}`,
@@ -101,7 +107,9 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
   }
 
   const addListItem = () => {
-    if (!newListItem.trim()) return
+    if (!newListItem.trim()) {
+return
+}
     const newItem: TextListItem = {
       id: `list-${Date.now()}`,
       content: newListItem.trim(),
@@ -125,7 +133,9 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
   }
 
   const moveListItem = (fromIndex: number, toIndex: number) => {
-    if (toIndex < 0 || toIndex >= (content.listItems || []).length) return
+    if (toIndex < 0 || toIndex >= (content.listItems || []).length) {
+return
+}
     const items = [...(content.listItems || [])]
     const [moved] = items.splice(fromIndex, 1)
     items.splice(toIndex, 0, moved)
@@ -582,7 +592,9 @@ Birden fazla paragraf için boş satır bırakabilirsiniz."
             accept="image/*"
             onChange={(e) => {
               const file = e.target.files?.[0]
-              if (file) handleImageUpload(file)
+              if (file) {
+handleImageUpload(file)
+}
             }}
             className="hidden"
             id="text-block-image-upload"
@@ -591,7 +603,7 @@ Birden fazla paragraf için boş satır bırakabilirsiniz."
             <div className="flex items-center justify-center gap-2 mb-3">
               <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center">
                 {uploadingImage === -1 ? (
-                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sage-500"></div>
+                  <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-sage-500" />
                 ) : (
                   <svg className="w-6 h-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -686,7 +698,9 @@ Birden fazla paragraf için boş satır bırakabilirsiniz."
                           accept="image/*"
                           onChange={(e) => {
                             const file = e.target.files?.[0]
-                            if (file) handleImageUpload(file, index)
+                            if (file) {
+handleImageUpload(file, index)
+}
                           }}
                           className="w-full text-xs"
                         />

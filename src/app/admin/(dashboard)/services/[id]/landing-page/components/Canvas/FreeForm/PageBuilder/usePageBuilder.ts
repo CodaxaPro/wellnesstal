@@ -1,11 +1,11 @@
 // usePageBuilder.ts
 // Main PageBuilder Hook - Orchestrator
 
-import { useHistory } from './useHistory';
 import { usePageCRUD } from './hooks/usePageCRUD';
-import { usePageStorage } from './hooks/usePageStorage';
 import { usePageSelection } from './hooks/usePageSelection';
+import { usePageStorage } from './hooks/usePageStorage';
 import type { PageSection } from './types';
+import { useHistory } from './useHistory';
 
 // Re-export types (backward compatibility)
 export type { PageSection } from './types';

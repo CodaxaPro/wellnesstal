@@ -2,8 +2,9 @@
 // Selection Management Hook
 
 import { useState, useCallback } from 'react';
-import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
+
 import type { ContentComponent } from '../../content.types';
+import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
 import { findElementById } from '../utils/elementFinders';
 
 // PageSection type'ını buraya kopyala (geçici)
@@ -30,14 +31,20 @@ export function usePageSelection(sections: PageSection[]): UsePageSelectionRetur
    * Seçili element'in type'ını bul
    */
   const getSelectedElementType = useCallback((): ElementType | null => {
-    if (!selectedId) return null;
+    if (!selectedId) {
+return null;
+}
 
     for (const pageSection of sections) {
       // Section mi?
-      if (pageSection.section.id === selectedId) return 'section';
+      if (pageSection.section.id === selectedId) {
+return 'section';
+}
       
       // Container mı?
-      if (pageSection.container.id === selectedId) return 'container';
+      if (pageSection.container.id === selectedId) {
+return 'container';
+}
 
       // Stack mı?
       const stackElement = findElementById(selectedId, pageSection.stacks);
@@ -47,10 +54,14 @@ export function usePageSelection(sections: PageSection[]): UsePageSelectionRetur
 
       // Grid'lerde ara
       for (const grid of pageSection.grids) {
-        if (grid.id === selectedId) return 'grid';
+        if (grid.id === selectedId) {
+return 'grid';
+}
         
         const gridContent = findElementById(selectedId, grid.children);
-        if (gridContent) return 'content';
+        if (gridContent) {
+return 'content';
+}
       }
     }
     
@@ -62,25 +73,37 @@ export function usePageSelection(sections: PageSection[]): UsePageSelectionRetur
    */
   const getSelectedElement = useCallback((): 
     SectionConfig | ContainerConfig | StackConfig | GridConfig | ContentComponent | null => {
-    if (!selectedId) return null;
+    if (!selectedId) {
+return null;
+}
 
     for (const pageSection of sections) {
       // Section
-      if (pageSection.section.id === selectedId) return pageSection.section;
+      if (pageSection.section.id === selectedId) {
+return pageSection.section;
+}
       
       // Container
-      if (pageSection.container.id === selectedId) return pageSection.container;
+      if (pageSection.container.id === selectedId) {
+return pageSection.container;
+}
 
       // Stack'lerde ara
       const stackElement = findElementById(selectedId, pageSection.stacks);
-      if (stackElement) return stackElement;
+      if (stackElement) {
+return stackElement;
+}
 
       // Grid'lerde ara
       for (const grid of pageSection.grids) {
-        if (grid.id === selectedId) return grid;
+        if (grid.id === selectedId) {
+return grid;
+}
         
         const gridContent = findElementById(selectedId, grid.children);
-        if (gridContent) return gridContent;
+        if (gridContent) {
+return gridContent;
+}
       }
     }
     

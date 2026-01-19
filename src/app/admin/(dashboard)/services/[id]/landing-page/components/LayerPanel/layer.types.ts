@@ -1,5 +1,6 @@
 // Layer Panel için type definitions
 
+import type { PageSection } from '../Canvas/FreeForm/PageBuilder/usePageBuilder';
 import type { 
   SectionConfig, 
   ContainerConfig, 
@@ -7,7 +8,6 @@ import type {
   GridConfig,
   ContentComponent 
 } from '../Canvas/FreeForm/primitives.types';
-import type { PageSection } from '../Canvas/FreeForm/PageBuilder/usePageBuilder';
 
 /**
  * Tree node yapısı - Recursive

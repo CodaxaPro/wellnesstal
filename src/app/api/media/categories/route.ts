@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { supabaseAdmin } from '@/lib/supabase-server'
 
 // GET - List all media categories

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { FeaturesContent } from '../types'
 
 // Import modular components
@@ -36,17 +37,29 @@ export default function FeaturesBlockEditor({ content, onUpdate }: FeaturesBlock
   const debounceTimer = useRef<NodeJS.Timeout | null>(null)
   const isInitialMount = useRef(true)
 
-  // Only sync from props on initial mount
+  // Sync from props when content changes (but not during initial mount)
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false
       return
     }
+    // Only update if content is substantially different
+    const contentStr = JSON.stringify(content)
+    const localStr = JSON.stringify(localContent)
+    if (contentStr !== localStr) {
+      setLocalContent({
+        ...getDefaultFeaturesContent(),
+        ...content
+      })
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [content])
 
   // Debounced save to parent
   const debouncedUpdate = useCallback((newContent: FeaturesContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
     }
@@ -65,9 +78,11 @@ export default function FeaturesBlockEditor({ content, onUpdate }: FeaturesBlock
   }, [])
 
   const updateContent = (updates: Partial<FeaturesContent>) => {
-    const newContent = { ...localContent, ...updates }
-    setLocalContent(newContent)
-    debouncedUpdate(newContent)
+    setLocalContent(prev => {
+      const newContent = { ...prev, ...updates }
+      debouncedUpdate(newContent)
+      return newContent
+    })
   }
 
   const tabs: { id: TabType; label: string; icon: React.ReactNode }[] = [

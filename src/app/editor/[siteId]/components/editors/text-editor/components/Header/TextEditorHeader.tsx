@@ -1,8 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import HeaderStats from './HeaderStats';
+
 import { TextStats } from '../../types/textConfig.types';
+
+import HeaderStats from './HeaderStats';
 
 interface TextEditorHeaderProps {
   fieldPath: string;

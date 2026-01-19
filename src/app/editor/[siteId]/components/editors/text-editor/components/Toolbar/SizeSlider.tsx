@@ -1,7 +1,8 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
+
+import { motion, AnimatePresence } from 'framer-motion';
 
 interface SizeSliderProps {
   value: number;

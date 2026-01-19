@@ -56,14 +56,16 @@ const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   eslint: {
-    ignoreDuringBuilds: true,
+    // Enterprise: Enforce linting in production builds
+    ignoreDuringBuilds: false,
   },
   typescript: {
-    ignoreBuildErrors: true,
+    // Enterprise: Enforce type checking in production builds
+    ignoreBuildErrors: false,
   },
   compiler: {
-    removeConsole: process.env.NODE_ENV === 'production' 
-      ? { exclude: ['error', 'warn'] } 
+    removeConsole: process.env.NODE_ENV === 'production'
+      ? { exclude: ['error', 'warn'] }
       : false
   },
   async headers() {

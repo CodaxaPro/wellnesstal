@@ -1,6 +1,7 @@
 'use client'
 
 import { TeamContent } from '../../types'
+
 import { TEAM_LAYOUT_OPTIONS, MAX_WIDTH_OPTIONS, TEAM_STYLE_PRESETS } from './defaults'
 
 interface ContentTabProps {

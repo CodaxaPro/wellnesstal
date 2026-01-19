@@ -1,6 +1,7 @@
 'use client'
 
 import { FAQContent, FAQSectionHeader } from '../../types'
+
 import { FAQ_LAYOUT_OPTIONS, MAX_WIDTH_OPTIONS } from './defaults'
 
 interface ContentTabProps {

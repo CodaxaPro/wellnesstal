@@ -47,7 +47,9 @@ export default function StickyBookingButton({
     }
   }
 
-  if (!isVisible) return null
+  if (!isVisible) {
+return null
+}
 
   return (
     <div

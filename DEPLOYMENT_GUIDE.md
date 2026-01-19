@@ -54,7 +54,8 @@ ADMIN_PASSWORD=<güçlü-şifre>
 JWT_SECRET=<güçlü-random-string>
 ```
 
-⚠️ **ÖNEMLİ:** 
+⚠️ **ÖNEMLİ:**
+
 - `.env.local` dosyasını **asla Git'e commit etmeyin!** (zaten .gitignore'da)
 - Bu dosya sadece local development için
 
@@ -122,6 +123,7 @@ Vercel zaten Git ile entegre edilmiş durumda:
 3. Build tamamlandığında production'a deploy edilir
 
 **Deployment Durumunu Kontrol:**
+
 - [Vercel Dashboard](https://vercel.com/treuepays-projects/wellnesstal)
 - Deployment'ları gerçek zamanlı takip edebilirsiniz
 
@@ -206,6 +208,7 @@ Deployment script'i eklemek için `package.json`'a ekleyin:
 ### Problem: Local'de production veriler görünmüyor
 
 **Çözüm:**
+
 1. `.env.local` dosyasının doğru Supabase URL'ini içerdiğinden emin olun
 2. Browser cache'ini temizleyin
 3. Development server'ı yeniden başlatın: `npm run dev`
@@ -213,6 +216,7 @@ Deployment script'i eklemek için `package.json`'a ekleyin:
 ### Problem: Git push çalışmıyor
 
 **Çözüm:**
+
 ```bash
 # Remote'u kontrol edin
 git remote -v
@@ -230,6 +234,7 @@ git checkout main
 ### Problem: Vercel deployment başarısız
 
 **Kontrol Edin:**
+
 1. ✅ Build logs'da hata var mı?
 2. ✅ Environment variables doğru mu?
 3. ✅ Node.js version uyumlu mu? (>= 18.0.0)
@@ -238,6 +243,7 @@ git checkout main
 ### Problem: Production'da değişiklikler görünmüyor
 
 **Çözüm:**
+
 1. Deployment tamamlandı mı kontrol edin
 2. Browser cache'ini temizleyin (Ctrl+Shift+R / Cmd+Shift+R)
 3. CDN cache'i için birkaç dakika bekleyin
@@ -292,4 +298,3 @@ git push origin main
 ---
 
 **Son Güncelleme:** 2026-01-06
-

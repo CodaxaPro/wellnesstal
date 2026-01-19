@@ -106,7 +106,9 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
 
   // Debounced update to parent
   const debouncedUpdate = (newContent: HeaderBlockContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -123,7 +125,9 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
 
   const updateNavItem = (index: number, field: string, value: any) => {
     const navItems = [...(localContent.navItems || [])]
-    if (!navItems[index]) navItems[index] = { href: '', label: '' }
+    if (!navItems[index]) {
+navItems[index] = { href: '', label: '' }
+}
     navItems[index] = { ...navItems[index], [field]: value }
     const newContent = { ...localContent, navItems }
     setLocalContent(newContent)
@@ -153,14 +157,18 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
     const newContent = { ...localContent, navItems }
     setLocalContent(newContent)
     debouncedUpdate(newContent)
-    if (expandedNavItem === index) setExpandedNavItem(null)
+    if (expandedNavItem === index) {
+setExpandedNavItem(null)
+}
   }
 
   const moveNavItem = (index: number, direction: 'up' | 'down') => {
     const navItems = [...localContent.navItems]
     const newIndex = direction === 'up' ? index - 1 : index + 1
-    if (newIndex < 0 || newIndex >= navItems.length) return
-    ;[navItems[index], navItems[newIndex]] = [navItems[newIndex], navItems[index]]
+    if (newIndex < 0 || newIndex >= navItems.length) {
+return
+    ;
+}[navItems[index], navItems[newIndex]] = [navItems[newIndex], navItems[index]]
     const newContent = { ...localContent, navItems }
     setLocalContent(newContent)
     debouncedUpdate(newContent)
@@ -227,7 +235,7 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
               <div className="p-3 flex items-center justify-between bg-gray-50 border-b border-blue-100">
                 <div className="flex items-center gap-3">
                   <span className="text-lg">{item.icon || '🔗'}</span>
-                  <span className="text-sm font-medium text-gray-700">{item.label || 'Link ' + (index + 1)}</span>
+                  <span className="text-sm font-medium text-gray-700">{item.label || `Link ${  index + 1}`}</span>
                   {item.badge && (
                     <span
                       className="text-xs px-2 py-0.5 rounded-full"
@@ -603,10 +611,10 @@ export default function HeaderBlockEditor({ content, onUpdate }: HeaderBlockEdit
               />
               <div className={`w-11 h-6 rounded-full transition-colors ${
                 localContent.ctaButtonVisible !== false ? 'bg-sage-500' : 'bg-gray-300'
-              }`}></div>
+              }`} />
               <div className={`absolute left-1 top-1 w-4 h-4 bg-white rounded-full shadow transition-transform ${
                 localContent.ctaButtonVisible !== false ? 'translate-x-5' : 'translate-x-0'
-              }`}></div>
+              }`} />
             </div>
           </label>
         </div>

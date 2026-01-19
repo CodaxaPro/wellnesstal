@@ -1,14 +1,14 @@
-import ClassicHeader from './variants/headers/ClassicHeader';
-import ModernHeader from './variants/headers/ModernHeader';
-import MinimalHeader from './variants/headers/MinimalHeader';
-import SplitHero from './variants/heroes/SplitHero';
-import CenteredHero from './variants/heroes/CenteredHero';
-import FullBGHero from './variants/heroes/FullBGHero';
-import Grid3Features from './variants/features/Grid3Features';
-import CardsServices from './variants/services/CardsServices';
 import SimpleCTA from './variants/cta/SimpleCTA';
+import Grid3Features from './variants/features/Grid3Features';
 import FourColumnFooter from './variants/footers/FourColumnFooter';
 import ThreeColumnFooter from './variants/footers/ThreeColumnFooter';
+import ClassicHeader from './variants/headers/ClassicHeader';
+import MinimalHeader from './variants/headers/MinimalHeader';
+import ModernHeader from './variants/headers/ModernHeader';
+import CenteredHero from './variants/heroes/CenteredHero';
+import FullBGHero from './variants/heroes/FullBGHero';
+import SplitHero from './variants/heroes/SplitHero';
+import CardsServices from './variants/services/CardsServices';
 
 export const variantRegistry = {
   headers: {

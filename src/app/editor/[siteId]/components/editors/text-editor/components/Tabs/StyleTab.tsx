@@ -1,11 +1,11 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { TextConfig } from '../../types/textConfig.types';
+
+import { TextConfig , HIGHLIGHT_COLORS } from '../../types/textConfig.types';
 import { getTabSwitchAnimation } from '../../utils/animationHelpers';
-import SizeSlider from '../Toolbar/SizeSlider';
 import ColorPicker from '../Toolbar/ColorPicker';
-import { HIGHLIGHT_COLORS } from '../../types/textConfig.types';
+import SizeSlider from '../Toolbar/SizeSlider';
 
 interface StyleTabProps {
   config: TextConfig;

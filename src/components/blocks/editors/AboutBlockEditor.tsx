@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { AboutContent } from '../types'
-import { getDefaultAboutContent } from './about/defaults'
+
 import { ContentTab, TypographyTab, ImagesTab, BackgroundTab, AdvancedTab } from './about'
+import { getDefaultAboutContent } from './about/defaults'
 import { ContentIcon, TypographyIcon, ImagesIcon, BackgroundIcon, AdvancedIcon } from './about/shared/TabIcons'
 
 type TabType = 'content' | 'typography' | 'images' | 'background' | 'advanced'
@@ -33,7 +35,9 @@ export default function AboutBlockEditor({ content, onUpdate }: AboutBlockEditor
   }, [content])
 
   const debouncedUpdate = useCallback((newContent: AboutContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
     }

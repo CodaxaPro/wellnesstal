@@ -2,6 +2,7 @@
 // Enhanced Container component with full styling support and visual indicators
 
 import React from 'react';
+
 import type { ContainerConfig } from './primitives.types';
 
 interface ContainerProps {
@@ -91,7 +92,7 @@ export function Container({ config, children }: ContainerProps) {
 
   // Border styles
   const getBorderStyle = (): React.CSSProperties => {
-    if (!border || !border.enabled) {
+    if (!border?.enabled) {
       return {};
     }
 
@@ -116,7 +117,7 @@ export function Container({ config, children }: ContainerProps) {
 
   // Shadow styles
   const getShadowStyle = (): string => {
-    if (!shadow || !shadow.enabled) {
+    if (!shadow?.enabled) {
       return 'none';
     }
 

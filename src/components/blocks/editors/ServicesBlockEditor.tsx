@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+
 import { ServicesContent, ServiceItem } from '../types'
 
 interface ServicesBlockEditorProps {
@@ -51,7 +52,9 @@ export default function ServicesBlockEditor({ content, onUpdate }: ServicesBlock
   const moveService = (index: number, direction: 'up' | 'down') => {
     const newServices = [...localContent.services]
     const targetIndex = direction === 'up' ? index - 1 : index + 1
-    if (targetIndex < 0 || targetIndex >= newServices.length) return
+    if (targetIndex < 0 || targetIndex >= newServices.length) {
+return
+}
 
     [newServices[index], newServices[targetIndex]] = [newServices[targetIndex], newServices[index]]
     setLocalContent({ ...localContent, services: newServices })

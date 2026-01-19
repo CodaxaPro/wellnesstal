@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { useAuth } from '@/contexts/AuthContext'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+import { useAuth } from '@/contexts/AuthContext'
 
 interface DashboardStats {
   totalServices: number
@@ -36,7 +38,7 @@ export default function TenantDashboard() {
   if (loading || !user) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }
@@ -83,7 +85,7 @@ export default function TenantDashboard() {
           </p>
           
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full">
-            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+            <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
             <span className="text-sm font-medium text-blue-800">
               Tenant ID: {tenantId?.substring(0, 8)}...
             </span>

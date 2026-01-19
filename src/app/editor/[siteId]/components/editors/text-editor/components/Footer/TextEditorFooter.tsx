@@ -1,8 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import StatsBar from './StatsBar';
+
 import { TextStats, TextConfig } from '../../types/textConfig.types';
+
+import StatsBar from './StatsBar';
 
 interface TextEditorFooterProps {
   stats: TextStats;

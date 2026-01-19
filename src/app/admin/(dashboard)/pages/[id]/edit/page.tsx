@@ -1,34 +1,36 @@
 'use client'
 
 import React, { useState, useEffect, use, useRef, useCallback } from 'react'
-import { useRouter } from 'next/navigation'
-import toast from 'react-hot-toast'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+import toast from 'react-hot-toast'
+
 import BlockRenderer from '@/components/blocks/BlockRenderer'
-import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent, ServicesContent, TestimonialsContent, VideoContent, StatsContent, DividerContent } from '@/components/blocks/types'
-import HeroBlockEditor from '@/components/blocks/editors/HeroBlockEditor'
-import FeaturesBlockEditor from '@/components/blocks/editors/FeaturesBlockEditor'
-import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
-import CTABlockEditor from '@/components/blocks/editors/CTABlockEditor'
-import PricingBlockEditor from '@/components/blocks/editors/PricingBlockEditor'
-import FAQBlockEditor from '@/components/blocks/editors/FAQBlockEditor'
-import TeamBlockEditor from '@/components/blocks/editors/TeamBlockEditor'
-import WhatsAppBlockEditor from '@/components/blocks/editors/WhatsAppBlockEditor'
-import GalleryBlockEditor from '@/components/blocks/editors/GalleryBlockEditor'
-import EmbedBlockEditor from '@/components/blocks/editors/EmbedBlockEditor'
-import HeaderBlockEditor from '@/components/blocks/editors/HeaderBlockEditor'
-import FooterBlockEditor from '@/components/blocks/editors/FooterBlockEditor'
+import { ContactBlockContent } from '@/components/blocks/ContactBlock'
+import AboutBlockEditor from '@/components/blocks/editors/AboutBlockEditor'
 import ContactBlockEditor from '@/components/blocks/editors/ContactBlockEditor'
+import CTABlockEditor from '@/components/blocks/editors/CTABlockEditor'
+import DividerBlockEditor from '@/components/blocks/editors/DividerBlockEditor'
+import EmbedBlockEditor from '@/components/blocks/editors/EmbedBlockEditor'
+import FAQBlockEditor from '@/components/blocks/editors/FAQBlockEditor'
+import FeaturesBlockEditor from '@/components/blocks/editors/FeaturesBlockEditor'
+import FooterBlockEditor from '@/components/blocks/editors/FooterBlockEditor'
+import GalleryBlockEditor from '@/components/blocks/editors/GalleryBlockEditor'
+import HeaderBlockEditor from '@/components/blocks/editors/HeaderBlockEditor'
+import HeroBlockEditor from '@/components/blocks/editors/HeroBlockEditor'
+import PricingBlockEditor from '@/components/blocks/editors/PricingBlockEditor'
 import SEOBlockEditor from '@/components/blocks/editors/SEOBlockEditor'
 import ServicesBlockEditor from '@/components/blocks/editors/ServicesBlockEditor'
-import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlockEditor'
-import VideoBlockEditor from '@/components/blocks/editors/VideoBlockEditor'
 import StatsBlockEditor from '@/components/blocks/editors/StatsBlockEditor'
-import DividerBlockEditor from '@/components/blocks/editors/DividerBlockEditor'
 import StickyButtonBlockEditor from '@/components/blocks/editors/StickyButtonBlockEditor'
-import AboutBlockEditor from '@/components/blocks/editors/AboutBlockEditor'
-import { ContactBlockContent } from '@/components/blocks/ContactBlock'
-import { SEOContent, AboutContent } from '@/components/blocks/types'
+import TeamBlockEditor from '@/components/blocks/editors/TeamBlockEditor'
+import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlockEditor'
+import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
+import VideoBlockEditor from '@/components/blocks/editors/VideoBlockEditor'
+import WhatsAppBlockEditor from '@/components/blocks/editors/WhatsAppBlockEditor'
+import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent, ServicesContent, TestimonialsContent, VideoContent, StatsContent, DividerContent , SEOContent, AboutContent } from '@/components/blocks/types'
 
 interface PageCategory {
   id: string
@@ -141,7 +143,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
     try {
       console.log('[handleAddBlock] Adding block:', { page_id: page.id, block_type: blockType })
-      
+
       const response = await fetch('/api/pages/blocks', {
         method: 'POST',
         headers: {
@@ -173,7 +175,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
       // Refresh page data to get all blocks in correct order
       await fetchPage()
-      
+
       // Set the newly created block as active
       setActiveBlockId(json.data.id)
       setShowBlockLibrary(false)
@@ -182,7 +184,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       console.error('[handleAddBlock] Exception:', error)
       const errorMessage = error instanceof Error ? error.message : 'Blok eklenirken hata oluştu'
       toast.error(errorMessage)
-      
+
       // Try to refresh page data in case block was created but response failed
       try {
         await fetchPage()
@@ -196,51 +198,59 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     // Helper: deep merge source into target (immutable)
     // CRITICAL: Preserve empty strings and arrays for fields that should be cleared
     const deepMerge = (target: any, source: any): any => {
-      if (source === undefined) return target
-      if (source === null) return source // null is a valid value
-      if (typeof target !== 'object' || target === null) return source
-      if (typeof source !== 'object' || source === null) return source
+      if (source === undefined) {
+return target
+}
+      if (source === null) {
+return source
+} // null is a valid value
+      if (typeof target !== 'object' || target === null) {
+return source
+}
+      if (typeof source !== 'object' || source === null) {
+return source
+}
       const out = Array.isArray(target) ? [...target] : { ...target }
-      
+
       // Fields that should always be updated, even if empty (user explicitly cleared them)
       const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext', 'sectionId']
-      
+
       // Nested objects that should always be fully replaced (not merged) when present in source
       // This is important for block types with complex nested structures like WhatsApp
       const alwaysReplaceObjects = ['basic', 'appearance', 'message', 'display', 'availability', 'ctaBubble']
-      
+
       // Array fields that should always be preserved (even if empty)
       const alwaysUpdateArrays = ['buttons', 'hideOnMobile', 'navItems']
-      
+
       for (const key of Object.keys(source)) {
         const s = source[key]
         const t = (target as any)[key]
-        
+
         // CRITICAL: Always update array fields (buttons, etc.)
         if (alwaysUpdateArrays.includes(key) && Array.isArray(s)) {
           out[key] = s // Always preserve arrays, even if empty
           continue
         }
-        
+
         // CRITICAL: Always update these fields if they exist in source (even if empty string or null)
         if (alwaysUpdateFields.includes(key)) {
           out[key] = s // Always preserve, even if empty string or null
           continue
         }
-        
+
         // Skip null/undefined for other fields (but not for alwaysUpdateFields above)
         if (s === null || s === undefined) {
           continue
         }
-        
+
         // Skip empty strings for other fields (to avoid accidental overwrites)
         // BUT only if the field wasn't explicitly set in source
         if (s === '' && !alwaysUpdateFields.includes(key)) {
           continue
         }
-        
+
         if (typeof s === 'object' && s !== null && !Array.isArray(s) && typeof t === 'object' && t !== null && !Array.isArray(t)) {
-          // For nested objects like WhatsApp block's 'appearance', 'ctaBubble', etc., 
+          // For nested objects like WhatsApp block's 'appearance', 'ctaBubble', etc.,
           // we need to deep merge but ensure all properties are updated
           // If the nested object is in alwaysReplaceObjects, do a deeper merge of its properties
           if (alwaysReplaceObjects.includes(key)) {
@@ -248,7 +258,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
             out[key] = { ...t, ...s }
             // Then merge nested properties recursively
             for (const nestedKey in s) {
-              if (typeof s[nestedKey] === 'object' && s[nestedKey] !== null && !Array.isArray(s[nestedKey]) && 
+              if (typeof s[nestedKey] === 'object' && s[nestedKey] !== null && !Array.isArray(s[nestedKey]) &&
                   typeof t[nestedKey] === 'object' && t[nestedKey] !== null && !Array.isArray(t[nestedKey])) {
                 out[key][nestedKey] = deepMerge(t[nestedKey], s[nestedKey])
               }
@@ -315,6 +325,14 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       console.debug('[debug] handleUpdateBlock: response', { status: res.status, ok: res.ok, bodyPreview: json ? JSON.stringify(json).slice(0, 500) : null })
 
       if (!res.ok) {
+        // Handle unauthorized (401) - token expired or invalid
+        if (res.status === 401) {
+          toast.error('Oturum süresi dolmuş. Lütfen tekrar giriş yapın.')
+          localStorage.removeItem('adminToken')
+          localStorage.removeItem('adminUser')
+          router.push('/admin')
+          throw new Error('Unauthorized: Please login again')
+        }
         toast.error(json?.error || 'Blok kaydı başarısız')
         await fetchPage()
         throw new Error(json?.error || `Update failed (status ${res.status})`)
@@ -348,8 +366,68 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     }
   }, [page])
 
+  const handleDuplicateBlock = async (blockId: string) => {
+    if (!page) {
+return
+}
+
+    const blockToDuplicate = page.blocks.find(b => b.id === blockId)
+    if (!blockToDuplicate) {
+      toast.error('Blok bulunamadı')
+      return
+    }
+
+    try {
+      const token = localStorage.getItem('adminToken')
+
+      // Find the position after the current block
+      const currentIndex = page.blocks.findIndex(b => b.id === blockId)
+      const insertPosition = currentIndex + 1
+
+      // Create new block with duplicated content
+      const response = await fetch('/api/pages/blocks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          page_id: page.id,
+          block_type: blockToDuplicate.block_type,
+          content: blockToDuplicate.content,
+          position: insertPosition,
+          visible: blockToDuplicate.visible !== false
+        })
+      })
+
+      const json = await response.json()
+
+      if (!response.ok) {
+        toast.error(json?.error || 'Blok çoğaltılamadı')
+        return
+      }
+
+      if (!json.success || !json.data) {
+        toast.error('Geçersiz yanıt formatı')
+        return
+      }
+
+      // Refresh page to get updated blocks
+      await fetchPage()
+
+      // Set the newly duplicated block as active
+      setActiveBlockId(json.data.id)
+      toast.success('Blok başarıyla çoğaltıldı')
+    } catch (error) {
+      console.error('Failed to duplicate block:', error)
+      toast.error('Blok çoğaltılırken hata oluştu')
+    }
+  }
+
   const handleDeleteBlock = async (blockId: string) => {
-    if (!confirm('Bu bloğu silmek istediğinizden emin misiniz?')) return
+    if (!confirm('Bu bloğu silmek istediğinizden emin misiniz?')) {
+return
+}
 
     try {
       const token = localStorage.getItem('adminToken')
@@ -369,12 +447,20 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   }
 
   const handleMoveBlock = async (blockId: string, direction: 'up' | 'down') => {
-    if (!page) return
+    if (!page) {
+return
+}
 
     const currentIndex = page.blocks.findIndex(b => b.id === blockId)
-    if (currentIndex === -1) return
-    if (direction === 'up' && currentIndex === 0) return
-    if (direction === 'down' && currentIndex === page.blocks.length - 1) return
+    if (currentIndex === -1) {
+return
+}
+    if (direction === 'up' && currentIndex === 0) {
+return
+}
+    if (direction === 'down' && currentIndex === page.blocks.length - 1) {
+return
+}
 
     const newBlocks = [...page.blocks]
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
@@ -409,7 +495,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
   const handleToggleBlockVisibility = async (blockId: string) => {
     const block = page?.blocks.find(b => b.id === blockId)
-    if (!block) return
+    if (!block) {
+return
+}
 
     try {
       const token = localStorage.getItem('adminToken')
@@ -432,7 +520,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   }
 
   const handlePublish = async () => {
-    if (!page) return
+    if (!page) {
+return
+}
     setSaving(true)
 
     try {
@@ -461,7 +551,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   }
 
   const handleCategoryChange = async (categoryId: string) => {
-    if (!page) return
+    if (!page) {
+return
+}
 
     try {
       const token = localStorage.getItem('adminToken')
@@ -479,10 +571,10 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
       if (response.ok) {
         const data = await response.json()
-        setPage(prev => prev ? { 
-          ...prev, 
+        setPage(prev => prev ? {
+          ...prev,
           category_id: data.data.category_id,
-          page_categories: data.data.page_categories 
+          page_categories: data.data.page_categories
         } : null)
         toast.success('Kategori güncellendi')
       } else {
@@ -507,11 +599,13 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   }
 
   const handleUpdatePageInfo = async (field: 'title' | 'slug', value: string) => {
-    if (!page) return
+    if (!page) {
+return
+}
 
     try {
       const token = localStorage.getItem('adminToken')
-      
+
       // If updating title and slug is empty or auto-generated, update slug too
       const updateData: any = { id: page.id }
       if (field === 'title') {
@@ -542,8 +636,8 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
 
       if (response.ok) {
         const data = await response.json()
-        setPage(prev => prev ? { 
-          ...prev, 
+        setPage(prev => prev ? {
+          ...prev,
           title: data.data.title || prev.title,
           slug: data.data.slug || prev.slug
         } : null)
@@ -571,7 +665,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   }
 
   const handleToggleActive = async () => {
-    if (!page) return
+    if (!page) {
+return
+}
 
     const newActive = !(page.active !== false) // Default to true if undefined
 
@@ -605,7 +701,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }
@@ -621,7 +717,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   // Group block types by category
   const blocksByCategory = blockTypes.reduce((acc, block) => {
     const cat = block.category || 'other'
-    if (!acc[cat]) acc[cat] = []
+    if (!acc[cat]) {
+acc[cat] = []
+}
     acc[cat].push(block)
     return acc
   }, {} as Record<string, BlockType[]>)
@@ -652,7 +750,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
             </svg>
             Sayfalara Dön
           </Link>
-          
+
           {/* Page Title - Editable */}
           <div className="mb-2">
             <label className="block text-xs font-medium text-slate-500 mb-1">
@@ -753,7 +851,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
               </div>
             )}
           </div>
-          
+
           {/* Active/Inactive Toggle */}
           <div className="mt-3">
             <label className="block text-xs font-medium text-slate-500 mb-1.5">
@@ -810,7 +908,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
             </select>
             {page.page_categories && (
               <div className="mt-2 flex items-center gap-2">
-                <span 
+                <span
                   className="inline-flex items-center gap-1.5 px-2 py-1 text-xs font-medium rounded-lg text-white"
                   style={{ backgroundColor: page.page_categories.color || '#9CAF88' }}
                 >
@@ -853,7 +951,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                   <div className="flex items-center gap-3">
                     <div className="flex flex-col gap-1">
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleMoveBlock(block.id, 'up') }}
+                        onClick={(e) => {
+ e.stopPropagation(); handleMoveBlock(block.id, 'up')
+}}
                         disabled={index === 0}
                         className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
                       >
@@ -862,7 +962,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                         </svg>
                       </button>
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleMoveBlock(block.id, 'down') }}
+                        onClick={(e) => {
+ e.stopPropagation(); handleMoveBlock(block.id, 'down')
+}}
                         disabled={index === page.blocks.length - 1}
                         className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
                       >
@@ -881,7 +983,20 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                     </div>
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleToggleBlockVisibility(block.id) }}
+                        onClick={(e) => {
+ e.stopPropagation(); handleDuplicateBlock(block.id)
+}}
+                        className="p-1 text-slate-400 hover:text-sage-600"
+                        title="Çoğalt"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </button>
+                      <button
+                        onClick={(e) => {
+ e.stopPropagation(); handleToggleBlockVisibility(block.id)
+}}
                         className="p-1 text-slate-400 hover:text-slate-600"
                         title={block.visible ? 'Gizle' : 'Göster'}
                       >
@@ -894,7 +1009,9 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
                         </svg>
                       </button>
                       <button
-                        onClick={(e) => { e.stopPropagation(); handleDeleteBlock(block.id) }}
+                        onClick={(e) => {
+ e.stopPropagation(); handleDeleteBlock(block.id)
+}}
                         className="p-1 text-slate-400 hover:text-red-600"
                         title="Sil"
                       >
@@ -942,7 +1059,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
             }`}
           >
             {saving ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent"></div>
+              <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent" />
             ) : page.status === 'published' ? (
               <>
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1153,7 +1270,7 @@ function BlockEditorForm({
   const savingBlockRef = useRef(false) // Additional ref for immediate synchronous check
   const debouncedSaveExecutingRef = useRef(false) // Flag to prevent multiple debounced saves from executing simultaneously
   const lastSavedContentRef = useRef<any>(null) // Track last successfully saved content
-  
+
   // Keep contentRef in sync with content state
   useEffect(() => {
     contentRef.current = content
@@ -1166,7 +1283,7 @@ function BlockEditorForm({
       lastSavedContentRef.current = block.content
       return
     }
-    
+
     // Only update if block.content is actually different (from server)
     // This happens after a successful save, so we should sync local state
     try {
@@ -1201,52 +1318,70 @@ function BlockEditorForm({
       try {
         // Use contentRef for most up-to-date content
         const currentContent = contentRef.current || content
-        
+
         // Normalize both objects for comparison (handle undefined, null, empty string)
         const normalizeValue = (val: any): string => {
-          if (val === null || val === undefined) return ''
-          if (typeof val === 'string') return val
+          if (val === null || val === undefined) {
+return ''
+}
+          if (typeof val === 'string') {
+return val
+}
           return JSON.stringify(val)
         }
-        
+
         // Deep comparison function that handles empty strings correctly
         const deepEqual = (a: any, b: any): boolean => {
-          if (a === b) return true
-          if (a == null || b == null) return a === b
+          if (a === b) {
+return true
+}
+          if (a == null || b == null) {
+return a === b
+}
           if (typeof a !== 'object' || typeof b !== 'object') {
             // For strings, compare directly (empty string !== undefined)
             return normalizeValue(a) === normalizeValue(b)
           }
-          
+
           // Special handling for arrays (buttons, etc.)
           if (Array.isArray(a) && Array.isArray(b)) {
-            if (a.length !== b.length) return false
+            if (a.length !== b.length) {
+return false
+}
             for (let i = 0; i < a.length; i++) {
-              if (!deepEqual(a[i], b[i])) return false
+              if (!deepEqual(a[i], b[i])) {
+return false
+}
             }
             return true
           }
-          
+
           const keysA = Object.keys(a)
           const keysB = Object.keys(b)
-          if (keysA.length !== keysB.length) return false
-          
+          if (keysA.length !== keysB.length) {
+return false
+}
+
           for (const key of keysA) {
-            if (!keysB.includes(key)) return false
-            if (!deepEqual(a[key], b[key])) return false
+            if (!keysB.includes(key)) {
+return false
+}
+            if (!deepEqual(a[key], b[key])) {
+return false
+}
           }
           return true
         }
-        
+
         // Check if content matches last saved content (from debounced save)
         // If it matches, content is saved even if block.content prop hasn't updated yet
         const matchesLastSaved = lastSavedContentRef.current && deepEqual(currentContent, lastSavedContentRef.current)
         const matchesBlockContent = deepEqual(currentContent, block.content)
-        
+
         // Content is dirty only if it differs from both last saved and block.content
         const isDirty = !matchesLastSaved && !matchesBlockContent
         setDirty(isDirty)
-        
+
         console.debug('[BlockEditorForm] Dirty state check:', {
           isDirty,
           usingRef: !!contentRef.current,
@@ -1258,7 +1393,7 @@ function BlockEditorForm({
         setDirty(true)
       }
     }, 50) // Small delay to ensure state updates have propagated
-    
+
     return () => clearTimeout(timeoutId)
   }, [content, block.content])
 
@@ -1270,7 +1405,7 @@ function BlockEditorForm({
         clearTimeout(pendingSaveRef.current)
         pendingSaveRef.current = null
       }
-      
+
       // If there are unsaved changes, save them immediately
       if (dirty && content) {
         // Use sendBeacon for reliable save on unmount
@@ -1278,10 +1413,10 @@ function BlockEditorForm({
         if (token) {
           const payload = {
             id: blockId,
-            content: content,
+            content,
             clientUpdatedAt: Date.now()
           }
-          
+
           // Try to save synchronously
           fetch('/api/pages/blocks', {
             method: 'PUT',
@@ -1320,51 +1455,69 @@ function BlockEditorForm({
       mergedContent = { ...prev, ...updatedContent }
       return mergedContent
     })
-    
+
     // Update contentRef immediately to ensure it's available in setTimeout
     if (mergedContent) {
       contentRef.current = mergedContent
     }
-    
+
     // CRITICAL: Immediately check if content is dirty and update dirty state
     // This ensures "Kayıt Et" button becomes active immediately when content changes
     const checkDirty = () => {
       try {
         const normalizeValue = (val: any): string => {
-          if (val === null || val === undefined) return ''
-          if (typeof val === 'string') return val
+          if (val === null || val === undefined) {
+return ''
+}
+          if (typeof val === 'string') {
+return val
+}
           return JSON.stringify(val)
         }
-        
+
         const deepEqual = (a: any, b: any): boolean => {
-          if (a === b) return true
-          if (a == null || b == null) return a === b
+          if (a === b) {
+return true
+}
+          if (a == null || b == null) {
+return a === b
+}
           if (typeof a !== 'object' || typeof b !== 'object') {
             return normalizeValue(a) === normalizeValue(b)
           }
-          
+
           if (Array.isArray(a) && Array.isArray(b)) {
-            if (a.length !== b.length) return false
+            if (a.length !== b.length) {
+return false
+}
             for (let i = 0; i < a.length; i++) {
-              if (!deepEqual(a[i], b[i])) return false
+              if (!deepEqual(a[i], b[i])) {
+return false
+}
             }
             return true
           }
-          
+
           const keysA = Object.keys(a)
           const keysB = Object.keys(b)
-          if (keysA.length !== keysB.length) return false
-          
+          if (keysA.length !== keysB.length) {
+return false
+}
+
           for (const key of keysA) {
-            if (!keysB.includes(key)) return false
-            if (!deepEqual(a[key], b[key])) return false
+            if (!keysB.includes(key)) {
+return false
+}
+            if (!deepEqual(a[key], b[key])) {
+return false
+}
           }
           return true
         }
-        
+
         const isDirty = !deepEqual(mergedContent, block.content)
         setDirty(isDirty)
-        
+
         console.debug('[BlockEditorForm] handleUpdate - Dirty state updated:', {
           isDirty,
           descriptionsCount: mergedContent?.descriptions?.length || 0,
@@ -1375,10 +1528,10 @@ function BlockEditorForm({
         setDirty(true) // On error, assume dirty to allow saving
       }
     }
-    
+
     // Check dirty state immediately
     checkDirty()
-    
+
     // Skip debounced save if manual save is in progress OR if a debounced save is already executing
     if (isManualSavingRef.current || savingBlockRef.current || debouncedSaveExecutingRef.current) {
       console.debug('[BlockEditorForm] handleUpdate - Skipping debounced save (save in progress)', {
@@ -1388,7 +1541,7 @@ function BlockEditorForm({
       })
       return
     }
-    
+
     // Debounce the API call to avoid excessive requests
     // CRITICAL: If a debounced save is already pending, just update the timeout with new content
     // Don't create multiple pending saves
@@ -1396,7 +1549,7 @@ function BlockEditorForm({
       clearTimeout(pendingSaveRef.current)
       pendingSaveRef.current = null
     }
-    
+
     pendingSaveRef.current = setTimeout(() => {
       // CRITICAL: Double-check flags at the START of the callback (before any async operations)
       // This prevents race conditions where flags might be set after the timeout fires
@@ -1409,7 +1562,7 @@ function BlockEditorForm({
         pendingSaveRef.current = null
         return
       }
-      
+
       // Mark that debounced save is executing IMMEDIATELY (before any async operations)
       debouncedSaveExecutingRef.current = true
       // Use the merged content directly (already captured above)
@@ -1425,7 +1578,7 @@ function BlockEditorForm({
       console.debug('[BlockEditorForm] Saving block (debounced):', {
         blockId,
       })
-      
+
       // Call onUpdate and wait for it to complete
       onUpdate(blockId, fullContent).then((result) => {
         // After successful save, update contentRef and check dirty state
@@ -1435,7 +1588,7 @@ function BlockEditorForm({
           lastSavedContentRef.current = savedContent
           // Update local content state to match server
           setContent(savedContent)
-          
+
           // If save was successful, mark as not dirty immediately
           setDirty(false)
         } else {
@@ -1472,35 +1625,35 @@ function BlockEditorForm({
       })
       return
     }
-    
+
     // CRITICAL: Cancel any pending debounced saves FIRST, before setting flags
     // This prevents race conditions where a debounced save might fire after flags are set
     if (pendingSaveRef.current) {
       clearTimeout(pendingSaveRef.current)
       pendingSaveRef.current = null
     }
-    
+
     // Set refs immediately (synchronous) to prevent any concurrent calls
     // These flags prevent both manual saves and debounced saves from running concurrently
     // If a debounced save is currently executing, it will check these flags and skip
     savingBlockRef.current = true
     isManualSavingRef.current = true
     setSavingBlock(true)
-    
+
     try {
-      
+
       // Use the most up-to-date content from ref (which is updated immediately in handleUpdate)
       // The ref is updated synchronously in handleUpdate, so it's always current
       // Fallback to state if ref is not available (shouldn't happen, but safety check)
       const currentContent = contentRef.current || content
-      
+
       console.debug('[BlockEditorForm] handleSaveBlock - Current content source:', {
         usingRef: !!contentRef.current,
         refKeys: contentRef.current ? Object.keys(contentRef.current) : [],
         stateKeys: Object.keys(content),
         dirty,
       })
-      
+
       // Ensure all content is included, especially empty strings for cleared fields
       const fullContent = {
         ...currentContent,
@@ -1537,7 +1690,7 @@ function BlockEditorForm({
         return
       }
       const result = await onUpdate(blockId, fullContent)
-      
+
       // Update local state to match saved content from server response
       // CRITICAL: Use server response content to ensure exact match
       if (result?.data?.content) {
@@ -1558,11 +1711,11 @@ function BlockEditorForm({
           blockId,
         })
       }
-      
+
       // After successful save, mark as not dirty immediately
       // The saved content should match what we just saved
       setDirty(false)
-      
+
       // CRITICAL: Wait a bit for state updates to propagate, then check dirty state again
       // This handles the case where block.content prop updates from parent
       setTimeout(() => {
@@ -1572,7 +1725,7 @@ function BlockEditorForm({
           const currentStr = JSON.stringify(currentContent)
           const blockStr = JSON.stringify(block.content)
           const isDirty = currentStr !== blockStr
-          
+
           // Only set dirty to true if there's an actual difference
           // If save was successful, content should match
           if (isDirty) {
@@ -1590,7 +1743,7 @@ function BlockEditorForm({
           console.error('[BlockEditorForm] handleSaveBlock - Error checking dirty state:', e)
         }
       }, 100)
-      
+
       console.debug('[BlockEditorForm] handleSaveBlock - Save completed successfully', {
         blockId,
         hasResult: !!result,
@@ -1612,7 +1765,9 @@ function BlockEditorForm({
   }
 
   const handleRevert = async () => {
-    if (!confirm('Yaptığınız değişiklikleri geri almak istiyor musunuz?')) return
+    if (!confirm('Yaptığınız değişiklikleri geri almak istiyor musunuz?')) {
+return
+}
     setContent(block.content)
     try {
       await onUpdate(blockId, block.content)

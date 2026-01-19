@@ -1,8 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { FAQContent, FAQItem, FAQCategory } from '../../types'
+
 import { Trash2, GripVertical, Star, Pin, Plus, ChevronDown, ChevronUp, FolderPlus } from 'lucide-react'
+
+import { FAQContent, FAQItem, FAQCategory } from '../../types'
 
 interface ItemsTabProps {
   content: FAQContent
@@ -47,7 +49,9 @@ export default function ItemsTab({ content, updateContent }: ItemsTabProps) {
 
   const moveItem = (index: number, direction: 'up' | 'down') => {
     const newIndex = direction === 'up' ? index - 1 : index + 1
-    if (newIndex < 0 || newIndex >= items.length) return
+    if (newIndex < 0 || newIndex >= items.length) {
+return
+}
 
     const newItems = [...items]
     const [removed] = newItems.splice(index, 1)
@@ -75,7 +79,9 @@ export default function ItemsTab({ content, updateContent }: ItemsTabProps) {
 
   // Category Management
   const addCategory = () => {
-    if (!newCategoryName.trim()) return
+    if (!newCategoryName.trim()) {
+return
+}
 
     const newCategory: FAQCategory = {
       id: generateId(),
@@ -158,7 +164,9 @@ export default function ItemsTab({ content, updateContent }: ItemsTabProps) {
                   Ekle
                 </button>
                 <button
-                  onClick={() => { setShowCategoryForm(false); setNewCategoryName('') }}
+                  onClick={() => {
+ setShowCategoryForm(false); setNewCategoryName('') 
+}}
                   className="px-4 py-2 bg-slate-100 text-slate-600 rounded-lg text-sm hover:bg-slate-200"
                 >
                   Iptal
@@ -224,14 +232,18 @@ export default function ItemsTab({ content, updateContent }: ItemsTabProps) {
                   {/* Order Controls */}
                   <div className="flex flex-col">
                     <button
-                      onClick={(e) => { e.stopPropagation(); moveItem(index, 'up') }}
+                      onClick={(e) => {
+ e.stopPropagation(); moveItem(index, 'up') 
+}}
                       className="p-0.5 hover:bg-slate-200 rounded disabled:opacity-30"
                       disabled={index === 0}
                     >
                       <ChevronUp className="w-3.5 h-3.5 text-slate-500" />
                     </button>
                     <button
-                      onClick={(e) => { e.stopPropagation(); moveItem(index, 'down') }}
+                      onClick={(e) => {
+ e.stopPropagation(); moveItem(index, 'down') 
+}}
                       className="p-0.5 hover:bg-slate-200 rounded disabled:opacity-30"
                       disabled={index === items.length - 1}
                     >

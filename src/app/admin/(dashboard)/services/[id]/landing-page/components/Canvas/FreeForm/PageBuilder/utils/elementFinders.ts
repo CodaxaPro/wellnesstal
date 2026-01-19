@@ -1,8 +1,8 @@
 // utils/elementFinders.ts
 // Element Finder Utilities
 
-import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
 import type { ContentComponent } from '../../content.types';
+import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
 
 // PageSection type'ını buraya kopyalayalım (geçici)
 interface PageSection {
@@ -29,7 +29,9 @@ export function findElementById(
     // Stack ise children'ı kontrol et (recursive)
     if (element.type === 'stack' && 'children' in element) {
       const found = findElementById(id, element.children);
-      if (found) return found;
+      if (found) {
+return found;
+}
     }
   }
   
@@ -52,7 +54,9 @@ export function findParentElement(
       
       // Nested stack'lerde ara
       const parent = findParentInStack(id, stack);
-      if (parent) return parent;
+      if (parent) {
+return parent;
+}
     }
     
     // Grid'lerde ara
@@ -82,7 +86,9 @@ function findParentInStack(
       
       // Daha derine in
       const found = findParentInStack(id, child);
-      if (found) return found;
+      if (found) {
+return found;
+}
     }
   }
   
@@ -115,7 +121,9 @@ export function getElementPath(
         pageSection.section.id,
         pageSection.container.id,
       ]);
-      if (stackPath.length > 0) return stackPath;
+      if (stackPath.length > 0) {
+return stackPath;
+}
     }
     
     // Grid'lerde ara
@@ -158,7 +166,9 @@ function getPathInStack(
     
     if (child.type === 'stack') {
       const found = getPathInStack(id, child, currentPath);
-      if (found.length > 0) return found;
+      if (found.length > 0) {
+return found;
+}
     }
   }
   
@@ -185,7 +195,9 @@ export function findElementSection(
     
     // Stack'lerde var mı?
     const stackElement = findElementById(id, pageSection.stacks);
-    if (stackElement) return pageSection;
+    if (stackElement) {
+return pageSection;
+}
     
     // Grid'lerde var mı?
     for (const grid of pageSection.grids) {
@@ -218,7 +230,9 @@ export function getElementSiblings(
 ): (StackConfig | ContentComponent)[] {
   const parent = findParentElement(id, sections);
   
-  if (!parent) return [];
+  if (!parent) {
+return [];
+}
   
   return parent.children.filter((child: StackConfig | ContentComponent) => child.id !== id);
 }

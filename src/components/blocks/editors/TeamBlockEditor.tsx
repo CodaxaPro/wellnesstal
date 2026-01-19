@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+
 import { TeamContent } from '../types'
+
 import { ContentTab, MembersTab, StyleTab, BackgroundTab, AdvancedTab, defaultTeamContent } from './team'
 
 interface TeamBlockEditorProps {
@@ -10,7 +12,7 @@ interface TeamBlockEditorProps {
 }
 
 // Deep merge utility
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function deepMerge<T>(target: T, source: Partial<T>): T {
   const output = { ...target } as any
   for (const key in source) {
@@ -55,7 +57,9 @@ export default function TeamBlockEditor({ content, onUpdate }: TeamBlockEditorPr
     setLocalContent(newContent)
 
     // Debounce parent update
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

@@ -45,8 +45,10 @@ export function stripHtml(html: string): string {
  * Truncate text to specified length
  */
 export function truncateText(text: string, maxLength: number): string {
-  if (text.length <= maxLength) return text;
-  return text.substring(0, maxLength) + '...';
+  if (text.length <= maxLength) {
+return text;
+}
+  return `${text.substring(0, maxLength)  }...`;
 }
 
 /**
@@ -87,7 +89,9 @@ export function estimateReadingLevel(text: string): number {
   const sentences = text.split(/[.!?]+/).length;
   const syllables = estimateSyllables(text);
   
-  if (words === 0 || sentences === 0) return 0;
+  if (words === 0 || sentences === 0) {
+return 0;
+}
   
   const score = 0.39 * (words / sentences) + 11.8 * (syllables / words) - 15.59;
   return Math.max(0, Math.round(score));
@@ -112,7 +116,11 @@ function estimateSyllables(text: string): number {
  * Format reading time
  */
 export function formatReadingTime(minutes: number): string {
-  if (minutes < 1) return 'Less than a minute';
-  if (minutes === 1) return '1 minute';
+  if (minutes < 1) {
+return 'Less than a minute';
+}
+  if (minutes === 1) {
+return '1 minute';
+}
   return `${minutes} minutes`;
 }

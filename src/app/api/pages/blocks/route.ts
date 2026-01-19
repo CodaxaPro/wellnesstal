@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
-import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
+
 import { logger } from '@/lib/logger'
+import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -12,12 +14,20 @@ const supabase = createClient(
 function verifyToken(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
   if (!authHeader?.startsWith('Bearer ')) {
+    logger.warn('Token verification failed: Missing or invalid Authorization header', {
+      hasHeader: !!authHeader,
+      headerPrefix: authHeader?.substring(0, 10) || 'none'
+    })
     return null
   }
   const token = authHeader.substring(7)
   try {
     return jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret')
-  } catch {
+  } catch (error: any) {
+    logger.warn('Token verification failed: Invalid or expired token', {
+      error: error?.name || 'unknown',
+      message: error?.message || 'unknown'
+    })
     return null
   }
 }
@@ -25,14 +35,16 @@ function verifyToken(request: NextRequest) {
 // Deep merge helper: merges source into target but skips empty-string/null/undefined
 function deepMerge(target: any, source: any): any {
   const out: any = { ...(target || {}) }
-  if (!source || typeof source !== 'object') return out
-  
+  if (!source || typeof source !== 'object') {
+return out
+}
+
   // Fields that should always be updated, even if empty (user explicitly cleared them)
   const alwaysUpdateFields = ['title', 'subtitle', 'description', 'mainTitle', 'badge', 'primaryButton', 'primaryButtonLink', 'secondaryButton', 'secondaryButtonLink', 'trustIndicator', 'trustIndicatorSubtext', 'trustIndicatorSecondary', 'trustIndicatorSecondarySubtext', 'sectionId']
-  
+
   // Array fields that should always be preserved (even if empty)
   const alwaysUpdateArrays = ['buttons', 'hideOnMobile']
-  
+
   // Nested object fields that should be fully merged (preserve all nested properties)
   const nestedObjectFields = [
     'titleHighlight', 'titleStyles',
@@ -41,39 +53,39 @@ function deepMerge(target: any, source: any): any {
     // WhatsApp block nested objects
     'basic', 'appearance', 'message', 'display', 'availability', 'ctaBubble'
   ]
-  
+
   for (const key of Object.keys(source)) {
     const s = source[key]
-    
+
     // Special handling: Always update array fields (descriptions, buttons, etc.)
     if (alwaysUpdateArrays.includes(key) && Array.isArray(s)) {
       out[key] = s // Always preserve arrays, even if empty
       continue
     }
-    
+
     // Special handling: Always update these fields if they exist in source (even if empty or null)
     // This allows users to explicitly clear fields like subtitle, buttons, etc.
     if (alwaysUpdateFields.includes(key)) {
       out[key] = s // Always preserve, even if empty string or null
       continue
     }
-    
+
     // Skip null/undefined for other fields (but not for alwaysUpdateFields above)
     if (s === null || s === undefined) {
       continue
     }
-    
+
     // Special handling: Deep merge nested objects to preserve all properties
     if (nestedObjectFields.includes(key) && typeof s === 'object' && s !== null && !Array.isArray(s)) {
       out[key] = deepMerge((target || {})[key] || {}, s)
       continue
     }
-    
+
     // Skip empty strings for other fields (to avoid accidental overwrites)
     if (s === '') {
       continue
     }
-    
+
     if (typeof s === 'object' && s !== null && !Array.isArray(s)) {
       out[key] = deepMerge((target || {})[key], s)
     } else {
@@ -98,7 +110,9 @@ export async function GET(request: NextRequest) {
         .eq('is_active', true)
         .order('sort_order', { ascending: true })
 
-      if (error) throw error
+      if (error) {
+throw error
+}
 
       return NextResponse.json({
         success: true,
@@ -114,7 +128,9 @@ export async function GET(request: NextRequest) {
         .eq('page_id', pageId)
         .order('position', { ascending: true })
 
-      if (error) throw error
+      if (error) {
+throw error
+}
 
       return NextResponse.json({
         success: true,
@@ -224,10 +240,10 @@ export async function POST(request: NextRequest) {
       }
 
       const lastBlock = lastBlocks && lastBlocks.length > 0 ? lastBlocks[0] : null
-      finalPosition = lastBlock && typeof lastBlock.position === 'number' 
-        ? lastBlock.position + 1 
+      finalPosition = lastBlock && typeof lastBlock.position === 'number'
+        ? lastBlock.position + 1
         : 0
-      
+
       logger.debug('Calculated block position', {
         page_id,
         finalPosition,
@@ -275,10 +291,10 @@ export async function POST(request: NextRequest) {
       errorMessage,
       duration: Date.now() - startTime
     })
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: errorMessage || 'Failed to create block',
         details: process.env.NODE_ENV === 'development' ? errorMessage : undefined
       },
@@ -292,8 +308,13 @@ export async function PUT(request: NextRequest) {
   try {
     const user = verifyToken(request)
     if (!user) {
+      const authHeader = request.headers.get('authorization')
+      logger.warn('Unauthorized block update attempt', {
+        hasAuthHeader: !!authHeader,
+        authHeaderPrefix: authHeader?.substring(0, 20) || 'none'
+      })
       return NextResponse.json(
-        { success: false, error: 'Unauthorized' },
+        { success: false, error: 'Unauthorized. Please login again.' },
         { status: 401 }
       )
     }
@@ -355,12 +376,12 @@ export async function PUT(request: NextRequest) {
 
         // Deep merge to preserve all fields
         const merged = deepMerge(existing?.content || {}, updateData.content)
-        
+
         // CRITICAL: Ensure buttons array is fully preserved with all properties
         if (updateData.content?.buttons !== undefined) {
           merged.buttons = updateData.content.buttons
         }
-        
+
         // stamp merged content with the incoming timestamp (or now)
         merged._meta = merged._meta || {}
         merged._meta.clientUpdatedAt = incomingTs || Date.now()
@@ -397,7 +418,9 @@ export async function PUT(request: NextRequest) {
         console.log('[DEBUG] PUT /api/pages/blocks - saved content (non-serializable)')
       }
     }
-    if (error) throw error
+    if (error) {
+throw error
+}
 
     return NextResponse.json({
       success: true,
@@ -440,7 +463,9 @@ export async function DELETE(request: NextRequest) {
       .delete()
       .eq('id', id)
 
-    if (error) throw error
+    if (error) {
+throw error
+}
 
     return NextResponse.json({
       success: true,

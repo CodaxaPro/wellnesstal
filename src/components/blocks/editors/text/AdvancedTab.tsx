@@ -1,6 +1,7 @@
 'use client'
 
 import { TextContent, TextAnimations, TextResponsive } from '../../types'
+
 import { getDefaultTextContent, TEXT_STYLE_PRESETS } from './defaults'
 
 interface AdvancedTabProps {

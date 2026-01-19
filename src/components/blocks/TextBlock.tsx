@@ -1,8 +1,10 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { BlockProps, TextContent } from './types'
+
 import Image from 'next/image'
+
+import { BlockProps, TextContent } from './types'
 
 export default function TextBlock({ block }: BlockProps) {
   const content = block.content as TextContent
@@ -37,7 +39,9 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Get animation styles
   const getAnimationStyles = (): React.CSSProperties => {
-    if (!animations.enabled) return {}
+    if (!animations.enabled) {
+return {}
+}
 
     const duration = animations.duration || 500
     const delay = animations.delay || 0
@@ -99,7 +103,9 @@ export default function TextBlock({ block }: BlockProps) {
       return { backgroundColor: '#ffffff' } // white background
     }
 
-    if (!content.background || content.background.type === 'none') return {}
+    if (!content.background || content.background.type === 'none') {
+return {}
+}
 
     switch (content.background.type) {
       case 'solid':
@@ -123,7 +129,9 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Get border styles
   const getBorderStyles = (): React.CSSProperties => {
-    if (!content.border?.enabled) return {}
+    if (!content.border?.enabled) {
+return {}
+}
     return {
       borderTopWidth: content.border.thickness || 1,
       borderTopStyle: content.border.style || 'solid',
@@ -160,7 +168,9 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Render divider
   const renderDivider = (divider?: any) => {
-    if (!divider || !divider.enabled) return null
+    if (!divider?.enabled) {
+return null
+}
     return (
       <div
         style={{
@@ -177,7 +187,9 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Render images
   const renderImages = () => {
-    if (!content.images || content.images.length === 0) return null
+    if (!content.images || content.images.length === 0) {
+return null
+}
 
     const images = content.images.map((image, index) => {
       // Width handling - convert "full" to Tailwind class or use as style
@@ -240,7 +252,9 @@ export default function TextBlock({ block }: BlockProps) {
 
   // Render title based on position
   const renderTitle = () => {
-    if (content.showTitle === false || !content.title) return null
+    if (content.showTitle === false || !content.title) {
+return null
+}
 
     const titleParts = content.title.split(' ')
     const lastWord = titleParts[titleParts.length - 1]
@@ -464,7 +478,9 @@ export default function TextBlock({ block }: BlockProps) {
   // Render CTA button
   const renderCTA = () => {
     const btn = content.ctaButton
-    if (!btn || !btn.enabled) return null
+    if (!btn?.enabled) {
+return null
+}
 
     const sizeClasses = {
       sm: 'px-4 py-2 text-sm',

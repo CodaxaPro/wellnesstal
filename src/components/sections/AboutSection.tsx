@@ -196,19 +196,19 @@ export default function AboutSection() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {aboutLoading ? (
             <div className="animate-pulse">
-              <div className="h-8 bg-sage-200 rounded-full w-48 mb-6"></div>
-              <div className="h-12 bg-sage-200 rounded w-full mb-4"></div>
-              <div className="h-12 bg-sage-200 rounded w-3/4 mb-6"></div>
-              <div className="h-6 bg-sage-200 rounded w-full mb-2"></div>
-              <div className="h-6 bg-sage-200 rounded w-full mb-2"></div>
-              <div className="h-6 bg-sage-200 rounded w-2/3 mb-8"></div>
+              <div className="h-8 bg-sage-200 rounded-full w-48 mb-6" />
+              <div className="h-12 bg-sage-200 rounded w-full mb-4" />
+              <div className="h-12 bg-sage-200 rounded w-3/4 mb-6" />
+              <div className="h-6 bg-sage-200 rounded w-full mb-2" />
+              <div className="h-6 bg-sage-200 rounded w-full mb-2" />
+              <div className="h-6 bg-sage-200 rounded w-2/3 mb-8" />
               <div className="grid grid-cols-2 gap-6 mb-8">
-                <div className="h-28 bg-sage-100 rounded-2xl"></div>
-                <div className="h-28 bg-sage-100 rounded-2xl"></div>
+                <div className="h-28 bg-sage-100 rounded-2xl" />
+                <div className="h-28 bg-sage-100 rounded-2xl" />
               </div>
               <div className="flex gap-4">
-                <div className="h-14 bg-sage-300 rounded-xl w-40"></div>
-                <div className="h-14 bg-sage-200 rounded-xl w-40"></div>
+                <div className="h-14 bg-sage-300 rounded-xl w-40" />
+                <div className="h-14 bg-sage-200 rounded-xl w-40" />
               </div>
             </div>
           ) : (
@@ -392,11 +392,11 @@ export default function AboutSection() {
             <div
               className="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-20"
               style={{ backgroundColor: `${aboutContent.styles?.statsValue?.color || defaultAboutStyles.statsValue?.color}30` }}
-            ></div>
+             />
             <div
               className="absolute -bottom-4 -left-4 w-32 h-32 rounded-full opacity-20"
               style={{ backgroundColor: `${aboutContent.styles?.highlightedText?.color || defaultAboutStyles.highlightedText?.color}30` }}
-            ></div>
+             />
           </div>
         </div>
       </div>

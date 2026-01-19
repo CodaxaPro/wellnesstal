@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 
 interface MediaFile {
   id: string
@@ -66,8 +67,12 @@ export default function MediaGalleryPage() {
     try {
       setLoading(true)
       const params = new URLSearchParams()
-      if (selectedCategory !== 'all') params.set('category', selectedCategory)
-      if (searchQuery) params.set('search', searchQuery)
+      if (selectedCategory !== 'all') {
+params.set('category', selectedCategory)
+}
+      if (searchQuery) {
+params.set('search', searchQuery)
+}
 
       const response = await fetch(`/api/media?${params}`)
       const data = await response.json()
@@ -108,7 +113,9 @@ export default function MediaGalleryPage() {
 
   // File upload handler
   const handleFileUpload = async (fileList: FileList | null) => {
-    if (!fileList || fileList.length === 0) return
+    if (!fileList || fileList.length === 0) {
+return
+}
 
     const token = localStorage.getItem('adminToken')
     setUploading(true)
@@ -186,7 +193,9 @@ export default function MediaGalleryPage() {
 
   // Delete handler
   const handleDelete = async () => {
-    if (selectedFiles.size === 0) return
+    if (selectedFiles.size === 0) {
+return
+}
 
     const token = localStorage.getItem('adminToken')
     const ids = Array.from(selectedFiles).join(',')
@@ -211,7 +220,9 @@ export default function MediaGalleryPage() {
 
   // Edit handler
   const handleEdit = async () => {
-    if (!editFile) return
+    if (!editFile) {
+return
+}
 
     const token = localStorage.getItem('adminToken')
 
@@ -250,8 +261,12 @@ export default function MediaGalleryPage() {
 
   // Format file size
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    if (bytes < 1024) {
+return `${bytes} B`
+}
+    if (bytes < 1024 * 1024) {
+return `${(bytes / 1024).toFixed(1)} KB`
+}
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
@@ -270,7 +285,7 @@ export default function MediaGalleryPage() {
   if (loading && files.length === 0) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }

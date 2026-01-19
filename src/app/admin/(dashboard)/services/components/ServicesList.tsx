@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+
 import { Service, ServiceCategory } from '../../../../types/services'
 
 interface ServicesListProps {
@@ -72,7 +73,9 @@ export default function ServicesList({
     const draggedIndex = services.findIndex(service => service.id === draggedItem)
     const targetIndex = services.findIndex(service => service.id === targetServiceId)
     
-    if (draggedIndex === -1 || targetIndex === -1) return
+    if (draggedIndex === -1 || targetIndex === -1) {
+return
+}
 
     // Create new order
     const reorderedServices = [...services]
@@ -97,7 +100,9 @@ export default function ServicesList({
   }
 
   const getCategoryById = (categoryId?: string): Category | undefined => {
-    if (!categoryId) return undefined
+    if (!categoryId) {
+return undefined
+}
     return categories.find(cat => cat.id === categoryId)
   }
 
@@ -111,7 +116,7 @@ export default function ServicesList({
     return (
       <div className="bg-white rounded-2xl shadow-soft p-8">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto" />
           <p className="mt-4 text-gray-600">Hizmetler yükleniyor...</p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import { FAQContent, FAQAccordionStyle, FAQCardStyle, FAQTypography } from '../../types'
+
 import { EXPAND_ICON_OPTIONS, SHADOW_OPTIONS, HOVER_EFFECT_OPTIONS, FAQ_STYLE_PRESETS } from './defaults'
 
 interface StyleTabProps {

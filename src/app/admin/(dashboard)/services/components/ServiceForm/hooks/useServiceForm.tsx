@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import type { ServiceFormData, Service, ButtonType } from '../../../../../../types/services'
 
 interface UseServiceFormProps {
@@ -147,16 +148,30 @@ export function useServiceForm({
     const newErrors: Partial<ServiceFormData> = {}
 
     if (step === 1) {
-      if (!formData.title?.trim()) newErrors.title = 'Hizmet adı gereklidir'
-      if (!formData.shortDescription?.trim()) newErrors.shortDescription = 'Kısa açıklama gereklidir'
-      if (!formData.longDescription?.trim()) newErrors.longDescription = 'Detaylı açıklama gereklidir'
-      if (!formData.duration?.trim()) newErrors.duration = 'Süre gereklidir'
-      if (!formData.price?.trim()) newErrors.price = 'Fiyat gereklidir'
+      if (!formData.title?.trim()) {
+newErrors.title = 'Hizmet adı gereklidir'
+}
+      if (!formData.shortDescription?.trim()) {
+newErrors.shortDescription = 'Kısa açıklama gereklidir'
+}
+      if (!formData.longDescription?.trim()) {
+newErrors.longDescription = 'Detaylı açıklama gereklidir'
+}
+      if (!formData.duration?.trim()) {
+newErrors.duration = 'Süre gereklidir'
+}
+      if (!formData.price?.trim()) {
+newErrors.price = 'Fiyat gereklidir'
+}
     }
 
     if (step === 3) {
-      if (!formData.primaryButtonText?.trim()) newErrors.primaryButtonText = 'Primary button text gereklidir'
-      if (!formData.secondaryButtonText?.trim()) newErrors.secondaryButtonText = 'Secondary button text gereklidir'
+      if (!formData.primaryButtonText?.trim()) {
+newErrors.primaryButtonText = 'Primary button text gereklidir'
+}
+      if (!formData.secondaryButtonText?.trim()) {
+newErrors.secondaryButtonText = 'Secondary button text gereklidir'
+}
       
       if (formData.primaryButtonType !== 'page' && !formData.primaryButtonValue?.trim()) {
         newErrors.primaryButtonValue = 'Primary button value gereklidir'

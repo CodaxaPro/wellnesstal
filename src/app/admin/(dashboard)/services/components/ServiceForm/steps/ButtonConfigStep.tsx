@@ -19,7 +19,7 @@ export default function ButtonConfigStep({
         {/* Primary Button */}
         <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 bg-sage-500 rounded-full"></div>
+            <div className="w-3 h-3 bg-sage-500 rounded-full" />
             <h4 className="font-medium text-charcoal">Primary Action Button</h4>
           </div>
           
@@ -176,7 +176,7 @@ export default function ButtonConfigStep({
         {/* Secondary Button */}
         <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-4">
-            <div className="w-3 h-3 bg-gray-400 rounded-full"></div>
+            <div className="w-3 h-3 bg-gray-400 rounded-full" />
             <h4 className="font-medium text-charcoal">Secondary Action Button</h4>
           </div>
           

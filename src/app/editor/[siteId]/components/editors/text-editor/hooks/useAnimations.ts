@@ -1,4 +1,5 @@
 import { useState, useCallback } from 'react';
+
 import { ENTRANCE_ANIMATIONS, HOVER_ANIMATIONS } from '../types/animationPresets';
 import { TextConfig } from '../types/textConfig.types';
 

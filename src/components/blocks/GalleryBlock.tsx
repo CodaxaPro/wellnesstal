@@ -1,9 +1,12 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+
 import Image from 'next/image'
-import { BlockProps, GalleryContent, GalleryImage } from './types'
+
 import { normalizeImageUrl } from '@/lib/image-utils'
+
+import { BlockProps, GalleryContent, GalleryImage } from './types'
 
 // Default values for enterprise gallery
 const defaultLayout = {
@@ -62,14 +65,18 @@ export default function GalleryBlock({ block }: BlockProps) {
 
   // Get unique categories
   const categories = useMemo(() => {
-    if (!filter.enabled) return []
+    if (!filter.enabled) {
+return []
+}
     const cats = [...new Set(validImages.map(img => img.category).filter(Boolean))] as string[]
     return cats
   }, [validImages, filter.enabled])
 
   // Filter by category
   const filteredImages = useMemo(() => {
-    if (!activeCategory || !filter.enabled) return validImages
+    if (!activeCategory || !filter.enabled) {
+return validImages
+}
     return validImages.filter(img => img.category === activeCategory)
   }, [validImages, activeCategory, filter.enabled])
 

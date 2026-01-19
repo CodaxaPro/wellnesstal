@@ -23,6 +23,7 @@ export const getDefaultTestimonialsContent = (): TestimonialsContent => ({
   autoSlideDelay: 5000,
   autoPlay: true,
   showRatings: true,
+  showStats: true,
   maxDisplayCount: 5,
   layout: 'carousel',
   stats: [

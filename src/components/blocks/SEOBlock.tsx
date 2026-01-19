@@ -1,8 +1,10 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+
 import Head from 'next/head'
 import Script from 'next/script'
+
 import { BlockProps, SEOContent, SEOSchemaSettings, SchemaLocalBusiness, SchemaOrganization, SchemaWebPage, SchemaFAQ, SchemaBreadcrumb, SchemaService, SchemaEvent } from './types'
 
 // Default SEO Content
@@ -67,10 +69,18 @@ function generateRobotsContent(robots: SEOContent['robots']): string {
     directives.push('nofollow')
   }
 
-  if (robots.noarchive) directives.push('noarchive')
-  if (robots.nosnippet) directives.push('nosnippet')
-  if (robots.noimageindex) directives.push('noimageindex')
-  if (robots.notranslate) directives.push('notranslate')
+  if (robots.noarchive) {
+directives.push('noarchive')
+}
+  if (robots.nosnippet) {
+directives.push('nosnippet')
+}
+  if (robots.noimageindex) {
+directives.push('noimageindex')
+}
+  if (robots.notranslate) {
+directives.push('notranslate')
+}
 
   if (robots.maxSnippet !== undefined && robots.maxSnippet !== -1) {
     directives.push(`max-snippet:${robots.maxSnippet}`)
@@ -93,15 +103,33 @@ function generateLocalBusinessSchema(data: SchemaLocalBusiness): object {
     name: data.name
   }
 
-  if (data.description) schema.description = data.description
-  if (data.url) schema.url = data.url
-  if (data.telephone) schema.telephone = data.telephone
-  if (data.email) schema.email = data.email
-  if (data.logo) schema.logo = data.logo
-  if (data.image) schema.image = data.image
-  if (data.priceRange) schema.priceRange = data.priceRange
-  if (data.currenciesAccepted) schema.currenciesAccepted = data.currenciesAccepted
-  if (data.paymentAccepted) schema.paymentAccepted = data.paymentAccepted
+  if (data.description) {
+schema.description = data.description
+}
+  if (data.url) {
+schema.url = data.url
+}
+  if (data.telephone) {
+schema.telephone = data.telephone
+}
+  if (data.email) {
+schema.email = data.email
+}
+  if (data.logo) {
+schema.logo = data.logo
+}
+  if (data.image) {
+schema.image = data.image
+}
+  if (data.priceRange) {
+schema.priceRange = data.priceRange
+}
+  if (data.currenciesAccepted) {
+schema.currenciesAccepted = data.currenciesAccepted
+}
+  if (data.paymentAccepted) {
+schema.paymentAccepted = data.paymentAccepted
+}
 
   if (data.address) {
     schema.address = {
@@ -156,8 +184,12 @@ function generateLocalBusinessSchema(data: SchemaLocalBusiness): object {
     }))
   }
 
-  if (data.sameAs) schema.sameAs = data.sameAs
-  if (data.hasMap) schema.hasMap = data.hasMap
+  if (data.sameAs) {
+schema.sameAs = data.sameAs
+}
+  if (data.hasMap) {
+schema.hasMap = data.hasMap
+}
 
   if (data.availableService) {
     schema.hasOfferCatalog = {
@@ -185,11 +217,21 @@ function generateOrganizationSchema(data: SchemaOrganization): object {
     name: data.name
   }
 
-  if (data.legalName) schema.legalName = data.legalName
-  if (data.description) schema.description = data.description
-  if (data.url) schema.url = data.url
-  if (data.logo) schema.logo = data.logo
-  if (data.foundingDate) schema.foundingDate = data.foundingDate
+  if (data.legalName) {
+schema.legalName = data.legalName
+}
+  if (data.description) {
+schema.description = data.description
+}
+  if (data.url) {
+schema.url = data.url
+}
+  if (data.logo) {
+schema.logo = data.logo
+}
+  if (data.foundingDate) {
+schema.foundingDate = data.foundingDate
+}
 
   if (data.founder) {
     schema.founder = {
@@ -218,7 +260,9 @@ function generateOrganizationSchema(data: SchemaOrganization): object {
     }))
   }
 
-  if (data.sameAs) schema.sameAs = data.sameAs
+  if (data.sameAs) {
+schema.sameAs = data.sameAs
+}
 
   return schema
 }
@@ -230,11 +274,21 @@ function generateWebPageSchema(data: SchemaWebPage): object {
     '@type': data['@type'] || 'WebPage'
   }
 
-  if (data.name) schema.name = data.name
-  if (data.description) schema.description = data.description
-  if (data.url) schema.url = data.url
-  if (data.datePublished) schema.datePublished = data.datePublished
-  if (data.dateModified) schema.dateModified = data.dateModified
+  if (data.name) {
+schema.name = data.name
+}
+  if (data.description) {
+schema.description = data.description
+}
+  if (data.url) {
+schema.url = data.url
+}
+  if (data.datePublished) {
+schema.datePublished = data.datePublished
+}
+  if (data.dateModified) {
+schema.dateModified = data.dateModified
+}
 
   if (data.author) {
     schema.author = {
@@ -287,7 +341,7 @@ function generateBreadcrumbSchema(data: SchemaBreadcrumb, currentUrl?: string): 
     ]
     let currentPath = url.origin
     pathParts.forEach(part => {
-      currentPath += '/' + part
+      currentPath += `/${  part}`
       items.push({
         name: part.charAt(0).toUpperCase() + part.slice(1).replace(/-/g, ' '),
         url: currentPath
@@ -405,8 +459,12 @@ export default function SEOBlock({ block }: BlockProps) {
   // Apply global settings if enabled
   if (useGlobalSEO && globalSEOData) {
     // Merge global settings
-    if (globalSEOData.title) seoContent.title = globalSEOData.title
-    if (globalSEOData.description) seoContent.description = globalSEOData.description
+    if (globalSEOData.title) {
+seoContent.title = globalSEOData.title
+}
+    if (globalSEOData.description) {
+seoContent.description = globalSEOData.description
+}
     if (globalSEOData.siteName) {
       seoContent.openGraph.siteName = globalSEOData.siteName
       seoContent.titleTemplate = `%s | ${globalSEOData.siteName}`
@@ -415,15 +473,23 @@ export default function SEOBlock({ block }: BlockProps) {
       seoContent.openGraph.image = { url: globalSEOData.defaultImage }
       seoContent.twitter.image = { url: globalSEOData.defaultImage }
     }
-    if (globalSEOData.twitterHandle) seoContent.twitter.site = globalSEOData.twitterHandle
+    if (globalSEOData.twitterHandle) {
+seoContent.twitter.site = globalSEOData.twitterHandle
+}
   }
 
   // Apply contact data to LocalBusiness schema
   if (useGlobalSEO && globalContactData && seoContent.schema.localBusiness?.enabled) {
     const lb = seoContent.schema.localBusiness
-    if (globalContactData.businessName) lb.name = globalContactData.businessName
-    if (globalContactData.phone) lb.telephone = globalContactData.phone
-    if (globalContactData.email) lb.email = globalContactData.email
+    if (globalContactData.businessName) {
+lb.name = globalContactData.businessName
+}
+    if (globalContactData.phone) {
+lb.telephone = globalContactData.phone
+}
+    if (globalContactData.email) {
+lb.email = globalContactData.email
+}
     if (globalContactData.address) {
       lb.address = {
         streetAddress: globalContactData.address.street,

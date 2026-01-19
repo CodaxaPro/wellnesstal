@@ -15,6 +15,7 @@ Authorization: Bearer <token>
 - **File Upload**: 50 uploads per hour
 
 Rate limit headers are included in responses:
+
 - `X-RateLimit-Limit`: Maximum requests allowed
 - `X-RateLimit-Remaining`: Remaining requests
 - `X-RateLimit-Reset`: Reset time (ISO 8601)
@@ -25,13 +26,16 @@ Rate limit headers are included in responses:
 ### Pages
 
 #### GET /api/pages
+
 Get all pages or a single page by slug or ID.
 
 **Query Parameters:**
+
 - `slug` (optional): Page slug
 - `id` (optional): Page ID
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -40,9 +44,11 @@ Get all pages or a single page by slug or ID.
 ```
 
 #### POST /api/pages
+
 Create a new page (requires authentication).
 
 **Request Body:**
+
 ```json
 {
   "title": "Page Title",
@@ -52,23 +58,29 @@ Create a new page (requires authentication).
 ```
 
 #### PUT /api/pages
+
 Update a page (requires authentication).
 
 #### DELETE /api/pages
+
 Delete a page (requires authentication).
 
 ### Page Blocks
 
 #### GET /api/pages/blocks
+
 Get blocks for a page.
 
 **Query Parameters:**
+
 - `pageId`: Page ID
 
 #### PUT /api/pages/blocks
+
 Update a block (requires authentication).
 
 **Request Body:**
+
 ```json
 {
   "id": "block-id",
@@ -79,9 +91,11 @@ Update a block (requires authentication).
 ### Authentication
 
 #### POST /api/auth/login
+
 Login endpoint.
 
 **Request Body:**
+
 ```json
 {
   "email": "user@example.com",
@@ -90,6 +104,7 @@ Login endpoint.
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -105,12 +120,15 @@ Login endpoint.
 ### Media
 
 #### GET /api/media
+
 Get media files.
 
 #### POST /api/media
+
 Upload a media file (requires authentication).
 
 **Form Data:**
+
 - `file`: File to upload
 - `category`: Category name
 - `alt_text`: Alt text for image
@@ -118,9 +136,11 @@ Upload a media file (requires authentication).
 ### Services
 
 #### GET /api/services
+
 Get all services.
 
 #### POST /api/services
+
 Create a service (requires authentication).
 
 ## Error Responses
@@ -135,6 +155,7 @@ All errors follow this format:
 ```
 
 **Status Codes:**
+
 - `200`: Success
 - `400`: Bad Request
 - `401`: Unauthorized
@@ -142,4 +163,3 @@ All errors follow this format:
 - `404`: Not Found
 - `429`: Too Many Requests (Rate Limited)
 - `500`: Internal Server Error
-

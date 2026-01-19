@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+
 import { PRESET_ICONS, ICON_CATEGORIES } from '../defaults'
 
 interface IconSelectorProps {
@@ -34,7 +35,9 @@ export default function IconSelector({
 
   const renderIcon = (iconName: string, size: number = 20) => {
     const path = PRESET_ICONS[iconName]
-    if (!path) return null
+    if (!path) {
+return null
+}
 
     return (
       <svg
@@ -61,7 +64,9 @@ export default function IconSelector({
           value={search}
           onChange={(e) => {
             setSearch(e.target.value)
-            if (e.target.value) setActiveCategory(null)
+            if (e.target.value) {
+setActiveCategory(null)
+}
           }}
           placeholder="İkon ara..."
           className="w-full px-4 py-2 pl-10 border border-slate-200 rounded-lg focus:ring-2 focus:ring-sage-500 text-sm"
@@ -171,7 +176,9 @@ export function FeatureIcon({
   className?: string
 }) {
   const path = PRESET_ICONS[name]
-  if (!path) return null
+  if (!path) {
+return null
+}
 
   return (
     <svg

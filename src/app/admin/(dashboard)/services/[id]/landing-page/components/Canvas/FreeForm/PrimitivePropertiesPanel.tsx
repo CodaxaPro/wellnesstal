@@ -2,6 +2,7 @@
 // Comprehensive properties panel with Section/Container/Stack/Grid support
 
 import React from 'react';
+
 import type { LayoutElement, SectionConfig, ContainerConfig, StackConfig, GridConfig, ContainerVariant } from './primitives.types';
 
 interface PrimitivePropertiesPanelProps {

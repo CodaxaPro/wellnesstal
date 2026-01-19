@@ -4,12 +4,14 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { usePageBuilder } from './usePageBuilder';
-import { PageRenderer } from './PageRenderer';
-import { PrimitivePropertiesPanel } from '../PrimitivePropertiesPanel';
-import { ComponentLibrary } from '../ComponentLibrary';
+
 import { LayerPanel } from '../../../LayerPanel/LayerPanel';
+import { ComponentLibrary } from '../ComponentLibrary';
+import { PrimitivePropertiesPanel } from '../PrimitivePropertiesPanel';
+
+import { PageRenderer } from './PageRenderer';
 import type { LibraryContext } from './types';
+import { usePageBuilder } from './usePageBuilder';
 
 export function PageBuilder() {
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
@@ -49,14 +51,18 @@ export function PageBuilder() {
       // Ctrl/Cmd + Z = Undo
       if ((e.ctrlKey || e.metaKey) && e.key === 'z' && !e.shiftKey) {
         e.preventDefault();
-        if (canUndo) undo();
+        if (canUndo) {
+undo();
+}
         return;
       }
 
       // Ctrl/Cmd + Shift + Z = Redo
       if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'z') {
         e.preventDefault();
-        if (canRedo) redo();
+        if (canRedo) {
+redo();
+}
         return;
       }
 
@@ -138,20 +144,34 @@ export function PageBuilder() {
 
   const getSmartAddButtonText = () => {
     const selectedType = getSelectedElementType();
-    if (!selectedType) return '+ Add Section';
-    if (selectedType === 'section' || selectedType === 'container') return '+ Add Stack/Grid';
-    if (selectedType === 'stack' || selectedType === 'grid' || selectedType === 'content') return '+ Add Content';
+    if (!selectedType) {
+return '+ Add Section';
+}
+    if (selectedType === 'section' || selectedType === 'container') {
+return '+ Add Stack/Grid';
+}
+    if (selectedType === 'stack' || selectedType === 'grid' || selectedType === 'content') {
+return '+ Add Content';
+}
     return '+';
   };
 
   const formatLastSaved = () => {
-    if (!lastSaved) return 'Never';
+    if (!lastSaved) {
+return 'Never';
+}
     const now = new Date();
     const diff = Math.floor((now.getTime() - lastSaved.getTime()) / 1000);
     
-    if (diff < 60) return 'Just now';
-    if (diff < 3600) return `${Math.floor(diff / 60)}m ago`;
-    if (diff < 86400) return `${Math.floor(diff / 3600)}h ago`;
+    if (diff < 60) {
+return 'Just now';
+}
+    if (diff < 3600) {
+return `${Math.floor(diff / 60)}m ago`;
+}
+    if (diff < 86400) {
+return `${Math.floor(diff / 3600)}h ago`;
+}
     return lastSaved.toLocaleDateString();
   };
 
@@ -206,7 +226,7 @@ export function PageBuilder() {
       {!hasLoadedSections && (
         <div className="w-[300px] h-full bg-white border-r border-gray-200 flex items-center justify-center">
           <div className="text-center text-gray-500 text-sm">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2" />
             <p>Loading layers...</p>
           </div>
         </div>
@@ -219,19 +239,19 @@ export function PageBuilder() {
           <div className="flex items-center gap-2">
             {saveStatus === 'saving' && (
               <>
-                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
+                <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
                 <span className="text-sm text-gray-600">Saving...</span>
               </>
             )}
             {saveStatus === 'saved' && (
               <>
-                <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-green-500 rounded-full" />
                 <span className="text-sm text-gray-600">Saved {formatLastSaved()}</span>
               </>
             )}
             {saveStatus === 'unsaved' && (
               <>
-                <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                <div className="w-2 h-2 bg-orange-500 rounded-full" />
                 <span className="text-sm text-gray-600">Unsaved changes</span>
               </>
             )}
@@ -256,7 +276,7 @@ export function PageBuilder() {
               ↪
             </button>
             
-            <div className="w-px h-4 bg-gray-300 mx-1"></div>
+            <div className="w-px h-4 bg-gray-300 mx-1" />
             
             <button
               onClick={handleManualSave}
@@ -341,7 +361,7 @@ export function PageBuilder() {
         ) : (
           <div className="flex items-center justify-center h-full">
             <div className="text-center text-gray-500">
-              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4" />
               <p className="text-lg font-medium">Loading your page...</p>
               <p className="text-sm mt-2">Please wait...</p>
             </div>

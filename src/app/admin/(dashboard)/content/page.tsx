@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+
 import Link from 'next/link'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 // Import types and constants
-import { ContentSection } from './components/types'
 import { contentTabs } from './components/constants'
 
 // Import editor components
@@ -16,15 +16,17 @@ import {
   ServicesSectionEditor,
   AboutEditor,
   ContactSectionEditor,
-  ContactEditor,
   FooterEditor,
-  MetaEditor,
-  TestimonialsEditor
+  MetaEditor
 } from './components/editors'
+import { ContentSection } from './components/types'
+import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlockEditor'
 
 export default function ContentManagement() {
   const router = useRouter()
-  const [activeTab, setActiveTab] = useState('header')
+  const searchParams = useSearchParams()
+  const tabFromUrl = searchParams.get('tab')
+  const [activeTab, setActiveTab] = useState(tabFromUrl || 'header')
   const [isEditing, setIsEditing] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
   const [saveMessage, setSaveMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
@@ -37,6 +39,17 @@ export default function ContentManagement() {
   const [deletingImage, setDeletingImage] = useState<number | null>(null)
   const [uploadingHeroImage, setUploadingHeroImage] = useState(false)
   const [deletingHeroImage, setDeletingHeroImage] = useState(false)
+  const [homepageTestimonialBlock, setHomepageTestimonialBlock] = useState<any>(null)
+  const [homepageBlockLoading, setHomepageBlockLoading] = useState(false)
+  const [homepageBlockId, setHomepageBlockId] = useState<string | null>(null)
+
+  // Set active tab from URL parameter
+  useEffect(() => {
+    const tabFromUrl = searchParams.get('tab')
+    if (tabFromUrl && contentTabs.find(t => t.id === tabFromUrl)) {
+      setActiveTab(tabFromUrl)
+    }
+  }, [searchParams])
 
   // Fetch content from API
   useEffect(() => {
@@ -46,7 +59,10 @@ export default function ContentManagement() {
       return
     }
     fetchContent()
-  }, [router])
+    if (activeTab === 'homepage-testimonials-block') {
+      fetchHomepageTestimonialBlock()
+    }
+  }, [router, activeTab])
 
   const fetchContent = async (): Promise<ContentSection[]> => {
     try {
@@ -70,11 +86,123 @@ export default function ContentManagement() {
     return contentSections.find(section => section.section === activeTab)
   }
 
+  const fetchHomepageTestimonialBlock = async () => {
+    try {
+      setHomepageBlockLoading(true)
+      const token = localStorage.getItem('adminToken')
+
+      // Fetch home page
+      const pageResponse = await fetch('/api/pages?slug=home&withBlocks=true', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      const pageData = await pageResponse.json()
+
+      if (pageData.success && pageData.data?.blocks) {
+        const testimonialBlock = pageData.data.blocks.find(
+          (b: any) => b.block_type === 'testimonials' && b.visible !== false
+        )
+
+        if (testimonialBlock) {
+          setHomepageTestimonialBlock(testimonialBlock.content)
+          setHomepageBlockId(testimonialBlock.id)
+        } else {
+          setHomepageTestimonialBlock(null)
+          setHomepageBlockId(null)
+        }
+      }
+    } catch (error) {
+      console.error('Failed to fetch homepage testimonial block:', error)
+      setHomepageTestimonialBlock(null)
+      setHomepageBlockId(null)
+    } finally {
+      setHomepageBlockLoading(false)
+    }
+  }
+
+  const handleHomepageBlockUpdate = async (updatedContent: any) => {
+    if (!homepageBlockId) return
+
+    try {
+      const token = localStorage.getItem('adminToken')
+      const response = await fetch('/api/pages/blocks', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          id: homepageBlockId,
+          content: updatedContent
+        })
+      })
+
+      if (response.ok) {
+        setHomepageTestimonialBlock(updatedContent)
+        setSaveMessage({ type: 'success', text: 'Block başarıyla güncellendi' })
+        setTimeout(() => setSaveMessage(null), 2000)
+      } else {
+        const error = await response.json()
+        setSaveMessage({ type: 'error', text: error.error || 'Güncelleme başarısız' })
+        setTimeout(() => setSaveMessage(null), 3000)
+      }
+    } catch (error) {
+      console.error('Failed to update block:', error)
+      setSaveMessage({ type: 'error', text: 'Güncelleme sırasında hata oluştu' })
+      setTimeout(() => setSaveMessage(null), 3000)
+    }
+  }
+
   const startEditing = async () => {
     const freshData = await fetchContent()
     const section = freshData.find(s => s.section === activeTab)
     if (section) {
-      setEditingContent(JSON.parse(JSON.stringify(section.content)))
+      let mergedContent = JSON.parse(JSON.stringify(section.content))
+
+      // If editing contact-section, merge with contact-settings data
+      if (activeTab === 'contact-section') {
+        try {
+          const [contactRes, contactSettingsRes] = await Promise.all([
+            fetch('/api/content?section=contact').then(r => r.json()),
+            fetch('/api/content?section=contact-settings').then(r => r.json())
+          ])
+
+          // Merge contact data
+          if (contactRes.success && contactRes.data?.content) {
+            mergedContent = {
+              ...mergedContent,
+              contact: {
+                ...mergedContent.contact,
+                phone: contactRes.data.content.phone || mergedContent.contact?.phone,
+                email: contactRes.data.content.email || mergedContent.contact?.email,
+                businessName: contactRes.data.content.businessName || mergedContent.contact?.businessName
+              },
+              address: contactRes.data.content.address || mergedContent.address,
+              openingHours: contactRes.data.content.openingHours || mergedContent.openingHours
+            }
+          }
+
+          // Merge contact-settings data
+          if (contactSettingsRes.success && contactSettingsRes.data?.content) {
+            const settings = contactSettingsRes.data.content
+            mergedContent = {
+              ...mergedContent,
+              businessInfo: settings.businessInfo || mergedContent.businessInfo,
+              contact: {
+                ...mergedContent.contact,
+                ...settings.contact,
+                businessName: settings.businessInfo?.name || mergedContent.contact?.businessName
+              },
+              address: settings.address || mergedContent.address,
+              openingHours: settings.openingHours || mergedContent.openingHours,
+              socialMedia: settings.socialMedia || mergedContent.socialMedia
+            }
+          }
+        } catch (error) {
+          console.error('Failed to merge contact data:', error)
+        }
+      }
+
+      setEditingContent(mergedContent)
       setCurrentDefaults(section.defaults ? JSON.parse(JSON.stringify(section.defaults)) : null)
       setExpandedStyleFields([])
       setIsEditing(true)
@@ -103,7 +231,9 @@ export default function ContentManagement() {
   }
 
   const resetFieldToDefault = (fieldName: string) => {
-    if (!currentDefaults) return
+    if (!currentDefaults) {
+return
+}
     setEditingContent((prev: any) => ({
       ...prev,
       [fieldName]: currentDefaults[fieldName],
@@ -117,9 +247,13 @@ export default function ContentManagement() {
   }
 
   const resetStylePropertyToDefault = (fieldName: string, propertyName: string) => {
-    if (!currentDefaults?.styles?.[fieldName]) return
+    if (!currentDefaults?.styles?.[fieldName]) {
+return
+}
     const defaultValue = currentDefaults.styles[fieldName][propertyName]
-    if (defaultValue === undefined) return
+    if (defaultValue === undefined) {
+return
+}
     setEditingContent((prev: any) => ({
       ...prev,
       styles: {
@@ -133,14 +267,18 @@ export default function ContentManagement() {
   }
 
   const isStylePropertyChanged = (fieldName: string, propertyName: string) => {
-    if (!currentDefaults?.styles?.[fieldName]) return false
+    if (!currentDefaults?.styles?.[fieldName]) {
+return false
+}
     const currentValue = editingContent?.styles?.[fieldName]?.[propertyName]
     const defaultValue = currentDefaults.styles[fieldName][propertyName]
     return currentValue !== undefined && currentValue !== defaultValue
   }
 
   const isNestedContentChanged = (path: string) => {
-    if (!currentDefaults) return false
+    if (!currentDefaults) {
+return false
+}
     const pathParts = path.split('.')
     let currentValue: any = editingContent
     let defaultValue: any = currentDefaults
@@ -152,18 +290,24 @@ export default function ContentManagement() {
   }
 
   const resetNestedContentToDefault = (path: string) => {
-    if (!currentDefaults) return
+    if (!currentDefaults) {
+return
+}
     const pathParts = path.split('.')
     let defaultValue: any = currentDefaults
     for (const part of pathParts) {
       defaultValue = defaultValue?.[part]
     }
-    if (defaultValue === undefined) return
+    if (defaultValue === undefined) {
+return
+}
     setEditingContent((prev: any) => {
       const newContent = JSON.parse(JSON.stringify(prev))
       let target = newContent
       for (let i = 0; i < pathParts.length - 1; i++) {
-        if (!target[pathParts[i]]) target[pathParts[i]] = {}
+        if (!target[pathParts[i]]) {
+target[pathParts[i]] = {}
+}
         target = target[pathParts[i]]
       }
       target[pathParts[pathParts.length - 1]] = defaultValue
@@ -172,7 +316,9 @@ export default function ContentManagement() {
   }
 
   const resetAllToDefaults = () => {
-    if (!currentDefaults) return
+    if (!currentDefaults) {
+return
+}
     if (confirm('Tüm değerler varsayılana dönecek. Emin misiniz?')) {
       setEditingContent(JSON.parse(JSON.stringify(currentDefaults)))
       setSaveMessage({ type: 'success', text: 'Tüm değerler varsayılana sıfırlandı' })
@@ -188,11 +334,15 @@ export default function ContentManagement() {
 
   const handleSave = async () => {
     const section = getCurrentSection()
-    if (!section || !editingContent) return
+    if (!section || !editingContent) {
+return
+}
     setIsSaving(true)
     setSaveMessage(null)
     try {
       const token = localStorage.getItem('adminToken')
+
+      // Save main section
       const response = await fetch('/api/content', {
         method: 'PUT',
         headers: {
@@ -206,11 +356,67 @@ export default function ContentManagement() {
         })
       })
       const data = await response.json()
+
+      // If saving contact-section, sync to contact and contact-settings sections
+      if (data.success && section.section === 'contact-section' && editingContent) {
+        const syncPromises = []
+
+        // Sync to contact section (for ContactSection component)
+        if (editingContent.contact || editingContent.address || editingContent.openingHours) {
+          syncPromises.push(
+            fetch('/api/content', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                section: 'contact',
+                content: {
+                  businessName: editingContent.businessInfo?.name || editingContent.contact?.businessName,
+                  phone: editingContent.contact?.phone,
+                  email: editingContent.contact?.email,
+                  address: editingContent.address,
+                  openingHours: editingContent.openingHours
+                }
+              })
+            })
+          )
+        }
+
+        // Sync to contact-settings section (for /admin/contact page compatibility)
+        if (editingContent.businessInfo || editingContent.contact || editingContent.address ||
+            editingContent.openingHours || editingContent.socialMedia) {
+          syncPromises.push(
+            fetch('/api/content', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+              },
+              body: JSON.stringify({
+                section: 'contact-settings',
+                content: {
+                  businessInfo: editingContent.businessInfo,
+                  contact: editingContent.contact,
+                  address: editingContent.address,
+                  openingHours: editingContent.openingHours,
+                  socialMedia: editingContent.socialMedia
+                }
+              })
+            })
+          )
+        }
+
+        // Wait for all sync operations
+        await Promise.all(syncPromises)
+      }
+
       if (data.success) {
         await fetchContent()
         setIsEditing(false)
         setEditingContent(null)
-        setSaveMessage({ type: 'success', text: 'İçerik başarıyla kaydedildi!' })
+        setSaveMessage({ type: 'success', text: 'İçerik başarıyla kaydedildi ve senkronize edildi!' })
         setTimeout(() => setSaveMessage(null), 3000)
       } else {
         setSaveMessage({ type: 'error', text: data.error || 'Kaydetme başarısız' })
@@ -251,7 +457,9 @@ export default function ContentManagement() {
       if (data.success) {
         setEditingContent((prev: any) => {
           const images = [...(prev.images || [])]
-          if (!images[index]) images[index] = { url: '', alt: '' }
+          if (!images[index]) {
+images[index] = { url: '', alt: '' }
+}
           images[index] = { ...images[index], url: data.data.url }
           return { ...prev, images }
         })
@@ -269,17 +477,21 @@ export default function ContentManagement() {
 
   const handleImageDelete = async (index: number) => {
     const imageUrl = editingContent?.images?.[index]?.url
-    if (!imageUrl || !imageUrl.startsWith('/uploads/')) {
+    if (!imageUrl?.startsWith('/uploads/')) {
       setEditingContent((prev: any) => {
         const images = [...(prev.images || [])]
-        if (images[index]) images[index] = { url: '', alt: images[index]?.alt || '' }
+        if (images[index]) {
+images[index] = { url: '', alt: images[index]?.alt || '' }
+}
         return { ...prev, images }
       })
       setSaveMessage({ type: 'success', text: `Görsel ${index + 1} kaldırıldı` })
       setTimeout(() => setSaveMessage(null), 2000)
       return
     }
-    if (!confirm(`Görsel ${index + 1} silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?`)) return
+    if (!confirm(`Görsel ${index + 1} silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?`)) {
+return
+}
     setDeletingImage(index)
     setSaveMessage(null)
     try {
@@ -292,7 +504,9 @@ export default function ContentManagement() {
       if (data.success) {
         setEditingContent((prev: any) => {
           const images = [...(prev.images || [])]
-          if (images[index]) images[index] = { url: '', alt: images[index]?.alt || '' }
+          if (images[index]) {
+images[index] = { url: '', alt: images[index]?.alt || '' }
+}
           return { ...prev, images }
         })
         setSaveMessage({ type: 'success', text: `Görsel ${index + 1} başarıyla silindi!` })
@@ -337,13 +551,15 @@ export default function ContentManagement() {
 
   const handleHeroImageDelete = async () => {
     const imageUrl = editingContent?.image?.url
-    if (!imageUrl || !imageUrl.startsWith('/uploads/')) {
+    if (!imageUrl?.startsWith('/uploads/')) {
       setEditingContent((prev: any) => ({ ...prev, image: { ...prev.image, url: '' } }))
       setSaveMessage({ type: 'success', text: 'Hero görseli kaldırıldı' })
       setTimeout(() => setSaveMessage(null), 2000)
       return
     }
-    if (!confirm('Hero görseli silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?')) return
+    if (!confirm('Hero görseli silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
+return
+}
     setDeletingHeroImage(true)
     setSaveMessage(null)
     try {
@@ -383,8 +599,36 @@ export default function ContentManagement() {
   }
 
   const renderEditor = () => {
+    // Handle homepage testimonials block separately (it's not a content section)
+    if (activeTab === 'homepage-testimonials-block') {
+      if (homepageBlockLoading) {
+        return (
+          <div className="flex items-center justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500" />
+          </div>
+        )
+      }
+      if (!homepageTestimonialBlock) {
+        return (
+          <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
+            <p className="text-yellow-800">Ana sayfada testimonial block bulunamadı.</p>
+          </div>
+        )
+      }
+      return (
+        <div className="border border-slate-200 rounded-xl overflow-hidden">
+          <TestimonialsBlockEditor
+            content={homepageTestimonialBlock}
+            onUpdate={handleHomepageBlockUpdate}
+          />
+        </div>
+      )
+    }
+
     const section = getCurrentSection()
-    if (!section) return null
+    if (!section) {
+return null
+}
 
     switch (activeTab) {
       case 'header':
@@ -438,15 +682,6 @@ export default function ContentManagement() {
             setEditingContent={setEditingContent}
             isNestedContentChanged={isNestedContentChanged}
             resetNestedContentToDefault={resetNestedContentToDefault}
-          />
-        )
-      case 'contact':
-        return (
-          <ContactEditor
-            section={section}
-            isEditing={isEditing}
-            editingContent={editingContent}
-            updateField={updateField}
             updateNestedField={updateNestedField}
           />
         )
@@ -469,14 +704,6 @@ export default function ContentManagement() {
             updateField={updateField}
           />
         )
-      case 'testimonials-section':
-        return (
-          <TestimonialsEditor
-            section={section}
-            {...commonEditorProps}
-            updateNestedField={updateNestedField}
-          />
-        )
       default:
         return null
     }
@@ -484,7 +711,9 @@ export default function ContentManagement() {
 
   const renderPreview = () => {
     const section = getCurrentSection()
-    if (!section) return null
+    if (!section) {
+return null
+}
     const content = section.content
 
     switch (activeTab) {
@@ -514,12 +743,25 @@ export default function ContentManagement() {
           </div>
         )
       case 'services-section':
-      case 'testimonials-section':
         return (
           <div className="space-y-4">
             <div className="flex justify-between"><span className="text-gray-500">Badge:</span><span className="font-medium">{content.badge}</span></div>
             <div className="flex justify-between"><span className="text-gray-500">Başlık:</span><span className="font-medium">{content.sectionTitle} <span className="text-sage-500">{content.highlightedText}</span></span></div>
             <div className="flex justify-between"><span className="text-gray-500">Açıklama:</span><span className="font-medium text-right max-w-md">{content.description}</span></div>
+          </div>
+        )
+      case 'homepage-testimonials-block':
+        if (homepageBlockLoading) {
+          return <div className="text-gray-500">Yükleniyor...</div>
+        }
+        if (!homepageTestimonialBlock) {
+          return <div className="text-gray-500">Block bulunamadı</div>
+        }
+        return (
+          <div className="space-y-4">
+            <div className="flex justify-between"><span className="text-gray-500">Başlık:</span><span className="font-medium">{homepageTestimonialBlock.sectionTitle || homepageTestimonialBlock.title || 'N/A'}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Yorum Sayısı:</span><span className="font-medium">{homepageTestimonialBlock.testimonials?.length || 0}</span></div>
+            <div className="flex justify-between"><span className="text-gray-500">Layout:</span><span className="font-medium">{homepageTestimonialBlock.layout || 'default'}</span></div>
           </div>
         )
       default:
@@ -534,7 +776,7 @@ export default function ContentManagement() {
   if (isLoading) {
     return (
       <div className="min-h-screen bg-cream flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500" />
       </div>
     )
   }
@@ -601,70 +843,104 @@ export default function ContentManagement() {
           {/* Content Area */}
           <div className="lg:col-span-3">
             <div className="bg-white rounded-2xl shadow-soft p-6">
-              {currentSection && (
+              {(activeTab === 'homepage-testimonials-block' ? true : currentSection) && (
                 <>
-                  <div className="flex justify-between items-start mb-6">
-                    <div>
-                      <h2 className="text-xl font-bold text-charcoal">{currentSection.title}</h2>
-                      <p className="text-gray-500 text-sm">{currentSection.description}</p>
-                    </div>
-                    <div className="text-right text-sm text-gray-400">
-                      <div>Son güncelleme</div>
-                      <div className="font-medium">{new Date(currentSection.lastUpdated).toLocaleDateString('de-DE')}</div>
-                      <div>von {currentSection.updatedBy}</div>
-                    </div>
-                  </div>
+                  {activeTab === 'homepage-testimonials-block' ? (
+                    <>
+                      <div className="flex justify-between items-start mb-6">
+                        <div>
+                          <h2 className="text-xl font-bold text-charcoal">Ana Sayfa Yorumlar Block</h2>
+                          <p className="text-gray-500 text-sm">Ana sayfadaki testimonial block'u düzenleyin</p>
+                        </div>
+                      </div>
+                      {!homepageBlockLoading && homepageTestimonialBlock && (
+                        <>
+                          <div className="mb-6 p-4 bg-gray-50 rounded-xl">
+                            <h3 className="text-lg font-semibold text-charcoal mb-4">Önizleme</h3>
+                            {renderPreview()}
+                          </div>
+                          <div className="mt-6">
+                            {renderEditor()}
+                          </div>
+                        </>
+                      )}
+                      {homepageBlockLoading && (
+                        <div className="flex items-center justify-center py-12">
+                          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500" />
+                        </div>
+                      )}
+                      {!homepageBlockLoading && !homepageTestimonialBlock && (
+                        <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
+                          <p className="text-yellow-800">Ana sayfada testimonial block bulunamadı.</p>
+                        </div>
+                      )}
+                    </>
+                  ) : currentSection ? (
+                    <>
+                      <div className="flex justify-between items-start mb-6">
+                        <div>
+                          <h2 className="text-xl font-bold text-charcoal">{currentSection.title}</h2>
+                          <p className="text-gray-500 text-sm">{currentSection.description}</p>
+                        </div>
+                        <div className="text-right text-sm text-gray-400">
+                          <div>Son güncelleme</div>
+                          <div className="font-medium">{new Date(currentSection.lastUpdated).toLocaleDateString('de-DE')}</div>
+                          <div>von {currentSection.updatedBy}</div>
+                        </div>
+                      </div>
 
-                  {!isEditing && (
-                    <div className="mb-6 p-4 bg-gray-50 rounded-xl">
-                      <h3 className="text-lg font-semibold text-charcoal mb-4">Önizleme</h3>
-                      {renderPreview()}
-                    </div>
-                  )}
+                      {!isEditing && (
+                        <div className="mb-6 p-4 bg-gray-50 rounded-xl">
+                          <h3 className="text-lg font-semibold text-charcoal mb-4">Önizleme</h3>
+                          {renderPreview()}
+                        </div>
+                      )}
 
-                  {isEditing && renderEditor()}
+                      {isEditing && renderEditor()}
 
-                  <div className="flex gap-4 mt-6">
-                    {!isEditing ? (
-                      <button
-                        onClick={startEditing}
-                        className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
-                      >
-                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        Düzenle
-                      </button>
-                    ) : (
-                      <>
-                        <button
-                          onClick={handleSave}
-                          disabled={isSaving}
-                          className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
-                        >
-                          {isSaving ? (
-                            <>
-                              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
-                              Kaydediliyor...
-                            </>
-                          ) : (
-                            <>
-                              <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                              </svg>
-                              Kaydet
-                            </>
-                          )}
-                        </button>
-                        <button
-                          onClick={cancelEditing}
-                          className="px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition-all"
-                        >
-                          İptal
-                        </button>
-                      </>
-                    )}
-                  </div>
+                      <div className="flex gap-4 mt-6">
+                        {!isEditing ? (
+                          <button
+                            onClick={startEditing}
+                            className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                          >
+                            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Düzenle
+                          </button>
+                        ) : (
+                          <>
+                            <button
+                              onClick={handleSave}
+                              disabled={isSaving}
+                              className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                            >
+                              {isSaving ? (
+                                <>
+                                  <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                  Kaydediliyor...
+                                </>
+                              ) : (
+                                <>
+                                  <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                  </svg>
+                                  Kaydet
+                                </>
+                              )}
+                            </button>
+                            <button
+                              onClick={cancelEditing}
+                              className="px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                            >
+                              İptal
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </>
+                  ) : null}
                 </>
               )}
             </div>

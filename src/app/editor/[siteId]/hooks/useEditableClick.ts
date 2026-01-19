@@ -1,13 +1,16 @@
 'use client';
 
 import { useEffect } from 'react';
+
 import { useContentStore } from '../store/useContentStore';
 
 export function useEditableClick() {
   const { isEditMode, setActiveField } = useContentStore();
 
   useEffect(() => {
-    if (!isEditMode) return;
+    if (!isEditMode) {
+return;
+}
 
     const handleClick = (e: MouseEvent) => {
       const target = e.target as HTMLElement;

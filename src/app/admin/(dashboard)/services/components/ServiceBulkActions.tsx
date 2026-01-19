@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+
 import type { BulkOperation } from '../../../../types/services'
 
 interface Category {
@@ -40,7 +41,9 @@ export default function ServiceBulkActions({
   }
 
   const handleConfirmAction = async () => {
-    if (!pendingAction || selectedServices.length === 0) return
+    if (!pendingAction || selectedServices.length === 0) {
+return
+}
 
     const success = await onBulkAction(pendingAction)
     
@@ -81,7 +84,9 @@ export default function ServiceBulkActions({
   }
 
   const getConfirmationMessage = () => {
-    if (!pendingAction) return ''
+    if (!pendingAction) {
+return ''
+}
     
     const count = selectedServices.length
     const actionText = getActionText(pendingAction.action)

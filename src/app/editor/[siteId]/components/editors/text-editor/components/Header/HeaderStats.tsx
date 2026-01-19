@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { TextStats } from '../../types/textConfig.types';
 import { formatReadingTime } from '../../utils/textHelpers';
 

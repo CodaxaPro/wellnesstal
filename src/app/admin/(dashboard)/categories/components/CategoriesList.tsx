@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+
 import { Category } from '../types'
 
 interface CategoriesListProps {
@@ -57,7 +58,9 @@ export default function CategoriesList({
     const draggedIndex = categories.findIndex(cat => cat.id === draggedItem)
     const targetIndex = categories.findIndex(cat => cat.id === targetCategoryId)
     
-    if (draggedIndex === -1 || targetIndex === -1) return
+    if (draggedIndex === -1 || targetIndex === -1) {
+return
+}
 
     // Create new order
     const reorderedCategories = [...categories]
@@ -85,7 +88,7 @@ export default function CategoriesList({
     return (
       <div className="bg-white rounded-2xl shadow-soft p-8">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sage-500 mx-auto" />
           <p className="mt-4 text-gray-600">Kategoriler yükleniyor...</p>
         </div>
       </div>

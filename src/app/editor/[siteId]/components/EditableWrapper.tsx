@@ -1,7 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+
 import { createPortal } from 'react-dom';
+
 import { useContentStore } from '../store/useContentStore';
 
 interface EditableWrapperProps {
@@ -24,11 +26,15 @@ export default function EditableWrapper({
   }, []);
 
   useEffect(() => {
-    if (!isEditMode) return;
+    if (!isEditMode) {
+return;
+}
 
     const updatePosition = () => {
       const el = document.querySelector(targetSelector);
-      if (!el) return;
+      if (!el) {
+return;
+}
       
       const rect = el.getBoundingClientRect();
       setPosition({
@@ -51,7 +57,9 @@ export default function EditableWrapper({
     setActiveField(path);
   };
 
-  if (!isEditMode || activeField !== null || !mounted) return null;
+  if (!isEditMode || activeField !== null || !mounted) {
+return null;
+}
 
   const overlay = (
     <div

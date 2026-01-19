@@ -1,8 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
-import { EmbedContent, EmbedProviderType, EmbedAspectRatio } from '../types'
+
 import { getDefaultEmbedContent } from '../EmbedBlock'
+import { EmbedContent, EmbedProviderType, EmbedAspectRatio } from '../types'
 
 interface EmbedBlockEditorProps {
   content: EmbedContent
@@ -92,7 +93,9 @@ export default function EmbedBlockEditor({ content, onUpdate }: EmbedBlockEditor
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: EmbedContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

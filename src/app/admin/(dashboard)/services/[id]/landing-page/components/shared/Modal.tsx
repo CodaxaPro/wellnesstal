@@ -36,7 +36,9 @@ export default function Modal({
 
   // Handle ESC key
   useEffect(() => {
-    if (!isOpen) return
+    if (!isOpen) {
+return
+}
 
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -62,7 +64,9 @@ export default function Modal({
     }
   }, [isOpen])
 
-  if (!isOpen) return null
+  if (!isOpen) {
+return null
+}
 
   return (
     <div 

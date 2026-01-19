@@ -3,6 +3,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+
 import { TextConfig } from '../../types/textConfig.types';
 import { getTabSwitchAnimation } from '../../utils/animationHelpers';
 import ColorPicker from '../Toolbar/ColorPicker';

@@ -1,13 +1,15 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { CTAContent } from '../types'
-import { getDefaultCTAContent } from './cta/defaults'
-import ContentTab from './cta/ContentTab'
-import ButtonTab from './cta/ButtonTab'
-import LayoutTab from './cta/LayoutTab'
-import BackgroundTab from './cta/BackgroundTab'
+
 import AdvancedTab from './cta/AdvancedTab'
+import BackgroundTab from './cta/BackgroundTab'
+import ButtonTab from './cta/ButtonTab'
+import ContentTab from './cta/ContentTab'
+import { getDefaultCTAContent } from './cta/defaults'
+import LayoutTab from './cta/LayoutTab'
 import { ContentIcon, ButtonIcon, LayoutIcon, BackgroundIcon, AdvancedIcon } from './cta/shared/TabIcons'
 
 interface CTABlockEditorProps {
@@ -47,7 +49,9 @@ export default function CTABlockEditor({ content, onUpdate }: CTABlockEditorProp
 
   // Debounced update to parent
   const debouncedUpdate = useCallback((newContent: CTAContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

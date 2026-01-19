@@ -2,6 +2,7 @@
 // Image component with aspect ratio and effects
 
 import React from 'react';
+
 import type { ImageConfig } from './content.types';
 
 interface ContentImageProps {
@@ -27,8 +28,8 @@ export function ContentImage({ config, isSelected, onSelect }: ContentImageProps
   const style: React.CSSProperties = {
     width: typeof width === 'number' ? `${width}px` : width,
     height: typeof height === 'number' ? `${height}px` : height,
-    aspectRatio: aspectRatio,
-    objectFit: objectFit,
+    aspectRatio,
+    objectFit,
     borderRadius: `${borderRadius}px`,
     opacity,
     filter,

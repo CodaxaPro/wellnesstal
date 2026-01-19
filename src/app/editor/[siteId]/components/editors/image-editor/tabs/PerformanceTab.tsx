@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { ImageConfig } from '../types/imageConfig.types';
 
 interface PerformanceTabProps {

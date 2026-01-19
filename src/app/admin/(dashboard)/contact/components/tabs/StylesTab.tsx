@@ -1,7 +1,7 @@
 'use client'
 
-import { ContactSettings, ContactStyles, TextStyle } from '../types'
 import { StyleEditor } from '../StyleEditor'
+import { ContactSettings, ContactStyles, TextStyle } from '../types'
 
 interface StylesTabProps {
   settings: ContactSettings

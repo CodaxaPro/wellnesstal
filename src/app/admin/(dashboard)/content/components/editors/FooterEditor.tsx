@@ -1,7 +1,7 @@
 'use client'
 
-import { ContentSection } from '../types'
 import { StyleEditor } from '../StyleEditors'
+import { ContentSection } from '../types'
 
 interface FooterEditorProps {
   section: ContentSection
@@ -68,7 +68,9 @@ export function FooterEditor({
   const updateQuickLink = (index: number, field: string, value: string) => {
     setEditingContent((prev: any) => {
       const links = [...(prev.quickLinks || [])]
-      if (!links[index]) links[index] = { label: '', href: '' }
+      if (!links[index]) {
+links[index] = { label: '', href: '' }
+}
       links[index][field] = value
       return { ...prev, quickLinks: links }
     })
@@ -77,9 +79,52 @@ export function FooterEditor({
   const updateLegalLink = (index: number, field: string, value: string) => {
     setEditingContent((prev: any) => {
       const links = [...(prev.legalLinks || [])]
-      if (!links[index]) links[index] = { label: '', href: '' }
+      if (!links[index]) {
+links[index] = { label: '', href: '' }
+}
       links[index][field] = value
       return { ...prev, legalLinks: links }
+    })
+  }
+
+  const addLegalLink = () => {
+    setEditingContent((prev: any) => ({
+      ...prev,
+      legalLinks: [...(prev.legalLinks || []), { label: '', href: '' }]
+    }))
+  }
+
+  const removeLegalLink = (index: number) => {
+    setEditingContent((prev: any) => {
+      const links = [...(prev.legalLinks || [])]
+      links.splice(index, 1)
+      return { ...prev, legalLinks: links }
+    })
+  }
+
+  const updateServiceLink = (index: number, field: string, value: string) => {
+    setEditingContent((prev: any) => {
+      const links = [...(prev.services || [])]
+      if (!links[index]) {
+links[index] = { label: '', href: '' }
+}
+      links[index][field] = value
+      return { ...prev, services: links }
+    })
+  }
+
+  const addServiceLink = () => {
+    setEditingContent((prev: any) => ({
+      ...prev,
+      services: [...(prev.services || []), { label: '', href: '' }]
+    }))
+  }
+
+  const removeServiceLink = (index: number) => {
+    setEditingContent((prev: any) => {
+      const links = [...(prev.services || [])]
+      links.splice(index, 1)
+      return { ...prev, services: links }
     })
   }
 
@@ -277,60 +322,196 @@ export function FooterEditor({
 
       {/* Quick Links */}
       <div className="p-4 bg-white rounded-xl border border-gray-200">
-        <h3 className="text-lg font-semibold text-charcoal mb-4 flex items-center gap-2">
-          Navigasyon Linkleri
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-charcoal flex items-center gap-2">
+              Navigasyon Linkleri
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Footer'da "Navigation" bölümünde görünen hızlı linkleri düzenleyin. Bu linkler otomatik olarak footer'da görünür.
+            </p>
+          </div>
+          {isEditing && (
+            <button
+              type="button"
+              onClick={() => {
+                setEditingContent((prev: any) => ({
+                  ...prev,
+                  quickLinks: [...(prev.quickLinks || []), { label: '', href: '' }]
+                }))
+              }}
+              className="px-3 py-1.5 bg-sage-500 text-white rounded-lg hover:bg-sage-600 transition-colors text-sm"
+            >
+              + Link Ekle
+            </button>
+          )}
+        </div>
         <div className="space-y-3">
           {(content.quickLinks || []).map((link: any, index: number) => (
-            <div key={index} className="grid grid-cols-2 gap-3">
-              <input
-                type="text"
-                value={link.label || ''}
-                onChange={(e) => updateQuickLink(index, 'label', e.target.value)}
-                disabled={!isEditing}
-                placeholder="Link Metni"
-                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
-              />
-              <input
-                type="text"
-                value={link.href || ''}
-                onChange={(e) => updateQuickLink(index, 'href', e.target.value)}
-                disabled={!isEditing}
-                placeholder="#section veya /sayfa"
-                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50 font-mono text-sm"
-              />
+            <div key={index} className="flex gap-3 items-center">
+              <div className="grid grid-cols-2 gap-3 flex-1">
+                <input
+                  type="text"
+                  value={link.label || ''}
+                  onChange={(e) => updateQuickLink(index, 'label', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="Link Metni (örn: Start)"
+                  className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                />
+                <input
+                  type="text"
+                  value={link.href || ''}
+                  onChange={(e) => updateQuickLink(index, 'href', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="#section veya /sayfa"
+                  className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50 font-mono text-sm"
+                />
+              </div>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setEditingContent((prev: any) => {
+                      const links = [...(prev.quickLinks || [])]
+                      links.splice(index, 1)
+                      return { ...prev, quickLinks: links }
+                    })
+                  }}
+                  className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
             </div>
           ))}
+          {(!content.quickLinks || content.quickLinks.length === 0) && (
+            <p className="text-sm text-gray-500 italic">Henüz navigasyon linki eklenmemiş. "+ Link Ekle" butonuna tıklayarak ekleyebilirsiniz.</p>
+          )}
         </div>
         {isEditing && renderStyleEditor('link', 'Link Stili')}
       </div>
 
-      {/* Legal Links */}
+      {/* Services Links */}
       <div className="p-4 bg-white rounded-xl border border-gray-200">
-        <h3 className="text-lg font-semibold text-charcoal mb-4 flex items-center gap-2">
-          Yasal Linkler
-        </h3>
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-charcoal flex items-center gap-2">
+              Leistungen (Servisler)
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Footer'da "Leistungen" bölümünde görünen servis linklerini düzenleyin. Bu linkler otomatik olarak footer'da görünür.
+            </p>
+          </div>
+          {isEditing && (
+            <button
+              type="button"
+              onClick={addServiceLink}
+              className="px-3 py-1.5 bg-sage-500 text-white rounded-lg hover:bg-sage-600 transition-colors text-sm"
+            >
+              + Link Ekle
+            </button>
+          )}
+        </div>
         <div className="space-y-3">
-          {(content.legalLinks || []).map((link: any, index: number) => (
-            <div key={index} className="grid grid-cols-2 gap-3">
-              <input
-                type="text"
-                value={link.label || ''}
-                onChange={(e) => updateLegalLink(index, 'label', e.target.value)}
-                disabled={!isEditing}
-                placeholder="Link Metni"
-                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
-              />
-              <input
-                type="text"
-                value={link.href || ''}
-                onChange={(e) => updateLegalLink(index, 'href', e.target.value)}
-                disabled={!isEditing}
-                placeholder="/sayfa-adi"
-                className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50 font-mono text-sm"
-              />
+          {(content.services || []).map((link: any, index: number) => (
+            <div key={index} className="flex gap-3 items-center">
+              <div className="grid grid-cols-2 gap-3 flex-1">
+                <input
+                  type="text"
+                  value={link.label || ''}
+                  onChange={(e) => updateServiceLink(index, 'label', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="Servis Adı (örn: Premium Headspa)"
+                  className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                />
+                <input
+                  type="text"
+                  value={link.href || ''}
+                  onChange={(e) => updateServiceLink(index, 'href', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="/services/headspa"
+                  className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50 font-mono text-sm"
+                />
+              </div>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => removeServiceLink(index)}
+                  className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
             </div>
           ))}
+          {(!content.services || content.services.length === 0) && (
+            <p className="text-sm text-gray-500 italic">Henüz servis linki eklenmemiş. "+ Link Ekle" butonuna tıklayarak ekleyebilirsiniz.</p>
+          )}
+        </div>
+      </div>
+
+      {/* Legal Links */}
+      <div className="p-4 bg-white rounded-xl border border-gray-200">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-charcoal flex items-center gap-2">
+              Yasal Linkler
+            </h3>
+            <p className="text-sm text-gray-600 mt-1">
+              Footer'ın alt kısmında görünen yasal linkleri düzenleyin (Impressum, Datenschutz, AGB, vb.). Bu linkler otomatik olarak footer'da görünür.
+            </p>
+          </div>
+          {isEditing && (
+            <button
+              type="button"
+              onClick={addLegalLink}
+              className="px-3 py-1.5 bg-sage-500 text-white rounded-lg hover:bg-sage-600 transition-colors text-sm"
+            >
+              + Link Ekle
+            </button>
+          )}
+        </div>
+        <div className="space-y-3">
+          {(content.legalLinks || []).map((link: any, index: number) => (
+            <div key={index} className="flex gap-3 items-center">
+              <div className="grid grid-cols-2 gap-3 flex-1">
+                <input
+                  type="text"
+                  value={link.label || ''}
+                  onChange={(e) => updateLegalLink(index, 'label', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="Link Metni (örn: Impressum)"
+                  className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+                />
+                <input
+                  type="text"
+                  value={link.href || ''}
+                  onChange={(e) => updateLegalLink(index, 'href', e.target.value)}
+                  disabled={!isEditing}
+                  placeholder="/impressum"
+                  className="px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50 font-mono text-sm"
+                />
+              </div>
+              {isEditing && (
+                <button
+                  type="button"
+                  onClick={() => removeLegalLink(index)}
+                  className="px-3 py-2 text-red-500 hover:bg-red-50 rounded-lg transition-colors"
+                >
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                  </svg>
+                </button>
+              )}
+            </div>
+          ))}
+          {(!content.legalLinks || content.legalLinks.length === 0) && (
+            <p className="text-sm text-gray-500 italic">Henüz yasal link eklenmemiş. "+ Link Ekle" butonuna tıklayarak ekleyebilirsiniz.</p>
+          )}
         </div>
       </div>
 

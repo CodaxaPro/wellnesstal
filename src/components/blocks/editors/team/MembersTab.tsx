@@ -1,8 +1,11 @@
 'use client'
 
 import { useState, useRef } from 'react'
+
 import Image from 'next/image'
+
 import { TeamContent, TeamMember, TeamMemberSkill } from '../../types'
+
 import { SOCIAL_ICONS } from './defaults'
 
 interface MembersTabProps {
@@ -44,7 +47,9 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
     updateContent({
       members: members.filter((m) => m.id !== id)
     })
-    if (editingMember === id) setEditingMember(null)
+    if (editingMember === id) {
+setEditingMember(null)
+}
   }
 
   const moveMember = (id: string, direction: 'up' | 'down') => {
@@ -52,7 +57,9 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
     if (
       (direction === 'up' && index === 0) ||
       (direction === 'down' && index === members.length - 1)
-    ) return
+    ) {
+return
+}
 
     const newMembers = [...members]
     const swapIndex = direction === 'up' ? index - 1 : index + 1
@@ -71,7 +78,9 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
 
   const addSkill = (memberId: string) => {
     const member = members.find((m) => m.id === memberId)
-    if (!member) return
+    if (!member) {
+return
+}
     const newSkill: TeamMemberSkill = {
       id: `skill-${Date.now()}`,
       name: 'Yeni Yetenek',
@@ -84,7 +93,9 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
 
   const updateSkill = (memberId: string, skillId: string, updates: Partial<TeamMemberSkill>) => {
     const member = members.find((m) => m.id === memberId)
-    if (!member) return
+    if (!member) {
+return
+}
     updateMember(memberId, {
       skills: (member.skills || []).map((s) =>
         s.id === skillId ? { ...s, ...updates } : s
@@ -94,7 +105,9 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
 
   const deleteSkill = (memberId: string, skillId: string) => {
     const member = members.find((m) => m.id === memberId)
-    if (!member) return
+    if (!member) {
+return
+}
     updateMember(memberId, {
       skills: (member.skills || []).filter((s) => s.id !== skillId)
     })
@@ -102,7 +115,9 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
 
   // Image Upload Handler
   const handleImageUpload = async (memberId: string, file: File) => {
-    if (!file) return
+    if (!file) {
+return
+}
 
     setUploadingMemberId(memberId)
 
@@ -345,13 +360,17 @@ export default function MembersTab({ content, updateContent }: MembersTabProps) 
 
                         {/* Hidden File Input */}
                         <input
-                          ref={(el) => { fileInputRefs.current[member.id] = el }}
+                          ref={(el) => {
+ fileInputRefs.current[member.id] = el 
+}}
                           type="file"
                           accept="image/*"
                           className="hidden"
                           onChange={(e) => {
                             const file = e.target.files?.[0]
-                            if (file) handleImageUpload(member.id, file)
+                            if (file) {
+handleImageUpload(member.id, file)
+}
                             e.target.value = ''
                           }}
                         />

@@ -1,10 +1,13 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+
 import Image from 'next/image'
-import { BlockProps, FeaturesContent, FeatureItem } from './types'
-import { PRESET_ICONS } from './editors/features/defaults'
+
 import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
+
+import { PRESET_ICONS } from './editors/features/defaults'
+import { BlockProps, FeaturesContent, FeatureItem } from './types'
 
 // Shadow class mapping
 const shadowClasses: Record<string, string> = {
@@ -44,7 +47,9 @@ function FeatureIcon({
   color?: string
 }) {
   const path = PRESET_ICONS[name]
-  if (!path) return null
+  if (!path) {
+return null
+}
 
   return (
     <svg
@@ -79,7 +84,9 @@ function FeatureCard({
   const animations = content.animations || {}
 
   // Don't render if not visible
-  if (feature.visible === false) return null
+  if (feature.visible === false) {
+return null
+}
 
   // Get icon name
   const iconName = feature.iconConfig?.value || feature.icon || 'star'
@@ -89,7 +96,9 @@ function FeatureCard({
 
   // Get animation transform based on type
   const getAnimationTransform = () => {
-    if (isVisible) return 'translate(0, 0) scale(1) rotateX(0deg)'
+    if (isVisible) {
+return 'translate(0, 0) scale(1) rotateX(0deg)'
+}
 
     switch (animations.type) {
       case 'fade': return 'translate(0, 0) scale(1)'
@@ -288,10 +297,10 @@ function FeatureCard({
             <ul className="mt-4 space-y-2">
               {feature.featuresList.filter(item => item.enabled !== false).map((item, idx) => (
                 <li key={item.id || idx} className="flex items-start gap-2">
-                  <svg 
-                    className="w-5 h-5 flex-shrink-0 mt-0.5" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
+                  <svg
+                    className="w-5 h-5 flex-shrink-0 mt-0.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
                     stroke="currentColor"
                     style={{ color: '#9CAF88' }}
                   >
@@ -361,7 +370,9 @@ function FeaturesCarousel({
 
   // Auto play
   useEffect(() => {
-    if (!carousel.autoPlay) return
+    if (!carousel.autoPlay) {
+return
+}
 
     const interval = setInterval(() => {
       setCurrentSlide(prev => {
@@ -417,7 +428,7 @@ function FeaturesCarousel({
                     feature={feature}
                     content={content}
                     index={index}
-                    isVisible={true}
+                    isVisible
                   />
                 ))}
             </div>
@@ -574,27 +585,36 @@ export default function FeaturesBlock({ block }: BlockProps) {
     const visibleFeatures = features.filter(f => f.visible !== false)
     return (
       <div className="space-y-12">
-        {visibleFeatures.map((feature, index) => (
+        {visibleFeatures.map((feature, index) => {
+          // Determine image position: use feature.image.position if set, otherwise auto (based on index)
+          let imagePosition: 'left' | 'right'
+          const explicitPosition = feature.image?.position
+
+          if (explicitPosition === 'left') {
+            imagePosition = 'left'
+          } else if (explicitPosition === 'right') {
+            imagePosition = 'right'
+          } else {
+            // Auto: alternate based on index
+            imagePosition = index % 2 === 1 ? 'right' : 'left'
+          }
+
+
+          return (
           <div
             key={feature.id || index}
-            className={`flex flex-col lg:flex-row items-center gap-8 ${
-              index % 2 === 1 ? 'lg:flex-row-reverse' : ''
-            }`}
+            className="flex flex-col lg:flex-row items-center gap-8"
+            style={{
+              flexDirection: imagePosition === 'right' ? 'row-reverse' : 'row'
+            }}
           >
-            <div className="flex-1">
-              <FeatureCard
-                feature={feature}
-                content={{ ...content, cardStyles: { ...content.cardStyles, shadow: 'none' as const } }}
-                index={index}
-                isVisible={isVisible}
-              />
-            </div>
+            {/* Image */}
             {feature.image?.url && (
               <div className="flex-1">
-                <div 
+                <div
                   className="relative w-full rounded-xl overflow-hidden"
                   style={{
-                    aspectRatio: feature.image.aspectRatio === '16:9' ? '16/9' : 
+                    aspectRatio: feature.image.aspectRatio === '16:9' ? '16/9' :
                                  feature.image.aspectRatio === '4:3' ? '4/3' :
                                  feature.image.aspectRatio === '1:1' ? '1/1' :
                                  feature.image.aspectRatio === '3:2' ? '3/2' : 'auto',
@@ -616,8 +636,19 @@ export default function FeaturesBlock({ block }: BlockProps) {
                 </div>
               </div>
             )}
+
+            {/* Content */}
+            <div className="flex-1">
+              <FeatureCard
+                feature={feature}
+                content={{ ...content, cardStyles: { ...content.cardStyles, shadow: 'none' as const } }}
+                index={index}
+                isVisible={isVisible}
+              />
+            </div>
           </div>
-        ))}
+          )
+        })}
       </div>
     )
   }

@@ -2,6 +2,7 @@
 // CSS Grid layout component with full control
 
 import React from 'react';
+
 import type { GridConfig } from './primitives.types';
 
 interface GridProps {

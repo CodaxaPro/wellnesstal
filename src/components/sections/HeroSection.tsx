@@ -1,8 +1,9 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 import Image from 'next/image'
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
 
 // Style interface
 interface TextStyle {
@@ -199,17 +200,17 @@ const HeroSection = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             <div className="animate-pulse">
-              <div className="h-8 bg-sage-200 rounded-full w-48 mb-6"></div>
-              <div className="h-16 bg-sage-200 rounded w-full mb-4"></div>
-              <div className="h-16 bg-sage-200 rounded w-3/4 mb-6"></div>
-              <div className="h-6 bg-sage-200 rounded w-full mb-2"></div>
-              <div className="h-6 bg-sage-200 rounded w-2/3 mb-8"></div>
+              <div className="h-8 bg-sage-200 rounded-full w-48 mb-6" />
+              <div className="h-16 bg-sage-200 rounded w-full mb-4" />
+              <div className="h-16 bg-sage-200 rounded w-3/4 mb-6" />
+              <div className="h-6 bg-sage-200 rounded w-full mb-2" />
+              <div className="h-6 bg-sage-200 rounded w-2/3 mb-8" />
               <div className="flex gap-4">
-                <div className="h-14 bg-sage-300 rounded-xl w-40"></div>
-                <div className="h-14 bg-sage-200 rounded-xl w-48"></div>
+                <div className="h-14 bg-sage-300 rounded-xl w-40" />
+                <div className="h-14 bg-sage-200 rounded-xl w-48" />
               </div>
             </div>
-            <div className="h-96 lg:h-[600px] bg-sage-200 rounded-3xl animate-pulse"></div>
+            <div className="h-96 lg:h-[600px] bg-sage-200 rounded-3xl animate-pulse" />
           </div>
         </div>
       </section>
@@ -369,7 +370,7 @@ const HeroSection = () => {
                 </div>
               </div>
 
-              <div className="hidden sm:block w-px h-12 bg-gray-200"></div>
+              <div className="hidden sm:block w-px h-12 bg-gray-200" />
 
               <div className="text-sm">
                 <div
@@ -424,12 +425,12 @@ const HeroSection = () => {
                   style={{
                     background: `linear-gradient(to top, ${content.imageStyles?.overlayColor || defaultImageStyles.overlayColor}${Math.round((parseInt(content.imageStyles?.overlayOpacity || defaultImageStyles.overlayOpacity || '20') / 100) * 255).toString(16).padStart(2, '0')}, transparent)`,
                   }}
-                ></div>
+                 />
                 
                 {/* Floating Badge */}
                 <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-medium">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                     <span className="text-sm font-medium text-charcoal">Jetzt geöffnet</span>
                   </div>
                 </div>
@@ -463,8 +464,8 @@ const HeroSection = () => {
               </div>
 
               {/* Decorative Elements */}
-              <div className="absolute -z-10 top-20 -left-20 w-40 h-40 bg-sage-200 rounded-full opacity-20 animate-float"></div>
-              <div className="absolute -z-10 bottom-20 -right-20 w-32 h-32 bg-earth-200 rounded-full opacity-20 animate-float" style={{animationDelay: '1s'}}></div>
+              <div className="absolute -z-10 top-20 -left-20 w-40 h-40 bg-sage-200 rounded-full opacity-20 animate-float" />
+              <div className="absolute -z-10 bottom-20 -right-20 w-32 h-32 bg-earth-200 rounded-full opacity-20 animate-float" style={{animationDelay: '1s'}} />
             </div>
           </div>
         </div>

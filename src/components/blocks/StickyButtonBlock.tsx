@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { BlockProps } from './types'
 
 export interface StickyButtonContent {
@@ -119,7 +120,9 @@ export default function StickyButtonBlock({ block }: BlockProps) {
 
   // Check if button should be shown
   useEffect(() => {
-    if (!content.enabled) return
+    if (!content.enabled) {
+return
+}
 
     // Check device type
     const checkDevice = () => {
@@ -197,12 +200,16 @@ export default function StickyButtonBlock({ block }: BlockProps) {
 
   // Check if target is in viewport (for hiding button after scroll)
   useEffect(() => {
-    if (!content.link.startsWith('#') || hasReachedTarget) return
+    if (!content.link.startsWith('#') || hasReachedTarget) {
+return
+}
 
     const targetId = content.link.substring(1)
     const checkTargetVisibility = () => {
       const element = document.getElementById(targetId)
-      if (!element) return
+      if (!element) {
+return
+}
 
       const rect = element.getBoundingClientRect()
       const isInViewport = rect.top >= 0 && rect.top <= window.innerHeight * 0.3
@@ -226,7 +233,9 @@ export default function StickyButtonBlock({ block }: BlockProps) {
     }
   }, [content.link, hasReachedTarget])
 
-  if (!content.enabled || !isVisible || hasReachedTarget) return null
+  if (!content.enabled || !isVisible || hasReachedTarget) {
+return null
+}
 
   const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
     if (content.link.startsWith('#')) {
@@ -300,7 +309,9 @@ export default function StickyButtonBlock({ block }: BlockProps) {
 
   // Icon rendering
   const renderIcon = () => {
-    if (!content.icon) return null
+    if (!content.icon) {
+return null
+}
 
     const iconSize = isMobileView ? 18 : 20
 

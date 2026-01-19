@@ -74,7 +74,9 @@ test.describe('Home Page', () => {
   })
 
   test('should have services section', async ({ page }) => {
-    const services = page.locator('[class*="service"], section:has-text("Service"), [class*="leistung"]')
+    const services = page.locator(
+      '[class*="service"], section:has-text("Service"), [class*="leistung"]'
+    )
     const servicesCount = await services.count()
 
     expect(servicesCount >= 0).toBeTruthy()

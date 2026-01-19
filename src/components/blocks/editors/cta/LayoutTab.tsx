@@ -1,6 +1,7 @@
 'use client'
 
 import { CTAContent, CTADecoration } from '../../types'
+
 import { CTA_LAYOUT_OPTIONS } from './defaults'
 
 interface LayoutTabProps {

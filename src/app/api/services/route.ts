@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-server'
+
 import { verifyAdmin } from '@/lib/auth'
+import { supabaseAdmin } from '@/lib/supabase-server'
 
 // Helper function to generate slug
 function generateSlug(title: string): string {
@@ -207,14 +208,30 @@ export async function PUT(request: NextRequest) {
       updateObj.title = updateData.title.trim()
       updateObj.slug = generateSlug(updateData.title)
     }
-    if (updateData.description !== undefined) updateObj.description = updateData.description?.trim()
-    if (updateData.shortDescription !== undefined) updateObj.short_description = updateData.shortDescription?.trim()
-    if (updateData.categoryId !== undefined) updateObj.category_id = updateData.categoryId
-    if (updateData.price !== undefined) updateObj.price = updateData.price
-    if (updateData.duration !== undefined) updateObj.duration = updateData.duration
-    if (updateData.image !== undefined) updateObj.image = updateData.image
-    if (updateData.active !== undefined) updateObj.active = updateData.active
-    if (updateData.order !== undefined) updateObj.order_num = updateData.order
+    if (updateData.description !== undefined) {
+updateObj.description = updateData.description?.trim()
+}
+    if (updateData.shortDescription !== undefined) {
+updateObj.short_description = updateData.shortDescription?.trim()
+}
+    if (updateData.categoryId !== undefined) {
+updateObj.category_id = updateData.categoryId
+}
+    if (updateData.price !== undefined) {
+updateObj.price = updateData.price
+}
+    if (updateData.duration !== undefined) {
+updateObj.duration = updateData.duration
+}
+    if (updateData.image !== undefined) {
+updateObj.image = updateData.image
+}
+    if (updateData.active !== undefined) {
+updateObj.active = updateData.active
+}
+    if (updateData.order !== undefined) {
+updateObj.order_num = updateData.order
+}
 
     const { data: updated, error } = await supabaseAdmin
       .from('services')

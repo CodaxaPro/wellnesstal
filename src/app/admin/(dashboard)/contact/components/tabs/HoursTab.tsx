@@ -1,7 +1,7 @@
 'use client'
 
-import { ContactSettings } from '../types'
 import { dayNames } from '../constants'
+import { ContactSettings } from '../types'
 
 interface HoursTabProps {
   settings: ContactSettings

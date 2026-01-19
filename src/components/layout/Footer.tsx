@@ -1,7 +1,8 @@
 'use client'
 
-import Link from 'next/link'
 import { useEffect, useState } from 'react'
+
+import Link from 'next/link'
 
 // Style interface
 interface TextStyle {
@@ -134,6 +135,12 @@ const defaultFooterContent: FooterContent = {
     { label: 'Über uns', href: '#about' },
     { label: 'Kontakt', href: '#contact' }
   ],
+  services: [
+    { label: 'Premium Headspa', href: '/services/headspa' },
+    { label: 'Aromatherapie', href: '/services/aromatherapie' },
+    { label: 'Wellness Massage', href: '/services/massage' },
+    { label: 'Gesichtspflege', href: '/services/gesichtspflege' }
+  ],
   legalLinks: [
     { label: 'Impressum', href: '/impressum' },
     { label: 'Datenschutz', href: '/datenschutz' },
@@ -189,6 +196,7 @@ const Footer = () => {
             ...apiContent,
             // Ensure arrays exist
             quickLinks: apiContent.quickLinks || defaultFooterContent.quickLinks,
+            services: apiContent.services || defaultFooterContent.services,
             legalLinks: apiContent.legalLinks || defaultFooterContent.legalLinks,
             // Deep merge newsletter
             newsletter: {
@@ -224,14 +232,9 @@ const Footer = () => {
   // Use content from API or defaults
   const quickLinks = footerContent.quickLinks || defaultFooterContent.quickLinks
   const legalLinks = footerContent.legalLinks || defaultFooterContent.legalLinks
-
-  // Services are fetched separately - keep static for now
-  const services = [
-    { label: 'Premium Headspa', href: '/services/headspa' },
-    { label: 'Aromatherapie', href: '/services/aromatherapie' },
-    { label: 'Wellness Massage', href: '/services/massage' },
-    { label: 'Gesichtspflege', href: '/services/gesichtspflege' },
-  ]
+  
+  // Services from API or defaults
+  const services = footerContent.services || defaultFooterContent.services || []
 
   const socialLinks = [
     {
@@ -270,34 +273,34 @@ const Footer = () => {
           <div className="py-16">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12 animate-pulse">
               <div className="lg:col-span-1">
-                <div className="h-10 bg-gray-700 rounded w-48 mb-6"></div>
-                <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-700 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-700 rounded w-3/4 mb-6"></div>
+                <div className="h-10 bg-gray-700 rounded w-48 mb-6" />
+                <div className="h-4 bg-gray-700 rounded w-full mb-2" />
+                <div className="h-4 bg-gray-700 rounded w-full mb-2" />
+                <div className="h-4 bg-gray-700 rounded w-3/4 mb-6" />
                 <div className="flex space-x-4">
-                  <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-                  <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
-                  <div className="w-10 h-10 bg-gray-700 rounded-full"></div>
+                  <div className="w-10 h-10 bg-gray-700 rounded-full" />
+                  <div className="w-10 h-10 bg-gray-700 rounded-full" />
+                  <div className="w-10 h-10 bg-gray-700 rounded-full" />
                 </div>
               </div>
               <div>
-                <div className="h-6 bg-gray-700 rounded w-32 mb-6"></div>
+                <div className="h-6 bg-gray-700 rounded w-32 mb-6" />
                 <div className="space-y-3">
-                  {[...Array(4)].map((_, i) => <div key={i} className="h-4 bg-gray-700 rounded w-24"></div>)}
+                  {[...Array(4)].map((_, i) => <div key={i} className="h-4 bg-gray-700 rounded w-24" />)}
                 </div>
               </div>
               <div>
-                <div className="h-6 bg-gray-700 rounded w-32 mb-6"></div>
+                <div className="h-6 bg-gray-700 rounded w-32 mb-6" />
                 <div className="space-y-3">
-                  {[...Array(4)].map((_, i) => <div key={i} className="h-4 bg-gray-700 rounded w-32"></div>)}
+                  {[...Array(4)].map((_, i) => <div key={i} className="h-4 bg-gray-700 rounded w-32" />)}
                 </div>
               </div>
               <div>
-                <div className="h-6 bg-gray-700 rounded w-32 mb-6"></div>
+                <div className="h-6 bg-gray-700 rounded w-32 mb-6" />
                 <div className="space-y-4">
-                  <div className="h-16 bg-gray-700 rounded"></div>
-                  <div className="h-5 bg-gray-700 rounded w-40"></div>
-                  <div className="h-5 bg-gray-700 rounded w-48"></div>
+                  <div className="h-16 bg-gray-700 rounded" />
+                  <div className="h-5 bg-gray-700 rounded w-40" />
+                  <div className="h-5 bg-gray-700 rounded w-48" />
                 </div>
               </div>
             </div>
@@ -382,7 +385,7 @@ const Footer = () => {
                         color: footerContent.styles?.link?.color || defaultStyles.link?.color,
                       }}
                     >
-                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
+                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                       {link.label}
                     </Link>
                   </li>
@@ -391,38 +394,40 @@ const Footer = () => {
             </div>
 
             {/* Services */}
-            <div>
-              <h3
-                className="mb-6"
-                style={{
-                  fontFamily: footerContent.styles?.sectionTitle?.fontFamily || defaultStyles.sectionTitle?.fontFamily,
-                  fontSize: footerContent.styles?.sectionTitle?.fontSize || defaultStyles.sectionTitle?.fontSize,
-                  fontWeight: footerContent.styles?.sectionTitle?.fontWeight || defaultStyles.sectionTitle?.fontWeight,
-                  color: footerContent.styles?.sectionTitle?.color || defaultStyles.sectionTitle?.color,
-                }}
-              >
-                Leistungen
-              </h3>
-              <ul className="space-y-3">
-                {services.map((service) => (
-                  <li key={service.href}>
-                    <Link
-                      href={service.href}
-                      className="hover:opacity-80 transition-colors duration-300 flex items-center group"
-                      style={{
-                        fontFamily: footerContent.styles?.link?.fontFamily || defaultStyles.link?.fontFamily,
-                        fontSize: footerContent.styles?.link?.fontSize || defaultStyles.link?.fontSize,
-                        fontWeight: footerContent.styles?.link?.fontWeight || defaultStyles.link?.fontWeight,
-                        color: footerContent.styles?.link?.color || defaultStyles.link?.color,
-                      }}
-                    >
-                      <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></span>
-                      {service.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            {services && services.length > 0 && (
+              <div>
+                <h3
+                  className="mb-6"
+                  style={{
+                    fontFamily: footerContent.styles?.sectionTitle?.fontFamily || defaultStyles.sectionTitle?.fontFamily,
+                    fontSize: footerContent.styles?.sectionTitle?.fontSize || defaultStyles.sectionTitle?.fontSize,
+                    fontWeight: footerContent.styles?.sectionTitle?.fontWeight || defaultStyles.sectionTitle?.fontWeight,
+                    color: footerContent.styles?.sectionTitle?.color || defaultStyles.sectionTitle?.color,
+                  }}
+                >
+                  Leistungen
+                </h3>
+                <ul className="space-y-3">
+                  {services.map((service, index) => (
+                    <li key={service.href || index}>
+                      <Link
+                        href={service.href}
+                        className="hover:opacity-80 transition-colors duration-300 flex items-center group"
+                        style={{
+                          fontFamily: footerContent.styles?.link?.fontFamily || defaultStyles.link?.fontFamily,
+                          fontSize: footerContent.styles?.link?.fontSize || defaultStyles.link?.fontSize,
+                          fontWeight: footerContent.styles?.link?.fontWeight || defaultStyles.link?.fontWeight,
+                          color: footerContent.styles?.link?.color || defaultStyles.link?.color,
+                        }}
+                      >
+                        <span className="w-2 h-2 bg-sage-500 rounded-full mr-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                        {service.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
 
             {/* Contact Info */}
             <div>

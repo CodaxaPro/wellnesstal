@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+
 import { ChevronDown, ChevronRight, Plus, Minus, Search, ThumbsUp, ThumbsDown, MessageCircle, HelpCircle, X } from 'lucide-react'
+
 import {
   BlockProps,
   FAQContent,
@@ -14,7 +16,7 @@ import {
 } from './types'
 
 // Deep merge utility
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+ 
 function deepMerge<T>(target: T, source: Partial<T>): T {
   const output = { ...target } as any
   for (const key in source) {
@@ -364,7 +366,9 @@ function FAQSearch({
   value: string
   onChange: (value: string) => void
 }) {
-  if (!config?.enabled) return null
+  if (!config?.enabled) {
+return null
+}
 
   return (
     <div
@@ -469,7 +473,9 @@ function CategoryTabs({
 
 // Contact CTA Component
 function ContactCTA({ config }: { config: FAQContent['contactCTA'] }) {
-  if (!config?.enabled) return null
+  if (!config?.enabled) {
+return null
+}
 
   return (
     <div
@@ -553,8 +559,12 @@ export default function FAQBlock({ block }: BlockProps) {
   // State
   const [openIndices, setOpenIndices] = useState<number[]>(() => {
     const defaultOpen = content.accordionSettings?.defaultOpenIndex
-    if (Array.isArray(defaultOpen)) return defaultOpen
-    if (typeof defaultOpen === 'number') return [defaultOpen]
+    if (Array.isArray(defaultOpen)) {
+return defaultOpen
+}
+    if (typeof defaultOpen === 'number') {
+return [defaultOpen]
+}
     return []
   })
   const [searchQuery, setSearchQuery] = useState('')
@@ -583,10 +593,18 @@ export default function FAQBlock({ block }: BlockProps) {
 
     // Sort: pinned first, then featured, then by order
     return [...items].sort((a, b) => {
-      if (a.pinned && !b.pinned) return -1
-      if (!a.pinned && b.pinned) return 1
-      if (a.featured && !b.featured) return -1
-      if (!a.featured && b.featured) return 1
+      if (a.pinned && !b.pinned) {
+return -1
+}
+      if (!a.pinned && b.pinned) {
+return 1
+}
+      if (a.featured && !b.featured) {
+return -1
+}
+      if (!a.featured && b.featured) {
+return 1
+}
       return (a.order || 0) - (b.order || 0)
     })
   }, [content.items, activeCategory, searchQuery, content.search?.searchInAnswers])
@@ -608,7 +626,9 @@ export default function FAQBlock({ block }: BlockProps) {
   // Grid layout for cards/grid
   const getGridCols = () => {
     const responsive = content.responsive
-    if (!responsive) return 'grid-cols-1 md:grid-cols-2'
+    if (!responsive) {
+return 'grid-cols-1 md:grid-cols-2'
+}
     return `grid-cols-1 md:grid-cols-${responsive.tablet?.columns || 2} lg:grid-cols-${responsive.desktop?.columns || 2}`
   }
 

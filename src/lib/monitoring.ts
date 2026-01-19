@@ -51,7 +51,9 @@ class Monitoring {
    * Track page load performance
    */
   trackPageLoad() {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+return
+}
 
     window.addEventListener('load', () => {
       const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming

@@ -1,9 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
+
 import { createClient } from '@supabase/supabase-js'
-import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
-import { authRateLimiter, rateLimit } from '@/lib/rate-limit'
+import jwt from 'jsonwebtoken'
+
 import { logger } from '@/lib/logger'
+import { authRateLimiter, rateLimit } from '@/lib/rate-limit'
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,

@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect, useLayoutEffect } from 'react'
+
 import { usePathname } from 'next/navigation'
 
 /**
@@ -43,7 +44,9 @@ export default function HashScrollHandler() {
 
   // Use useLayoutEffect for immediate execution
   useLayoutEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+return
+}
 
     const hash = window.location.hash
     if (hash) {
@@ -64,7 +67,9 @@ export default function HashScrollHandler() {
   }, [pathname])
 
   useEffect(() => {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined') {
+return
+}
 
     const hash = window.location.hash
     if (hash) {

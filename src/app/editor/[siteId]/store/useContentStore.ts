@@ -115,7 +115,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     console.log('📥 wizardData:', wizardData);
     console.log('📊 Current sections:', state.content.sections.length);
     
-    if (!wizardData || !wizardData.customization) {
+    if (!wizardData?.customization) {
       console.error('❌ Invalid wizardData');
       return state;
     }
@@ -284,14 +284,18 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     };
     
     sections.splice(insertIndex, 0, newSection);
-    sections.forEach((s, i) => { s.order = i; });
+    sections.forEach((s, i) => {
+ s.order = i; 
+});
     
     return { content: { ...state.content, sections } };
   }),
 
   removeSection: (id) => set((state) => {
     const sections = state.content.sections.filter(s => s.id !== id);
-    sections.forEach((s, i) => { s.order = i; });
+    sections.forEach((s, i) => {
+ s.order = i; 
+});
     return { content: { ...state.content, sections } };
   }),
 
@@ -309,7 +313,9 @@ export const useContentStore = create<ContentStore>((set, get) => ({
       };
       
       sections.splice(index + 1, 0, duplicate);
-      sections.forEach((s, i) => { s.order = i; });
+      sections.forEach((s, i) => {
+ s.order = i; 
+});
     }
     
     return { content: { ...state.content, sections } };

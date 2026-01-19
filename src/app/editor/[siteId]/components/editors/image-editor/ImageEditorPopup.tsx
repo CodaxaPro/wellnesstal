@@ -1,23 +1,25 @@
 'use client';
 
 import { useState } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
-import { TabType, ImageConfig } from './types/imageConfig.types';
-import { useImageConfig } from './hooks/useImageConfig';
+
 import { useDraggable } from './hooks/useDraggable';
-import ImageEditorHeader from './ImageEditorHeader';
-import ImageEditorTabs from './ImageEditorTabs';
-import ImageEditorPreview from './ImageEditorPreview';
+import { useImageConfig } from './hooks/useImageConfig';
 import ImageEditorFooter from './ImageEditorFooter';
+import ImageEditorHeader from './ImageEditorHeader';
+import ImageEditorPreview from './ImageEditorPreview';
+import ImageEditorTabs from './ImageEditorTabs';
+import AdjustTab from './tabs/AdjustTab';
+import AnimateTab from './tabs/AnimateTab';
+import EffectsTab from './tabs/EffectsTab';
+import PerformanceTab from './tabs/PerformanceTab';
+import PositionTab from './tabs/PositionTab';
+import SEOTab from './tabs/SEOTab';
 import SourceTab from './tabs/SourceTab';
 import TransformTab from './tabs/TransformTab';
-import AdjustTab from './tabs/AdjustTab';
-import EffectsTab from './tabs/EffectsTab';
-import PositionTab from './tabs/PositionTab';
-import AnimateTab from './tabs/AnimateTab';
-import PerformanceTab from './tabs/PerformanceTab';
-import SEOTab from './tabs/SEOTab';
+import { TabType, ImageConfig } from './types/imageConfig.types';
 
 interface ImageEditorPopupProps {
   initialUrl: string;

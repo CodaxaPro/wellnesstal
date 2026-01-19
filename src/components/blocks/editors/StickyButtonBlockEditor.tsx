@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { StickyButtonContent } from '../StickyButtonBlock'
 
 interface StickyButtonBlockEditorProps {

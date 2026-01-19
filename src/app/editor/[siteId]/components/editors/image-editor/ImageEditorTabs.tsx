@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { TabType } from './types/imageConfig.types';
 import { TAB_DEFINITIONS } from './utils/animationHelpers';
 

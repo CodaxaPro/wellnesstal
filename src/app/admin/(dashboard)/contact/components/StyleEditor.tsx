@@ -1,7 +1,7 @@
 'use client'
 
-import { TextStyle, ContactStyles } from './types'
 import { defaultStyles } from './constants'
+import { TextStyle, ContactStyles } from './types'
 
 interface StyleEditorProps {
   styleKey: keyof ContactStyles

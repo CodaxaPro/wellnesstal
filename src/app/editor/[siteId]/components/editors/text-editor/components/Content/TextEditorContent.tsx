@@ -2,8 +2,9 @@
 
 'use client';
 
-import { motion } from 'framer-motion';
 import { EditorContent, Editor } from '@tiptap/react';
+import { motion } from 'framer-motion';
+
 import { TextConfig } from '../../types/textConfig.types';
 import { getTextStyle } from '../../utils/styleHelpers';
 

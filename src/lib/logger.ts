@@ -48,7 +48,9 @@ class Logger {
   }
 
   private log(level: LogLevel, message: string, context?: LogContext, error?: Error) {
-    if (!this.shouldLog(level)) return
+    if (!this.shouldLog(level)) {
+return
+}
 
     const logEntry: LogEntry = {
       level,

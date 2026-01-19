@@ -1,8 +1,9 @@
 'use client'
 
-import { Page, ContentSection } from '@/types/pages'
-import Link from 'next/link'
 import Image from 'next/image'
+import Link from 'next/link'
+
+import { Page, ContentSection } from '@/types/pages'
 
 interface PageRendererProps {
   page: Page
@@ -14,7 +15,9 @@ interface SectionRendererProps {
 
 // Hero Section Component
 function HeroSection({ hero }: { hero: any }) {
-  if (!hero) return null
+  if (!hero) {
+return null
+}
 
   return (
     <div className={`relative py-20 lg:py-32 ${
@@ -264,7 +267,7 @@ function ContactSectionRenderer({ section }: SectionRendererProps) {
                     rows={4}
                     placeholder="Ihre Nachricht"
                     className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
-                  ></textarea>
+                   />
                 </div>
                 <button
                   type="submit"
@@ -320,7 +323,9 @@ function ContactSectionRenderer({ section }: SectionRendererProps) {
 
 // Section Renderer - Routes to appropriate component
 function SectionRenderer({ section }: SectionRendererProps) {
-  if (!section.visible) return null
+  if (!section.visible) {
+return null
+}
 
   switch (section.type) {
     case 'text':

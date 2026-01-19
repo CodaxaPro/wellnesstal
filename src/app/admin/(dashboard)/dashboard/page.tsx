@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import Link from 'next/link'
 
 interface DashboardStats {
@@ -45,7 +46,9 @@ export default function AdminDashboard() {
       try {
         const sectionsRes = await fetch('/api/sections')
         const sectionsData = await sectionsRes.json()
-        if (sectionsData.success) setSections(sectionsData.data)
+        if (sectionsData.success) {
+setSections(sectionsData.data)
+}
 
         const mediaRes = await fetch('/api/media?limit=6')
         const mediaData = await mediaRes.json()
@@ -83,8 +86,12 @@ export default function AdminDashboard() {
   }
 
   const formatFileSize = (bytes: number) => {
-    if (bytes < 1024) return `${bytes} B`
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`
+    if (bytes < 1024) {
+return `${bytes} B`
+}
+    if (bytes < 1024 * 1024) {
+return `${(bytes / 1024).toFixed(1)} KB`
+}
     return `${(bytes / (1024 * 1024)).toFixed(1)} MB`
   }
 
@@ -118,7 +125,7 @@ export default function AdminDashboard() {
               <div className={`w-12 h-12 ${stat.bg} rounded-xl flex items-center justify-center text-2xl`}>
                 {stat.icon}
               </div>
-              <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${stat.color}`}></div>
+              <div className={`w-2 h-2 rounded-full bg-gradient-to-r ${stat.color}`} />
             </div>
             <p className="text-slate-500 text-sm mb-1">{stat.title}</p>
             <p className="text-2xl lg:text-3xl font-bold text-slate-800">{stat.value}</p>
@@ -179,7 +186,7 @@ export default function AdminDashboard() {
                     onChange={(e) => toggleSection(section.id, e.target.checked)}
                     className="sr-only peer"
                   />
-                  <div className="w-11 h-6 bg-slate-300 peer-focus:ring-2 peer-focus:ring-sage-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:shadow-sm peer-checked:bg-sage-500"></div>
+                  <div className="w-11 h-6 bg-slate-300 peer-focus:ring-2 peer-focus:ring-sage-300 rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all after:shadow-sm peer-checked:bg-sage-500" />
                 </label>
               </div>
             ))}

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+
 import { FooterBlockContent } from '../FooterBlock'
 
 interface FooterBlockEditorProps {
@@ -151,7 +152,9 @@ export default function FooterBlockEditor({ content, onUpdate }: FooterBlockEdit
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: FooterBlockContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }
@@ -270,7 +273,9 @@ export default function FooterBlockEditor({ content, onUpdate }: FooterBlockEdit
   const updateQuickLink = (index: number, field: string, value: string) => {
     setLocalContent(prev => {
       const links = [...(prev.quickLinks || [])]
-      if (!links[index]) links[index] = { label: '', href: '' }
+      if (!links[index]) {
+links[index] = { label: '', href: '' }
+}
       links[index] = { ...links[index], [field]: value }
       const newContent = { ...prev, quickLinks: links }
       debouncedUpdate(newContent)
@@ -302,7 +307,9 @@ export default function FooterBlockEditor({ content, onUpdate }: FooterBlockEdit
   const updateLegalLink = (index: number, field: string, value: string) => {
     setLocalContent(prev => {
       const links = [...(prev.legalLinks || [])]
-      if (!links[index]) links[index] = { label: '', href: '' }
+      if (!links[index]) {
+links[index] = { label: '', href: '' }
+}
       links[index] = { ...links[index], [field]: value }
       const newContent = { ...prev, legalLinks: links }
       debouncedUpdate(newContent)
@@ -334,7 +341,9 @@ export default function FooterBlockEditor({ content, onUpdate }: FooterBlockEdit
   const updateService = (index: number, field: string, value: string) => {
     setLocalContent(prev => {
       const services = [...(prev.services || [])]
-      if (!services[index]) services[index] = { label: '', href: '' }
+      if (!services[index]) {
+services[index] = { label: '', href: '' }
+}
       services[index] = { ...services[index], [field]: value }
       const newContent = { ...prev, services }
       debouncedUpdate(newContent)

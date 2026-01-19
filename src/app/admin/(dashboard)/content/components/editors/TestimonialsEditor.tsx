@@ -1,7 +1,7 @@
 'use client'
 
-import { ContentSection } from '../types'
 import { StyleEditor } from '../StyleEditors'
+import { ContentSection } from '../types'
 
 interface TestimonialsEditorProps {
   section: ContentSection

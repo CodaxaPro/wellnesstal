@@ -58,7 +58,9 @@ test.describe('Admin Navigation', () => {
     await page.goto('/admin')
     await page.waitForTimeout(1000)
 
-    const servicesLink = page.locator('a[href*="services"], a:has-text("Services"), a:has-text("Hizmetler")')
+    const servicesLink = page.locator(
+      'a[href*="services"], a:has-text("Services"), a:has-text("Hizmetler")'
+    )
     const linkCount = await servicesLink.count()
 
     expect(linkCount >= 0).toBeTruthy()
@@ -68,7 +70,9 @@ test.describe('Admin Navigation', () => {
     await page.goto('/admin')
     await page.waitForTimeout(1000)
 
-    const categoriesLink = page.locator('a[href*="categories"], a:has-text("Categories"), a:has-text("Kategoriler")')
+    const categoriesLink = page.locator(
+      'a[href*="categories"], a:has-text("Categories"), a:has-text("Kategoriler")'
+    )
     const linkCount = await categoriesLink.count()
 
     expect(linkCount >= 0).toBeTruthy()
@@ -99,7 +103,9 @@ test.describe('Admin Services Page', () => {
     await page.goto('/admin/services')
     await page.waitForTimeout(1000)
 
-    const addButton = page.locator('button:has-text("Add"), button:has-text("New"), button:has-text("Ekle"), button:has-text("Yeni"), a:has-text("Add")')
+    const addButton = page.locator(
+      'button:has-text("Add"), button:has-text("New"), button:has-text("Ekle"), button:has-text("Yeni"), a:has-text("Add")'
+    )
     const buttonCount = await addButton.count()
 
     expect(buttonCount >= 0).toBeTruthy()
@@ -135,7 +141,9 @@ test.describe('Admin Categories Page', () => {
     await page.goto('/admin/categories')
     await page.waitForTimeout(1000)
 
-    const addButton = page.locator('button:has-text("Add"), button:has-text("New"), button:has-text("Ekle"), button:has-text("Yeni")')
+    const addButton = page.locator(
+      'button:has-text("Add"), button:has-text("New"), button:has-text("Ekle"), button:has-text("Yeni")'
+    )
     const buttonCount = await addButton.count()
 
     expect(buttonCount >= 0).toBeTruthy()

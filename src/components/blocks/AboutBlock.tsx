@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+
 import { BlockProps, AboutContent } from './types'
 
 // Default styles - Ana sayfadaki ile aynı
@@ -279,11 +280,11 @@ export default function AboutBlock({ block }: BlockProps) {
               <div
                 className="absolute -top-4 -right-4 w-24 h-24 rounded-full opacity-20"
                 style={{ backgroundColor: `${styles.statsValue?.color || '#9CAF88'}30` }}
-              ></div>
+               />
               <div
                 className="absolute -bottom-4 -left-4 w-32 h-32 rounded-full opacity-20"
                 style={{ backgroundColor: `${styles.highlightedText?.color || '#9CAF88'}30` }}
-              ></div>
+               />
             </div>
           )}
         </div>

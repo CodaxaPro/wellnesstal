@@ -120,10 +120,18 @@ export class ConfigLoader {
     const errors: string[] = [];
 
     // Required fields
-    if (!config.id) errors.push('Template ID is required');
-    if (!config.name) errors.push('Template name is required');
-    if (!config.industry) errors.push('Template industry is required');
-    if (!config.version) errors.push('Template version is required');
+    if (!config.id) {
+errors.push('Template ID is required');
+}
+    if (!config.name) {
+errors.push('Template name is required');
+}
+    if (!config.industry) {
+errors.push('Template industry is required');
+}
+    if (!config.version) {
+errors.push('Template version is required');
+}
 
     // Entity validation
     if (!config.entities.primary) {
@@ -172,20 +180,36 @@ export class ConfigLoader {
   private validateEntityConfig(entity: any, context: string): ValidationResult {
     const errors: string[] = [];
 
-    if (!entity.name) errors.push(`${context}: Entity name is required`);
-    if (!entity.singular) errors.push(`${context}: Entity singular name is required`);
-    if (!entity.plural) errors.push(`${context}: Entity plural name is required`);
-    if (!entity.icon) errors.push(`${context}: Entity icon is required`);
-    if (!entity.color) errors.push(`${context}: Entity color is required`);
+    if (!entity.name) {
+errors.push(`${context}: Entity name is required`);
+}
+    if (!entity.singular) {
+errors.push(`${context}: Entity singular name is required`);
+}
+    if (!entity.plural) {
+errors.push(`${context}: Entity plural name is required`);
+}
+    if (!entity.icon) {
+errors.push(`${context}: Entity icon is required`);
+}
+    if (!entity.color) {
+errors.push(`${context}: Entity color is required`);
+}
 
     // Fields validation
     if (!Array.isArray(entity.fields)) {
       errors.push(`${context}: Entity fields must be an array`);
     } else {
       entity.fields.forEach((field: any, index: number) => {
-        if (!field.key) errors.push(`${context}.fields[${index}]: Field key is required`);
-        if (!field.label) errors.push(`${context}.fields[${index}]: Field label is required`);
-        if (!field.type) errors.push(`${context}.fields[${index}]: Field type is required`);
+        if (!field.key) {
+errors.push(`${context}.fields[${index}]: Field key is required`);
+}
+        if (!field.label) {
+errors.push(`${context}.fields[${index}]: Field label is required`);
+}
+        if (!field.type) {
+errors.push(`${context}.fields[${index}]: Field type is required`);
+}
         if (typeof field.required !== 'boolean') {
           errors.push(`${context}.fields[${index}]: Field required must be boolean`);
         }
@@ -219,9 +243,15 @@ export class ConfigLoader {
   private validateThemeConfig(theme: any): ValidationResult {
     const errors: string[] = [];
 
-    if (!theme.primaryColor) errors.push('Primary color is required');
-    if (!theme.secondaryColor) errors.push('Secondary color is required');
-    if (!theme.fontFamily) errors.push('Font family is required');
+    if (!theme.primaryColor) {
+errors.push('Primary color is required');
+}
+    if (!theme.secondaryColor) {
+errors.push('Secondary color is required');
+}
+    if (!theme.fontFamily) {
+errors.push('Font family is required');
+}
     
     // Validate colors are valid CSS colors
     const colorFields = ['primaryColor', 'secondaryColor', 'accentColor'];
@@ -376,7 +406,9 @@ export class ConfigLoader {
       entity = config.entities.additional.find(e => e.name.toLowerCase() === override.entityKey);
     }
 
-    if (!entity) return;
+    if (!entity) {
+return;
+}
 
     // Find the field
     const fieldIndex = entity.fields.findIndex(f => f.key === override.fieldKey);

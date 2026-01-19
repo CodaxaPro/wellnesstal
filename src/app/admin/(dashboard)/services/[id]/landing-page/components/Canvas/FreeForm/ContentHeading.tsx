@@ -2,6 +2,7 @@
 // Heading component with full typography control
 
 import React from 'react';
+
 import type { HeadingConfig } from './content.types';
 
 interface ContentHeadingProps {

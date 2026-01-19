@@ -52,7 +52,9 @@ test.describe('Wizard Flow', () => {
 
   test('should allow selecting Manual mode', async ({ page }) => {
     // Look for Manual mode button/option
-    const manualOption = page.locator('button:has-text("Manual"), [data-mode="manual"], label:has-text("Manual")')
+    const manualOption = page.locator(
+      'button:has-text("Manual"), [data-mode="manual"], label:has-text("Manual")'
+    )
     const manualCount = await manualOption.count()
 
     if (manualCount > 0) {

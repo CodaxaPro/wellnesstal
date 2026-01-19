@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
+
 import { BlockProps, WhatsAppContent } from './types'
 
 // Size classes
@@ -156,7 +157,9 @@ export default function WhatsAppBlock({ block }: BlockProps) {
     (content.availability.mode === 'manual' && content.availability.manualStatus)
 
   useEffect(() => {
-    if (!content.basic.enabled) return
+    if (!content.basic.enabled) {
+return
+}
 
     // Show after delay
     const delayTimer = setTimeout(() => {
@@ -179,7 +182,9 @@ export default function WhatsAppBlock({ block }: BlockProps) {
 
   // Show CTA bubble
   useEffect(() => {
-    if (!content.ctaBubble.enabled || ctaDismissed) return
+    if (!content.ctaBubble.enabled || ctaDismissed) {
+return
+}
 
     const timer = setTimeout(() => {
       setShowCtaBubble(true)
@@ -193,7 +198,9 @@ export default function WhatsAppBlock({ block }: BlockProps) {
     return null // Don't show anything while loading
   }
 
-  if (!content.basic.enabled || !isVisible) return null
+  if (!content.basic.enabled || !isVisible) {
+return null
+}
 
   const handleClick = () => {
     const phoneNumber = content.basic.phoneNumber.replace(/[^0-9+]/g, '')
@@ -277,7 +284,7 @@ export default function WhatsAppBlock({ block }: BlockProps) {
             <span 
               className="absolute inset-0 rounded-full animate-ping opacity-75"
               style={{ backgroundColor: content.appearance.buttonColor }}
-            ></span>
+             />
           )}
           {content.availability.showIndicator && (
             <div

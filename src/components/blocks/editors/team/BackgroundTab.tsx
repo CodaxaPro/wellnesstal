@@ -1,6 +1,7 @@
 'use client'
 
 import { TeamContent, TeamBackground } from '../../types'
+
 import {
   BACKGROUND_TYPE_OPTIONS,
   GRADIENT_DIRECTION_OPTIONS,

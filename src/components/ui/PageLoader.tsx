@@ -26,15 +26,15 @@ export default function PageLoader({
 
         {/* Loading Spinner */}
         <div className="relative">
-          <div className="animate-spin rounded-full h-12 w-12 border-4 border-sage-200 border-t-sage-500 mx-auto mb-4"></div>
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-sage-200 border-t-sage-500 mx-auto mb-4" />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="w-6 h-6 bg-sage-500 rounded-full animate-pulse"></div>
+            <div className="w-6 h-6 bg-sage-500 rounded-full animate-pulse" />
           </div>
         </div>
 
         {/* Subtle loading indicator */}
         <div className="mt-6 animate-pulse">
-          <div className="h-2 w-32 bg-sage-200 rounded mx-auto"></div>
+          <div className="h-2 w-32 bg-sage-200 rounded mx-auto" />
         </div>
       </div>
     </div>

@@ -9,7 +9,9 @@ interface FormatButtonsProps {
 }
 
 export default function FormatButtons({ editor }: FormatButtonsProps) {
-  if (!editor) return null;
+  if (!editor) {
+return null;
+}
 
   return (
     <div className="flex items-center gap-1 bg-white rounded-lg p-1 shadow-sm border border-gray-200">

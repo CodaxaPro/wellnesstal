@@ -1,5 +1,7 @@
 'use client'
 
+import { useState, useRef } from 'react'
+
 import { AboutContent, AboutImage } from '../../types'
 
 interface ImagesTabProps {
@@ -8,6 +10,66 @@ interface ImagesTabProps {
 }
 
 export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
+  const [uploadingImage, setUploadingImage] = useState<number | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
+  // Handle image upload
+  const handleImageUpload = async (file: File, index?: number) => {
+    if (!file) {
+      return
+    }
+
+    setUploadingImage(index ?? -1)
+    try {
+      const token = localStorage.getItem('adminToken')
+      const formData = new FormData()
+      formData.append('file', file)
+      formData.append('folder', 'about-block')
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` },
+        body: formData
+      })
+
+      const data = await response.json()
+      if (data.success && data.data?.url) {
+        if (index !== undefined) {
+          // Update existing image
+          const newImages = [...(content.images || [])]
+          if (!newImages[index]) {
+            newImages[index] = { url: '', alt: '' }
+          }
+          newImages[index] = {
+            ...newImages[index],
+            url: data.data.url,
+            alt: newImages[index].alt || file.name.split('.')[0]
+          }
+          updateContent({ images: newImages })
+        } else {
+          // Add new image
+          const newImage: AboutImage = {
+            url: data.data.url,
+            alt: file.name.split('.')[0]
+          }
+          updateContent({
+            images: [...(content.images || []), newImage]
+          })
+        }
+      } else {
+        alert(data.error || 'Görsel yüklenirken hata oluştu')
+      }
+    } catch (error) {
+      console.error('Failed to upload image:', error)
+      alert('Görsel yüklenirken hata oluştu')
+    } finally {
+      setUploadingImage(null)
+      if (fileInputRef.current) {
+        fileInputRef.current.value = ''
+      }
+    }
+  }
+
   const updateImage = (index: number, field: 'url' | 'alt', value: string) => {
     const newImages = [...(content.images || [])]
     if (!newImages[index]) {
@@ -30,7 +92,9 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
   const moveImage = (index: number, direction: 'up' | 'down') => {
     const newImages = [...(content.images || [])]
     const targetIndex = direction === 'up' ? index - 1 : index + 1
-    if (targetIndex < 0 || targetIndex >= newImages.length) return
+    if (targetIndex < 0 || targetIndex >= newImages.length) {
+return
+}
 
     [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]]
     updateContent({ images: newImages })
@@ -43,13 +107,34 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
           <h3 className="text-sm font-semibold text-slate-700">
             Görseller ({(content.images || []).length} / 4 önerilir)
           </h3>
-          <button
-            type="button"
-            onClick={addImage}
-            className="px-3 py-1.5 bg-sage-500 text-white text-sm rounded-lg hover:bg-sage-600 transition-colors"
-          >
-            + Ekle
-          </button>
+          <div className="flex gap-2">
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const file = e.target.files?.[0]
+                if (file) {
+                  handleImageUpload(file)
+                }
+              }}
+              className="hidden"
+              id="about-block-image-upload"
+            />
+            <label
+              htmlFor="about-block-image-upload"
+              className="px-3 py-1.5 bg-sage-500 text-white text-sm rounded-lg hover:bg-sage-600 transition-colors cursor-pointer"
+            >
+              {uploadingImage === -1 ? 'Yükleniyor...' : '📤 Dosya Yükle'}
+            </label>
+            <button
+              type="button"
+              onClick={addImage}
+              className="px-3 py-1.5 bg-slate-500 text-white text-sm rounded-lg hover:bg-slate-600 transition-colors"
+            >
+              + URL Ekle
+            </button>
+          </div>
         </div>
 
         <div className="space-y-3 max-h-[500px] overflow-y-auto">
@@ -59,13 +144,44 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
                 <div className="flex-1 space-y-2">
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Görsel URL</label>
-                    <input
-                      type="text"
-                      value={image.url}
-                      onChange={(e) => updateImage(index, 'url', e.target.value)}
-                      className="w-full px-2 py-1.5 border border-slate-200 rounded text-sm"
-                      placeholder="https://..."
-                    />
+                    <div className="flex gap-2">
+                      <input
+                        type="text"
+                        value={image.url}
+                        onChange={(e) => updateImage(index, 'url', e.target.value)}
+                        className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-sm"
+                        placeholder="https://..."
+                      />
+                      <input
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0]
+                          if (file) {
+                            handleImageUpload(file, index)
+                          }
+                        }}
+                        className="hidden"
+                        id={`about-block-image-replace-${index}`}
+                      />
+                      <label
+                        htmlFor={`about-block-image-replace-${index}`}
+                        className={`px-3 py-1.5 text-xs rounded border cursor-pointer transition-colors ${
+                          uploadingImage === index
+                            ? 'bg-slate-100 text-slate-400 border-slate-200'
+                            : 'bg-slate-100 text-slate-600 border-slate-300 hover:bg-slate-200'
+                        }`}
+                        title="Görseli değiştir"
+                      >
+                        {uploadingImage === index ? (
+                          <span className="flex items-center gap-1">
+                            <span className="animate-spin">⟳</span> Yükleniyor
+                          </span>
+                        ) : (
+                          '📤 Değiştir'
+                        )}
+                      </label>
+                    </div>
                   </div>
                   <div>
                     <label className="block text-xs text-slate-500 mb-1">Alt Text</label>

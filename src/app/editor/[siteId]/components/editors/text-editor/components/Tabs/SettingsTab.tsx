@@ -1,6 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { TextConfig } from '../../types/textConfig.types';
 import { getTabSwitchAnimation } from '../../utils/animationHelpers';
 

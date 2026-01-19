@@ -71,7 +71,9 @@ export function generateGradientCSS(color1: string, color2: string, angle: numbe
  * Generate text shadow CSS
  */
 export function generateTextShadowCSS(x: number, y: number, blur: number, color: string): string {
-  if (x === 0 && y === 0 && blur === 0) return 'none';
+  if (x === 0 && y === 0 && blur === 0) {
+return 'none';
+}
   return `${x}px ${y}px ${blur}px ${color}`;
 }
 

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { Category, CategoryFilters, CategoryResponse, CategoryFormData } from '../types'
 
 export function useCategories() {
@@ -51,10 +52,18 @@ export function useCategories() {
       }
 
       const params = new URLSearchParams()
-      if (filters.search) params.append('search', filters.search)
-      if (filters.active !== undefined) params.append('active', filters.active.toString())
-      if (filters.sortBy) params.append('sortBy', filters.sortBy)
-      if (filters.sortOrder) params.append('sortOrder', filters.sortOrder)
+      if (filters.search) {
+params.append('search', filters.search)
+}
+      if (filters.active !== undefined) {
+params.append('active', filters.active.toString())
+}
+      if (filters.sortBy) {
+params.append('sortBy', filters.sortBy)
+}
+      if (filters.sortOrder) {
+params.append('sortOrder', filters.sortOrder)
+}
 
       const response = await fetch(`/api/categories?${params}`, { headers })
       const data: CategoryResponse = await response.json()
@@ -236,7 +245,9 @@ export function useCategories() {
   // Toggle category active status
   const toggleActive = async (id: string): Promise<boolean> => {
     const category = categories.find(cat => cat.id === id)
-    if (!category) return false
+    if (!category) {
+return false
+}
 
     return await updateCategory(id, { active: !category.active })
   }

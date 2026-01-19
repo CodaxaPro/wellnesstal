@@ -1,6 +1,7 @@
 'use client'
 
 import { TeamContent, TeamCardStyle, TeamImageStyle, TeamSocialStyle, TeamTypography } from '../../types'
+
 import {
   IMAGE_SHAPE_OPTIONS,
   IMAGE_SIZE_OPTIONS,

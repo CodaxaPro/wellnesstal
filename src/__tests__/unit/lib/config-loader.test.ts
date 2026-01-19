@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest'
+
 import { ConfigLoader } from '@/lib/config-loader'
 import type { TemplateConfig } from '@/types/templates'
 

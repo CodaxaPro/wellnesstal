@@ -1,6 +1,7 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
+
+import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs'
 
 /**
  * Enterprise Security Headers
@@ -60,7 +61,7 @@ export async function middleware(req: NextRequest) {
 
   // Login/Register - already logged in ise tenant dashboard'a
   if (req.nextUrl.pathname === '/login' || req.nextUrl.pathname === '/register') {
-    if (session && session.user.user_metadata?.tenant_id) {
+    if (session?.user.user_metadata?.tenant_id) {
       return NextResponse.redirect(new URL('/tenant/dashboard', req.url))
     }
   }

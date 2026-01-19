@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+
 import { CategoryBulkOperation } from '../types'
 
 interface CategoryBulkActionsProps {
@@ -25,7 +26,9 @@ export default function CategoryBulkActions({
   }
 
   const handleConfirmAction = async () => {
-    if (!pendingAction || selectedCategories.length === 0) return
+    if (!pendingAction || selectedCategories.length === 0) {
+return
+}
 
     const operation: CategoryBulkOperation = {
       action: pendingAction,
@@ -65,7 +68,9 @@ export default function CategoryBulkActions({
   }
 
   const getConfirmationMessage = () => {
-    if (!pendingAction) return ''
+    if (!pendingAction) {
+return ''
+}
     
     const count = selectedCategories.length
     const actionText = getActionText(pendingAction)

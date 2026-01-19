@@ -11,6 +11,7 @@
  */
 
 import { describe, it, expect, beforeEach } from 'vitest'
+
 import { useWizardStore } from '@/app/wizard/store/useWizardStore'
 
 describe('useWizardStore', () => {

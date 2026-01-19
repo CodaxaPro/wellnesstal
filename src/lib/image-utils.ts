@@ -10,7 +10,9 @@
  * - Relative URL'leri Supabase URL'e çevir
  */
 export function normalizeImageUrl(url: string | null | undefined): string {
-  if (!url) return ''
+  if (!url) {
+return ''
+}
   
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://rtudfkccbzbblfmeoyop.supabase.co'
   
@@ -36,7 +38,7 @@ export function getImageProps(url: string | null | undefined, alt: string = '') 
   
   return {
     src: normalizedUrl,
-    alt: alt,
+    alt,
     onError: (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
       console.error('Image load error:', normalizedUrl)
       // Fallback to placeholder

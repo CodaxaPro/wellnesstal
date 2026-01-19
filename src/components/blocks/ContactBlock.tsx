@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { BlockProps } from './types'
 
 // Style interfaces - exact copy from ContactSection.tsx
@@ -278,6 +279,7 @@ export default function ContactBlock({ block }: BlockProps) {
   const [globalSectionData, setGlobalSectionData] = useState<ContactSectionContent | null>(null)
   const [globalContactData, setGlobalContactData] = useState<ContactDataContent | null>(null)
   const [googleMapsUrl, setGoogleMapsUrl] = useState<string>('')
+  const [businessInfoName, setBusinessInfoName] = useState<string>('')
   const [isLoading, setIsLoading] = useState(false)
 
   // Check if we should use global contact
@@ -359,8 +361,13 @@ export default function ContactBlock({ block }: BlockProps) {
             // Fallback to default if API fails
             setGlobalContactData(defaultContactData)
           }
-          if (settingsRes.success && settingsRes.data?.content?.address?.googleMapsUrl) {
-            setGoogleMapsUrl(settingsRes.data.content.address.googleMapsUrl)
+          if (settingsRes.success && settingsRes.data?.content) {
+            if (settingsRes.data.content.address?.googleMapsUrl) {
+              setGoogleMapsUrl(settingsRes.data.content.address.googleMapsUrl)
+            }
+            if (settingsRes.data.content.businessInfo?.name) {
+              setBusinessInfoName(settingsRes.data.content.businessInfo.name)
+            }
           }
         })
         .catch(console.error)
@@ -408,18 +415,18 @@ export default function ContactBlock({ block }: BlockProps) {
             <div className="lg:col-span-1 space-y-6">
               {[...Array(3)].map((_, i) => (
                 <div key={i} className="bg-white p-8 rounded-2xl shadow-soft">
-                  <div className="w-12 h-12 bg-sage-200 rounded-full mb-4"></div>
-                  <div className="h-6 bg-sage-200 rounded w-32 mb-2"></div>
-                  <div className="h-4 bg-sage-100 rounded w-full mb-4"></div>
-                  <div className="h-5 bg-sage-300 rounded w-40"></div>
+                  <div className="w-12 h-12 bg-sage-200 rounded-full mb-4" />
+                  <div className="h-6 bg-sage-200 rounded w-32 mb-2" />
+                  <div className="h-4 bg-sage-100 rounded w-full mb-4" />
+                  <div className="h-5 bg-sage-300 rounded w-40" />
                 </div>
               ))}
             </div>
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl shadow-soft overflow-hidden h-full">
-                <div className="h-64 lg:h-80 bg-sage-100"></div>
+                <div className="h-64 lg:h-80 bg-sage-100" />
                 <div className="p-8">
-                  <div className="h-6 bg-sage-200 rounded w-40 mb-6"></div>
+                  <div className="h-6 bg-sage-200 rounded w-40 mb-6" />
                 </div>
               </div>
             </div>
@@ -676,7 +683,9 @@ export default function ContactBlock({ block }: BlockProps) {
                       color: sectionContent.styles?.mapTitle?.color || defaultStyles.mapTitle?.color,
                     }}
                   >
-                    {brandName}
+                    {useGlobalContact 
+                      ? (businessInfoName || contactData.businessName || brandName)
+                      : (contactData.businessName || brandName)}
                   </h3>
                   <p
                     style={{

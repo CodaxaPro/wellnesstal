@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import Link from 'next/link'
+
 import { BlockProps } from './types'
 
 interface NavItem {
@@ -335,7 +337,7 @@ export default function HeaderBlock({ block }: BlockProps) {
                   <span
                     className="absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full"
                     style={{ backgroundColor: item.hoverColor || '#9CAF88' }}
-                  ></span>
+                   />
                 </Link>
               ))}
 

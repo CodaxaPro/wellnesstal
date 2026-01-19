@@ -1,14 +1,16 @@
 'use client'
 
 import { useState, useEffect, useCallback, useRef } from 'react'
+
 import { PricingContent } from '../types'
-import { getDefaultPricingContent } from './pricing/defaults'
-import { ContentIcon, PackagesIcon, LayoutIcon, BackgroundIcon, AdvancedIcon } from './pricing/shared/TabIcons'
-import ContentTab from './pricing/ContentTab'
-import PackagesTab from './pricing/PackagesTab'
-import LayoutTab from './pricing/LayoutTab'
-import BackgroundTab from './pricing/BackgroundTab'
+
 import AdvancedTab from './pricing/AdvancedTab'
+import BackgroundTab from './pricing/BackgroundTab'
+import ContentTab from './pricing/ContentTab'
+import { getDefaultPricingContent } from './pricing/defaults'
+import LayoutTab from './pricing/LayoutTab'
+import PackagesTab from './pricing/PackagesTab'
+import { ContentIcon, PackagesIcon, LayoutIcon, BackgroundIcon, AdvancedIcon } from './pricing/shared/TabIcons'
 
 interface PricingBlockEditorProps {
   content: PricingContent
@@ -46,7 +48,9 @@ export default function PricingBlockEditor({ content, onChange }: PricingBlockEd
 
   // Debounced onChange
   const debouncedOnChange = useCallback((newContent: PricingContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (timeoutRef.current) {
       clearTimeout(timeoutRef.current)
     }

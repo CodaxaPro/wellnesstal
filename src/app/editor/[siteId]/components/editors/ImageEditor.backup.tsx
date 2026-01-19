@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
 
@@ -259,7 +260,9 @@ export default function ImageEditor({
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    if (searchTimeoutRef.current) {
+clearTimeout(searchTimeoutRef.current);
+}
     searchTimeoutRef.current = setTimeout(() => searchUnsplash(query), 600);
   };
 
@@ -321,14 +324,30 @@ export default function ImageEditor({
   const getFilterStyle = (): React.CSSProperties => {
     const filters: string[] = [];
     
-    if (config.brightness !== 0) filters.push(`brightness(${1 + config.brightness / 100})`);
-    if (config.contrast !== 0) filters.push(`contrast(${1 + config.contrast / 100})`);
-    if (config.saturation !== 0) filters.push(`saturate(${1 + config.saturation / 100})`);
-    if (config.blur > 0) filters.push(`blur(${config.blur}px)`);
-    if (config.hue !== 0) filters.push(`hue-rotate(${config.hue}deg)`);
-    if (config.grayscale) filters.push('grayscale(100%)');
-    if (config.sepia) filters.push('sepia(100%)');
-    if (config.invert) filters.push('invert(100%)');
+    if (config.brightness !== 0) {
+filters.push(`brightness(${1 + config.brightness / 100})`);
+}
+    if (config.contrast !== 0) {
+filters.push(`contrast(${1 + config.contrast / 100})`);
+}
+    if (config.saturation !== 0) {
+filters.push(`saturate(${1 + config.saturation / 100})`);
+}
+    if (config.blur > 0) {
+filters.push(`blur(${config.blur}px)`);
+}
+    if (config.hue !== 0) {
+filters.push(`hue-rotate(${config.hue}deg)`);
+}
+    if (config.grayscale) {
+filters.push('grayscale(100%)');
+}
+    if (config.sepia) {
+filters.push('sepia(100%)');
+}
+    if (config.invert) {
+filters.push('invert(100%)');
+}
     
     // Preset filters
     const filterPresets: Record<string, string> = {

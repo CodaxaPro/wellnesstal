@@ -1,20 +1,20 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import Header from '@/components/layout/Header'
-import Footer from '@/components/layout/Footer'
+
 import BlockRenderer from '@/components/blocks/BlockRenderer'
 import { PageBlock } from '@/components/blocks/types'
-import WhatsAppButton from '@/components/ui/WhatsAppButton'
-import PageLoader from '@/components/ui/PageLoader'
+import Footer from '@/components/layout/Footer'
+import Header from '@/components/layout/Header'
 
 // Content Sections
-import LandingHeroSection from '@/components/sections/LandingHeroSection'
-import HeroSection from '@/components/sections/HeroSection'
-import ServicesSection from '@/components/sections/ServicesSection'
 import AboutSection from '@/components/sections/AboutSection'
 import ContactSection from '@/components/sections/ContactSection'
-import TestimonialsSection from '@/components/sections/TestimonialsSection'
+import HeroSection from '@/components/sections/HeroSection'
+import LandingHeroSection from '@/components/sections/LandingHeroSection'
+import ServicesSection from '@/components/sections/ServicesSection'
+import PageLoader from '@/components/ui/PageLoader'
+import WhatsAppButton from '@/components/ui/WhatsAppButton'
 
 // Template Engine imports
 import { templateEngine } from '@/lib/template-engine'
@@ -156,7 +156,9 @@ export default function Home() {
           const r2 = await fetch('/api/pages?slug=index')
           if (r2.ok) {
             const j2 = await r2.json()
-            if (j2.success && j2.data?.blocks) setBlocks(j2.data.blocks)
+            if (j2.success && j2.data?.blocks) {
+setBlocks(j2.data.blocks)
+}
           }
         }
       } catch (error) {
@@ -196,9 +198,18 @@ export default function Home() {
       case 'contact':
       case 'contact-section':
         return <ContactSection key={sectionKey} brandName={metaContent.siteTitle} />
+      // homepage-testimonials-block: render from blocks array
+      case 'homepage-testimonials-block': {
+        const testimonialBlock = blocks.find(b => b.block_type === 'testimonials' && b.visible !== false)
+        if (testimonialBlock) {
+          return <BlockRenderer key={sectionKey} blocks={[testimonialBlock]} />
+        }
+        return null
+      }
+      // testimonials-section removed - using homepage blocks instead
       case 'testimonials':
       case 'testimonials-section':
-        return <TestimonialsSection key={sectionKey} />
+        return null
       default:
         return null
     }
@@ -208,7 +219,7 @@ export default function Home() {
     <div className="min-h-screen bg-cream" style={themeVars as any}>
       {templateLoading && (
         <div className="fixed top-4 right-4 bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg z-50 flex items-center gap-2">
-          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+          <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white" />
           Template wird geladen...
         </div>
       )}
@@ -216,16 +227,38 @@ export default function Home() {
       <Header />
 
       <main>
-        {/* Render Content Sections (from /admin/content) */}
+        {/* Render Content Sections (from /admin/content) and Blocks (from /admin/pages) */}
         {homepageSections.length > 0 && (
           <>
-            {homepageSections.map((section) => renderContentSection(section.section_key))}
+            {homepageSections.map((section) => {
+              // For homepage-testimonials-block, render from blocks array
+              if (section.section_key === 'homepage-testimonials-block') {
+                const testimonialBlock = blocks.find(b => b.block_type === 'testimonials' && b.visible !== false)
+                if (testimonialBlock) {
+                  return <BlockRenderer key={section.section_key} blocks={[testimonialBlock]} />
+                }
+                return null
+              }
+              // For other sections, render normally
+              return renderContentSection(section.section_key)
+            })}
           </>
         )}
 
-        {/* Render Blocks (from /admin/pages) */}
-        {blocks.length > 0 && (
-          <BlockRenderer blocks={blocks} />
+        {/* Render other Blocks that are not in sections order (legacy support) */}
+        {blocks.length > 0 && blocks.filter(b => {
+          // Don't render testimonial block here if it's already in sections
+          if (b.block_type === 'testimonials') {
+            return !homepageSections.some(s => s.section_key === 'homepage-testimonials-block')
+          }
+          return true
+        }).length > 0 && (
+          <BlockRenderer blocks={blocks.filter(b => {
+            if (b.block_type === 'testimonials') {
+              return !homepageSections.some(s => s.section_key === 'homepage-testimonials-block')
+            }
+            return true
+          })} />
         )}
 
         {/* Empty State - Show only if both are empty */}

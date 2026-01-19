@@ -1,7 +1,7 @@
 import { FeaturesContent, FeatureItem } from '../../types'
 
 export const getDefaultFeatureItem = (): FeatureItem => ({
-  id: `feature-${Date.now()}`,
+  id: `feature-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
   title: 'Yeni Özellik',
   description: 'Özellik açıklamasını buraya yazın.',
   icon: 'star',

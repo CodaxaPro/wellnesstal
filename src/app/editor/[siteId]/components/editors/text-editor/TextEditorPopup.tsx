@@ -3,22 +3,24 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
-import { TabType, TextConfig } from './types/textConfig.types';
-import { useTextConfig } from './hooks/useTextConfig';
-import { useDraggable } from './hooks/useDraggable';
-import { calculateTextStats } from './utils/textHelpers';
-import { useTiptapEditor } from './hooks/useTiptapEditor';
-import TextEditorHeader from './components/Header/TextEditorHeader';
-import TextEditorToolbar from './components/Toolbar/TextEditorToolbar';
+
 import TextEditorContent from './components/Content/TextEditorContent';
 import TextEditorFooter from './components/Footer/TextEditorFooter';
-import FormatTab from './components/Tabs/FormatTab';
-import StyleTab from './components/Tabs/StyleTab';
+import TextEditorHeader from './components/Header/TextEditorHeader';
 import AdvancedTab from './components/Tabs/AdvancedTab';
+import FormatTab from './components/Tabs/FormatTab';
 import SettingsTab from './components/Tabs/SettingsTab';
+import StyleTab from './components/Tabs/StyleTab';
+import TextEditorToolbar from './components/Toolbar/TextEditorToolbar';
+import { useDraggable } from './hooks/useDraggable';
+import { useTextConfig } from './hooks/useTextConfig';
+import { useTiptapEditor } from './hooks/useTiptapEditor';
 import { POPUP_ANIMATIONS } from './types/animationPresets';
+import { TabType, TextConfig } from './types/textConfig.types';
+import { calculateTextStats } from './utils/textHelpers';
 
 interface TextEditorPopupProps {
   initialValue: string;

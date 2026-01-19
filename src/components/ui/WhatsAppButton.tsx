@@ -1,7 +1,8 @@
 'use client'
 
-import Link from 'next/link'
 import { useState, useEffect } from 'react'
+
+import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 // WhatsApp Settings Interface
@@ -218,7 +219,9 @@ const WhatsAppButton = () => {
 
   // Handle display rules (delay, scroll, excluded pages)
   useEffect(() => {
-    if (loading) return
+    if (loading) {
+return
+}
 
     // Check if button should be shown
     const { showOnAllPages, excludedPages, showAfterDelay, showAfterScroll, showOnMobile, showOnDesktop } = settings.display
@@ -260,7 +263,9 @@ const WhatsAppButton = () => {
 
   // Handle CTA bubble display
   useEffect(() => {
-    if (loading || !settings.ctaBubble.enabled || ctaBubbleDismissed) return
+    if (loading || !settings.ctaBubble.enabled || ctaBubbleDismissed) {
+return
+}
 
     const timer = setTimeout(() => {
       setShowCtaBubble(true)
@@ -271,7 +276,9 @@ const WhatsAppButton = () => {
 
   // Handle tooltip auto-show
   useEffect(() => {
-    if (loading) return
+    if (loading) {
+return
+}
 
     if (settings.message.showTooltipOnLoad) {
       setTooltipVisible(true)
@@ -282,7 +289,9 @@ const WhatsAppButton = () => {
   }, [loading, settings.message.showTooltipOnLoad, settings.message.autoShowTooltipAfter])
 
   // Don't render if not enabled or not visible
-  if (!settings.basic.enabled || !showButton) return null
+  if (!settings.basic.enabled || !showButton) {
+return null
+}
 
   // Format phone number for WhatsApp link
   const formattedPhone = settings.basic.phoneNumber.replace(/[^0-9]/g, '')
@@ -330,7 +339,7 @@ const WhatsAppButton = () => {
           isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
         }`}>
           WhatsApp Nachricht senden
-          <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-charcoal"></div>
+          <div className="absolute top-full right-4 w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-charcoal" />
         </div>
 
         {/* WhatsApp Button */}
@@ -353,7 +362,7 @@ const WhatsAppButton = () => {
           </svg>
 
           {/* Pulse Animation */}
-          <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75"></span>
+          <span className="absolute inset-0 rounded-full bg-green-400 animate-ping opacity-75" />
         </Link>
       </div>
     )
@@ -412,7 +421,7 @@ const WhatsAppButton = () => {
         isHovered ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2 pointer-events-none'
       }`}>
         {!isOnline ? settings.availability.offlineMessage : settings.message.tooltipText}
-        <div className={`absolute top-full ${settings.basic.position === 'bottom-left' ? 'left-4' : 'right-4'} w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-charcoal`}></div>
+        <div className={`absolute top-full ${settings.basic.position === 'bottom-left' ? 'left-4' : 'right-4'} w-0 h-0 border-l-4 border-r-4 border-t-4 border-transparent border-t-charcoal`} />
       </div>
 
       {/* WhatsApp Button */}

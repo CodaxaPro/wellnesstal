@@ -1,9 +1,10 @@
 'use client';
 
 import { motion } from 'framer-motion';
+
 import { ImageConfig } from './types/imageConfig.types';
-import { getFilterStyle } from './utils/filterHelpers';
 import { getEntranceAnimation, getHoverAnimation, getEasingCurve } from './utils/animationHelpers';
+import { getFilterStyle } from './utils/filterHelpers';
 
 interface ImageEditorPreviewProps {
   config: ImageConfig;

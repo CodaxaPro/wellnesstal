@@ -1,6 +1,7 @@
 'use client'
 
 import { PricingContent, PricingAnimations, PricingFAQ, PricingComparisonTable } from '../../types'
+
 import { PRICING_STYLE_PRESETS } from './defaults'
 
 interface AdvancedTabProps {

@@ -3,6 +3,7 @@
 'use client'
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
+
 import type { Bounds } from '../components/Canvas/Selection/types'
 
 // Types
@@ -122,7 +123,9 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
   
   // Check if element is selected
   const isSelected = useCallback((section: SectionType, element?: string) => {
-    if (!section) return false
+    if (!section) {
+return false
+}
     
     if (element) {
       return state.selectedSection === section && state.selectedElement === element

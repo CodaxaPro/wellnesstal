@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
+
 import { ImageConfig, UnsplashImage, TRENDING_IMAGES } from '../types/imageConfig.types';
 
 interface SourceTabProps {
@@ -36,7 +38,9 @@ export default function SourceTab({ config, updateConfig }: SourceTabProps) {
 
   const handleSearchChange = (query: string) => {
     setSearchQuery(query);
-    if (searchTimeoutRef.current) clearTimeout(searchTimeoutRef.current);
+    if (searchTimeoutRef.current) {
+clearTimeout(searchTimeoutRef.current);
+}
     searchTimeoutRef.current = setTimeout(() => searchUnsplash(query), 600);
   };
 

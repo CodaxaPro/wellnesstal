@@ -1,7 +1,9 @@
 'use client'
 
-import Image from 'next/image'
 import React from 'react'
+
+import Image from 'next/image'
+
 import {
   BlockProps,
   TeamContent,
@@ -104,10 +106,14 @@ export default function TeamBlock({ block }: BlockProps) {
 
   // Helper function to check if a color is dark
   const isColorDark = (color: string): boolean => {
-    if (!color) return false
+    if (!color) {
+return false
+}
     // Remove # if present
     const hex = color.replace('#', '')
-    if (hex.length !== 6) return false
+    if (hex.length !== 6) {
+return false
+}
     const r = parseInt(hex.substring(0, 2), 16)
     const g = parseInt(hex.substring(2, 4), 16)
     const b = parseInt(hex.substring(4, 6), 16)
@@ -183,7 +189,9 @@ export default function TeamBlock({ block }: BlockProps) {
   }
 
   const getAnimationStyle = (index: number): React.CSSProperties => {
-    if (!animations.enabled || animations.type === 'none') return {}
+    if (!animations.enabled || animations.type === 'none') {
+return {}
+}
 
     const baseDelay = animations.delay || 0
     const staggerDelay = animations.stagger ? (animations.staggerDelay || 100) * index : 0
@@ -208,7 +216,9 @@ export default function TeamBlock({ block }: BlockProps) {
   }
 
   const getAnimationKeyframes = (): string => {
-    if (!animations.enabled || animations.type === 'none') return ''
+    if (!animations.enabled || animations.type === 'none') {
+return ''
+}
     return `
       @keyframes team-fade {
         from { opacity: 0; }
@@ -260,7 +270,9 @@ export default function TeamBlock({ block }: BlockProps) {
   }
 
   const getHoverStyles = (): string => {
-    if (!animations.hoverEffects) return ''
+    if (!animations.hoverEffects) {
+return ''
+}
 
     const transitionDuration = cardStyle.hoverTransitionDuration || 300
     let hoverStyles = ''
@@ -358,9 +370,15 @@ export default function TeamBlock({ block }: BlockProps) {
 
     // Build filter string
     const filters: string[] = []
-    if (grayscale) filters.push('grayscale(100%)')
-    if (brightness !== 100) filters.push(`brightness(${brightness}%)`)
-    if (contrast !== 100) filters.push(`contrast(${contrast}%)`)
+    if (grayscale) {
+filters.push('grayscale(100%)')
+}
+    if (brightness !== 100) {
+filters.push(`brightness(${brightness}%)`)
+}
+    if (contrast !== 100) {
+filters.push(`contrast(${contrast}%)`)
+}
     const filterString = filters.length > 0 ? filters.join(' ') : undefined
 
     const imageStyle2: React.CSSProperties = {
@@ -416,10 +434,14 @@ export default function TeamBlock({ block }: BlockProps) {
   }
 
   const renderSocialLinks = (member: TeamMember) => {
-    if (!showSocial || !member.social) return null
+    if (!showSocial || !member.social) {
+return null
+}
 
     const socialLinks = Object.entries(member.social).filter(([, value]) => value)
-    if (socialLinks.length === 0) return null
+    if (socialLinks.length === 0) {
+return null
+}
 
     const iconSizeMap: Record<string, string> = { sm: '16px', md: '20px', lg: '24px' }
     const iconSize = iconSizeMap[socialStyle.iconSize || 'md']
@@ -624,7 +646,9 @@ export default function TeamBlock({ block }: BlockProps) {
   }
 
   const renderCTA = () => {
-    if (!content.cta?.enabled) return null
+    if (!content.cta?.enabled) {
+return null
+}
 
     return (
       <div

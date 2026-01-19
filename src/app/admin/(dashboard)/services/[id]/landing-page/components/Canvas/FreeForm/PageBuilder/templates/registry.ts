@@ -1,9 +1,9 @@
 // templates/registry.ts
 // Template Registry - Tüm template'lerin merkezi yönetimi
 
-import type { Template, TemplateCategory, TemplateFilters } from './types';
 import { blankTemplate } from './blank';
 import { headspaTemplate } from './themes/headspa';
+import type { Template, TemplateCategory, TemplateFilters } from './types';
 
 /**
  * Template Registry

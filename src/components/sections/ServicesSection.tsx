@@ -296,18 +296,18 @@ const ServicesSection = () => {
               <div key={i} className="bg-gray-100 rounded-3xl p-8 animate-pulse">
                 <div className="flex items-start justify-between mb-6">
                   <div className="flex items-center gap-4">
-                    <div className="w-16 h-16 bg-gray-200 rounded-2xl"></div>
+                    <div className="w-16 h-16 bg-gray-200 rounded-2xl" />
                     <div>
-                      <div className="h-6 bg-gray-200 rounded w-32 mb-2"></div>
-                      <div className="h-4 bg-gray-200 rounded w-24"></div>
+                      <div className="h-6 bg-gray-200 rounded w-32 mb-2" />
+                      <div className="h-4 bg-gray-200 rounded w-24" />
                     </div>
                   </div>
                 </div>
-                <div className="h-4 bg-gray-200 rounded w-full mb-2"></div>
-                <div className="h-4 bg-gray-200 rounded w-3/4 mb-6"></div>
+                <div className="h-4 bg-gray-200 rounded w-full mb-2" />
+                <div className="h-4 bg-gray-200 rounded w-3/4 mb-6" />
                 <div className="flex gap-3">
-                  <div className="h-12 bg-gray-200 rounded-xl flex-1"></div>
-                  <div className="h-12 bg-gray-200 rounded-xl flex-1"></div>
+                  <div className="h-12 bg-gray-200 rounded-xl flex-1" />
+                  <div className="h-12 bg-gray-200 rounded-xl flex-1" />
                 </div>
               </div>
             ))}
@@ -443,7 +443,7 @@ const ServicesSection = () => {
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
                       <span className="text-sm text-gray-custom">{service.duration}</span>
-                      <span className="w-1 h-1 bg-gray-300 rounded-full"></span>
+                      <span className="w-1 h-1 bg-gray-300 rounded-full" />
                       <span className="text-sm font-semibold text-sage-600">{service.price}</span>
                     </div>
                   </div>
@@ -465,7 +465,7 @@ const ServicesSection = () => {
                   <div className="grid grid-cols-2 gap-2">
                     {service.benefits.map((benefit, idx) => (
                       <div key={idx} className="flex items-center gap-2">
-                        <div className="w-2 h-2 bg-sage-500 rounded-full"></div>
+                        <div className="w-2 h-2 bg-sage-500 rounded-full" />
                         <span className="text-sm text-gray-custom">{benefit}</span>
                       </div>
                     ))}
@@ -547,7 +547,7 @@ const ServicesSection = () => {
               </div>
 
               {/* Hover Effect Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-sage-50 to-earth-50 rounded-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-sage-50 to-earth-50 rounded-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-300 -z-10" />
             </div>
           ))}
         </div>

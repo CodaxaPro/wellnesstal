@@ -263,6 +263,7 @@ export default function ContactSection({ brandName = 'Wellnesstal Studio' }: Con
   const [contactContent, setContactContent] = useState<ContactContent>(defaultContactContent)
   const [contactLoading, setContactLoading] = useState(true)
   const [googleMapsUrl, setGoogleMapsUrl] = useState<string>('')
+  const [businessInfoName, setBusinessInfoName] = useState<string>('')
 
   // Fetch contact content from API
   useEffect(() => {
@@ -345,14 +346,19 @@ export default function ContactSection({ brandName = 'Wellnesstal Studio' }: Con
     fetchContactSectionContent()
   }, [])
 
-  // Fetch contact-settings for Google Maps URL
+  // Fetch contact-settings for Google Maps URL and business info
   useEffect(() => {
     const fetchContactSettings = async () => {
       try {
         const response = await fetch('/api/content?section=contact-settings')
         const data = await response.json()
-        if (data.success && data.data?.content?.address?.googleMapsUrl) {
-          setGoogleMapsUrl(data.data.content.address.googleMapsUrl)
+        if (data.success && data.data?.content) {
+          if (data.data.content.address?.googleMapsUrl) {
+            setGoogleMapsUrl(data.data.content.address.googleMapsUrl)
+          }
+          if (data.data.content.businessInfo?.name) {
+            setBusinessInfoName(data.data.content.businessInfo.name)
+          }
         }
       } catch (error) {
         console.error('Failed to fetch contact settings:', error)
@@ -430,35 +436,35 @@ export default function ContactSection({ brandName = 'Wellnesstal Studio' }: Con
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 animate-pulse">
             <div className="lg:col-span-1 space-y-6">
               <div className="bg-white p-8 rounded-2xl shadow-soft">
-                <div className="w-12 h-12 bg-sage-200 rounded-full mb-4"></div>
-                <div className="h-6 bg-sage-200 rounded w-32 mb-2"></div>
-                <div className="h-4 bg-sage-100 rounded w-full mb-2"></div>
-                <div className="h-4 bg-sage-100 rounded w-3/4 mb-4"></div>
-                <div className="h-5 bg-sage-300 rounded w-40"></div>
+                <div className="w-12 h-12 bg-sage-200 rounded-full mb-4" />
+                <div className="h-6 bg-sage-200 rounded w-32 mb-2" />
+                <div className="h-4 bg-sage-100 rounded w-full mb-2" />
+                <div className="h-4 bg-sage-100 rounded w-3/4 mb-4" />
+                <div className="h-5 bg-sage-300 rounded w-40" />
               </div>
               <div className="bg-white p-8 rounded-2xl shadow-soft">
-                <div className="w-12 h-12 bg-sage-200 rounded-full mb-4"></div>
-                <div className="h-6 bg-sage-200 rounded w-32 mb-2"></div>
-                <div className="h-4 bg-sage-100 rounded w-full mb-4"></div>
-                <div className="h-5 bg-sage-300 rounded w-40"></div>
+                <div className="w-12 h-12 bg-sage-200 rounded-full mb-4" />
+                <div className="h-6 bg-sage-200 rounded w-32 mb-2" />
+                <div className="h-4 bg-sage-100 rounded w-full mb-4" />
+                <div className="h-5 bg-sage-300 rounded w-40" />
               </div>
               <div className="bg-white p-8 rounded-2xl shadow-soft">
-                <div className="w-12 h-12 bg-sage-200 rounded-full mb-4"></div>
-                <div className="h-6 bg-sage-200 rounded w-32 mb-2"></div>
-                <div className="h-4 bg-sage-100 rounded w-full mb-4"></div>
-                <div className="h-5 bg-sage-300 rounded w-40"></div>
+                <div className="w-12 h-12 bg-sage-200 rounded-full mb-4" />
+                <div className="h-6 bg-sage-200 rounded w-32 mb-2" />
+                <div className="h-4 bg-sage-100 rounded w-full mb-4" />
+                <div className="h-5 bg-sage-300 rounded w-40" />
               </div>
             </div>
             <div className="lg:col-span-2">
               <div className="bg-white rounded-2xl shadow-soft overflow-hidden h-full">
-                <div className="h-64 lg:h-80 bg-sage-100"></div>
+                <div className="h-64 lg:h-80 bg-sage-100" />
                 <div className="p-8">
-                  <div className="h-6 bg-sage-200 rounded w-40 mb-6"></div>
+                  <div className="h-6 bg-sage-200 rounded w-40 mb-6" />
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     {[...Array(7)].map((_, i) => (
                       <div key={i} className="flex justify-between py-2 px-4">
-                        <div className="h-5 bg-sage-100 rounded w-24"></div>
-                        <div className="h-5 bg-sage-100 rounded w-28"></div>
+                        <div className="h-5 bg-sage-100 rounded w-24" />
+                        <div className="h-5 bg-sage-100 rounded w-28" />
                       </div>
                     ))}
                   </div>
@@ -650,7 +656,7 @@ export default function ContactSection({ brandName = 'Wellnesstal Studio' }: Con
                       color: contactSectionContent.styles?.mapTitle?.color || defaultContactSectionStyles.mapTitle?.color,
                     }}
                   >
-                    {brandName}
+                    {businessInfoName || contactContent.businessName || brandName}
                   </h3>
                   <p
                     style={{

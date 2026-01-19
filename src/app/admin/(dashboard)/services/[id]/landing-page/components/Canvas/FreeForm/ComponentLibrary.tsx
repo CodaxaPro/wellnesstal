@@ -2,8 +2,9 @@
 // Sidebar for adding new components - WITH GRID SUPPORT
 
 import React from 'react';
-import type { SectionConfig, StackConfig, GridConfig } from './primitives.types';
+
 import type { HeadingConfig, TextConfig, ButtonConfig, ImageConfig, ContentComponent } from './content.types';
+import type { SectionConfig, StackConfig, GridConfig } from './primitives.types';
 
 interface ComponentLibraryProps {
   onAddSection: (section: SectionConfig) => void;
@@ -122,7 +123,9 @@ export function ComponentLibrary({
     onAddContent(newImage);
   };
 
-  if (!isOpen) return null;
+  if (!isOpen) {
+return null;
+}
 
   return (
     <div className="fixed right-0 top-0 h-full w-80 bg-white border-l border-gray-200 shadow-lg z-50 overflow-y-auto">

@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -59,11 +60,15 @@ export async function GET() {
     const pageImagesMap = new Map<string, string[]>()
     imageBlocks?.forEach(block => {
       const images: string[] = []
-      if (block.content?.image) images.push(block.content.image)
+      if (block.content?.image) {
+images.push(block.content.image)
+}
       if (block.content?.images && Array.isArray(block.content.images)) {
         images.push(...block.content.images.filter((img: any) => typeof img === 'string' || img?.url))
       }
-      if (block.content?.backgroundImage) images.push(block.content.backgroundImage)
+      if (block.content?.backgroundImage) {
+images.push(block.content.backgroundImage)
+}
       if (images.length > 0) {
         pageImagesMap.set(block.page_id, images.map(img => typeof img === 'string' ? img : img.url).filter(Boolean))
       }
@@ -135,7 +140,7 @@ export async function GET() {
       })
       .join('\n')
 
-    const sitemapEntries = homepageEntry + (pageEntries ? '\n' + pageEntries : '')
+    const sitemapEntries = homepageEntry + (pageEntries ? `\n${  pageEntries}` : '')
 
     // Generate XML
     const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

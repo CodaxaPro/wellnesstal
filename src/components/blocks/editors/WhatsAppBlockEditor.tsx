@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { WhatsAppContent } from '../types'
+
 import {
   BasicTab,
   AppearanceTab,
@@ -92,7 +94,9 @@ export default function WhatsAppBlockEditor({ content: initialContent, onUpdate 
 
   // Debounced update
   const debouncedUpdate = useCallback((newContent: WhatsAppContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceRef.current) {
       clearTimeout(debounceRef.current)
     }

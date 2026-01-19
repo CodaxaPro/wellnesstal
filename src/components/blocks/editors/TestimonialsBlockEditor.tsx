@@ -1,9 +1,11 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+
 import { TestimonialsContent } from '../types'
-import { getDefaultTestimonialsContent } from './testimonials/defaults'
+
 import { ContentTab, TypographyTab, StyleTab, BackgroundTab, AdvancedTab } from './testimonials'
+import { getDefaultTestimonialsContent } from './testimonials/defaults'
 import { ContentIcon, TypographyIcon, StyleIcon, BackgroundIcon, AdvancedIcon } from './testimonials/shared/TabIcons'
 
 type TabType = 'content' | 'typography' | 'style' | 'background' | 'advanced'
@@ -33,7 +35,9 @@ export default function TestimonialsBlockEditor({ content, onUpdate }: Testimoni
   }, [content])
 
   const debouncedUpdate = useCallback((newContent: TestimonialsContent) => {
-    if (isInitialMount.current) return
+    if (isInitialMount.current) {
+return
+}
     if (debounceTimer.current) {
       clearTimeout(debounceTimer.current)
     }

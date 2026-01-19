@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
-import { TextConfig, DEFAULT_TEXT_CONFIG } from '../types/textConfig.types';
+
 import toast from 'react-hot-toast';
+
+import { TextConfig, DEFAULT_TEXT_CONFIG } from '../types/textConfig.types';
 
 interface UseTextConfigProps {
   initialValue: string;

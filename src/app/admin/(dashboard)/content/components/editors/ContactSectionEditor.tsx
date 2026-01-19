@@ -1,7 +1,7 @@
 'use client'
 
-import { ContentSection } from '../types'
 import { StyleEditor, IconStyleEditor } from '../StyleEditors'
+import { ContentSection } from '../types'
 
 interface ContactSectionEditorProps {
   section: ContentSection
@@ -19,6 +19,7 @@ interface ContactSectionEditorProps {
   updateField: (field: string, value: any) => void
   isNestedContentChanged: (path: string) => boolean
   resetNestedContentToDefault: (path: string) => void
+  updateNestedField: (parent: string, field: string, value: any) => void
 }
 
 export function ContactSectionEditor({
@@ -36,7 +37,8 @@ export function ContactSectionEditor({
   resetAllToDefaults,
   updateField,
   isNestedContentChanged,
-  resetNestedContentToDefault
+  resetNestedContentToDefault,
+  updateNestedField
 }: ContactSectionEditorProps) {
   const content = isEditing ? editingContent : section.content
 
@@ -73,7 +75,9 @@ export function ContactSectionEditor({
   )
 
   const ResetButton = ({ path }: { path: string }) => {
-    if (!isEditing || !isNestedContentChanged(path)) return null
+    if (!isEditing || !isNestedContentChanged(path)) {
+return null
+}
     return (
       <button
         type="button"
@@ -108,9 +112,430 @@ export function ContactSectionEditor({
 
       {/* Section Header */}
       <div className="bg-sage-50 border border-sage-200 rounded-xl p-4 mb-6">
-        <h3 className="text-lg font-semibold text-charcoal mb-2">Contact Section Stilleri</h3>
+        <h3 className="text-lg font-semibold text-charcoal mb-2">Kontakt Bölümü</h3>
         <p className="text-sm text-gray-600">Ana sayfadaki İletişim bölümünün içerik ve görsel ayarları</p>
       </div>
+
+      {/* ============================================ */}
+      {/* ENTERPRISE: İŞLETME BİLGİLERİ */}
+      {/* ============================================ */}
+      <div className="p-6 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl border-2 border-blue-200">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-blue-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">🏢</div>
+          <div>
+            <h3 className="text-xl font-bold text-charcoal">İşletme Bilgileri</h3>
+            <p className="text-sm text-gray-600">Bu bilgiler ContactSection ve Footer'da görünür</p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              İşletme Adı
+              <span className="ml-2 text-xs font-normal text-gray-500">(ContactSection başlığında görünür)</span>
+            </label>
+            <input
+              type="text"
+              value={content.businessInfo?.name || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                businessInfo: { ...prev.businessInfo, name: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="WellnessTal Studio"
+            />
+            <p className="mt-1 text-xs text-gray-500">Ana sayfadaki ContactSection'da harita üzerinde görünen isim</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Tagline
+              <span className="ml-2 text-xs font-normal text-gray-500">(Alt başlık)</span>
+            </label>
+            <input
+              type="text"
+              value={content.businessInfo?.tagline || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                businessInfo: { ...prev.businessInfo, tagline: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="Premium Wellness & Headspa in Baesweiler"
+            />
+            <p className="mt-1 text-xs text-gray-500">İşletme adının altında görünen kısa açıklama</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Açıklama
+              <span className="ml-2 text-xs font-normal text-gray-500">(Detaylı açıklama)</span>
+            </label>
+            <textarea
+              rows={3}
+              value={content.businessInfo?.description || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                businessInfo: { ...prev.businessInfo, description: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="Ihre Oase der Entspannung im Herzen von Baesweiler..."
+            />
+            <p className="mt-1 text-xs text-gray-500">Footer'da görünen işletme açıklaması</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================ */}
+      {/* ENTERPRISE: İLETİŞİM BİLGİLERİ */}
+      {/* ============================================ */}
+      <div className="mt-6 p-6 bg-gradient-to-br from-green-50 to-emerald-50 rounded-2xl border-2 border-green-200">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-green-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">📞</div>
+          <div>
+            <h3 className="text-xl font-bold text-charcoal">İletişim Bilgileri</h3>
+            <p className="text-sm text-gray-600">ContactSection kartlarında ve Footer'da görünür</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Telefon
+              <span className="ml-2 text-xs font-normal text-gray-500">(Telefon kartında görünür)</span>
+            </label>
+            <input
+              type="tel"
+              value={content.contact?.phone || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                contact: { ...prev.contact, phone: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="+49 1733828581"
+            />
+            <p className="mt-1 text-xs text-gray-500">ContactSection'daki telefon kartında tıklanabilir link olarak görünür</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              E-Mail
+              <span className="ml-2 text-xs font-normal text-gray-500">(E-Mail kartında görünür)</span>
+            </label>
+            <input
+              type="email"
+              value={content.contact?.email || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                contact: { ...prev.contact, email: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="info@wellnesstal.de"
+            />
+            <p className="mt-1 text-xs text-gray-500">ContactSection'daki e-mail kartında mailto: linki olarak görünür</p>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              WhatsApp
+              <span className="ml-2 text-xs font-normal text-gray-500">(WhatsApp kartında görünür)</span>
+            </label>
+            <input
+              type="text"
+              value={content.contact?.whatsapp || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                contact: { ...prev.contact, whatsapp: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="+49 1733828581"
+            />
+            <p className="mt-1 text-xs text-gray-500">ContactSection'daki WhatsApp kartında wa.me linki olarak görünür</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================ */}
+      {/* ENTERPRISE: ADRES BİLGİLERİ */}
+      {/* ============================================ */}
+      <div className="mt-6 p-6 bg-gradient-to-br from-purple-50 to-pink-50 rounded-2xl border-2 border-purple-200">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-purple-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">📍</div>
+          <div>
+            <h3 className="text-xl font-bold text-charcoal">Adres Bilgileri</h3>
+            <p className="text-sm text-gray-600">ContactSection haritasında ve Footer'da görünür</p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Sokak ve Numara
+              <span className="ml-2 text-xs font-normal text-gray-500">(Harita üzerinde görünür)</span>
+            </label>
+            <input
+              type="text"
+              value={content.address?.street || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                address: { ...prev.address, street: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="Reyplatz 10"
+            />
+            <p className="mt-1 text-xs text-gray-500">ContactSection haritasında "Sokak, Posta Kodu Şehir" formatında görünür</p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-charcoal mb-2">Posta Kodu</label>
+              <input
+                type="text"
+                value={content.address?.postalCode || ''}
+                onChange={(e) => setEditingContent((prev: any) => ({
+                  ...prev,
+                  address: { ...prev.address, postalCode: e.target.value }
+                }))}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-50"
+                placeholder="52499"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-charcoal mb-2">Şehir</label>
+              <input
+                type="text"
+                value={content.address?.city || ''}
+                onChange={(e) => setEditingContent((prev: any) => ({
+                  ...prev,
+                  address: { ...prev.address, city: e.target.value }
+                }))}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-50"
+                placeholder="Baesweiler"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-semibold text-charcoal mb-2">Ülke</label>
+              <input
+                type="text"
+                value={content.address?.country || ''}
+                onChange={(e) => setEditingContent((prev: any) => ({
+                  ...prev,
+                  address: { ...prev.address, country: e.target.value }
+                }))}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-50"
+                placeholder="Deutschland"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Google Maps URL
+              <span className="ml-2 text-xs font-normal text-gray-500">(Harita butonunda kullanılır)</span>
+            </label>
+            <input
+              type="url"
+              value={content.address?.googleMapsUrl || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                address: { ...prev.address, googleMapsUrl: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="https://maps.google.com/?q=..."
+            />
+            <p className="mt-1 text-xs text-gray-500">ContactSection haritasındaki "In Google Maps öffnen" butonuna tıklandığında açılır</p>
+          </div>
+        </div>
+      </div>
+
+      {/* ============================================ */}
+      {/* ENTERPRISE: AÇILIŞ SAATLERİ */}
+      {/* ============================================ */}
+      <div className="mt-6 p-6 bg-gradient-to-br from-amber-50 to-orange-50 rounded-2xl border-2 border-amber-200">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-amber-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">🕐</div>
+          <div>
+            <h3 className="text-xl font-bold text-charcoal">Açılış Saatleri</h3>
+            <p className="text-sm text-gray-600">ContactSection'da haftalık açılış saatleri tablosu olarak görünür</p>
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map((day) => {
+            const dayLabels: Record<string, string> = {
+              monday: 'Montag',
+              tuesday: 'Dienstag',
+              wednesday: 'Mittwoch',
+              thursday: 'Donnerstag',
+              friday: 'Freitag',
+              saturday: 'Samstag',
+              sunday: 'Sonntag'
+            }
+            return (
+              <div key={day} className="flex items-center gap-4 p-3 bg-white rounded-lg border border-gray-200">
+                <div className="w-24 text-sm font-medium text-charcoal">{dayLabels[day]}</div>
+                <label className="flex items-center gap-2">
+                  <input
+                    type="checkbox"
+                    checked={content.openingHours?.[day]?.closed || false}
+                    onChange={(e) => setEditingContent((prev: any) => ({
+                      ...prev,
+                      openingHours: {
+                        ...prev.openingHours,
+                        [day]: { ...prev.openingHours?.[day], closed: e.target.checked }
+                      }
+                    }))}
+                    disabled={!isEditing}
+                    className="rounded border-gray-300 text-amber-600"
+                  />
+                  <span className="text-sm text-gray-600">Geschlossen</span>
+                </label>
+                {!content.openingHours?.[day]?.closed && (
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="time"
+                      value={content.openingHours?.[day]?.open || '09:00'}
+                      onChange={(e) => setEditingContent((prev: any) => ({
+                        ...prev,
+                        openingHours: {
+                          ...prev.openingHours,
+                          [day]: { ...prev.openingHours?.[day], open: e.target.value }
+                        }
+                      }))}
+                      disabled={!isEditing}
+                      className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 text-sm"
+                    />
+                    <span className="text-gray-400">-</span>
+                    <input
+                      type="time"
+                      value={content.openingHours?.[day]?.close || '19:00'}
+                      onChange={(e) => setEditingContent((prev: any) => ({
+                        ...prev,
+                        openingHours: {
+                          ...prev.openingHours,
+                          [day]: { ...prev.openingHours?.[day], close: e.target.value }
+                        }
+                      }))}
+                      disabled={!isEditing}
+                      className="px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-amber-500 text-sm"
+                    />
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+        <p className="mt-3 text-xs text-gray-500">Bu saatler ContactSection'da "Öffnungszeiten" tablosunda görünür. Bugün olan gün vurgulanır.</p>
+      </div>
+
+      {/* ============================================ */}
+      {/* ENTERPRISE: SOSYAL MEDYA */}
+      {/* ============================================ */}
+      <div className="mt-6 p-6 bg-gradient-to-br from-pink-50 to-rose-50 rounded-2xl border-2 border-pink-200">
+        <div className="flex items-center gap-3 mb-4">
+          <div className="w-10 h-10 bg-pink-500 rounded-xl flex items-center justify-center text-white text-xl font-bold">📱</div>
+          <div>
+            <h3 className="text-xl font-bold text-charcoal">Sosyal Medya</h3>
+            <p className="text-sm text-gray-600">Footer'da sosyal medya ikonları olarak görünür</p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Instagram URL
+              <span className="ml-2 text-xs font-normal text-gray-500">(Footer'da Instagram ikonu)</span>
+            </label>
+            <input
+              type="url"
+              value={content.socialMedia?.instagram || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                socialMedia: { ...prev.socialMedia, instagram: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="https://instagram.com/wellnesstal"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Facebook URL
+              <span className="ml-2 text-xs font-normal text-gray-500">(Footer'da Facebook ikonu)</span>
+            </label>
+            <input
+              type="url"
+              value={content.socialMedia?.facebook || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                socialMedia: { ...prev.socialMedia, facebook: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="https://facebook.com/wellnesstal"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              WhatsApp Business URL
+              <span className="ml-2 text-xs font-normal text-gray-500">(Footer'da WhatsApp ikonu)</span>
+            </label>
+            <input
+              type="url"
+              value={content.socialMedia?.whatsapp || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                socialMedia: { ...prev.socialMedia, whatsapp: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="https://wa.me/491733828581"
+            />
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-charcoal mb-2">
+              Website URL
+              <span className="ml-2 text-xs font-normal text-gray-500">(Footer'da website linki)</span>
+            </label>
+            <input
+              type="url"
+              value={content.socialMedia?.website || ''}
+              onChange={(e) => setEditingContent((prev: any) => ({
+                ...prev,
+                socialMedia: { ...prev.socialMedia, website: e.target.value }
+              }))}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-pink-500 focus:border-transparent disabled:bg-gray-50"
+              placeholder="https://wellnesstal.de"
+            />
+          </div>
+        </div>
+        <p className="mt-3 text-xs text-gray-500">Bu linkler Footer'ın alt kısmında sosyal medya ikonları olarak görünür</p>
+      </div>
+
+      {/* ============================================ */}
+      {/* GÖRÜNÜM AYARLARI */}
+      {/* ============================================ */}
+      <div className="mt-8 pt-8 border-t-2 border-gray-300">
+        <div className="bg-sage-50 border border-sage-200 rounded-xl p-4 mb-6">
+          <h3 className="text-lg font-semibold text-charcoal mb-2">Görünüm Ayarları</h3>
+          <p className="text-sm text-gray-600">ContactSection'ın görsel stilleri ve metin içerikleri</p>
+        </div>
 
       {/* Badge */}
       <div className="p-4 bg-white rounded-xl border border-gray-200">
@@ -404,6 +829,8 @@ export function ContactSectionEditor({
           </div>
         )}
       </div>
+      </div>
+
     </div>
   )
 }

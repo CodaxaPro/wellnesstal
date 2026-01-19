@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
 import { CategoryFormData, Category } from '../types'
 
 interface CategoryFormProps {
@@ -142,7 +143,9 @@ export default function CategoryForm({
     setShowCustomColorInput(false)
   }
 
-  if (!isOpen) return null
+  if (!isOpen) {
+return null
+}
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">

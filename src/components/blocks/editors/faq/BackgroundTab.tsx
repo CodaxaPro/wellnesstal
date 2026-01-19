@@ -1,6 +1,7 @@
 'use client'
 
 import { FAQContent, FAQBackground } from '../../types'
+
 import { BACKGROUND_TYPE_OPTIONS, GRADIENT_DIRECTION_OPTIONS, PATTERN_OPTIONS } from './defaults'
 
 interface BackgroundTabProps {

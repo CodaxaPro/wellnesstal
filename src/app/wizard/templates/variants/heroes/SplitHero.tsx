@@ -3,6 +3,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface SplitHeroProps {
@@ -34,7 +35,9 @@ export default function SplitHero(props: SplitHeroProps) {
 
   // Helper function to add inline styles to HTML
   const getStyledHTML = (html: string, config: any, defaultStyle: any) => {
-    if (!html) return html;
+    if (!html) {
+return html;
+}
     
     const styleAttributes: string[] = [];
     
@@ -105,14 +108,30 @@ export default function SplitHero(props: SplitHeroProps) {
   const getImageStyle = (): React.CSSProperties => {
     const filters: string[] = [];
     
-    if (imageConfig.brightness) filters.push(`brightness(${1 + imageConfig.brightness / 100})`);
-    if (imageConfig.contrast) filters.push(`contrast(${1 + imageConfig.contrast / 100})`);
-    if (imageConfig.saturation) filters.push(`saturate(${1 + imageConfig.saturation / 100})`);
-    if (imageConfig.blur) filters.push(`blur(${imageConfig.blur}px)`);
-    if (imageConfig.hue) filters.push(`hue-rotate(${imageConfig.hue}deg)`);
-    if (imageConfig.grayscale) filters.push('grayscale(100%)');
-    if (imageConfig.sepia) filters.push('sepia(100%)');
-    if (imageConfig.invert) filters.push('invert(100%)');
+    if (imageConfig.brightness) {
+filters.push(`brightness(${1 + imageConfig.brightness / 100})`);
+}
+    if (imageConfig.contrast) {
+filters.push(`contrast(${1 + imageConfig.contrast / 100})`);
+}
+    if (imageConfig.saturation) {
+filters.push(`saturate(${1 + imageConfig.saturation / 100})`);
+}
+    if (imageConfig.blur) {
+filters.push(`blur(${imageConfig.blur}px)`);
+}
+    if (imageConfig.hue) {
+filters.push(`hue-rotate(${imageConfig.hue}deg)`);
+}
+    if (imageConfig.grayscale) {
+filters.push('grayscale(100%)');
+}
+    if (imageConfig.sepia) {
+filters.push('sepia(100%)');
+}
+    if (imageConfig.invert) {
+filters.push('invert(100%)');
+}
     
     const filterPresets: Record<string, string> = {
       vibrant: 'saturate(1.4) contrast(1.1)',
@@ -209,7 +228,7 @@ export default function SplitHero(props: SplitHeroProps) {
                 animate={{ opacity: 1, scale: 1, y: 0, x: 0, rotate: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ 
-                  duration: duration,
+                  duration,
                   ...(easing === 'linear' && { ease: 'linear' as const }),
                   ...(easing === 'ease-in-out' && { ease: 'easeInOut' as const }),
                   ...(easing !== 'linear' && easing !== 'ease-in-out' && { ease: 'easeOut' as const }),

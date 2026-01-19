@@ -3,14 +3,18 @@
 'use client';
 
 import { use, useEffect, useState } from 'react';
+
 import { useRouter } from 'next/navigation';
+
+import toast from 'react-hot-toast';
+
 import { getVariantComponent } from '@/app/wizard/templates/variantRegistry';
-import { useContentStore } from './store/useContentStore';
+
 import EditableWrapper from './components/EditableWrapper';
 import InlineEditor from './components/InlineEditor';
-import { useEditableClick } from './hooks/useEditableClick';
 import { useAutoSave } from './hooks/useAutoSave';
-import toast from 'react-hot-toast';
+import { useEditableClick } from './hooks/useEditableClick';
+import { useContentStore } from './store/useContentStore';
 
 interface EditorPageProps {
   params: Promise<{
@@ -207,7 +211,7 @@ export default function EditorPage({ params }: EditorPageProps) {
                 >
                   ← Geri
                 </button>
-                <div className="border-l h-6 border-gray-300"></div>
+                <div className="border-l h-6 border-gray-300" />
                 <h1 className="text-xl font-bold">Editor</h1>
                 <span className="text-sm text-gray-500">#{siteId}</span>
               </div>
@@ -292,9 +296,9 @@ export default function EditorPage({ params }: EditorPageProps) {
                 {/* Browser Mockup */}
                 <div className="bg-gray-100 p-4 border-b">
                   <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
                     <div className="ml-4 text-sm text-gray-600 flex-1 bg-white rounded px-3 py-1">
                       🌐 {siteId}.yourdomain.com
                     </div>

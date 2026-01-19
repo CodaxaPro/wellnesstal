@@ -1,8 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { supabaseAdmin } from '@/lib/supabase-server'
-import { verifyAdmin } from '@/lib/auth'
 import fs from 'fs'
 import path from 'path'
+
+import { NextRequest, NextResponse } from 'next/server'
+
+import { verifyAdmin } from '@/lib/auth'
+import { supabaseAdmin } from '@/lib/supabase-server'
 
 // File path for fallback (existing content.json)
 const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'content.json')
@@ -118,7 +120,7 @@ export async function PUT(request: NextRequest) {
     }
 
     // Try to update in Supabase
-    let query = supabaseAdmin.from('content')
+    const query = supabaseAdmin.from('content')
 
     // Find the record first
     const findQuery = id

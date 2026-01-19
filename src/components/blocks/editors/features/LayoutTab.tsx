@@ -41,6 +41,21 @@ export default function LayoutTab({ content, updateContent }: LayoutTabProps) {
             </button>
           ))}
         </div>
+        {content.layout === 'zigzag' && (
+          <div className="mt-4 p-3 bg-sage-50 border border-sage-200 rounded-lg">
+            <div className="flex items-start gap-2">
+              <svg className="w-5 h-5 text-sage-600 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div className="text-sm text-sage-700">
+                <p className="font-medium mb-1">Zigzag Düzeni Aktif</p>
+                <p className="text-xs text-sage-600">
+                  Resimler otomatik olarak sağa-sola yerleşir. Her özellik için resim eklemek için özellik kartındaki resim butonunu kullanın.
+                </p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Columns (for grid layout) */}

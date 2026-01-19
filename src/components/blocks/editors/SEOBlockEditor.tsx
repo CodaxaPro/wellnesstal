@@ -1,7 +1,9 @@
 'use client'
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
+
 import { SEOContent, SEORobotsDirectives, SEOOpenGraph, SEOTwitterCard, SEOSchemaSettings, SchemaLocalBusiness } from '../types'
+
 import LocalBusinessEditor from './seo/LocalBusinessEditor'
 
 interface SEOBlockEditorProps {
@@ -101,7 +103,9 @@ function calculateSEOScore(content: SEOContent): {
   // Social media (15 points max)
   if (content.openGraph?.enabled) {
     socialScore += 5
-    if (content.openGraph.image?.url) socialScore += 5
+    if (content.openGraph.image?.url) {
+socialScore += 5
+}
   } else {
     issues.push({ type: 'warning', message: 'Open Graph etkin değil - sosyal paylaşımlar için açın' })
   }
@@ -112,8 +116,12 @@ function calculateSEOScore(content: SEOContent): {
   // Schema.org (20 points max)
   if (content.schema?.localBusiness?.enabled) {
     schemaScore += 10
-    if (content.schema.localBusiness.address) schemaScore += 5
-    if (content.schema.localBusiness.telephone) schemaScore += 5
+    if (content.schema.localBusiness.address) {
+schemaScore += 5
+}
+    if (content.schema.localBusiness.telephone) {
+schemaScore += 5
+}
   } else {
     issues.push({ type: 'info', message: 'LocalBusiness schema ekleyin - Google haritada görünüm için' })
   }
@@ -144,9 +152,13 @@ function calculateSEOScore(content: SEOContent): {
 // Character Counter Component
 function CharCounter({ current, min, max, optimal }: { current: number, min: number, max: number, optimal?: { min: number, max: number } }) {
   let color = 'text-slate-500'
-  if (current < min) color = 'text-red-500'
-  else if (current > max) color = 'text-orange-500'
-  else if (optimal && current >= optimal.min && current <= optimal.max) color = 'text-green-500'
+  if (current < min) {
+color = 'text-red-500'
+} else if (current > max) {
+color = 'text-orange-500'
+} else if (optimal && current >= optimal.min && current <= optimal.max) {
+color = 'text-green-500'
+}
 
   return (
     <span className={`text-xs ${color}`}>
@@ -189,7 +201,7 @@ function SocialPreview({ type, title, description, image, siteName }: {
   const bgColor = type === 'facebook' ? 'bg-[#f0f2f5]' : 'bg-black'
   const textColor = type === 'facebook' ? 'text-slate-900' : 'text-white'
   const [imageError, setImageError] = useState(false)
-  const hasValidImage = image && image.trim() && !imageError
+  const hasValidImage = image?.trim() && !imageError
 
   // Reset error state when image URL changes
   useEffect(() => {
@@ -231,9 +243,15 @@ function SocialPreview({ type, title, description, image, siteName }: {
 // SEO Score Display
 function SEOScoreDisplay({ score, issues }: { score: ReturnType<typeof calculateSEOScore>, issues?: boolean }) {
   const getColor = (s: number) => {
-    if (s >= 80) return { bg: 'bg-green-500', text: 'text-green-600', ring: 'ring-green-200' }
-    if (s >= 60) return { bg: 'bg-yellow-500', text: 'text-yellow-600', ring: 'ring-yellow-200' }
-    if (s >= 40) return { bg: 'bg-orange-500', text: 'text-orange-600', ring: 'ring-orange-200' }
+    if (s >= 80) {
+return { bg: 'bg-green-500', text: 'text-green-600', ring: 'ring-green-200' }
+}
+    if (s >= 60) {
+return { bg: 'bg-yellow-500', text: 'text-yellow-600', ring: 'ring-yellow-200' }
+}
+    if (s >= 40) {
+return { bg: 'bg-orange-500', text: 'text-orange-600', ring: 'ring-orange-200' }
+}
     return { bg: 'bg-red-500', text: 'text-red-600', ring: 'ring-red-200' }
   }
 
@@ -397,19 +415,25 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
         // Validate canonical URL
         if (localContent.canonicalUrl) {
           const urlError = validateUrl(localContent.canonicalUrl)
-          if (urlError) validationErrors.canonicalUrl = urlError
+          if (urlError) {
+validationErrors.canonicalUrl = urlError
+}
         }
 
         // Validate OG Image
         if (localContent.openGraph?.image?.url) {
           const imageError = validateImageUrl(localContent.openGraph.image.url)
-          if (imageError) validationErrors.ogImage = imageError
+          if (imageError) {
+validationErrors.ogImage = imageError
+}
         }
 
         // Validate Twitter Image
         if (localContent.twitter?.image?.url) {
           const imageError = validateImageUrl(localContent.twitter.image.url)
-          if (imageError) validationErrors.twitterImage = imageError
+          if (imageError) {
+validationErrors.twitterImage = imageError
+}
         }
 
         setErrors(validationErrors)
@@ -527,7 +551,9 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
 
   // Validation functions
   const validateUrl = (url: string): string | null => {
-    if (!url) return null
+    if (!url) {
+return null
+}
     try {
       new URL(url)
       return null
@@ -537,21 +563,29 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
   }
 
   const validateEmail = (email: string): string | null => {
-    if (!email) return null
+    if (!email) {
+return null
+}
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
     return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi girin'
   }
 
   const validatePhone = (phone: string): string | null => {
-    if (!phone) return null
+    if (!phone) {
+return null
+}
     const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
     return phoneRegex.test(phone.replace(/\s/g, '')) ? null : 'Geçerli bir telefon numarası girin'
   }
 
   const validateImageUrl = (url: string): string | null => {
-    if (!url) return null
+    if (!url) {
+return null
+}
     const urlError = validateUrl(url)
-    if (urlError) return urlError
+    if (urlError) {
+return urlError
+}
     const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg']
     const hasImageExt = imageExtensions.some(ext => url.toLowerCase().includes(ext))
     if (!hasImageExt) {
@@ -655,7 +689,7 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
               <span className="text-2xl">📊</span>
               <h3 className="font-semibold text-slate-800">SEO Skor</h3>
             </div>
-            <SEOScoreDisplay score={seoScore} issues={true} />
+            <SEOScoreDisplay score={seoScore} issues />
           </div>
 
           {/* Tabs */}
