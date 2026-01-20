@@ -173,6 +173,88 @@ export default function ContentManagement() {
     setIsEditingHomepageBlock(false)
   }
 
+  const createHomepageTestimonialBlock = async () => {
+    setIsSavingHomepageBlock(true)
+    setSaveMessage(null)
+    try {
+      const token = localStorage.getItem('adminToken')
+
+      // First, get the home page ID
+      const pageResponse = await fetch('/api/pages?slug=home', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      const pageData = await pageResponse.json()
+
+      if (!pageData.success || !pageData.data) {
+        setSaveMessage({ type: 'error', text: 'Ana sayfa bulunamadı' })
+        return
+      }
+
+      const homePageId = pageData.data.id
+
+      // Get all blocks to determine the next position
+      const blocksResponse = await fetch(`/api/pages/blocks?pageId=${homePageId}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+      const blocksData = await blocksResponse.json()
+
+      let nextPosition = 1
+      if (blocksData.success && blocksData.data && Array.isArray(blocksData.data)) {
+        const maxPosition = blocksData.data.reduce((max: number, block: any) => {
+          return Math.max(max, block.position || 0)
+        }, 0)
+        nextPosition = maxPosition + 1
+      }
+
+      // Create default testimonial block content
+      const defaultContent = {
+        sectionTitle: 'Müşterilerimiz Ne Diyor?',
+        highlightedText: '',
+        description: 'Deneyimlerimizi sizlerle paylaşıyoruz',
+        testimonials: [],
+        layout: 'carousel',
+        autoPlay: true,
+        autoSlideDelay: 5000,
+        showRatings: true,
+        showStats: false,
+        maxDisplayCount: 3
+      }
+
+      // Create the testimonial block
+      const createResponse = await fetch('/api/pages/blocks', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          pageId: homePageId,
+          blockType: 'testimonials',
+          position: nextPosition,
+          content: defaultContent
+        })
+      })
+
+      const createData = await createResponse.json()
+
+      if (createData.success) {
+        setSaveMessage({ type: 'success', text: 'Testimonial block başarıyla oluşturuldu!' })
+        // Reload the block
+        await fetchHomepageTestimonialBlock()
+        setTimeout(() => setSaveMessage(null), 2000)
+      } else {
+        setSaveMessage({ type: 'error', text: createData.error || 'Block oluşturma başarısız' })
+        setTimeout(() => setSaveMessage(null), 3000)
+      }
+    } catch (error) {
+      console.error('Failed to create testimonial block:', error)
+      setSaveMessage({ type: 'error', text: 'Block oluşturma sırasında hata oluştu' })
+      setTimeout(() => setSaveMessage(null), 3000)
+    } finally {
+      setIsSavingHomepageBlock(false)
+    }
+  }
+
   const startEditing = async () => {
     const freshData = await fetchContent()
     const section = freshData.find(s => s.section === activeTab)
@@ -881,7 +963,29 @@ return null
                       )}
                       {!homepageBlockLoading && !homepageTestimonialBlock && (
                         <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
-                          <p className="text-yellow-800">Ana sayfada testimonial block bulunamadı.</p>
+                          <div className="mb-4">
+                            <p className="text-yellow-800 mb-2">Ana sayfada testimonial block bulunamadı.</p>
+                            <p className="text-yellow-700 text-sm">Homepage'e testimonial block oluşturmak için aşağıdaki butona tıklayın.</p>
+                          </div>
+                          <button
+                            onClick={createHomepageTestimonialBlock}
+                            disabled={isSavingHomepageBlock}
+                            className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                          >
+                            {isSavingHomepageBlock ? (
+                              <>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                Oluşturuluyor...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                                </svg>
+                                Testimonial Block Oluştur
+                              </>
+                            )}
+                          </button>
                         </div>
                       )}
                       {!homepageBlockLoading && homepageTestimonialBlock && (
