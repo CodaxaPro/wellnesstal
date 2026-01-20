@@ -130,7 +130,7 @@ export async function GET(request: NextRequest) {
     // List all pages (for admin)
     const categoryId = searchParams.get('categoryId')
     const categorySlug = searchParams.get('categorySlug')
-    
+
     // Build base query
     let query = supabase
       .from('pages')
@@ -156,7 +156,7 @@ export async function GET(request: NextRequest) {
           .eq('slug', categorySlug)
           .eq('active', true)
           .single()
-        
+
         if (category) {
           query = query.eq('category_id', category.id)
         }
@@ -167,11 +167,11 @@ export async function GET(request: NextRequest) {
 
     // Execute query
     const { data: pages, error, count } = await query
-    
+
     if (error) {
       throw error
     }
-    
+
     // Fetch categories separately and merge (more reliable than join)
     let pagesWithCategories = pages || []
     if (pages && pages.length > 0) {
@@ -179,7 +179,7 @@ export async function GET(request: NextRequest) {
         const { data: allCategories } = await supabase
           .from('page_categories')
           .select('id, name, slug, color, icon')
-        
+
         if (allCategories && allCategories.length > 0) {
           const categoryMap = new Map(allCategories.map((c: any) => [c.id, c]))
           pagesWithCategories = pages.map((page: any) => ({
@@ -249,7 +249,7 @@ async function generateUniqueSlug(baseSlug: string): Promise<string> {
       finalSlug = `${baseSlug}-copy-${counter}`
     }
     counter++
-    
+
     // Safety limit
     if (counter > 100) {
       finalSlug = `${baseSlug}-copy-${Date.now()}`
@@ -272,12 +272,12 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { duplicate, title, slug, status = 'draft', template = 'default', meta_title, meta_description, category_id } = body
+    const { duplicate, title, slug, status = 'draft', template = 'default', meta_title, meta_description, category_id, active } = body
 
     // Handle duplicate page
     if (duplicate) {
       const sourcePageId = duplicate
-      
+
       // Fetch source page with blocks
       const { data: sourcePage, error: fetchError } = await supabase
         .from('pages')
@@ -307,7 +307,7 @@ export async function POST(request: NextRequest) {
         .replace(/\s+/g, '-')
         .replace(/-+/g, '-')
         .trim()
-      
+
       const uniqueSlug = await generateUniqueSlug(baseSlug)
 
       // Create new page
@@ -361,7 +361,7 @@ export async function POST(request: NextRequest) {
             .select('id, name, slug, color, icon')
             .eq('id', newPage.category_id)
             .single()
-          
+
           if (category) {
             pageWithCategory = { ...newPage, page_categories: category }
           }
@@ -396,19 +396,28 @@ export async function POST(request: NextRequest) {
 
     const finalSlug = await generateUniqueSlug(baseSlug)
 
+    const insertData: any = {
+      title,
+      slug: finalSlug,
+      status,
+      template,
+      meta_title: meta_title || title,
+      meta_description,
+      category_id: category_id || null,
+      published_at: status === 'published' ? new Date().toISOString() : null,
+      created_by: (user as any).username
+    }
+
+    // Add active field if provided, default to true for published pages
+    if (active !== undefined) {
+      insertData.active = active
+    } else if (status === 'published') {
+      insertData.active = true
+    }
+
     const { data: page, error } = await supabase
       .from('pages')
-      .insert({
-        title,
-        slug: finalSlug,
-        status,
-        template,
-        meta_title: meta_title || title,
-        meta_description,
-        category_id: category_id || null,
-        published_at: status === 'published' ? new Date().toISOString() : null,
-        created_by: (user as any).username
-      })
+      .insert(insertData)
       .select()
       .single()
 
@@ -421,7 +430,7 @@ export async function POST(request: NextRequest) {
           .select('id, name, slug, color, icon')
           .eq('id', category_id)
           .single()
-        
+
         if (category) {
           pageWithCategory = { ...page, page_categories: category }
         }
@@ -526,14 +535,14 @@ export async function PUT(request: NextRequest) {
         .eq('id', id)
         .select()
         .single()
-      
+
       if (retryError) {
         throw retryError
       }
-      
+
       // Return page with active set to true (default) if column doesn't exist
       const pageWithDefaultActive = { ...pageRetry, active: true }
-      
+
       // Fetch category separately if needed
       let pageWithCategory = pageWithDefaultActive
       if (pageWithDefaultActive && (updateDataWithoutActive.category_id !== undefined || pageWithDefaultActive.category_id)) {
@@ -545,7 +554,7 @@ export async function PUT(request: NextRequest) {
               .select('id, name, slug, color, icon')
               .eq('id', categoryId)
               .single()
-            
+
             if (category) {
               pageWithCategory = { ...pageWithDefaultActive, page_categories: category }
             }
@@ -575,7 +584,7 @@ export async function PUT(request: NextRequest) {
             .select('id, name, slug, color, icon')
             .eq('id', categoryId)
             .single()
-          
+
           if (category) {
             pageWithCategory = { ...page, page_categories: category }
           }
@@ -599,22 +608,22 @@ export async function PUT(request: NextRequest) {
 
   } catch (error: any) {
     console.error('Pages PUT error:', error)
-    
+
     // Check if error is about missing column
     if (error?.message && (error.message.includes('active') || error.message.includes('column') || error.message.includes('does not exist'))) {
       return NextResponse.json(
-        { 
-          success: false, 
+        {
+          success: false,
           error: 'Active column not found. Please run migration: supabase/migrations/016_add_pages_active_field.sql',
           details: error.message
         },
         { status: 500 }
       )
     }
-    
+
     return NextResponse.json(
-      { 
-        success: false, 
+      {
+        success: false,
         error: error?.message || 'Failed to update page',
         details: process.env.NODE_ENV === 'development' ? error?.stack : undefined
       },

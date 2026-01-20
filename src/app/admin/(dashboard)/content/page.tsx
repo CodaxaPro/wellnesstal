@@ -44,6 +44,7 @@ export default function ContentManagement() {
   const [homepageBlockId, setHomepageBlockId] = useState<string | null>(null)
   const [isEditingHomepageBlock, setIsEditingHomepageBlock] = useState(false)
   const [isSavingHomepageBlock, setIsSavingHomepageBlock] = useState(false)
+  const [sourceBlockInfo, setSourceBlockInfo] = useState<{ pageTitle: string; pageId: string; blockId: string } | null>(null)
 
   // Set active tab from URL parameter
   useEffect(() => {
@@ -93,31 +94,256 @@ export default function ContentManagement() {
       setHomepageBlockLoading(true)
       const token = localStorage.getItem('adminToken')
 
-      // Fetch home page
-      const pageResponse = await fetch('/api/pages?slug=home&withBlocks=true', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      const pageData = await pageResponse.json()
+      // Try to find home page with different slug variations
+      let pageData = null
+      const homeSlugs = ['home', 'index', '']
 
-      if (pageData.success && pageData.data?.blocks) {
-        const testimonialBlock = pageData.data.blocks.find(
-          (b: any) => b.block_type === 'testimonials' && b.visible !== false
+      for (const slug of homeSlugs) {
+        try {
+          const url = slug ? `/api/pages?slug=${slug}&withBlocks=true` : '/api/pages?withBlocks=true'
+          const pageResponse = await fetch(url, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+
+          if (pageResponse.ok) {
+            const data = await pageResponse.json()
+            if (data.success && data.data) {
+              // If no slug specified, find the first page or page with slug 'home'/'index'
+              if (!slug) {
+                const pages = Array.isArray(data.data.pages) ? data.data.pages : (data.data ? [data.data] : [])
+                const homePage = pages.find((p: any) =>
+                  p.slug === 'home' || p.slug === 'index' || p.slug === ''
+                ) || pages[0]
+                if (homePage) {
+                  // Fetch blocks for this page
+                  const blocksResponse = await fetch(`/api/pages?id=${homePage.id}&withBlocks=true`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                  })
+                  if (blocksResponse.ok) {
+                    const blocksData = await blocksResponse.json()
+                    if (blocksData.success) {
+                      pageData = { success: true, data: { ...homePage, blocks: blocksData.data?.blocks || [] } }
+                      break
+                    }
+                  }
+                }
+              } else {
+                pageData = data
+                break
+              }
+            }
+          }
+        } catch (err) {
+          console.warn(`[ContentManagement] Failed to fetch page with slug "${slug}":`, err)
+        }
+      }
+
+      if (pageData?.success && pageData.data?.blocks) {
+        // Find testimonial blocks (prefer visible ones)
+        const testimonialBlocks = pageData.data.blocks.filter(
+          (b: any) => b.block_type === 'testimonials'
         )
+        const testimonialBlock = testimonialBlocks.find(
+          (b: any) => b.visible !== false
+        ) || testimonialBlocks[0]
 
         if (testimonialBlock) {
-          setHomepageTestimonialBlock(testimonialBlock.content)
+          // Homepage has a testimonial block - always use it, even if content is empty
+          console.log('[ContentManagement] Found testimonial block on homepage:', {
+            blockId: testimonialBlock.id,
+            hasContent: !!testimonialBlock.content,
+            visible: testimonialBlock.visible
+          })
+
+          // Always set the homepage block ID and content (even if content is empty/null)
           setHomepageBlockId(testimonialBlock.id)
+          setHomepageTestimonialBlock(testimonialBlock.content || {})
+          setSourceBlockInfo(null)
         } else {
-          setHomepageTestimonialBlock(null)
+          // Homepage doesn't have a block, search for one in other pages
+          console.log('[ContentManagement] Homepage has no testimonial block, searching other pages...')
           setHomepageBlockId(null)
+          await findExistingTestimonialBlock(token)
         }
+      } else {
+        console.log('[ContentManagement] Homepage not found or has no blocks, searching other pages...')
+        // Homepage not found or no blocks, search other pages
+        // But first, try to find homepage in all pages list
+        try {
+          const allPagesResponse = await fetch('/api/pages', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+          if (allPagesResponse.ok) {
+            const allPagesData = await allPagesResponse.json()
+            if (allPagesData.success && allPagesData.data?.pages) {
+              const pages = Array.isArray(allPagesData.data.pages) ? allPagesData.data.pages : []
+              const homePage = pages.find((p: any) =>
+                p.slug === 'home' || p.slug === 'index' || p.slug === '' || p.title?.toLowerCase().includes('home')
+              )
+              if (homePage) {
+                // Fetch blocks for this page
+                const blocksResponse = await fetch(`/api/pages?id=${homePage.id}&withBlocks=true`, {
+                  headers: { 'Authorization': `Bearer ${token}` }
+                })
+                if (blocksResponse.ok) {
+                  const blocksData = await blocksResponse.json()
+                  if (blocksData.success && blocksData.data?.blocks) {
+                    const testimonialBlocks = blocksData.data.blocks.filter(
+                      (b: any) => b.block_type === 'testimonials'
+                    )
+                    const testimonialBlock = testimonialBlocks.find(
+                      (b: any) => b.visible !== false
+                    ) || testimonialBlocks[0]
+
+                    if (testimonialBlock) {
+                      setHomepageBlockId(testimonialBlock.id)
+                      setHomepageTestimonialBlock(testimonialBlock.content || {})
+                      setSourceBlockInfo(null)
+                      return
+                    }
+                  }
+                }
+              }
+            }
+          }
+        } catch (err) {
+          console.warn('[ContentManagement] Failed to search in all pages:', err)
+        }
+        // If still not found, search other pages for testimonial block
+        await findExistingTestimonialBlock(token)
       }
     } catch (error) {
       console.error('Failed to fetch homepage testimonial block:', error)
       setHomepageTestimonialBlock(null)
       setHomepageBlockId(null)
+      setSourceBlockInfo(null)
     } finally {
       setHomepageBlockLoading(false)
+    }
+  }
+
+  const findExistingTestimonialBlock = async (token: string) => {
+    try {
+      console.log('[ContentManagement] Searching for existing testimonial block...')
+
+      // Fetch all pages
+      const pagesResponse = await fetch('/api/pages', {
+        headers: { 'Authorization': `Bearer ${token}` }
+      })
+
+      if (!pagesResponse.ok) {
+        console.error('[ContentManagement] Failed to fetch pages:', pagesResponse.status)
+        // Don't clear existing data if we already have some
+        if (!homepageTestimonialBlock) {
+          setHomepageTestimonialBlock(null)
+          setSourceBlockInfo(null)
+        }
+        return
+      }
+
+      const pagesData = await pagesResponse.json()
+      console.log('[ContentManagement] Pages response:', {
+        success: pagesData.success,
+        hasData: !!pagesData.data,
+        hasPages: !!pagesData.data?.pages,
+        isArray: Array.isArray(pagesData.data),
+        fullResponse: pagesData
+      })
+
+      // Handle different response formats
+      let pages: any[] = []
+      if (pagesData.success) {
+        if (pagesData.data?.pages && Array.isArray(pagesData.data.pages)) {
+          pages = pagesData.data.pages
+        } else if (Array.isArray(pagesData.data)) {
+          pages = pagesData.data
+        } else if (Array.isArray(pagesData.pages)) {
+          pages = pagesData.pages
+        }
+      } else {
+        console.warn('[ContentManagement] No pages data or invalid response format:', pagesData)
+        // Don't clear existing data if we already have some
+        if (!homepageTestimonialBlock) {
+          setHomepageTestimonialBlock(null)
+          setSourceBlockInfo(null)
+        }
+        return
+      }
+
+      console.log(`[ContentManagement] Found ${pages.length} pages to search`)
+
+      // Search through all pages for a testimonials block
+      for (const page of pages) {
+        if (page.slug === 'home' || page.slug === 'index') continue // Skip homepage, we already checked it
+
+        try {
+          console.log(`[ContentManagement] Checking page: ${page.title || page.slug} (${page.id})`)
+          const pageBlocksResponse = await fetch(`/api/pages?id=${page.id}&withBlocks=true`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+
+          if (!pageBlocksResponse.ok) {
+            console.error(`[ContentManagement] Failed to fetch blocks for page ${page.id}:`, pageBlocksResponse.status)
+            continue
+          }
+
+          const pageBlocksData = await pageBlocksResponse.json()
+          console.log(`[ContentManagement] Page blocks response for ${page.title}:`, {
+            success: pageBlocksData.success,
+            hasBlocks: !!pageBlocksData.data?.blocks,
+            blockCount: pageBlocksData.data?.blocks?.length || 0
+          })
+
+          if (pageBlocksData.success && pageBlocksData.data?.blocks) {
+            // Find all testimonial blocks (including hidden ones for admin view)
+            const testimonialBlocks = pageBlocksData.data.blocks.filter(
+              (b: any) => b.block_type === 'testimonials'
+            )
+
+            console.log(`[ContentManagement] Found ${testimonialBlocks.length} testimonial block(s) on page ${page.title || page.slug}`)
+
+            // Prefer visible blocks, but use any if none are visible
+            const testimonialBlock = testimonialBlocks.find(
+              (b: any) => b.visible !== false
+            ) || testimonialBlocks[0]
+
+            if (testimonialBlock && testimonialBlock.content) {
+              console.log(`[ContentManagement] Using testimonial block from page: ${page.title || page.slug}`, {
+                blockId: testimonialBlock.id,
+                visible: testimonialBlock.visible,
+                hasContent: !!testimonialBlock.content,
+                contentKeys: Object.keys(testimonialBlock.content || {}),
+                testimonialsCount: testimonialBlock.content?.testimonials?.length || 0
+              })
+
+              // Found a testimonials block on another page, use its data
+              setHomepageTestimonialBlock(testimonialBlock.content)
+              setSourceBlockInfo({
+                pageTitle: page.title || page.slug || 'Unknown Page',
+                pageId: page.id,
+                blockId: testimonialBlock.id
+              })
+              return
+            } else if (testimonialBlock) {
+              console.warn(`[ContentManagement] Testimonial block found but has no content:`, testimonialBlock)
+            }
+          }
+        } catch (err) {
+          console.error(`[ContentManagement] Error fetching blocks for page ${page.id}:`, err)
+        }
+      }
+
+      // No testimonials block found anywhere
+      console.log('[ContentManagement] No testimonial block found in any page')
+      // Only clear if we don't already have homepage data
+      if (!homepageBlockId) {
+        setHomepageTestimonialBlock(null)
+        setSourceBlockInfo(null)
+      }
+    } catch (error) {
+      console.error('[ContentManagement] Failed to search for existing testimonial block:', error)
+      setHomepageTestimonialBlock(null)
+      setSourceBlockInfo(null)
     }
   }
 
@@ -168,29 +394,101 @@ export default function ContentManagement() {
   }
 
   const cancelEditingHomepageBlock = async () => {
-    // Reload original data
-    await fetchHomepageTestimonialBlock()
+    // Reload original data only if we have a homepage block ID
+    // If we're using a block from another page, just cancel editing without reloading
+    if (homepageBlockId) {
+      await fetchHomepageTestimonialBlock()
+    }
     setIsEditingHomepageBlock(false)
   }
 
-  const createHomepageTestimonialBlock = async () => {
+  const createHomepageTestimonialBlock = async (useExistingContent = false) => {
     setIsSavingHomepageBlock(true)
     setSaveMessage(null)
     try {
       const token = localStorage.getItem('adminToken')
 
-      // First, get the home page ID
-      const pageResponse = await fetch('/api/pages?slug=home', {
-        headers: { 'Authorization': `Bearer ${token}` }
-      })
-      const pageData = await pageResponse.json()
+      // First, get the home page ID - try different slug variations
+      let homePageId = null
+      const homeSlugs = ['home', 'index']
 
-      if (!pageData.success || !pageData.data) {
-        setSaveMessage({ type: 'error', text: 'Ana sayfa bulunamadı' })
-        return
+      for (const slug of homeSlugs) {
+        try {
+          const pageResponse = await fetch(`/api/pages?slug=${slug}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+
+          if (pageResponse.ok) {
+            const data = await pageResponse.json()
+            if (data.success && data.data?.id) {
+              homePageId = data.data.id
+              console.log(`[ContentManagement] Found homepage with slug "${slug}":`, homePageId)
+              break
+            }
+          }
+        } catch (err) {
+          console.warn(`[ContentManagement] Failed to fetch page with slug "${slug}":`, err)
+        }
       }
 
-      const homePageId = pageData.data.id
+      // If still not found, try to find in all pages list (but only look for 'home' or 'index' slug)
+      if (!homePageId) {
+        try {
+          const allPagesResponse = await fetch('/api/pages', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          })
+          if (allPagesResponse.ok) {
+            const allPagesData = await allPagesResponse.json()
+            if (allPagesData.success && allPagesData.data?.pages) {
+              const pages = Array.isArray(allPagesData.data.pages) ? allPagesData.data.pages : []
+              const homePage = pages.find((p: any) => p.slug === 'home' || p.slug === 'index')
+              if (homePage) {
+                homePageId = homePage.id
+                console.log('[ContentManagement] Found homepage in pages list:', homePageId)
+              }
+            }
+          }
+        } catch (err) {
+          console.warn('[ContentManagement] Failed to search in all pages:', err)
+        }
+      }
+
+      if (!homePageId) {
+        // Try to create homepage if it doesn't exist
+        console.log('[ContentManagement] Homepage not found, creating it...')
+        try {
+          const createPageResponse = await fetch('/api/pages', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({
+              title: 'Ana Sayfa',
+              slug: 'home',
+              status: 'published',
+              template: 'default',
+              meta_title: 'Ana Sayfa',
+              meta_description: 'Ana Sayfa',
+              active: true
+            })
+          })
+
+          const createPageData = await createPageResponse.json()
+          if (createPageData.success && createPageData.data?.id) {
+            homePageId = createPageData.data.id
+            console.log('[ContentManagement] Homepage created:', homePageId)
+            setSaveMessage({ type: 'success', text: 'Ana sayfa oluşturuldu!' })
+          } else {
+            setSaveMessage({ type: 'error', text: 'Ana sayfa bulunamadı ve oluşturulamadı. Lütfen manuel olarak bir ana sayfa oluşturun.' })
+            return
+          }
+        } catch (err) {
+          console.error('[ContentManagement] Failed to create homepage:', err)
+          setSaveMessage({ type: 'error', text: 'Ana sayfa oluşturulurken hata oluştu.' })
+          return
+        }
+      }
 
       // Get all blocks to determine the next position
       const blocksResponse = await fetch(`/api/pages/blocks?pageId=${homePageId}`, {
@@ -206,21 +504,31 @@ export default function ContentManagement() {
         nextPosition = maxPosition + 1
       }
 
-      // Create default testimonial block content
-      const defaultContent = {
-        sectionTitle: 'Müşterilerimiz Ne Diyor?',
-        highlightedText: '',
-        description: 'Deneyimlerimizi sizlerle paylaşıyoruz',
-        testimonials: [],
-        layout: 'carousel',
-        autoPlay: true,
-        autoSlideDelay: 5000,
-        showRatings: true,
-        showStats: false,
-        maxDisplayCount: 3
-      }
+      // Use existing content if available, otherwise use defaults
+      const blockContent = useExistingContent && homepageTestimonialBlock
+        ? homepageTestimonialBlock
+        : {
+            sectionTitle: 'Müşterilerimiz Ne Diyor?',
+            highlightedText: '',
+            description: 'Deneyimlerimizi sizlerle paylaşıyoruz',
+            testimonials: [],
+            layout: 'carousel',
+            autoPlay: true,
+            autoSlideDelay: 5000,
+            showRatings: true,
+            showStats: false,
+            maxDisplayCount: 3
+          }
 
       // Create the testimonial block
+      console.log('[ContentManagement] Creating homepage testimonial block:', {
+        page_id: homePageId,
+        block_type: 'testimonials',
+        position: nextPosition,
+        hasContent: !!blockContent,
+        contentKeys: Object.keys(blockContent || {})
+      })
+
       const createResponse = await fetch('/api/pages/blocks', {
         method: 'POST',
         headers: {
@@ -228,24 +536,47 @@ export default function ContentManagement() {
           'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
-          pageId: homePageId,
-          blockType: 'testimonials',
+          page_id: homePageId,
+          block_type: 'testimonials',
           position: nextPosition,
-          content: defaultContent
+          content: blockContent,
+          visible: true
         })
       })
 
       const createData = await createResponse.json()
+      console.log('[ContentManagement] Create block response:', {
+        success: createData.success,
+        hasData: !!createData.data,
+        blockId: createData.data?.id,
+        error: createData.error
+      })
 
-      if (createData.success) {
-        setSaveMessage({ type: 'success', text: 'Testimonial block başarıyla oluşturuldu!' })
-        // Reload the block
-        await fetchHomepageTestimonialBlock()
-        setTimeout(() => setSaveMessage(null), 2000)
-      } else {
-        setSaveMessage({ type: 'error', text: createData.error || 'Block oluşturma başarısız' })
+      if (!createResponse.ok || !createData.success) {
+        const errorMsg = createData.error || `Block oluşturma başarısız (${createResponse.status})`
+        console.error('[ContentManagement] Failed to create block:', errorMsg)
+        setSaveMessage({ type: 'error', text: errorMsg })
         setTimeout(() => setSaveMessage(null), 3000)
+        return
       }
+
+      setSaveMessage({ type: 'success', text: 'Testimonial block başarıyla oluşturuldu!' })
+
+      // Update state immediately with the new block
+      const newBlockId = createData.data?.id
+      if (newBlockId) {
+        console.log('[ContentManagement] Setting new block ID:', newBlockId)
+        setHomepageBlockId(newBlockId)
+        setSourceBlockInfo(null)
+        // Update content state with the created block's content
+        if (createData.data?.content) {
+          setHomepageTestimonialBlock(createData.data.content)
+        }
+      }
+
+      // Reload the block to ensure we have the latest data
+      await fetchHomepageTestimonialBlock()
+      setTimeout(() => setSaveMessage(null), 2000)
     } catch (error) {
       console.error('Failed to create testimonial block:', error)
       setSaveMessage({ type: 'error', text: 'Block oluşturma sırasında hata oluştu' })
@@ -968,7 +1299,7 @@ return null
                             <p className="text-yellow-700 text-sm">Homepage'e testimonial block oluşturmak için aşağıdaki butona tıklayın.</p>
                           </div>
                           <button
-                            onClick={createHomepageTestimonialBlock}
+                            onClick={() => createHomepageTestimonialBlock(false)}
                             disabled={isSavingHomepageBlock}
                             className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
                           >
@@ -988,8 +1319,44 @@ return null
                           </button>
                         </div>
                       )}
+                      {!homepageBlockLoading && homepageTestimonialBlock && sourceBlockInfo && (
+                        <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-xl">
+                          <p className="text-blue-800 text-sm mb-2">
+                            <strong>Not:</strong> Bu veriler "{sourceBlockInfo.pageTitle}" sayfasındaki testimonial block'tan alınmıştır.
+                          </p>
+                          <p className="text-blue-700 text-sm mb-4">
+                            Ana sayfaya bu block'u kopyalamak için aşağıdaki butona tıklayın.
+                          </p>
+                          <button
+                            onClick={() => createHomepageTestimonialBlock(true)}
+                            disabled={isSavingHomepageBlock}
+                            className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                          >
+                            {isSavingHomepageBlock ? (
+                              <>
+                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                Kopyalanıyor...
+                              </>
+                            ) : (
+                              <>
+                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                Ana Sayfaya Kopyala
+                              </>
+                            )}
+                          </button>
+                        </div>
+                      )}
                       {!homepageBlockLoading && homepageTestimonialBlock && (
                         <>
+                          {sourceBlockInfo && (
+                            <div className="mb-4 p-3 bg-blue-50 border border-blue-200 rounded-xl">
+                              <p className="text-blue-800 text-sm">
+                                <strong>Kaynak:</strong> Bu veriler "{sourceBlockInfo.pageTitle}" sayfasındaki testimonial block'tan alınmıştır.
+                              </p>
+                            </div>
+                          )}
                           {!isEditingHomepageBlock && (
                             <div className="mb-6 p-4 bg-gray-50 rounded-xl">
                               <h3 className="text-lg font-semibold text-charcoal mb-4">Önizleme</h3>
@@ -1001,42 +1368,113 @@ return null
 
                           <div className="flex gap-4 mt-6">
                             {!isEditingHomepageBlock ? (
-                              <button
-                                onClick={startEditingHomepageBlock}
-                                className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
-                              >
-                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                                </svg>
-                                Düzenle
-                              </button>
+                              <>
+                                {homepageBlockId ? (
+                                  <button
+                                    onClick={startEditingHomepageBlock}
+                                    className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                                  >
+                                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                    </svg>
+                                    Düzenle
+                                  </button>
+                                ) : (
+                                  <>
+                                    <button
+                                      onClick={startEditingHomepageBlock}
+                                      className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                                    >
+                                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                      </svg>
+                                      Önizle ve Düzenle
+                                    </button>
+                                    <button
+                                      onClick={() => createHomepageTestimonialBlock(true)}
+                                      disabled={isSavingHomepageBlock}
+                                      className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                                    >
+                                      {isSavingHomepageBlock ? (
+                                        <>
+                                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                          Kopyalanıyor...
+                                        </>
+                                      ) : (
+                                        <>
+                                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                          </svg>
+                                          Ana Sayfaya Kopyala
+                                        </>
+                                      )}
+                                    </button>
+                                  </>
+                                )}
+                              </>
                             ) : (
                               <>
-                                <button
-                                  onClick={handleSaveHomepageBlock}
-                                  disabled={isSavingHomepageBlock}
-                                  className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
-                                >
-                                  {isSavingHomepageBlock ? (
-                                    <>
-                                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
-                                      Kaydediliyor...
-                                    </>
-                                  ) : (
-                                    <>
-                                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                                      </svg>
-                                      Kaydet
-                                    </>
-                                  )}
-                                </button>
-                                <button
-                                  onClick={cancelEditingHomepageBlock}
-                                  className="px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition-all"
-                                >
-                                  İptal
-                                </button>
+                                {homepageBlockId ? (
+                                  <>
+                                    <button
+                                      onClick={handleSaveHomepageBlock}
+                                      disabled={isSavingHomepageBlock}
+                                      className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                                    >
+                                      {isSavingHomepageBlock ? (
+                                        <>
+                                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                          Kaydediliyor...
+                                        </>
+                                      ) : (
+                                        <>
+                                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                          </svg>
+                                          Kaydet
+                                        </>
+                                      )}
+                                    </button>
+                                    <button
+                                      onClick={cancelEditingHomepageBlock}
+                                      className="px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                                    >
+                                      İptal
+                                    </button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button
+                                      onClick={() => {
+                                        createHomepageTestimonialBlock(true).then(() => {
+                                          setIsEditingHomepageBlock(false)
+                                        })
+                                      }}
+                                      disabled={isSavingHomepageBlock}
+                                      className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                                    >
+                                      {isSavingHomepageBlock ? (
+                                        <>
+                                          <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                          Kopyalanıyor...
+                                        </>
+                                      ) : (
+                                        <>
+                                          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                          </svg>
+                                          Ana Sayfaya Kopyala ve Kaydet
+                                        </>
+                                      )}
+                                    </button>
+                                    <button
+                                      onClick={cancelEditingHomepageBlock}
+                                      className="px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                                    >
+                                      İptal
+                                    </button>
+                                  </>
+                                )}
                               </>
                             )}
                           </div>
