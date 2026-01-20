@@ -42,6 +42,8 @@ export default function ContentManagement() {
   const [homepageTestimonialBlock, setHomepageTestimonialBlock] = useState<any>(null)
   const [homepageBlockLoading, setHomepageBlockLoading] = useState(false)
   const [homepageBlockId, setHomepageBlockId] = useState<string | null>(null)
+  const [isEditingHomepageBlock, setIsEditingHomepageBlock] = useState(false)
+  const [isSavingHomepageBlock, setIsSavingHomepageBlock] = useState(false)
 
   // Set active tab from URL parameter
   useEffect(() => {
@@ -120,8 +122,15 @@ export default function ContentManagement() {
   }
 
   const handleHomepageBlockUpdate = async (updatedContent: any) => {
-    if (!homepageBlockId) return
+    // This is called by TestimonialsBlockEditor on every change
+    // We update local state immediately for real-time preview
+    setHomepageTestimonialBlock(updatedContent)
+  }
 
+  const handleSaveHomepageBlock = async () => {
+    if (!homepageBlockId || !homepageTestimonialBlock) return
+
+    setIsSavingHomepageBlock(true)
     try {
       const token = localStorage.getItem('adminToken')
       const response = await fetch('/api/pages/blocks', {
@@ -132,24 +141,36 @@ export default function ContentManagement() {
         },
         body: JSON.stringify({
           id: homepageBlockId,
-          content: updatedContent
+          content: homepageTestimonialBlock
         })
       })
 
       if (response.ok) {
-        setHomepageTestimonialBlock(updatedContent)
-        setSaveMessage({ type: 'success', text: 'Block başarıyla güncellendi' })
+        setIsEditingHomepageBlock(false)
+        setSaveMessage({ type: 'success', text: 'Block başarıyla kaydedildi' })
         setTimeout(() => setSaveMessage(null), 2000)
       } else {
         const error = await response.json()
-        setSaveMessage({ type: 'error', text: error.error || 'Güncelleme başarısız' })
+        setSaveMessage({ type: 'error', text: error.error || 'Kaydetme başarısız' })
         setTimeout(() => setSaveMessage(null), 3000)
       }
     } catch (error) {
-      console.error('Failed to update block:', error)
-      setSaveMessage({ type: 'error', text: 'Güncelleme sırasında hata oluştu' })
+      console.error('Failed to save block:', error)
+      setSaveMessage({ type: 'error', text: 'Kaydetme sırasında hata oluştu' })
       setTimeout(() => setSaveMessage(null), 3000)
+    } finally {
+      setIsSavingHomepageBlock(false)
     }
+  }
+
+  const startEditingHomepageBlock = () => {
+    setIsEditingHomepageBlock(true)
+  }
+
+  const cancelEditingHomepageBlock = async () => {
+    // Reload original data
+    await fetchHomepageTestimonialBlock()
+    setIsEditingHomepageBlock(false)
   }
 
   const startEditing = async () => {
@@ -853,17 +874,6 @@ return null
                           <p className="text-gray-500 text-sm">Ana sayfadaki testimonial block'u düzenleyin</p>
                         </div>
                       </div>
-                      {!homepageBlockLoading && homepageTestimonialBlock && (
-                        <>
-                          <div className="mb-6 p-4 bg-gray-50 rounded-xl">
-                            <h3 className="text-lg font-semibold text-charcoal mb-4">Önizleme</h3>
-                            {renderPreview()}
-                          </div>
-                          <div className="mt-6">
-                            {renderEditor()}
-                          </div>
-                        </>
-                      )}
                       {homepageBlockLoading && (
                         <div className="flex items-center justify-center py-12">
                           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sage-500" />
@@ -873,6 +883,60 @@ return null
                         <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
                           <p className="text-yellow-800">Ana sayfada testimonial block bulunamadı.</p>
                         </div>
+                      )}
+                      {!homepageBlockLoading && homepageTestimonialBlock && (
+                        <>
+                          {!isEditingHomepageBlock && (
+                            <div className="mb-6 p-4 bg-gray-50 rounded-xl">
+                              <h3 className="text-lg font-semibold text-charcoal mb-4">Önizleme</h3>
+                              {renderPreview()}
+                            </div>
+                          )}
+
+                          {isEditingHomepageBlock && renderEditor()}
+
+                          <div className="flex gap-4 mt-6">
+                            {!isEditingHomepageBlock ? (
+                              <button
+                                onClick={startEditingHomepageBlock}
+                                className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                              >
+                                <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Düzenle
+                              </button>
+                            ) : (
+                              <>
+                                <button
+                                  onClick={handleSaveHomepageBlock}
+                                  disabled={isSavingHomepageBlock}
+                                  className="flex items-center gap-2 bg-sage-500 hover:bg-forest-600 disabled:bg-gray-400 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                                >
+                                  {isSavingHomepageBlock ? (
+                                    <>
+                                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white" />
+                                      Kaydediliyor...
+                                    </>
+                                  ) : (
+                                    <>
+                                      <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                      </svg>
+                                      Kaydet
+                                    </>
+                                  )}
+                                </button>
+                                <button
+                                  onClick={cancelEditingHomepageBlock}
+                                  className="px-6 py-3 border border-gray-200 rounded-xl font-medium text-gray-600 hover:bg-gray-50 transition-all"
+                                >
+                                  İptal
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </>
                       )}
                     </>
                   ) : currentSection ? (
