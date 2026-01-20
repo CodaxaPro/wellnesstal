@@ -77,7 +77,7 @@ export function BusinessTab({
         <StyleEditor
           styleKey="businessName"
           label="Geschäftsname Stil"
-          style={settings.styles?.businessName}
+          {...(settings.styles?.businessName ? { style: settings.styles.businessName } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -108,7 +108,7 @@ export function BusinessTab({
         <StyleEditor
           styleKey="tagline"
           label="Tagline Stil"
-          style={settings.styles?.tagline}
+          {...(settings.styles?.tagline ? { style: settings.styles.tagline } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -139,7 +139,7 @@ export function BusinessTab({
         <StyleEditor
           styleKey="description"
           label="Beschreibung Stil"
-          style={settings.styles?.description}
+          {...(settings.styles?.description ? { style: settings.styles.description } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}

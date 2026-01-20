@@ -47,8 +47,8 @@ export interface EditorProps {
   isStylePropertyChanged: (fieldName: string, propertyName: string) => boolean
   isNestedContentChanged?: (path: string) => boolean
   resetNestedContentToDefault?: (path: string) => void
-  renderStyleEditor: (fieldName: string, label: string, hasBackground?: boolean, hasBorder?: boolean) => JSX.Element
-  renderIconStyleEditor?: (fieldName: string, label: string) => JSX.Element
+  renderStyleEditor: (fieldName: string, label: string, hasBackground?: boolean, hasBorder?: boolean) => React.ReactElement
+  renderIconStyleEditor?: (fieldName: string, label: string) => React.ReactElement
 }
 
 // Hero editor specific props

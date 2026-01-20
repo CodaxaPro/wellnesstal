@@ -18,8 +18,8 @@ interface PageProps {
 
 // Create Supabase client
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env['NEXT_PUBLIC_SUPABASE_URL']!,
+  process.env['SUPABASE_SERVICE_ROLE_KEY']!
 )
 
 // Fetch page by slug from database
@@ -99,7 +99,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   // Build metadata using SEO block if available, otherwise fallback to page table
   // Enterprise SEO: Optimized for Google, Bing, Yandex, and AI crawlers
   if (seoContent && !seoContent.useGlobalSEO) {
-    const canonicalUrl = seoContent.canonicalUrl || page.canonical_url || `${process.env.NEXT_PUBLIC_SITE_URL || 'https://wellnesstal.de'}/${page.slug}`
+    const canonicalUrl = seoContent.canonicalUrl || page.canonical_url || `${process.env['NEXT_PUBLIC_SITE_URL'] || 'https://wellnesstal.de'}/${page.slug}`
     
     const metadata: Metadata = {
       title: seoContent.title || page.meta_title || page.title,
@@ -128,7 +128,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
         canonical: canonicalUrl,
       },
       // Enterprise: Additional metadata for AI crawlers and search engines
-      metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || 'https://wellnesstal.de'),
+      metadataBase: new URL(process.env['NEXT_PUBLIC_SITE_URL'] || 'https://wellnesstal.de'),
       applicationName: seoContent.openGraph?.siteName || 'Wellnesstal',
       referrer: 'origin-when-cross-origin',
       formatDetection: {

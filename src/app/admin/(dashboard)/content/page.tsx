@@ -163,7 +163,7 @@ export default function ContentManagement() {
           // Homepage doesn't have a block, search for one in other pages
           console.log('[ContentManagement] Homepage has no testimonial block, searching other pages...')
           setHomepageBlockId(null)
-          await findExistingTestimonialBlock(token)
+          if (token) await findExistingTestimonialBlock(token)
         }
       } else {
         console.log('[ContentManagement] Homepage not found or has no blocks, searching other pages...')
@@ -210,7 +210,7 @@ export default function ContentManagement() {
           console.warn('[ContentManagement] Failed to search in all pages:', err)
         }
         // If still not found, search other pages for testimonial block
-        await findExistingTestimonialBlock(token)
+        if (token) await findExistingTestimonialBlock(token)
       }
     } catch (error) {
       console.error('Failed to fetch homepage testimonial block:', error)
@@ -739,12 +739,17 @@ return
       const newContent = JSON.parse(JSON.stringify(prev))
       let target = newContent
       for (let i = 0; i < pathParts.length - 1; i++) {
-        if (!target[pathParts[i]]) {
-target[pathParts[i]] = {}
-}
-        target = target[pathParts[i]]
+        const part = pathParts[i]
+        if (!part) continue
+        if (!target[part]) {
+          target[part] = {}
+        }
+        target = target[part]
       }
-      target[pathParts[pathParts.length - 1]] = defaultValue
+      const lastPart = pathParts[pathParts.length - 1]
+      if (lastPart) {
+        target[lastPart] = defaultValue
+      }
       return newContent
     })
   }
@@ -1116,7 +1121,6 @@ return null
             setEditingContent={setEditingContent}
             isNestedContentChanged={isNestedContentChanged}
             resetNestedContentToDefault={resetNestedContentToDefault}
-            updateNestedField={updateNestedField}
           />
         )
       case 'footer':

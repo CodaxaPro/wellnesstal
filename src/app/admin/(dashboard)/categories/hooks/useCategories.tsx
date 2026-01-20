@@ -13,7 +13,6 @@ export function useCategories() {
   
   const [filters, setFilters] = useState<CategoryFilters>({
     search: '',
-    active: undefined,
     sortBy: 'order',
     sortOrder: 'asc'
   })

@@ -30,7 +30,7 @@ import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlo
 import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
 import VideoBlockEditor from '@/components/blocks/editors/VideoBlockEditor'
 import WhatsAppBlockEditor from '@/components/blocks/editors/WhatsAppBlockEditor'
-import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent, FAQContent, TeamContent, WhatsAppContent, GalleryContent, EmbedContent, HeaderContent, FooterContent, ServicesContent, TestimonialsContent, VideoContent, StatsContent, DividerContent , SEOContent, AboutContent } from '@/components/blocks/types'
+import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent } from '@/components/blocks/types'
 
 interface PageCategory {
   id: string
@@ -464,7 +464,10 @@ return
 
     const newBlocks = [...page.blocks]
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
-    ;[newBlocks[currentIndex], newBlocks[targetIndex]] = [newBlocks[targetIndex], newBlocks[currentIndex]]
+    const targetBlock = newBlocks[targetIndex]
+    const currentBlock = newBlocks[currentIndex]
+    if (!targetBlock || !currentBlock) return
+    ;[newBlocks[currentIndex], newBlocks[targetIndex]] = [targetBlock, currentBlock]
 
     // Update positions
     const reorderedBlocks = newBlocks.map((block, index) => ({
@@ -978,7 +981,7 @@ acc[cat] = []
                         {block.block_type}
                       </p>
                       <p className="text-xs text-slate-400 truncate">
-                        {block.content.title || 'İçerik'}
+                        {block.content['title'] || 'İçerik'}
                       </p>
                     </div>
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">

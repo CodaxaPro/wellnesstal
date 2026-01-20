@@ -653,7 +653,8 @@ return `${(bytes / 1024).toFixed(1)} KB`
               e.stopPropagation()
               const currentIndex = files.findIndex(f => f.id === lightboxFile.id)
               const prevIndex = currentIndex > 0 ? currentIndex - 1 : files.length - 1
-              setLightboxFile(files[prevIndex])
+              const prevFile = files[prevIndex]
+              if (prevFile) setLightboxFile(prevFile)
             }}
             className="absolute left-4 p-3 text-white hover:bg-white/10 rounded-full transition-colors"
           >
@@ -666,7 +667,8 @@ return `${(bytes / 1024).toFixed(1)} KB`
               e.stopPropagation()
               const currentIndex = files.findIndex(f => f.id === lightboxFile.id)
               const nextIndex = currentIndex < files.length - 1 ? currentIndex + 1 : 0
-              setLightboxFile(files[nextIndex])
+              const nextFile = files[nextIndex]
+              if (nextFile) setLightboxFile(nextFile)
             }}
             className="absolute right-4 p-3 text-white hover:bg-white/10 rounded-full transition-colors"
           >

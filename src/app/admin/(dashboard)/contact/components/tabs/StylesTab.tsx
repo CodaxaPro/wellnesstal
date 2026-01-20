@@ -60,7 +60,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="pageTitle"
           label="Seitentitel"
-          style={settings.styles?.pageTitle}
+          {...(settings.styles?.pageTitle ? { style: settings.styles.pageTitle } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -69,7 +69,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="sectionTitle"
           label="Abschnittstitel"
-          style={settings.styles?.sectionTitle}
+          {...(settings.styles?.sectionTitle ? { style: settings.styles.sectionTitle } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -82,7 +82,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="tabActive"
           label="Aktiver Tab"
-          style={settings.styles?.tabActive}
+          {...(settings.styles?.tabActive ? { style: settings.styles.tabActive } : {})}
           showBackground
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
@@ -92,7 +92,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="tabInactive"
           label="Inaktiver Tab"
-          style={settings.styles?.tabInactive}
+          {...(settings.styles?.tabInactive ? { style: settings.styles.tabInactive } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -105,7 +105,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="label"
           label="Label-Text"
-          style={settings.styles?.label}
+          {...(settings.styles?.label ? { style: settings.styles.label } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -114,7 +114,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="input"
           label="Eingabefelder"
-          style={settings.styles?.input}
+          {...(settings.styles?.input ? { style: settings.styles.input } : {})}
           showBorder
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
@@ -124,7 +124,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="helpText"
           label="Hilfetext"
-          style={settings.styles?.helpText}
+          {...(settings.styles?.helpText ? { style: settings.styles.helpText } : {})}
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}
           updateStyleField={updateStyleField}
@@ -137,7 +137,7 @@ export function StylesTab({
         <StyleEditor
           styleKey="saveButton"
           label="Speichern-Button"
-          style={settings.styles?.saveButton}
+          {...(settings.styles?.saveButton ? { style: settings.styles.saveButton } : {})}
           showBackground
           expandedStyleEditors={expandedStyleEditors}
           toggleStyleEditor={toggleStyleEditor}

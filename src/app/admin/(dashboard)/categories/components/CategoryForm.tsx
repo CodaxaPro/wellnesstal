@@ -40,8 +40,8 @@ export default function CategoryForm({
   const [formData, setFormData] = useState<CategoryFormData>({
     name: '',
     description: '',
-    color: PREDEFINED_COLORS[0].value,
-    icon: PREDEFINED_ICONS[0],
+    color: PREDEFINED_COLORS[0]?.value || '#10B981',
+    icon: PREDEFINED_ICONS[0] || '🌿',
     active: true,
     order: 0
   })
@@ -57,7 +57,7 @@ export default function CategoryForm({
           name: editingCategory.name,
           description: editingCategory.description || '',
           color: editingCategory.color,
-          icon: editingCategory.icon || PREDEFINED_ICONS[0],
+          icon: editingCategory.icon || PREDEFINED_ICONS[0] || '🌿',
           active: editingCategory.active,
           order: editingCategory.order
         })
@@ -67,8 +67,8 @@ export default function CategoryForm({
         setFormData({
           name: '',
           description: '',
-          color: PREDEFINED_COLORS[0].value,
-          icon: PREDEFINED_ICONS[0],
+          color: PREDEFINED_COLORS[0]?.value || '#10B981',
+          icon: PREDEFINED_ICONS[0] || '🌿',
           active: true,
           order: maxOrder + 1
         })

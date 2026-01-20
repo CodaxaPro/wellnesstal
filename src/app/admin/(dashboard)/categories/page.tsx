@@ -714,7 +714,7 @@ export default function CategoriesManagement() {
               entityConfig={entityConfig}
               data={categories}
               loading={loading}
-              error={error || undefined}
+              {...(error ? { error } : {})}
               onSearch={handleSearch}
               onFilter={handleFilter}
               onSort={handleSort}

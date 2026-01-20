@@ -19,7 +19,6 @@ interface ContactSectionEditorProps {
   updateField: (field: string, value: any) => void
   isNestedContentChanged: (path: string) => boolean
   resetNestedContentToDefault: (path: string) => void
-  updateNestedField: (parent: string, field: string, value: any) => void
 }
 
 export function ContactSectionEditor({
@@ -38,7 +37,6 @@ export function ContactSectionEditor({
   updateField,
   isNestedContentChanged,
   resetNestedContentToDefault,
-  updateNestedField
 }: ContactSectionEditorProps) {
   const content = isEditing ? editingContent : section.content
 

@@ -65,6 +65,7 @@ return
     // Create new order
     const reorderedCategories = [...categories]
     const [removed] = reorderedCategories.splice(draggedIndex, 1)
+    if (!removed) return
     reorderedCategories.splice(targetIndex, 0, removed)
 
     // Generate new order values
