@@ -1,18 +1,17 @@
 // HeroWithContent.tsx
 // Complete Hero example using Section > Container > Stack > Content components
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
-import { ContentHeading, ContentText, ContentButton } from './content.index';
-import type { HeadingConfig, TextConfig, ButtonConfig } from './content.types';
+import { ContentButton, ContentHeading, ContentText } from './content.index';
+import type { ButtonConfig, HeadingConfig, TextConfig } from './content.types';
 import { PrimitivePropertiesPanel } from './PrimitivePropertiesPanel';
-import { Section, Container, Stack } from './primitives.index';
-import type { SectionConfig, ContainerConfig, StackConfig, LayoutElement } from './primitives.types';
+import type { ContainerConfig, LayoutElement, SectionConfig, StackConfig } from './primitives.types';
 import { SelectableBlockWrapper } from './SelectableBlockWrapper';
 
 export function HeroWithContent() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
-  
+
   const [heroSection, setHeroSection] = useState<SectionConfig>({
     id: 'hero-section',
     type: 'section',
@@ -29,6 +28,7 @@ export function HeroWithContent() {
   const [heroContainer, setHeroContainer] = useState<ContainerConfig>({
     id: 'hero-container',
     type: 'container',
+    variant: 'standard',
     maxWidth: 1200,
     paddingX: 24,
     margin: 'auto',
@@ -122,31 +122,36 @@ export function HeroWithContent() {
 
   const selectedElement = selectedId ? allElements[selectedId] || null : null;
 
-  const handleUpdate = (updated: any) => {
-    if (updated.id === 'hero-section') {
-setHeroSection(updated as SectionConfig);
-}
-    if (updated.id === 'hero-container') {
-setHeroContainer(updated as ContainerConfig);
-}
-    if (updated.id === 'hero-stack-main') {
-setMainStack(updated as StackConfig);
-}
-    if (updated.id === 'hero-stack-buttons') {
-setButtonStack(updated as StackConfig);
-}
-    if (updated.id === 'hero-heading') {
-setHeading(updated as HeadingConfig);
-}
-    if (updated.id === 'hero-subtext') {
-setSubtext(updated as TextConfig);
-}
-    if (updated.id === 'hero-button-primary') {
-setPrimaryButton(updated as ButtonConfig);
-}
-    if (updated.id === 'hero-button-secondary') {
-setSecondaryButton(updated as ButtonConfig);
-}
+  const handleUpdate = (updated: unknown) => {
+    if (!updated || typeof updated !== 'object') {
+      return;
+    }
+    const updatedObj = updated as Record<string, unknown> & { id: string };
+
+    if (updatedObj.id === 'hero-section') {
+      setHeroSection(updatedObj as unknown as SectionConfig);
+    }
+    if (updatedObj.id === 'hero-container') {
+      setHeroContainer(updatedObj as unknown as ContainerConfig);
+    }
+    if (updatedObj.id === 'hero-stack-main') {
+      setMainStack(updatedObj as unknown as StackConfig);
+    }
+    if (updatedObj.id === 'hero-stack-buttons') {
+      setButtonStack(updatedObj as unknown as StackConfig);
+    }
+    if (updatedObj.id === 'hero-heading') {
+      setHeading(updatedObj as unknown as HeadingConfig);
+    }
+    if (updatedObj.id === 'hero-subtext') {
+      setSubtext(updatedObj as unknown as TextConfig);
+    }
+    if (updatedObj.id === 'hero-button-primary') {
+      setPrimaryButton(updatedObj as unknown as ButtonConfig);
+    }
+    if (updatedObj.id === 'hero-button-secondary') {
+      setSecondaryButton(updatedObj as unknown as ButtonConfig);
+    }
   };
 
   return (
@@ -161,26 +166,26 @@ setSecondaryButton(updated as ButtonConfig);
         <SelectableBlockWrapper element={heroSection} selectedId={selectedId} onSelect={setSelectedId}>
           <SelectableBlockWrapper element={heroContainer} selectedId={selectedId} onSelect={setSelectedId}>
             <SelectableBlockWrapper element={mainStack} selectedId={selectedId} onSelect={setSelectedId}>
-              
-              <ContentHeading 
+
+              <ContentHeading
                 config={heading}
                 isSelected={selectedId === 'hero-heading'}
                 onSelect={setSelectedId}
               />
-              
-              <ContentText 
+
+              <ContentText
                 config={subtext}
                 isSelected={selectedId === 'hero-subtext'}
                 onSelect={setSelectedId}
               />
-              
+
               <SelectableBlockWrapper element={buttonStack} selectedId={selectedId} onSelect={setSelectedId}>
-                <ContentButton 
+                <ContentButton
                   config={primaryButton}
                   isSelected={selectedId === 'hero-button-primary'}
                   onSelect={setSelectedId}
                 />
-                <ContentButton 
+                <ContentButton
                   config={secondaryButton}
                   isSelected={selectedId === 'hero-button-secondary'}
                   onSelect={setSelectedId}

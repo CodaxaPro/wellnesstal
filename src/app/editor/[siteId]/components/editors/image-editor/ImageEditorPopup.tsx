@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 
 import { useDraggable } from './hooks/useDraggable';
@@ -19,7 +19,7 @@ import PositionTab from './tabs/PositionTab';
 import SEOTab from './tabs/SEOTab';
 import SourceTab from './tabs/SourceTab';
 import TransformTab from './tabs/TransformTab';
-import { TabType, ImageConfig } from './types/imageConfig.types';
+import { ImageConfig, TabType } from './types/imageConfig.types';
 
 interface ImageEditorPopupProps {
   initialUrl: string;
@@ -39,10 +39,10 @@ export default function ImageEditorPopup({
   onCancel,
 }: ImageEditorPopupProps) {
   const [activeTab, setActiveTab] = useState<TabType>('source');
-  
+
   const { config, updateConfig, resetConfig } = useImageConfig({
     initialUrl,
-    existingConfig,
+    ...(existingConfig ? { existingConfig } : {}),
   });
 
   const { position, isDragging, handleMouseDown } = useDraggable({

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,9 +8,8 @@ import { useRouter } from 'next/navigation'
 
 // Template Engine Imports
 import EntityList from '../../../../components/shared/EntityList'
-import { configLoader } from '../../../../lib/config-loader'
 import { templateEngine } from '../../../../lib/template-engine'
-import { Service, ServiceFormData, BulkOperation } from '../../../../types/services'
+import { BulkOperation, Service, ServiceFormData } from '../../../../types/services'
 import { TemplateConfig } from '../../../../types/templates'
 
 import ServiceForm from './components/ServiceForm/ServiceFormModular'
@@ -21,12 +20,13 @@ interface LocalEntityData {
   id: string;
   createdAt?: string;
   updatedAt?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   [key: string]: any;
 }
 
 export default function ServicesManagement() {
   const router = useRouter()
-  
+
   // Template Engine State
   const [templateConfig, setTemplateConfig] = useState<TemplateConfig | null>(null)
   const [templateLoading, setTemplateLoading] = useState(true)
@@ -40,21 +40,20 @@ export default function ServicesManagement() {
     isLoading,
     error,
     filters,
-    stats,
     setFilters,
     createService,
     updateService,
     deleteService,
     handleBulkOperation,
-    toggleActive,
-    togglePopular,
-    toggleFeatured,
+    toggleActive: _toggleActive,
+    togglePopular: _togglePopular,
+    toggleFeatured: _toggleFeatured,
     clearError,
-    refreshData
+    refreshData: _refreshData
   } = useServicesEnhanced()
 
   // Local UI State
-  const [selectedServices, setSelectedServices] = useState<string[]>([])
+  const [_selectedServices, setSelectedServices] = useState<string[]>([])
   const [isFormModalOpen, setIsFormModalOpen] = useState(false)
   const [editingService, setEditingService] = useState<Service | null>(null)
 
@@ -63,7 +62,7 @@ export default function ServicesManagement() {
     const initializeTemplate = async () => {
       try {
         setTemplateLoading(true)
-        
+
         // Hardcoded wellness template config - no external loading needed
         const config: TemplateConfig = {
           id: "wellness-basic",
@@ -71,7 +70,7 @@ export default function ServicesManagement() {
           industry: "wellness" as const,
           version: "1.0.0",
           description: "Complete wellness and spa management system",
-          
+
           entities: {
             primary: {
               name: "Services",
@@ -91,7 +90,7 @@ export default function ServicesManagement() {
                 },
                 {
                   key: "description",
-                  label: "Description", 
+                  label: "Description",
                   type: "textarea" as const,
                   required: false,
                   placeholder: "Service description",
@@ -142,7 +141,7 @@ export default function ServicesManagement() {
                   label: "Status",
                   type: "select" as const,
                   required: true,
-                  group: "visibility", 
+                  group: "visibility",
                   order: 7,
                   options: [
                     { value: "active", label: "Active" },
@@ -159,7 +158,7 @@ export default function ServicesManagement() {
               }
             }
           },
-          
+
           ui: {
             theme: {
               primaryColor: "#10B981",
@@ -169,7 +168,7 @@ export default function ServicesManagement() {
               fontSize: {
                 sm: "0.875rem",
                 base: "1rem",
-                lg: "1.125rem", 
+                lg: "1.125rem",
                 xl: "1.25rem"
               },
               borderRadius: "0.75rem",
@@ -193,32 +192,31 @@ export default function ServicesManagement() {
               }
             }
           },
-          
+
           business: {
             workflows: [],
             validations: {},
             automations: []
           },
-          
+
           features: {
             enabled: ["crud", "search", "filters", "bulk-actions"],
             disabled: []
           }
         }
-        
+
         // Register template in engine
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         templateEngine.registerTemplate(config as any)
         templateEngine.setActiveTemplate('wellness-basic')
         setTemplateConfig(config)
-        
-        console.log('Template Engine initialized with hardcoded config')
       } catch (err) {
         console.error('Template initialization failed:', err)
       } finally {
         setTemplateLoading(false)
       }
     }
-    initializeTemplate()
+    void initializeTemplate()
   }, [])
 
   // Form Handlers
@@ -262,48 +260,24 @@ export default function ServicesManagement() {
     router.push(`/admin/services/${serviceId}/landing-page`)
   }
 
-  // Selection Handlers
-  const handleSelectAll = (checked: boolean) => {
-    if (checked) {
-      setSelectedServices(filteredServices.map(service => service.id))
-    } else {
-      setSelectedServices([])
-    }
-  }
-
-  const handleServiceSelect = (serviceId: string, checked: boolean) => {
-    if (checked) {
-      setSelectedServices(prev => [...prev, serviceId])
-    } else {
-      setSelectedServices(prev => prev.filter(id => id !== serviceId))
-    }
-  }
-
-  // Enhanced Bulk Operations
-  const handleBulkAction = async (operation: BulkOperation): Promise<boolean> => {
-    const success = await handleBulkOperation(operation)
-    if (success) {
-      setSelectedServices([])
-    }
-    return success
-  }
 
   // Template Engine Event Handlers
   const handleEntitySearch = (query: string) => {
     setFilters(prev => ({ ...prev, search: query }))
   }
 
-  const handleEntityFilter = (newFilters: Record<string, any>) => {
+  const handleEntityFilter = (newFilters: Record<string, unknown>) => {
     setFilters(prev => ({ ...prev, ...newFilters }))
   }
 
   const handleEntitySort = (field: string, direction: 'asc' | 'desc') => {
     // Map to valid sort fields
     const validSortField = field === 'name' ? 'title' : field as keyof typeof filters
-    setFilters(prev => ({ 
-      ...prev, 
+    setFilters(prev => ({
+      ...prev,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       sortBy: validSortField as any,
-      sortOrder: direction 
+      sortOrder: direction
     }))
   }
 
@@ -315,21 +289,23 @@ export default function ServicesManagement() {
   }
 
   const handleEntityDelete = async (item: LocalEntityData) => {
-    if (confirm(`Bu hizmeti silmek istediğinizden emin misiniz: "${item.name}"?`)) {
+    // eslint-disable-next-line no-alert
+    if (window.confirm(`Bu hizmeti silmek istediğinizden emin misiniz: "${item['name']}"?`)) {
       await deleteService(item.id)
     }
   }
 
-  const handleEntityView = (item: LocalEntityData) => {
-    console.log('View entity:', item)
+  const handleEntityView = (_item: LocalEntityData) => {
+    // View entity handler
   }
 
   const handleEntityBulkAction = async (action: string, items: LocalEntityData[]) => {
     const itemIds = items.map(item => item.id)
-    
+
     switch (action) {
       case 'delete':
-        if (confirm(`${items.length} adet seçili hizmeti silmek istediğinizden emin misiniz?`)) {
+        // eslint-disable-next-line no-alert
+        if (window.confirm(`${items.length} adet seçili hizmeti silmek istediğinizden emin misiniz?`)) {
           // Create proper BulkOperation object
           const bulkOp: BulkOperation = {
             serviceIds: itemIds,
@@ -346,7 +322,8 @@ export default function ServicesManagement() {
         await handleBulkOperation(exportOp)
         break
       default:
-        console.log('Bulk action:', action, itemIds)
+        // Bulk action handler
+        break
     }
   }
 
@@ -371,13 +348,13 @@ export default function ServicesManagement() {
 
   // Filter Entity Data
   const filteredEntityData = entityData.filter(item => {
-    if (filters.search && !item.name.toLowerCase().includes(filters.search.toLowerCase())) {
+    if (filters.search && !(item['name'] as string).toLowerCase().includes(filters.search.toLowerCase())) {
       return false
     }
-    if (filters.category && item.category !== filters.category) {
+    if (filters.category && item['category'] !== filters.category) {
       return false
     }
-    if (filters.active !== undefined && (item.status === 'active') !== filters.active) {
+    if (filters.active !== undefined && (item['status'] === 'active') !== filters.active) {
       return false
     }
     return true
@@ -386,7 +363,9 @@ export default function ServicesManagement() {
   // Check if service has landing page (placeholder logic)
   const hasLandingPage = (service: Service): boolean => {
     // TODO: Update this based on your actual data structure
-    return !!(service as any).landingPage || !!(service as any).hasLandingPage
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const serviceAny = service as any
+    return !!serviceAny.landingPage || !!serviceAny.hasLandingPage
   }
 
   return (
@@ -401,12 +380,12 @@ export default function ServicesManagement() {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m0 7h18" />
                 </svg>
               </Link>
-              
+
               <div className="flex items-center gap-4">
                 <h1 className="text-2xl font-bold text-charcoal">
                   {templateConfig ? templateConfig.entities.primary.plural : 'Hizmet Yönetimi'}
                 </h1>
-                
+
                 {/* Template Engine Toggle */}
                 {templateConfig && (
                   <div className="flex items-center gap-2 text-sm">
@@ -414,8 +393,8 @@ export default function ServicesManagement() {
                     <button
                       onClick={() => setShowEntityList(false)}
                       className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                        !showEntityList 
-                          ? 'bg-blue-100 text-blue-800' 
+                        !showEntityList
+                          ? 'bg-blue-100 text-blue-800'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -424,8 +403,8 @@ export default function ServicesManagement() {
                     <button
                       onClick={() => setShowEntityList(true)}
                       className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
-                        showEntityList 
-                          ? 'bg-green-100 text-green-800' 
+                        showEntityList
+                          ? 'bg-green-100 text-green-800'
                           : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                       }`}
                     >
@@ -433,7 +412,7 @@ export default function ServicesManagement() {
                     </button>
                   </div>
                 )}
-                
+
                 {/* Template Status */}
                 {templateConfig && (
                   <div className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-200 rounded-full">
@@ -445,7 +424,7 @@ export default function ServicesManagement() {
                 )}
               </div>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <Link
                 href="/admin/categories"
@@ -503,22 +482,26 @@ export default function ServicesManagement() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Template Engine View */}
         {showEntityList && templateConfig ? (
           <EntityList
             entityConfig={templateConfig.entities.primary}
             data={filteredEntityData}
             loading={isLoading}
-            error={error || undefined}
+            error={error || ''}
             onSearch={handleEntitySearch}
             onFilter={handleEntityFilter}
             onSort={handleEntitySort}
             onCreate={handleNewService}
             onEdit={handleEntityEdit}
-            onDelete={handleEntityDelete}
+            onDelete={(item) => {
+              void handleEntityDelete(item)
+            }}
             onView={handleEntityView}
-            onBulkAction={handleEntityBulkAction}
+            onBulkAction={(action, items) => {
+              void handleEntityBulkAction(action, items)
+            }}
             showSearch
             showFilters
             showBulkActions
@@ -581,7 +564,7 @@ export default function ServicesManagement() {
                 <div className="divide-y divide-gray-200">
                   {filteredServices.map((service) => {
                     const serviceHasLandingPage = hasLandingPage(service)
-                    
+
                     return (
                       <div key={service.id} className="p-6 hover:bg-gray-50">
                         <div className="flex items-start justify-between">
@@ -595,8 +578,8 @@ export default function ServicesManagement() {
                                   </span>
                                 )}
                                 <span className={`text-xs font-medium px-2.5 py-0.5 rounded-full ${
-                                  service.active 
-                                    ? 'bg-green-100 text-green-800' 
+                                  service.active
+                                    ? 'bg-green-100 text-green-800'
                                     : 'bg-red-100 text-red-800'
                                 }`}>
                                   {service.active ? 'Aktif' : 'Pasif'}
@@ -619,13 +602,13 @@ export default function ServicesManagement() {
                                 )}
                               </div>
                             </div>
-                            
+
                             {service.seoDescription && (
                               <p className="text-gray-600 mb-3 line-clamp-2">
                                 {service.seoDescription}
                               </p>
                             )}
-                            
+
                             <div className="flex items-center gap-6 text-sm text-gray-500">
                               <span>₺{service.price}</span>
                               <span>{service.duration} dk</span>
@@ -640,7 +623,7 @@ export default function ServicesManagement() {
                               </span>
                             </div>
                           </div>
-                          
+
                           <div className="flex items-center gap-2 ml-4">
                             <button
                               onClick={() => handleEditService(service)}
@@ -675,8 +658,9 @@ export default function ServicesManagement() {
                             )}
                             <button
                               onClick={() => {
-                                if (confirm('Bu hizmeti silmek istediğinizden emin misiniz?')) {
-                                  deleteService(service.id)
+                                // eslint-disable-next-line no-alert
+                                if (window.confirm('Bu hizmeti silmek istediğinizden emin misiniz?')) {
+                                  void deleteService(service.id)
                                 }
                               }}
                               className="text-gray-400 hover:text-red-600 p-2 hover:bg-red-50 rounded-lg transition-all"

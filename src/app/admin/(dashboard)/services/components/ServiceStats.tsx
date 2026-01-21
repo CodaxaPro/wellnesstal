@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react'
 
-import type { ServiceStats as ServiceStatsType } from '../../../../types/services'
+import type { ServiceStats as ServiceStatsType } from '@/types/services'
 
 interface ServiceStatsProps {
   stats: ServiceStatsType
@@ -120,7 +120,7 @@ export default function ServiceStats({ stats, isLoading = false }: ServiceStatsP
               </span>
             )}
           </div>
-          
+
           {/* Progress bar for active ratio */}
           {stat.title === 'Aktif Oran' && stats.total > 0 && (
             <div className="mt-3">
@@ -132,7 +132,7 @@ export default function ServiceStats({ stats, isLoading = false }: ServiceStatsP
               </div>
             </div>
           )}
-          
+
           {/* Additional info for totals */}
           {stat.title === 'Toplam Hizmet' && stats.total > 0 && (
             <p className="text-xs text-gray-500 mt-2">

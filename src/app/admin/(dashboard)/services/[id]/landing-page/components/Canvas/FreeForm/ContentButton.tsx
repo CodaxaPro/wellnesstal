@@ -16,7 +16,6 @@ export function ContentButton({ config, isSelected, onSelect }: ContentButtonPro
     id,
     text,
     href,
-    variant,
     size,
     backgroundColor,
     textColor,

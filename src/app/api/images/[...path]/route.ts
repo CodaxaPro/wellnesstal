@@ -6,13 +6,13 @@ const STORAGE_BUCKET = 'wellnesstal'
 
 /**
  * Image Proxy Route
- * 
+ *
  * Resimleri kendi domain'imizden serve eder
  * Örnek: /api/images/uploads/hero/image.jpg
  * → Supabase Storage'dan çeker ve döner
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: { path: string[] } }
 ) {
   try {

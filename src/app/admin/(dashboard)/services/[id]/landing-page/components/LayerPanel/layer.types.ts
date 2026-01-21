@@ -1,12 +1,11 @@
 // Layer Panel için type definitions
 
 import type { PageSection } from '../Canvas/FreeForm/PageBuilder/usePageBuilder';
-import type { 
-  SectionConfig, 
-  ContainerConfig, 
-  StackConfig, 
+import type {
+  ContainerConfig,
+  ContentComponent,
   GridConfig,
-  ContentComponent 
+  StackConfig
 } from '../Canvas/FreeForm/primitives.types';
 
 /**
@@ -52,7 +51,7 @@ export interface LayerTreeItemProps {
  * Type guards
  */
 export function isContentComponent(item: any): item is ContentComponent {
-  return item && typeof item === 'object' && 'type' in item && 
+  return item && typeof item === 'object' && 'type' in item &&
          ['heading', 'text', 'button', 'image', 'spacer'].includes(item.type);
 }
 

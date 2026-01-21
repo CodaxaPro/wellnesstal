@@ -1,18 +1,18 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { motion } from 'framer-motion';
 import toast from 'react-hot-toast';
 
-import { ImageConfig, UnsplashImage, TRENDING_IMAGES } from '../types/imageConfig.types';
+import { ImageConfig, TRENDING_IMAGES, UnsplashImage } from '../types/imageConfig.types';
 
 interface SourceTabProps {
   config: ImageConfig;
   updateConfig: <K extends keyof ImageConfig>(key: K, value: ImageConfig[K]) => void;
 }
 
-export default function SourceTab({ config, updateConfig }: SourceTabProps) {
+export default function SourceTab({ config: _config, updateConfig }: SourceTabProps) {
   const [imageUrl, setImageUrl] = useState('');
   const [searchQuery, setSearchQuery] = useState('');
   const [unsplashImages, setUnsplashImages] = useState<UnsplashImage[]>(TRENDING_IMAGES);
@@ -30,7 +30,11 @@ export default function SourceTab({ config, updateConfig }: SourceTabProps) {
       return;
     }
     setIsSearching(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise<void>(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
     setUnsplashImages(TRENDING_IMAGES);
     setIsSearching(false);
     toast.success(`Found ${TRENDING_IMAGES.length} images`);
@@ -41,7 +45,9 @@ export default function SourceTab({ config, updateConfig }: SourceTabProps) {
     if (searchTimeoutRef.current) {
 clearTimeout(searchTimeoutRef.current);
 }
-    searchTimeoutRef.current = setTimeout(() => searchUnsplash(query), 600);
+    searchTimeoutRef.current = setTimeout(() => {
+      void searchUnsplash(query);
+    }, 600);
   };
 
   const handleSelectImage = (image: UnsplashImage) => {
@@ -117,6 +123,7 @@ clearTimeout(searchTimeoutRef.current);
                 selectedUnsplash?.id === img.id ? 'border-purple-500 ring-2 ring-purple-200' : 'border-gray-200'
               }`}
             >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={img.urls.thumb} alt="" className="w-full h-full object-cover" />
               {selectedUnsplash?.id === img.id && (
                 <div className="absolute inset-0 bg-purple-600/20 flex items-center justify-center">

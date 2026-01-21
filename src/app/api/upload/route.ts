@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer)
 
     // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
+    const { error: uploadError } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .upload(filePath, buffer, {
         contentType: file.type,
@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
 
     // /uploads/ formatında URL döndür
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wellnesstal.de'
+    const siteUrl = process.env['NEXT_PUBLIC_SITE_URL'] || 'https://www.wellnesstal.de'
     const urlPath = filePath.replace('uploads/', '') // 'uploads/about/file.jpg' → 'about/file.jpg'
     const ownDomainUrl = `${siteUrl}/uploads/${urlPath}`
 
@@ -126,11 +126,11 @@ export async function DELETE(request: NextRequest) {
 
     // Extract path from Supabase Storage URL
     let filePath = ''
-    
+
     // If it's a Supabase Storage URL, extract the path
     if (fileUrl.includes('/storage/v1/object/public/')) {
       const urlParts = fileUrl.split('/storage/v1/object/public/wellnesstal/')
-      if (urlParts.length > 1) {
+      if (urlParts.length > 1 && urlParts[1]) {
         filePath = urlParts[1]
       }
     } else if (fileUrl.startsWith('/uploads/')) {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-import type { ServiceFormData, Service, ButtonType } from '../../../../../../types/services'
+import type { ButtonType, Service, ServiceFormData } from '@/types/services'
 
 interface UseServiceFormProps {
   editingService?: Service | null
@@ -15,26 +15,26 @@ interface UseServiceFormReturn {
   formData: ServiceFormData
   errors: Partial<ServiceFormData>
   gradientColor: string
-  
+
   // Form actions
   handleInputChange: (field: keyof ServiceFormData, value: any) => void
   setGradientColor: (color: string) => void
-  
+
   // Validation
   validateStep: (step: number) => boolean
   validateForm: () => boolean
-  
+
   // Form processing
   processFormData: () => ServiceFormData & { gradientColor: string }
   resetForm: () => void
 }
 
-export function useServiceForm({ 
-  editingService, 
-  existingServices, 
-  isOpen 
+export function useServiceForm({
+  editingService,
+  existingServices,
+  isOpen
 }: UseServiceFormProps): UseServiceFormReturn {
-  
+
   const [formData, setFormData] = useState<ServiceFormData>({
     title: '',
     shortDescription: '',
@@ -49,7 +49,7 @@ export function useServiceForm({
     category: '',
     tags: '',
     image: '/images/default-service.jpg',
-    
+
     // Button configs
     primaryButtonText: 'Jetzt buchen',
     primaryButtonType: 'phone',
@@ -59,7 +59,7 @@ export function useServiceForm({
     secondaryButtonType: 'page',
     secondaryButtonValue: '',
     secondaryButtonMessage: '',
-    
+
     // Modal buttons
     primaryModalLeftButtonText: 'Jetzt anrufen',
     primaryModalLeftButtonType: 'phone',
@@ -88,7 +88,7 @@ export function useServiceForm({
           longDescription: editingService.longDescription,
           duration: editingService.duration,
           price: editingService.price,
-          benefits: Array.isArray(editingService.benefits) 
+          benefits: Array.isArray(editingService.benefits)
             ? editingService.benefits.join(', ')
             : editingService.benefits,
           popular: editingService.popular,
@@ -96,11 +96,11 @@ export function useServiceForm({
           featured: editingService.featured || false,
           order: editingService.order,
           category: editingService.category?.id || '',
-          tags: Array.isArray(editingService.tags) 
+          tags: Array.isArray(editingService.tags)
             ? editingService.tags.join(', ')
             : editingService.tags || '',
           image: editingService.image,
-          
+
           // Button configs - preserve all existing values
           primaryButtonText: editingService.primaryButtonText || 'Jetzt buchen',
           primaryButtonType: (editingService.primaryButtonType as ButtonType) || 'phone',
@@ -110,7 +110,7 @@ export function useServiceForm({
           secondaryButtonType: (editingService.secondaryButtonType as ButtonType) || 'page',
           secondaryButtonValue: editingService.secondaryButtonValue || '',
           secondaryButtonMessage: editingService.secondaryButtonMessage || '',
-          
+
           // Modal buttons - preserve all existing values
           primaryModalLeftButtonText: editingService.primaryModalLeftButtonText || 'Jetzt anrufen',
           primaryModalLeftButtonType: (editingService.primaryModalLeftButtonType as ButtonType) || 'phone',
@@ -136,7 +136,7 @@ export function useServiceForm({
   // Handle input changes
   const handleInputChange = (field: keyof ServiceFormData, value: any) => {
     setFormData((prev: ServiceFormData) => ({ ...prev, [field]: value }))
-    
+
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors((prev: Partial<ServiceFormData>) => ({ ...prev, [field]: undefined }))
@@ -172,11 +172,11 @@ newErrors.primaryButtonText = 'Primary button text gereklidir'
       if (!formData.secondaryButtonText?.trim()) {
 newErrors.secondaryButtonText = 'Secondary button text gereklidir'
 }
-      
+
       if (formData.primaryButtonType !== 'page' && !formData.primaryButtonValue?.trim()) {
         newErrors.primaryButtonValue = 'Primary button value gereklidir'
       }
-      
+
       if (formData.secondaryButtonType !== 'page' && !formData.secondaryButtonValue?.trim()) {
         newErrors.secondaryButtonValue = 'Secondary button value gereklidir'
       }
@@ -195,12 +195,12 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
   const processFormData = () => {
     const processed = {
       ...formData,
-      benefits: typeof formData.benefits === 'string' 
+      benefits: typeof formData.benefits === 'string'
         ? formData.benefits.split(',').map((b: string) => b.trim()).filter(Boolean)
         : formData.benefits,
       tags: typeof formData.tags === 'string'
         ? formData.tags.split(',').map((t: string) => t.trim()).filter(Boolean)
-        : formData.tags,
+        : (formData.tags || []),
       gradientColor
     }
 
@@ -210,7 +210,7 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
   // Reset form to initial state
   const resetForm = () => {
     const maxOrder = Math.max(...existingServices.map(s => s.order), 0)
-    
+
     setFormData({
       title: '',
       shortDescription: '',
@@ -225,7 +225,7 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
       category: '',
       tags: '',
       image: '/images/default-service.jpg',
-      
+
       primaryButtonText: 'Jetzt buchen',
       primaryButtonType: 'phone',
       primaryButtonValue: '',
@@ -234,7 +234,7 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
       secondaryButtonType: 'page',
       secondaryButtonValue: '',
       secondaryButtonMessage: '',
-      
+
       primaryModalLeftButtonText: 'Jetzt anrufen',
       primaryModalLeftButtonType: 'phone',
       primaryModalLeftButtonValue: '',
@@ -248,7 +248,7 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
       secondaryModalRightButtonType: 'whatsapp',
       secondaryModalRightButtonValue: ''
     })
-    
+
     setGradientColor('from-sage-400 to-forest-500')
     setErrors({})
   }
@@ -258,15 +258,15 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
     formData,
     errors,
     gradientColor,
-    
+
     // Form actions
     handleInputChange,
     setGradientColor,
-    
+
     // Validation
     validateStep,
     validateForm,
-    
+
     // Form processing
     processFormData,
     resetForm

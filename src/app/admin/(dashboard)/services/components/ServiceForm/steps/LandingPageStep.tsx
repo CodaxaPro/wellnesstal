@@ -1,17 +1,16 @@
 'use client'
 
-import { useState } from 'react'
+import type { ServiceFormData } from '@/types/services'
 
 interface LandingPageStepProps {
   formData: any
-  onInputChange: (field: string, value: any) => void
+  onInputChange: (field: keyof ServiceFormData, value: any) => void
 }
 
 export default function LandingPageStep({
   formData,
   onInputChange
 }: LandingPageStepProps) {
-  const [activeImageIndex, setActiveImageIndex] = useState(0)
 
   // Handle long description change
   const handleLongDescriptionChange = (value: string) => {
@@ -25,18 +24,18 @@ export default function LandingPageStep({
 
   // Handle features array change
   const handleFeaturesChange = (features: any[]) => {
-    onInputChange('features', features)
+    onInputChange('features' as keyof ServiceFormData, features)
   }
 
   // Handle images array change
   const handleImagesChange = (images: string[]) => {
-    onInputChange('images', images)
+    onInputChange('images' as keyof ServiceFormData, images)
   }
 
   // Handle SEO data change
   const handleSeoChange = (field: string, value: any) => {
     const currentSeo = formData.seo || {}
-    onInputChange('seo', {
+    onInputChange('seo' as keyof ServiceFormData, {
       ...currentSeo,
       [field]: value
     })
@@ -142,7 +141,7 @@ export default function LandingPageStep({
             + Fotoğraf Ekle
           </button>
         </div>
-        
+
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
           {images.map((image: string, index: number) => (
             <div key={index} className="relative group">
@@ -187,7 +186,7 @@ export default function LandingPageStep({
             + Fayda Ekle
           </button>
         </div>
-        
+
         <div className="space-y-3">
           {benefits.map((benefit: string, index: number) => (
             <div key={index} className="flex items-center gap-3">
@@ -229,7 +228,7 @@ export default function LandingPageStep({
             + Özellik Ekle
           </button>
         </div>
-        
+
         <div className="space-y-4">
           {features.map((feature: any, index: number) => (
             <div key={index} className="border border-gray-200 rounded-lg p-4">
@@ -278,7 +277,7 @@ export default function LandingPageStep({
       {/* SEO Settings */}
       <div className="space-y-4 border-t pt-6">
         <h4 className="text-md font-semibold text-charcoal">SEO Ayarları</h4>
-        
+
         <div className="grid grid-cols-1 gap-4">
           <div>
             <label className="block text-sm font-medium text-charcoal mb-2">
@@ -292,7 +291,7 @@ export default function LandingPageStep({
               placeholder={`${formData.title || ''} | Wellnesstal`}
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-charcoal mb-2">
               SEO Açıklama
@@ -305,7 +304,7 @@ export default function LandingPageStep({
               placeholder={formData.shortDescription || ''}
             />
           </div>
-          
+
           <div>
             <label className="block text-sm font-medium text-charcoal mb-2">
               Anahtar Kelimeler

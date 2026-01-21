@@ -2,9 +2,9 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import { Toaster } from 'react-hot-toast';
 
 import TextEditorContent from './components/Content/TextEditorContent';
@@ -41,9 +41,9 @@ export default function TextEditorPopup({
 }: TextEditorPopupProps) {
   const [activeTab, setActiveTab] = useState<TabType>('format');
 
-  const { config, updateConfig, updateMultipleConfigs, resetConfig, applyPreset, setConfig } = useTextConfig({
+  const { config, updateConfig, updateMultipleConfigs, resetConfig, applyPreset } = useTextConfig({
     initialValue,
-    existingConfig,
+    ...(existingConfig ? { existingConfig } : {}),
   });
 
   const { position, isDragging, handleMouseDown } = useDraggable({

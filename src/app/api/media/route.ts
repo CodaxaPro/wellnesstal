@@ -3,29 +3,6 @@ import { NextRequest, NextResponse } from 'next/server'
 import { verifyAdmin } from '@/lib/auth'
 import { supabaseAdmin } from '@/lib/supabase-server'
 
-// Media file interface
-interface MediaFile {
-  id: string
-  file_name: string
-  original_name: string
-  file_path: string
-  thumbnail_path: string | null
-  medium_path: string | null
-  large_path: string | null
-  file_size: number
-  mime_type: string
-  width: number | null
-  height: number | null
-  alt_text: string | null
-  category: string
-  tags: string[] | null
-  blur_hash: string | null
-  is_featured: boolean
-  sort_order: number
-  created_at: string
-  updated_at: string
-}
-
 // GET - List all media files
 export async function GET(request: NextRequest) {
   try {
@@ -129,7 +106,7 @@ export async function POST(request: NextRequest) {
     const buffer = Buffer.from(arrayBuffer)
 
     // Upload to Supabase Storage
-    const { data: uploadData, error: uploadError } = await supabaseAdmin.storage
+    const { error: uploadError } = await supabaseAdmin.storage
       .from('wellnesstal')
       .upload(filePath, buffer, {
         contentType: file.type,
@@ -146,7 +123,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Kendi domain'inden URL döndür
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.wellnesstal.de'
+    const siteUrl = process.env['NEXT_PUBLIC_SITE_URL'] || 'https://www.wellnesstal.de'
     const ownDomainUrl = `${siteUrl}/api/images/${filePath}`
 
     // Save to database
@@ -156,9 +133,9 @@ export async function POST(request: NextRequest) {
         file_name: fileName,
         original_name: file.name,
         file_path: ownDomainUrl, // wellnesstal.de/api/images/... formatında
-        thumbnail_path: publicUrl, // For now, same as original
-        medium_path: publicUrl,
-        large_path: publicUrl,
+        thumbnail_path: ownDomainUrl, // For now, same as original
+        medium_path: ownDomainUrl,
+        large_path: ownDomainUrl,
         file_size: file.size,
         mime_type: file.type,
         alt_text: altText || file.name.split('.')[0],
@@ -289,19 +266,20 @@ export async function PUT(request: NextRequest) {
       )
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateObj: Record<string, any> = {}
     if (alt_text !== undefined) {
-updateObj.alt_text = alt_text
-}
+      updateObj['alt_text'] = alt_text
+    }
     if (category !== undefined) {
-updateObj.category = category
-}
+      updateObj['category'] = category
+    }
     if (is_featured !== undefined) {
-updateObj.is_featured = is_featured
-}
+      updateObj['is_featured'] = is_featured
+    }
     if (tags !== undefined) {
-updateObj.tags = tags
-}
+      updateObj['tags'] = tags
+    }
 
     const { data, error } = await supabaseAdmin
       .from('media_files')

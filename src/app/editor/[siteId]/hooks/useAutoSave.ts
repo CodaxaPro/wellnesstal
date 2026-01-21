@@ -1,9 +1,10 @@
-import { useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef } from 'react'
 
 import { useContentStore } from '../store/useContentStore'
 
 interface UseAutoSaveOptions {
   siteId: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   siteData: any
   enabled?: boolean
   debounceMs?: number
@@ -12,6 +13,7 @@ interface UseAutoSaveOptions {
 }
 
 interface PendingSave {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any
   timestamp: number
   retries: number
@@ -35,6 +37,7 @@ export function useAutoSave({
   const lastSavedRef = useRef<string | null>(null)
 
   // Save function with retry logic
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const saveToDatabase = useCallback(async (data: any, retries = 0): Promise<boolean> => {
     if (isSavingRef.current && retries === 0) {
       // If already saving, queue this save
@@ -79,15 +82,19 @@ export function useAutoSave({
 
       const result = await response.json()
       if (result.success) {
+        // eslint-disable-next-line require-atomic-updates
         lastSavedRef.current = dataStr
         onSaveSuccess?.()
+        // eslint-disable-next-line require-atomic-updates
         isSavingRef.current = false
 
         // Process any pending save
         if (pendingSaveRef.current) {
           const pending = pendingSaveRef.current
           pendingSaveRef.current = null
-          setTimeout(() => saveToDatabase(pending.data, 0), 100)
+          setTimeout(() => {
+            void saveToDatabase(pending.data, 0)
+          }, 100)
         }
 
         return true
@@ -96,16 +103,18 @@ export function useAutoSave({
       }
     } catch (error) {
       console.error('Auto-save error:', error)
-      
+
       if (retries < MAX_RETRIES) {
         // Retry after delay
         setTimeout(() => {
-          saveToDatabase(data, retries + 1)
+          void saveToDatabase(data, retries + 1)
         }, RETRY_DELAY * (retries + 1))
+        // eslint-disable-next-line require-atomic-updates
         isSavingRef.current = false
         return false
       } else {
         // Max retries reached
+        // eslint-disable-next-line require-atomic-updates
         isSavingRef.current = false
         onSaveError?.(error as Error)
         return false
@@ -129,7 +138,7 @@ return
         content,
         updatedAt: new Date().toISOString()
       }
-      saveToDatabase(payload)
+      void saveToDatabase(payload)
     }, debounceMs)
   }, [enabled, siteData, content, debounceMs, saveToDatabase])
 
@@ -154,7 +163,7 @@ return
 return
 }
 
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+    const handleBeforeUnload = (_e: BeforeUnloadEvent) => {
       // Cancel any pending debounced saves and save immediately
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current)

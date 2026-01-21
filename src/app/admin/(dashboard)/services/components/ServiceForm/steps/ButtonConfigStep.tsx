@@ -1,6 +1,6 @@
 'use client'
 
-import { ServiceFormData, ButtonType } from '../../../../../../types/services'
+import type { ServiceFormData } from '@/types/services'
 
 interface ButtonConfigStepProps {
   formData: ServiceFormData
@@ -14,7 +14,7 @@ export default function ButtonConfigStep({
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-charcoal mb-4">Service Buttons</h3>
-      
+
       <div className="bg-gray-50 rounded-xl p-6 space-y-8">
         {/* Primary Button */}
         <div className="bg-white rounded-lg p-5 shadow-sm border border-gray-100">
@@ -22,7 +22,7 @@ export default function ButtonConfigStep({
             <div className="w-3 h-3 bg-sage-500 rounded-full" />
             <h4 className="font-medium text-charcoal">Primary Action Button</h4>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
@@ -34,7 +34,7 @@ export default function ButtonConfigStep({
                 placeholder="Jetzt buchen"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Action Type</label>
               <select
@@ -48,7 +48,7 @@ export default function ButtonConfigStep({
                 <option value="link">🔗 External Link</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {formData.primaryButtonType === 'phone' && 'Phone Number'}
@@ -103,7 +103,7 @@ export default function ButtonConfigStep({
                 </svg>
                 Modal Action Buttons
               </h5>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Left Button */}
                 <div className="space-y-3">
@@ -136,7 +136,7 @@ export default function ButtonConfigStep({
                     }
                   />
                 </div>
-                
+
                 {/* Right Button */}
                 <div className="space-y-3">
                   <div className="text-sm font-medium text-gray-600 bg-white px-2 py-1 rounded-md">Right Button</div>
@@ -179,7 +179,7 @@ export default function ButtonConfigStep({
             <div className="w-3 h-3 bg-gray-400 rounded-full" />
             <h4 className="font-medium text-charcoal">Secondary Action Button</h4>
           </div>
-          
+
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Button Text</label>
@@ -191,7 +191,7 @@ export default function ButtonConfigStep({
                 placeholder="Mehr Details"
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Action Type</label>
               <select
@@ -205,7 +205,7 @@ export default function ButtonConfigStep({
                 <option value="link">🔗 External Link</option>
               </select>
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 {formData.secondaryButtonType === 'phone' && 'Phone Number'}
@@ -260,7 +260,7 @@ export default function ButtonConfigStep({
                 </svg>
                 Modal Action Buttons
               </h5>
-              
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Left Button */}
                 <div className="space-y-3">
@@ -293,7 +293,7 @@ export default function ButtonConfigStep({
                     }
                   />
                 </div>
-                
+
                 {/* Right Button */}
                 <div className="space-y-3">
                   <div className="text-sm font-medium text-gray-600 bg-white px-2 py-1 rounded-md">Right Button</div>

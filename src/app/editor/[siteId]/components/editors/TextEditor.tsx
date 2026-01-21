@@ -1,6 +1,6 @@
 'use client';
 
-import { TextEditorPopup, TextConfig } from './text-editor';
+import { TextConfig, TextEditorPopup } from './text-editor';
 
 interface TextEditorProps {
   value: string;
@@ -24,7 +24,7 @@ export default function TextEditor({
       initialValue={value}
       fieldPath={fieldPath}
       initialPosition={position}
-      existingConfig={existingConfig} // 🆕 YENİ
+      {...(existingConfig ? { existingConfig } : {})}
       onSave={onSave}
       onCancel={onCancel}
     />

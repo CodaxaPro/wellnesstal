@@ -1,6 +1,6 @@
 'use client'
 
-import { ServiceFormData } from '../../../../../../types/services'
+import type { ServiceFormData } from '@/types/services'
 
 interface Category {
   id: string
@@ -23,7 +23,7 @@ export default function FinalSettingsStep({
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-charcoal mb-4">Son Ayarlar</h3>
-      
+
       <div className="bg-sage-50 p-6 rounded-xl">
         <h4 className="font-medium text-charcoal mb-4">Hizmet Durumu ve Özellikler</h4>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -164,11 +164,11 @@ export default function FinalSettingsStep({
           <div className="mt-4 pt-4 border-t border-gray-200">
             <h5 className="text-sm font-medium text-charcoal mb-2">Faydalar</h5>
             <div className="flex flex-wrap gap-1">
-              {(typeof formData.benefits === 'string' 
+              {(typeof formData.benefits === 'string'
                 ? formData.benefits.split(',').map(b => b.trim()).filter(Boolean)
                 : formData.benefits
               ).map((benefit, index) => (
-                <span 
+                <span
                   key={index}
                   className="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full"
                 >
@@ -188,7 +188,7 @@ export default function FinalSettingsStep({
                 ? formData.tags.split(',').map(t => t.trim()).filter(Boolean)
                 : formData.tags
               ).map((tag, index) => (
-                <span 
+                <span
                   key={index}
                   className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
                 >

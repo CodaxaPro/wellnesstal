@@ -37,13 +37,13 @@ export function LayerPanel({
         // Collect all parent IDs
         const parentsToExpand: string[] = [];
         let currentParentId = selectedNode.parentId;
-        
+
         while (currentParentId) {
           parentsToExpand.push(currentParentId);
           const parentNode = findNode(currentParentId);
           currentParentId = parentNode?.parentId;
         }
-        
+
         // Expand all parents
         parentsToExpand.forEach(parentId => {
           if (!expandedIds.has(parentId)) {
@@ -62,30 +62,30 @@ export function LayerPanel({
         if (!container) {
 return;
 }
-        
+
         const selectedElement = container.querySelector(
           `[data-node-id="${selectedId}"]`
         ) as HTMLElement;
-        
+
         if (selectedElement) {
           // FORCE: Birden fazla yöntem dene
-          
+
           // Method 1: scrollTop
           const rect = selectedElement.getBoundingClientRect();
           const containerRect = container.getBoundingClientRect();
           const offset = rect.top - containerRect.top + container.scrollTop;
-          
+
           container.scrollTop = offset - 100; // 100px padding
-          
+
           console.log('Method 1 - scrollTop:', container.scrollTop);
-          
+
           // Method 2: scrollIntoView (backup)
           setTimeout(() => {
             const currentContainer = scrollContainerRef.current;
             if (!currentContainer) {
 return;
 }
-            
+
             if (currentContainer.scrollTop === 0) {
               console.log('Method 1 failed, trying scrollIntoView...');
               selectedElement.scrollIntoView({
@@ -95,38 +95,38 @@ return;
               console.log('Method 2 - After scrollIntoView:', currentContainer.scrollTop);
             }
           }, 100);
-          
+
           // Method 3: Manual animation (last resort)
           setTimeout(() => {
             const currentContainer = scrollContainerRef.current;
             if (!currentContainer) {
 return;
 }
-            
+
             if (currentContainer.scrollTop === 0) {
               console.log('Method 2 failed, trying manual scroll...');
               const start = 0;
               const target = offset - 100;
               const duration = 300;
               const startTime = performance.now();
-              
+
               function animate(currentTime: number) {
                 if (!currentContainer) {
 return;
 }
-                
+
                 const elapsed = currentTime - startTime;
                 const progress = Math.min(elapsed / duration, 1);
-                
+
                 currentContainer.scrollTop = start + (target - start) * progress;
-                
+
                 if (progress < 1) {
                   requestAnimationFrame(animate);
                 } else {
                   console.log('Method 3 - Final scrollTop:', currentContainer.scrollTop);
                 }
               }
-              
+
               requestAnimationFrame(animate);
             }
           }, 200);
@@ -140,7 +140,7 @@ return;
       {/* Header */}
       <div className="px-4 py-3 border-b border-gray-200 flex items-center justify-between">
         <h2 className="text-sm font-semibold text-gray-700">Layers</h2>
-        
+
         <div className="flex gap-1">
           <button
             onClick={expandAll}
@@ -160,8 +160,8 @@ return;
       </div>
 
       {/* Tree Content */}
-      <div 
-        ref={scrollContainerRef} 
+      <div
+        ref={scrollContainerRef}
         className="flex-1 overflow-y-scroll relative"
       >
         {treeWithExpansion.length === 0 ? (
@@ -180,9 +180,9 @@ return;
                 isSelected={selectedId === node.id}
                 onSelect={onSelect}
                 onToggleExpand={toggleExpand}
-                onRename={onRename}
-                onDelete={onDelete}
-                onDuplicate={onDuplicate}
+                {...(onRename && { onRename })}
+                {...(onDelete && { onDelete })}
+                {...(onDuplicate && { onDuplicate })}
               />
             ))}
           </div>

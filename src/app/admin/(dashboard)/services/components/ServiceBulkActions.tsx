@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import type { BulkOperation } from '../../../../types/services'
+import type { BulkOperation } from '@/types/services'
 
 interface Category {
   id: string
@@ -46,7 +46,7 @@ return
 }
 
     const success = await onBulkAction(pendingAction)
-    
+
     if (success) {
       setIsModalOpen(false)
       setPendingAction(null)
@@ -87,19 +87,19 @@ return
     if (!pendingAction) {
 return ''
 }
-    
+
     const count = selectedServices.length
     const actionText = getActionText(pendingAction.action)
-    
+
     if (pendingAction.action === 'delete') {
       return `${count} hizmeti silmek istediğinizden emin misiniz? Bu işlem geri alınamaz.`
     }
-    
+
     if (pendingAction.action === 'update_category') {
       const categoryName = categories.find(c => c.id === pendingAction.data?.category)?.name || 'Seçilen kategori'
       return `${count} hizmetin kategorisini "${categoryName}" olarak değiştirmek istediğinizden emin misiniz?`
     }
-    
+
     return `${count} hizmeti ${actionText} istediğinizden emin misiniz?`
   }
 
@@ -211,7 +211,7 @@ return ''
                 Toplu İşlem Onayı
               </h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               {getConfirmationMessage()}
             </p>
@@ -235,7 +235,7 @@ return ''
                 })()}
               </div>
             )}
-            
+
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleCancel}

@@ -203,35 +203,37 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateObj: Record<string, any> = {}
-    if (updateData.title) {
-      updateObj.title = updateData.title.trim()
-      updateObj.slug = generateSlug(updateData.title)
+    if (updateData['title']) {
+      const titleValue = String(updateData['title']).trim()
+      updateObj['title'] = titleValue
+      updateObj['slug'] = generateSlug(titleValue)
     }
-    if (updateData.description !== undefined) {
-updateObj.description = updateData.description?.trim()
-}
-    if (updateData.shortDescription !== undefined) {
-updateObj.short_description = updateData.shortDescription?.trim()
-}
-    if (updateData.categoryId !== undefined) {
-updateObj.category_id = updateData.categoryId
-}
-    if (updateData.price !== undefined) {
-updateObj.price = updateData.price
-}
-    if (updateData.duration !== undefined) {
-updateObj.duration = updateData.duration
-}
-    if (updateData.image !== undefined) {
-updateObj.image = updateData.image
-}
-    if (updateData.active !== undefined) {
-updateObj.active = updateData.active
-}
-    if (updateData.order !== undefined) {
-updateObj.order_num = updateData.order
-}
+    if (updateData['description'] !== undefined) {
+      updateObj['description'] = updateData['description'] ? String(updateData['description']).trim() : null
+    }
+    if (updateData['shortDescription'] !== undefined) {
+      updateObj['short_description'] = updateData['shortDescription'] ? String(updateData['shortDescription']).trim() : null
+    }
+    if (updateData['categoryId'] !== undefined) {
+      updateObj['category_id'] = updateData['categoryId']
+    }
+    if (updateData['price'] !== undefined) {
+      updateObj['price'] = updateData['price']
+    }
+    if (updateData['duration'] !== undefined) {
+      updateObj['duration'] = updateData['duration']
+    }
+    if (updateData['image'] !== undefined) {
+      updateObj['image'] = updateData['image']
+    }
+    if (updateData['active'] !== undefined) {
+      updateObj['active'] = updateData['active']
+    }
+    if (updateData['order'] !== undefined) {
+      updateObj['order_num'] = updateData['order']
+    }
 
     const { data: updated, error } = await supabaseAdmin
       .from('services')

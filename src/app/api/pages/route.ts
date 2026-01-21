@@ -6,10 +6,14 @@ import jwt from 'jsonwebtoken'
 import { logger } from '@/lib/logger'
 import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']
+const supabaseKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables')
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 // Helper function to verify JWT token
 function verifyToken(request: NextRequest) {
@@ -20,7 +24,7 @@ function verifyToken(request: NextRequest) {
 
   const token = authHeader.substring(7)
   try {
-    return jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret')
+    return jwt.verify(token, process.env['JWT_SECRET'] || 'fallback-secret')
   } catch {
     return null
   }
@@ -28,7 +32,6 @@ function verifyToken(request: NextRequest) {
 
 // GET /api/pages - Get all pages or single page by slug
 export async function GET(request: NextRequest) {
-  const startTime = Date.now()
   try {
     // Rate limiting
     const rateLimitResult = await rateLimit(request, apiRateLimiter)
@@ -113,8 +116,10 @@ export async function GET(request: NextRequest) {
 
         // Debug: log brief preview of blocks returned for troubleshooting
         try {
+          // eslint-disable-next-line no-console
           console.log('[DEBUG] GET /api/pages - returning blocks preview:', blocks?.map(b => ({ id: b.id, title: b.content?.title || null })).slice(0, 20))
-        } catch (e) {
+        } catch (_e) {
+          // eslint-disable-next-line no-console
           console.log('[DEBUG] GET /api/pages - blocks preview unavailable')
         }
 
@@ -160,8 +165,8 @@ export async function GET(request: NextRequest) {
         if (category) {
           query = query.eq('category_id', category.id)
         }
-      } catch (e) {
-        console.log('Could not filter by category slug:', e)
+      } catch (_e) {
+        // Category filter failed, continue without filter
       }
     }
 
@@ -181,21 +186,24 @@ export async function GET(request: NextRequest) {
           .select('id, name, slug, color, icon')
 
         if (allCategories && allCategories.length > 0) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const categoryMap = new Map(allCategories.map((c: any) => [c.id, c]))
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           pagesWithCategories = pages.map((page: any) => ({
             ...page,
             page_categories: page.category_id ? categoryMap.get(page.category_id) || null : null
           }))
         } else {
           // No categories exist yet, just return pages without category data
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           pagesWithCategories = pages.map((page: any) => ({
             ...page,
             page_categories: null
           }))
         }
-      } catch (e) {
+      } catch (_e) {
         // Categories table might not exist yet, that's okay - return pages without category data
-        console.log('Could not fetch categories (table may not exist):', e)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         pagesWithCategories = pages.map((page: any) => ({
           ...page,
           page_categories: null
@@ -232,6 +240,7 @@ async function generateUniqueSlug(baseSlug: string): Promise<string> {
   let counter = 1
 
   while (true) {
+    // eslint-disable-next-line no-await-in-loop
     const { data: existing } = await supabase
       .from('pages')
       .select('id')
@@ -323,7 +332,7 @@ export async function POST(request: NextRequest) {
           meta_description: sourcePage.meta_description || null,
           category_id: sourcePage.category_id || null,
           published_at: null,
-          created_by: (user as any).username
+          created_by: (user as Record<string, unknown>)?.['username'] as string || 'Admin'
         })
         .select()
         .single()
@@ -334,6 +343,7 @@ export async function POST(request: NextRequest) {
 
       // Duplicate blocks
       if (sourceBlocks && sourceBlocks.length > 0) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         const newBlocks = sourceBlocks.map((block: any, index: number) => ({
           page_id: newPage.id,
           block_type: block.block_type,
@@ -365,8 +375,8 @@ export async function POST(request: NextRequest) {
           if (category) {
             pageWithCategory = { ...newPage, page_categories: category }
           }
-        } catch (e) {
-          console.log('Could not fetch category:', e)
+        } catch (_e) {
+          // Category fetch failed, continue without category
         }
       }
 
@@ -396,6 +406,7 @@ export async function POST(request: NextRequest) {
 
     const finalSlug = await generateUniqueSlug(baseSlug)
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const insertData: any = {
       title,
       slug: finalSlug,
@@ -405,7 +416,7 @@ export async function POST(request: NextRequest) {
       meta_description,
       category_id: category_id || null,
       published_at: status === 'published' ? new Date().toISOString() : null,
-      created_by: (user as any).username
+      created_by: (user as Record<string, unknown>)?.['username'] as string || 'Admin'
     }
 
     // Add active field if provided, default to true for published pages
@@ -434,8 +445,8 @@ export async function POST(request: NextRequest) {
         if (category) {
           pageWithCategory = { ...page, page_categories: category }
         }
-      } catch (e) {
-        console.log('Could not fetch category:', e)
+      } catch (_e) {
+        // Category fetch failed, continue without category
       }
     }
 
@@ -505,11 +516,13 @@ export async function PUT(request: NextRequest) {
         .single()
 
       if (currentPage?.status !== 'published' && !currentPage?.published_at) {
+        // eslint-disable-next-line require-atomic-updates
         updateData.published_at = new Date().toISOString()
       }
     }
 
-    updateData.updated_by = (user as any).username
+    // eslint-disable-next-line require-atomic-updates
+    updateData.updated_by = (user as Record<string, unknown>)?.['username'] as string || 'Admin'
 
     // Remove undefined values to avoid Supabase errors
     Object.keys(updateData).forEach(key => {
@@ -526,9 +539,9 @@ export async function PUT(request: NextRequest) {
       .single()
 
     // If error is about missing column (active), try without it
-    if (error && error.message && error.message.includes('active')) {
+    if (error?.message?.includes('active')) {
       console.warn('Active column not found, attempting update without it')
-      const { active, ...updateDataWithoutActive } = updateData
+      const { active: _active, ...updateDataWithoutActive } = updateData
       const { data: pageRetry, error: retryError } = await supabase
         .from('pages')
         .update(updateDataWithoutActive)
@@ -561,8 +574,8 @@ export async function PUT(request: NextRequest) {
           } else {
             pageWithCategory = { ...pageWithDefaultActive, page_categories: null }
           }
-        } catch (e) {
-          console.log('Could not fetch category:', e)
+        } catch (_e) {
+          // Category fetch failed, continue without category
         }
       }
 
@@ -591,8 +604,8 @@ export async function PUT(request: NextRequest) {
         } else {
           pageWithCategory = { ...page, page_categories: null }
         }
-      } catch (e) {
-        console.log('Could not fetch category:', e)
+      } catch (_e) {
+        // Category fetch failed, continue without category
       }
     }
 
@@ -606,16 +619,17 @@ export async function PUT(request: NextRequest) {
       message: 'Page updated successfully'
     })
 
-  } catch (error: any) {
-    console.error('Pages PUT error:', error)
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : { message: 'Unknown error', stack: undefined }
+    console.error('Pages PUT error:', errorObj.message)
 
     // Check if error is about missing column
-    if (error?.message && (error.message.includes('active') || error.message.includes('column') || error.message.includes('does not exist'))) {
+    if (errorObj.message && (errorObj.message.includes('active') || errorObj.message.includes('column') || errorObj.message.includes('does not exist'))) {
       return NextResponse.json(
         {
           success: false,
           error: 'Active column not found. Please run migration: supabase/migrations/016_add_pages_active_field.sql',
-          details: error.message
+          details: errorObj.message
         },
         { status: 500 }
       )
@@ -624,8 +638,8 @@ export async function PUT(request: NextRequest) {
     return NextResponse.json(
       {
         success: false,
-        error: error?.message || 'Failed to update page',
-        details: process.env.NODE_ENV === 'development' ? error?.stack : undefined
+        error: errorObj.message || 'Failed to update page',
+        details: process.env['NODE_ENV'] === 'development' ? errorObj.stack : undefined
       },
       { status: 500 }
     )

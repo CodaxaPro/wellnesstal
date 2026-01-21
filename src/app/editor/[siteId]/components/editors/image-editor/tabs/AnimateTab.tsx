@@ -29,7 +29,7 @@ export default function AnimateTab({ config, updateConfig }: AnimateTabProps) {
                 config.entrance === anim ? 'bg-purple-600 text-white' : 'bg-gray-100'
               }`}
             >
-              {anim.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')}
+              {anim.split('-').map(w => w?.[0] ? w[0].toUpperCase() + w.slice(1) : w).join(' ')}
             </button>
           ))}
         </div>

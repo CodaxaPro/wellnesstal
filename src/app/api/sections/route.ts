@@ -166,16 +166,17 @@ export async function PUT(request: NextRequest) {
     }
 
     // Update section
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateObj: Record<string, any> = {}
     if (enabled !== undefined) {
-updateObj.enabled = enabled
-}
+      updateObj['enabled'] = enabled
+    }
     if (body.section_name) {
-updateObj.section_name = body.section_name
-}
+      updateObj['section_name'] = body.section_name
+    }
     if (body.section_icon) {
-updateObj.section_icon = body.section_icon
-}
+      updateObj['section_icon'] = body.section_icon
+    }
 
     const { data: updated, error } = await supabaseAdmin
       .from('homepage_sections')
@@ -259,12 +260,17 @@ export async function DELETE(request: NextRequest) {
       .order('position', { ascending: true })
 
     if (remaining && remaining.length > 0) {
-      for (let i = 0; i < remaining.length; i++) {
-        await supabaseAdmin
-          .from('homepage_sections')
-          .update({ position: i + 1 })
-          .eq('id', remaining[i].id)
-      }
+      await Promise.all(
+        remaining.map((section, i) => {
+          if (section) {
+            return supabaseAdmin
+              .from('homepage_sections')
+              .update({ position: i + 1 })
+              .eq('id', section.id)
+          }
+          return Promise.resolve()
+        })
+      )
     }
 
     return NextResponse.json({ success: true, message: 'Section deleted' })

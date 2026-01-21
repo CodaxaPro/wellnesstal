@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-import type { ServiceFormData, Service } from '../../../../../types/services'
+import type { Service, ServiceFormData } from '@/types/services'
 
 import { useServiceForm } from './hooks/useServiceForm'
 import StepNavigation from './shared/StepNavigation'
@@ -34,7 +34,7 @@ export default function ServiceFormModular({
   onSubmit,
   editingService,
   categories: initialCategories,
-  isLoading,
+  isLoading: _isLoading,
   existingServices
 }: ServiceFormModularProps) {
   const [currentStep, setCurrentStep] = useState(1)
@@ -57,7 +57,7 @@ export default function ServiceFormModular({
     processFormData,
     resetForm
   } = useServiceForm({
-    editingService,
+    editingService: editingService ?? null,
     existingServices,
     isOpen
   })
@@ -79,7 +79,7 @@ export default function ServiceFormModular({
     if (currentStep === 1 && !validateStep(1)) {
       return // Validation failed, don't proceed
     }
-    
+
     if (currentStep < 4) {
       setCurrentStep(prev => prev + 1)
     }
@@ -96,13 +96,13 @@ export default function ServiceFormModular({
   // Form submission
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     // Only allow submit on step 4
     if (currentStep !== 4) {
       handleNext()
       return
     }
-    
+
     if (!validateForm()) {
       setCurrentStep(1) // Go to first step if validation fails
       return
@@ -113,7 +113,7 @@ export default function ServiceFormModular({
     try {
       const processedData = processFormData()
       const success = await onSubmit(processedData)
-      
+
       if (success) {
         resetForm()
         setCurrentStep(1)
@@ -231,7 +231,7 @@ return null
               >
                 İptal
               </button>
-              
+
               <button
                 type="submit"
                 disabled={isSubmitting}

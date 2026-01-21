@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { Service, ServiceCategory } from '../../../../types/services'
+import type { Service } from '@/types/services'
 
 interface ServicesListProps {
   services: Service[]
@@ -63,7 +63,7 @@ export default function ServicesList({
 
   const handleDrop = (e: React.DragEvent, targetServiceId: string) => {
     e.preventDefault()
-    
+
     if (!draggedItem || draggedItem === targetServiceId) {
       setDraggedItem(null)
       setDragOverItem(null)
@@ -72,7 +72,7 @@ export default function ServicesList({
 
     const draggedIndex = services.findIndex(service => service.id === draggedItem)
     const targetIndex = services.findIndex(service => service.id === targetServiceId)
-    
+
     if (draggedIndex === -1 || targetIndex === -1) {
 return
 }
@@ -80,7 +80,9 @@ return
     // Create new order
     const reorderedServices = [...services]
     const [removed] = reorderedServices.splice(draggedIndex, 1)
-    reorderedServices.splice(targetIndex, 0, removed)
+    if (removed) {
+      reorderedServices.splice(targetIndex, 0, removed)
+    }
 
     // Generate new order values
     const newOrder = reorderedServices.map((service, index) => ({
@@ -197,7 +199,7 @@ return undefined
             {services.map((service) => {
               const category = getCategoryById(service.category?.id)
               const serviceHasLandingPage = hasLandingPage(service)
-              
+
               return (
                 <tr
                   key={service.id}
@@ -234,8 +236,8 @@ return undefined
                     <div className="flex items-center">
                       <div className="h-12 w-12 bg-sage-100 rounded-lg flex items-center justify-center mr-4">
                         {service.image && service.image !== '/images/default-service.jpg' ? (
-                          <img 
-                            src={service.image} 
+                          <img
+                            src={service.image}
                             alt={service.title}
                             className="h-12 w-12 rounded-lg object-cover"
                           />
@@ -342,8 +344,8 @@ return undefined
                       <button
                         onClick={() => onLandingPage(service.id)}
                         className={`transition-colors ${
-                          serviceHasLandingPage 
-                            ? 'text-blue-600 hover:text-blue-800' 
+                          serviceHasLandingPage
+                            ? 'text-blue-600 hover:text-blue-800'
                             : 'text-orange-600 hover:text-orange-800'
                         }`}
                         title={serviceHasLandingPage ? 'Landing Page Düzenle' : 'Landing Page Oluştur'}

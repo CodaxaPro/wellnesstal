@@ -2,10 +2,9 @@
 
 import { useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { TEXT_COLORS } from '../../types/textConfig.types';
-import { getColorGridAnimation } from '../../utils/animationHelpers';
 
 interface ColorPickerProps {
   value: string;
@@ -87,7 +86,7 @@ export default function ColorPicker({ value, onChange, label = 'Color', icon = '
                     whileTap={{ scale: 0.9 }}
                     onClick={() => handleColorSelect(color)}
                     className="w-6 h-6 rounded-lg border-2 transition-all relative group"
-                    style={{ 
+                    style={{
                       backgroundColor: color,
                       borderColor: value === color ? '#9333EA' : '#E5E7EB',
                       boxShadow: value === color ? '0 0 0 2px rgba(147, 51, 234, 0.3)' : 'none',

@@ -1,6 +1,6 @@
 'use client'
 
-import type { ServiceFilters as ServiceFiltersType } from '../../../../types/services'
+import type { ServiceFilters as ServiceFiltersType } from '@/types/services'
 
 interface Category {
   id: string
@@ -24,7 +24,7 @@ export default function ServiceFilters({
   resultCount,
   totalCount
 }: ServiceFiltersProps) {
-  
+
   const handleFilterChange = (key: keyof ServiceFiltersType, value: any) => {
     onFiltersChange({
       ...filters,
@@ -35,19 +35,15 @@ export default function ServiceFilters({
   const clearFilters = () => {
     onFiltersChange({
       search: '',
-      category: undefined,
-      active: undefined,
-      popular: undefined,
-      featured: undefined,
       sortBy: 'order',
       sortOrder: 'asc'
     })
   }
 
-  const hasActiveFilters = filters.search || 
-    filters.category || 
-    filters.active !== undefined || 
-    filters.popular !== undefined || 
+  const hasActiveFilters = filters.search ||
+    filters.category ||
+    filters.active !== undefined ||
+    filters.popular !== undefined ||
     filters.featured !== undefined
 
   return (
@@ -232,7 +228,7 @@ export default function ServiceFilters({
         <div className="text-sm text-gray-600">
           <span className="font-medium">{resultCount}</span> / {totalCount} hizmet gösteriliyor
         </div>
-        
+
         {/* Active Filters Display */}
         {hasActiveFilters && (
           <div className="flex flex-wrap gap-2">

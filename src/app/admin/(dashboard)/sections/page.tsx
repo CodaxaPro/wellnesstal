@@ -1,9 +1,11 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+
+import toast from 'react-hot-toast'
 
 interface HomepageSection {
   id: string
@@ -61,7 +63,7 @@ export default function SectionsPage() {
       router.push('/admin')
       return
     }
-    fetchSections()
+    void fetchSections()
   }, [router, fetchSections])
 
   const moveSection = (index: number, direction: 'up' | 'down') => {
@@ -74,8 +76,11 @@ return
 
     // Swap positions
     const temp = newSections[index]
-    newSections[index] = newSections[newIndex]
-    newSections[newIndex] = temp
+    const targetSection = newSections[newIndex]
+    if (temp && targetSection) {
+      newSections[index] = targetSection
+      newSections[newIndex] = temp
+    }
 
     // Update position numbers
     newSections.forEach((section, i) => {
@@ -170,7 +175,7 @@ return
     const token = localStorage.getItem('adminToken')
 
     if (!formData.section_key || !formData.section_name) {
-      alert('Section key ve name gerekli!')
+      toast.error('Section key ve name gerekli!')
       return
     }
 
@@ -190,8 +195,9 @@ return
         setSections(prev => [...prev, data.data])
         setShowAddModal(false)
         setFormData({ section_key: '', section_name: '', section_icon: '📄' })
+        toast.success('Section başarıyla eklendi')
       } else {
-        alert(data.error || 'Hata oluştu')
+        toast.error(data.error || 'Hata oluştu')
       }
     } catch (error) {
       console.error('Failed to add section:', error)
@@ -380,7 +386,7 @@ return
                     <input
                       type="checkbox"
                       checked={section.enabled}
-                      onChange={(e) => toggleSection(section.id, e.target.checked)}
+                      onChange={(e) => void toggleSection(section.id, e.target.checked)}
                       className="sr-only peer"
                     />
                     <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-green-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-green-500" />
@@ -438,7 +444,7 @@ return
                 Sıfırla
               </button>
               <button
-                onClick={saveOrder}
+                onClick={() => void saveOrder()}
                 disabled={saving}
                 className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg font-medium transition-colors disabled:opacity-50"
               >
@@ -531,7 +537,7 @@ return
                 İptal
               </button>
               <button
-                onClick={addSection}
+                onClick={() => void addSection()}
                 className="px-6 py-2 bg-sage-500 hover:bg-sage-600 text-white rounded-lg font-medium transition-colors"
               >
                 Ekle
@@ -605,7 +611,7 @@ return
                 İptal
               </button>
               <button
-                onClick={updateSection}
+                onClick={() => void updateSection()}
                 className="px-6 py-2 bg-sage-500 hover:bg-sage-600 text-white rounded-lg font-medium transition-colors"
               >
                 Kaydet
@@ -632,7 +638,11 @@ return
                 İptal
               </button>
               <button
-                onClick={() => deleteSection(showDeleteConfirm)}
+                onClick={() => {
+                  if (showDeleteConfirm) {
+                    void deleteSection(showDeleteConfirm)
+                  }
+                }}
                 className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors"
               >
                 Sil

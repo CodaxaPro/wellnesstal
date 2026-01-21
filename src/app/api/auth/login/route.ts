@@ -7,12 +7,16 @@ import jwt from 'jsonwebtoken'
 import { logger } from '@/lib/logger'
 import { authRateLimiter, rateLimit } from '@/lib/rate-limit'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']
+const supabaseKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
 
-const JWT_SECRET = process.env.JWT_SECRET || 'fallback-secret'
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables')
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey)
+
+const JWT_SECRET = process.env['JWT_SECRET'] || 'fallback-secret'
 
 export async function POST(request: NextRequest) {
   try {

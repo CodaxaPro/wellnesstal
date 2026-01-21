@@ -43,6 +43,7 @@ export default function PositionTab({ config, updateConfig }: PositionTabProps) 
             ['left', 'center', 'right'],
             ['bottom left', 'bottom', 'bottom right'],
           ].map((row, i) => (
+            // eslint-disable-next-line react/no-array-index-key
             <div key={i} className="contents">
               {row.map(pos => (
                 <button
@@ -52,7 +53,7 @@ export default function PositionTab({ config, updateConfig }: PositionTabProps) 
                     config.objectPosition === pos ? 'bg-purple-600 text-white' : 'bg-gray-100'
                   }`}
                 >
-                  {pos.split(' ').map(w => w[0].toUpperCase()).join('')}
+                  {pos.split(' ').map(w => w?.[0]?.toUpperCase() ?? '').join('')}
                 </button>
               ))}
             </div>

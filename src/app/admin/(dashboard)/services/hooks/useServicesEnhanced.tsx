@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-import { Service, ServiceFilters, ServiceResponse, ServiceFormData, BulkOperation, ServiceStats } from '../../../../types/services'
+import type { BulkOperation, Service, ServiceFilters, ServiceFormData, ServiceResponse, ServiceStats } from '@/types/services'
 import { Category } from '../../categories/types'
 
 export function useServicesEnhanced() {
@@ -13,17 +13,13 @@ export function useServicesEnhanced() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [token, setToken] = useState<string>('')
-  
+
   const [filters, setFilters] = useState<ServiceFilters>({
     search: '',
-    category: undefined,
-    active: undefined,
-    popular: undefined,
-    featured: undefined,
     sortBy: 'order',
     sortOrder: 'asc'
   })
-  
+
   const [stats, setStats] = useState<ServiceStats>({
     total: 0,
     active: 0,
@@ -59,7 +55,7 @@ export function useServicesEnhanced() {
   const fetchServices = async (authToken?: string) => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const headers: HeadersInit = {}
       if (authToken) {
@@ -211,9 +207,9 @@ params.append('sortOrder', filters.sortOrder)
       }
 
       // Convert form data to service format - fix benefits handling
-      const benefits = Array.isArray(serviceData.benefits) 
-        ? serviceData.benefits 
-        : typeof serviceData.benefits === 'string' 
+      const benefits = Array.isArray(serviceData.benefits)
+        ? serviceData.benefits
+        : typeof serviceData.benefits === 'string'
           ? serviceData.benefits.split(',').map((b: string) => b.trim()).filter(Boolean)
           : []
 
@@ -269,7 +265,7 @@ params.append('sortOrder', filters.sortOrder)
       const data = await response.json()
 
       if (data.success && data.data) {
-        setServices(prev => prev.map(s => 
+        setServices(prev => prev.map(s =>
           s.id === id ? data.data : s
         ))
         return true

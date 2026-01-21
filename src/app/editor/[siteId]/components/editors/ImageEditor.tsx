@@ -1,6 +1,6 @@
 'use client';
 
-import { ImageEditorPopup, ImageConfig } from './image-editor';
+import { ImageConfig, ImageEditorPopup } from './image-editor';
 
 interface ImageEditorProps {
   value: string;
@@ -24,7 +24,7 @@ export default function ImageEditor({
       initialUrl={value}
       fieldPath={fieldPath}
       initialPosition={position}
-      existingConfig={existingConfig}
+      {...(existingConfig ? { existingConfig } : {})}
       onSave={onSave}
       onCancel={onCancel}
     />

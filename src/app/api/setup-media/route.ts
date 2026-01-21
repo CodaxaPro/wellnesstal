@@ -2,8 +2,12 @@ import { NextResponse } from 'next/server'
 
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']
+const supabaseServiceKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
+
+if (!supabaseUrl || !supabaseServiceKey) {
+  throw new Error('Missing Supabase environment variables')
+}
 
 const supabase = createClient(supabaseUrl, supabaseServiceKey, {
   auth: { autoRefreshToken: false, persistSession: false }
@@ -123,10 +127,11 @@ CREATE POLICY "Auth can delete media" ON media_files FOR DELETE USING (true);
       ` : null
     })
 
-  } catch (error: any) {
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({
       success: false,
-      error: error.message,
+      error: errorMessage,
       results
     }, { status: 500 })
   }

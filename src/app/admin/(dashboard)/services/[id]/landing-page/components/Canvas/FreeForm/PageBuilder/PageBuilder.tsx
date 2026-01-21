@@ -3,11 +3,13 @@
 
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { LayerPanel } from '../../../LayerPanel/LayerPanel';
 import { ComponentLibrary } from '../ComponentLibrary';
+import type { ContentComponent } from '../content.types';
 import { PrimitivePropertiesPanel } from '../PrimitivePropertiesPanel';
+import type { GridConfig, SectionConfig, StackConfig } from '../primitives.types';
 
 import { PageRenderer } from './PageRenderer';
 import type { LibraryContext } from './types';
@@ -15,7 +17,7 @@ import { usePageBuilder } from './usePageBuilder';
 
 export function PageBuilder() {
   const [isLibraryOpen, setIsLibraryOpen] = useState(false);
-  const [libraryContext, setLibraryContext] = useState<LibraryContext>('section');
+  const [_libraryContext, setLibraryContext] = useState<LibraryContext>('section');
 
   const {
     sections,
@@ -162,7 +164,7 @@ return 'Never';
 }
     const now = new Date();
     const diff = Math.floor((now.getTime() - lastSaved.getTime()) / 1000);
-    
+
     if (diff < 60) {
 return 'Just now';
 }
@@ -179,22 +181,22 @@ return `${Math.floor(diff / 3600)}h ago`;
   // LIBRARY HANDLERS
   // ============================================================================
 
-  const handleAddSectionFromLibrary = (newSection: any) => {
+  const handleAddSectionFromLibrary = (newSection: SectionConfig) => {
     handleAddSection(newSection);
     setIsLibraryOpen(false);
   };
 
-  const handleAddStackFromLibrary = (newStack: any) => {
+  const handleAddStackFromLibrary = (newStack: StackConfig) => {
     handleAddStack(newStack);
     setIsLibraryOpen(false);
   };
 
-  const handleAddGridFromLibrary = (newGrid: any) => {
+  const handleAddGridFromLibrary = (newGrid: GridConfig) => {
     handleAddGrid(newGrid);
     setIsLibraryOpen(false);
   };
 
-  const handleAddContentFromLibrary = (newContent: any) => {
+  const handleAddContentFromLibrary = (newContent: ContentComponent) => {
     handleAddContent(newContent);
     setIsLibraryOpen(false);
   };
@@ -222,7 +224,7 @@ return `${Math.floor(diff / 3600)}h ago`;
           onDuplicate={handleDuplicate}
         />
       )}
-      
+
       {!hasLoadedSections && (
         <div className="w-[300px] h-full bg-white border-r border-gray-200 flex items-center justify-center">
           <div className="text-center text-gray-500 text-sm">
@@ -256,7 +258,7 @@ return `${Math.floor(diff / 3600)}h ago`;
               </>
             )}
           </div>
-          
+
           <div className="flex items-center gap-1 border-l border-gray-200 pl-3">
             {/* Undo/Redo Buttons */}
             <button
@@ -275,9 +277,9 @@ return `${Math.floor(diff / 3600)}h ago`;
             >
               ↪
             </button>
-            
+
             <div className="w-px h-4 bg-gray-300 mx-1" />
-            
+
             <button
               onClick={handleManualSave}
               className="px-3 py-1 bg-blue-600 hover:bg-blue-700 text-white text-xs rounded transition"

@@ -4,9 +4,13 @@
 
 import React, { createContext, useContext, useState, useCallback, useMemo } from 'react'
 
-import type { Bounds } from '../components/Canvas/Selection/types'
-
 // Types
+export interface Bounds {
+  x: number
+  y: number
+  width: number
+  height: number
+}
 type SectionType = 'header' | 'hero' | 'features' | null
 
 interface SelectionState {
@@ -20,19 +24,19 @@ interface SelectionState {
 
 interface SelectionContextType {
   state: SelectionState
-  
+
   // Actions
   select: (section: SectionType, element?: string) => void
   deselect: () => void
   hover: (element: string | null) => void
-  
+
   // NEW: Bounds management
   setBounds: (bounds: Bounds | null) => void
   getBounds: () => Bounds | null
-  
+
   // NEW: Resize state
   setResizing: (isResizing: boolean) => void
-  
+
   // Queries
   isSelected: (section: SectionType, element?: string) => boolean
   isHovered: (element: string) => boolean
@@ -57,20 +61,20 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
     selectionBounds: null,
     isResizing: false,
   })
-  
+
   // Select element or section
   const select = useCallback((section: SectionType, element?: string) => {
     const path: string[] = []
-    
+
     if (section) {
       path.push(section)
     }
-    
+
     if (element) {
       // Split element path (e.g., 'title' or 'buttons.0')
       path.push(...element.split('.'))
     }
-    
+
     setState(prev => ({
       ...prev,
       selectedSection: section,
@@ -79,7 +83,7 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
       selectionPath: path,
     }))
   }, [])
-  
+
   // Deselect everything
   const deselect = useCallback(() => {
     setState({
@@ -91,7 +95,7 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
       isResizing: false,
     })
   }, [])
-  
+
   // Set hover state
   const hover = useCallback((element: string | null) => {
     setState(prev => ({
@@ -99,7 +103,7 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
       hoveredElement: element
     }))
   }, [])
-  
+
   // NEW: Set selection bounds
   const setBounds = useCallback((bounds: Bounds | null) => {
     setState(prev => ({
@@ -107,12 +111,12 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
       selectionBounds: bounds,
     }))
   }, [])
-  
+
   // NEW: Get selection bounds
   const getBounds = useCallback(() => {
     return state.selectionBounds
   }, [state.selectionBounds])
-  
+
   // NEW: Set resize state
   const setResizing = useCallback((isResizing: boolean) => {
     setState(prev => ({
@@ -120,30 +124,30 @@ export function SelectionProvider({ children }: SelectionProviderProps) {
       isResizing,
     }))
   }, [])
-  
+
   // Check if element is selected
   const isSelected = useCallback((section: SectionType, element?: string) => {
     if (!section) {
 return false
 }
-    
+
     if (element) {
       return state.selectedSection === section && state.selectedElement === element
     }
-    
+
     return state.selectedSection === section
   }, [state.selectedSection, state.selectedElement])
-  
+
   // Check if element is hovered
   const isHovered = useCallback((element: string) => {
     return state.hoveredElement === element
   }, [state.hoveredElement])
-  
+
   // Get current selection path
   const getSelectionPath = useCallback(() => {
     return state.selectionPath
   }, [state.selectionPath])
-  
+
   // Context value
   const value = useMemo(() => ({
     state,
@@ -157,7 +161,7 @@ return false
     isHovered,
     getSelectionPath
   }), [state, select, deselect, hover, setBounds, getBounds, setResizing, isSelected, isHovered, getSelectionPath])
-  
+
   return (
     <SelectionContext.Provider value={value}>
       {children}

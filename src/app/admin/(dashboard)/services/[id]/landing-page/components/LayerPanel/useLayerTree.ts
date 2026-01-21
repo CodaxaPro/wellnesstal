@@ -7,7 +7,7 @@ import type { PageSection } from '../Canvas/FreeForm/PageBuilder/usePageBuilder'
 import type { ContainerConfig, StackConfig, GridConfig } from '../Canvas/FreeForm/primitives.types';
 
 import type { LayerNode } from './layer.types';
-import { isContentComponent, isStackConfig, isGridConfig } from './layer.types';
+import { isContentComponent, isStackConfig } from './layer.types';
 
 interface UseLayerTreeReturn {
   tree: LayerNode[];
@@ -106,7 +106,7 @@ function convertPageSectionToNode(
     label: `Section ${pageSection.section.id.slice(0, 8)}`,
     depth,
     isExpanded: true,
-    parentId: parentId || undefined,
+    ...(parentId && { parentId }),
     children: [containerNode],
   };
 }
@@ -182,7 +182,7 @@ function convertGridToNode(
   depth: number,
   parentId: string
 ): LayerNode {
-  const children = grid.children.map(content => 
+  const children = grid.children.map(content =>
     convertContentToNode(content, depth + 1, grid.id)
   );
 

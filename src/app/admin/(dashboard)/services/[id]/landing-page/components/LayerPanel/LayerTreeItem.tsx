@@ -161,9 +161,9 @@ export function LayerTreeItem({
               isSelected={selectedId === child.id}
               onSelect={onSelect}
               onToggleExpand={onToggleExpand}
-              onRename={onRename}
-              onDelete={onDelete}
-              onDuplicate={onDuplicate}
+              {...(onRename && { onRename })}
+              {...(onDelete && { onDelete })}
+              {...(onDuplicate && { onDuplicate })}
             />
           ))}
         </div>

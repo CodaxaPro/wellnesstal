@@ -1,8 +1,8 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 import toast, { Toaster } from 'react-hot-toast';
 
 interface ImageEditorProps {
@@ -17,12 +17,12 @@ type TabType = 'source' | 'crop' | 'adjust' | 'effects' | 'position' | 'animate'
 
 interface ImageConfig {
   url: string;
-  
+
   // Crop & Transform
   rotate: number;
   flipH: boolean;
   flipV: boolean;
-  
+
   // Adjustments
   brightness: number;
   contrast: number;
@@ -34,7 +34,7 @@ interface ImageConfig {
   grayscale: boolean;
   sepia: boolean;
   invert: boolean;
-  
+
   // Effects
   filter: 'none' | 'vibrant' | 'warm' | 'cool' | 'bw' | 'vintage' | 'cinematic' | 'dramatic' | 'soft';
   shadowX: number;
@@ -44,21 +44,21 @@ interface ImageConfig {
   overlayColor: string;
   overlayOpacity: number;
   vignette: number;
-  
+
   // Position
   objectFit: 'cover' | 'contain' | 'fill' | 'none';
   objectPosition: string;
-  
+
   // Animation
   entrance: 'none' | 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom' | 'bounce';
   hover: 'none' | 'zoom' | 'tilt' | 'lift' | 'glow' | 'brightness';
   duration: number;
   easing: 'ease' | 'linear' | 'ease-in-out' | 'spring';
-  
+
   // Performance
   lazyLoad: boolean;
   quality: number;
-  
+
   // SEO
   alt: string;
   title: string;
@@ -241,6 +241,7 @@ export default function ImageEditor({
   }, [isDragging, dragOffset]);
 
   // Update config helper
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const updateConfig = (key: keyof ImageConfig, value: any) => {
     setConfig(prev => ({ ...prev, [key]: value }));
   };
@@ -252,7 +253,11 @@ export default function ImageEditor({
       return;
     }
     setIsSearching(true);
-    await new Promise(resolve => setTimeout(resolve, 1000));
+    await new Promise<void>(resolve => {
+      setTimeout(() => {
+        resolve();
+      }, 1000);
+    });
     setUnsplashImages(TRENDING_IMAGES);
     setIsSearching(false);
     toast.success(`Found ${TRENDING_IMAGES.length} images`);
@@ -263,7 +268,9 @@ export default function ImageEditor({
     if (searchTimeoutRef.current) {
 clearTimeout(searchTimeoutRef.current);
 }
-    searchTimeoutRef.current = setTimeout(() => searchUnsplash(query), 600);
+    searchTimeoutRef.current = setTimeout(() => {
+      void searchUnsplash(query);
+    }, 600);
   };
 
   const handleSelectImage = (image: UnsplashImage) => {
@@ -287,13 +294,13 @@ clearTimeout(searchTimeoutRef.current);
       toast.error('Please select an image');
       return;
     }
-    console.log('💾 Saving Image Config:', config);
     onSave(config.url, config);
     toast.success('🎉 Image applied with all effects!');
   };
 
   const handleReset = () => {
-    if (confirm('Reset all settings to default?')) {
+    // eslint-disable-next-line no-alert
+    if (window.confirm('Reset all settings to default?')) {
       setConfig({
         ...config,
         rotate: 0,
@@ -323,7 +330,7 @@ clearTimeout(searchTimeoutRef.current);
   // Generate CSS filters
   const getFilterStyle = (): React.CSSProperties => {
     const filters: string[] = [];
-    
+
     if (config.brightness !== 0) {
 filters.push(`brightness(${1 + config.brightness / 100})`);
 }
@@ -348,7 +355,7 @@ filters.push('sepia(100%)');
     if (config.invert) {
 filters.push('invert(100%)');
 }
-    
+
     // Preset filters
     const filterPresets: Record<string, string> = {
       vibrant: 'saturate(1.4) contrast(1.1)',
@@ -360,11 +367,14 @@ filters.push('invert(100%)');
       dramatic: 'contrast(1.4) saturate(1.3) brightness(0.9)',
       soft: 'contrast(0.85) saturate(0.9) brightness(1.05)',
     };
-    
-    if (config.filter !== 'none' && filterPresets[config.filter]) {
-      filters.push(filterPresets[config.filter]);
+
+    if (config.filter && config.filter !== 'none' && filterPresets[config.filter]) {
+      const preset = filterPresets[config.filter]
+      if (preset) {
+        filters.push(preset)
+      }
     }
-    
+
     return {
       filter: filters.join(' '),
       opacity: config.opacity / 100,
@@ -428,7 +438,7 @@ filters.push('invert(100%)');
   return (
     <>
       <Toaster position="top-center" />
-      
+
       {/* Backdrop */}
       <motion.div
         initial={{ opacity: 0, backdropFilter: 'blur(0px)' }}
@@ -557,6 +567,7 @@ filters.push('invert(100%)');
                             selectedUnsplash?.id === img.id ? 'border-purple-500 ring-2 ring-purple-200' : 'border-gray-200'
                           }`}
                         >
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={img.urls.thumb} alt="" className="w-full h-full object-cover" />
                           {selectedUnsplash?.id === img.id && (
                             <div className="absolute inset-0 bg-purple-600/20 flex items-center justify-center">
@@ -803,6 +814,7 @@ filters.push('invert(100%)');
                         ['left', 'center', 'right'],
                         ['bottom left', 'bottom', 'bottom right'],
                       ].map((row, i) => (
+                        // eslint-disable-next-line react/no-array-index-key
                         <div key={i} className="contents">
                           {row.map(pos => (
                             <button
@@ -812,7 +824,7 @@ filters.push('invert(100%)');
                                 config.objectPosition === pos ? 'bg-purple-600 text-white' : 'bg-gray-100'
                               }`}
                             >
-                              {pos.split(' ').map(w => w[0].toUpperCase()).join('')}
+                              {pos.split(' ').map(w => w?.[0]?.toUpperCase() ?? '').join('')}
                             </button>
                           ))}
                         </div>
@@ -842,7 +854,7 @@ filters.push('invert(100%)');
                             config.entrance === anim ? 'bg-purple-600 text-white' : 'bg-gray-100'
                           }`}
                         >
-                          {anim.split('-').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')}
+                          {anim.split('-').map(w => w?.[0] ? w[0].toUpperCase() + w.slice(1) : w).join(' ')}
                         </button>
                       ))}
                     </div>
@@ -986,28 +998,29 @@ filters.push('invert(100%)');
 
             <div className="flex-1 flex items-center justify-center">
               {config.url ? (
-                <motion.div 
+                <motion.div
                   key={config.url} // Re-animate on image change
                   className="relative max-w-full max-h-full"
                   initial={getEntranceAnimation()}
                   animate={{ opacity: 1, scale: 1, x: 0, y: 0, rotate: 0 }}
-                  transition={{ 
+                  transition={{
   duration: config.duration,
-  ease: config.easing === 'spring' ? [0.25, 0.1, 0.25, 1] : 
+  ease: config.easing === 'spring' ? [0.25, 0.1, 0.25, 1] :
         config.easing === 'ease' ? [0.25, 0.1, 0.25, 1] :
         config.easing === 'ease-in-out' ? [0.42, 0, 0.58, 1] :
-        config.easing === 'linear' ? [0, 0, 1, 1] : 
+        config.easing === 'linear' ? [0, 0, 1, 1] :
         [0.25, 0.1, 0.25, 1]
 }}
                   whileHover={getHoverAnimation()}
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={config.url}
                     alt="Preview"
                     className="max-w-full max-h-[500px] rounded-2xl shadow-2xl"
                     style={getFilterStyle()}
                   />
-                  
+
                   {/* Overlay */}
                   {config.overlayOpacity > 0 && (
                     <div

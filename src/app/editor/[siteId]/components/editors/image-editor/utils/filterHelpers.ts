@@ -5,7 +5,7 @@ import { ImageConfig } from '../types/imageConfig.types';
  */
 export function getFilterStyle(config: ImageConfig): React.CSSProperties {
   const filters: string[] = [];
-  
+
   // Adjustments
   if (config.brightness !== 0) {
     filters.push(`brightness(${1 + config.brightness / 100})`);
@@ -31,7 +31,7 @@ export function getFilterStyle(config: ImageConfig): React.CSSProperties {
   if (config.invert) {
     filters.push('invert(100%)');
   }
-  
+
   // Preset filters
   const filterPresets: Record<string, string> = {
     vibrant: 'saturate(1.4) contrast(1.1)',
@@ -43,11 +43,14 @@ export function getFilterStyle(config: ImageConfig): React.CSSProperties {
     dramatic: 'contrast(1.4) saturate(1.3) brightness(0.9)',
     soft: 'contrast(0.85) saturate(0.9) brightness(1.05)',
   };
-  
-  if (config.filter !== 'none' && filterPresets[config.filter]) {
-    filters.push(filterPresets[config.filter]);
+
+  if (config.filter && config.filter !== 'none' && filterPresets[config.filter]) {
+    const preset = filterPresets[config.filter]
+    if (preset) {
+      filters.push(preset)
+    }
   }
-  
+
   return {
     filter: filters.length > 0 ? filters.join(' ') : 'none',
     opacity: config.opacity / 100,

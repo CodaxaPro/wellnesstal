@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { FONT_FAMILIES } from '../../types/textConfig.types';
 import { getSlideInAnimation } from '../../utils/animationHelpers';
@@ -15,7 +15,11 @@ interface FontSelectorProps {
 export default function FontSelector({ value, onChange }: FontSelectorProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const currentFont = FONT_FAMILIES.find(f => f.value === value) || FONT_FAMILIES[0];
+  const currentFont = FONT_FAMILIES.find(f => f.value === value) || FONT_FAMILIES[0]
+
+  if (!currentFont) {
+    return null
+  }
 
   return (
     <div className="relative">

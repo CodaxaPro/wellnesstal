@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { verifyAdmin } from '@/lib/auth'
-import { supabaseAdmin, DBCategory } from '@/lib/supabase-server'
+import { DBCategory, supabaseAdmin } from '@/lib/supabase-server'
 
 // Types
 interface CategoryResponse {
@@ -95,6 +95,7 @@ export async function GET(request: NextRequest) {
 
     const response: CategoryResponse = {
       success: true,
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       data: transformedData as any,
       stats
     }
@@ -231,8 +232,9 @@ export async function PUT(request: NextRequest) {
     }
 
     // Validation for name if provided
-    if (updateData.name) {
-      if (updateData.name.trim().length < 2) {
+    if (updateData['name']) {
+      const nameValue = String(updateData['name']).trim()
+      if (nameValue.length < 2) {
         return NextResponse.json(
           { success: false, error: 'Kategori adı en az 2 karakter olmalıdır' },
           { status: 400 }
@@ -243,7 +245,7 @@ export async function PUT(request: NextRequest) {
       const { data: duplicate } = await supabaseAdmin
         .from('categories')
         .select('id')
-        .ilike('name', updateData.name.trim())
+        .ilike('name', nameValue)
         .neq('id', id)
         .single()
 
@@ -256,26 +258,27 @@ export async function PUT(request: NextRequest) {
     }
 
     // Prepare update object
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const updateObj: Record<string, any> = {}
-    if (updateData.name) {
-      updateObj.name = updateData.name.trim()
-      updateObj.slug = generateSlug(updateData.name)
+    if (updateData['name']) {
+      updateObj['name'] = String(updateData['name']).trim()
+      updateObj['slug'] = generateSlug(String(updateData['name']))
     }
-    if (updateData.description !== undefined) {
-updateObj.description = updateData.description?.trim()
-}
-    if (updateData.color !== undefined) {
-updateObj.color = updateData.color
-}
-    if (updateData.icon !== undefined) {
-updateObj.icon = updateData.icon
-}
-    if (updateData.order !== undefined) {
-updateObj.order_num = updateData.order
-}
-    if (updateData.active !== undefined) {
-updateObj.active = updateData.active
-}
+    if (updateData['description'] !== undefined) {
+      updateObj['description'] = updateData['description'] ? String(updateData['description']).trim() : null
+    }
+    if (updateData['color'] !== undefined) {
+      updateObj['color'] = updateData['color']
+    }
+    if (updateData['icon'] !== undefined) {
+      updateObj['icon'] = updateData['icon']
+    }
+    if (updateData['order'] !== undefined) {
+      updateObj['order_num'] = updateData['order']
+    }
+    if (updateData['active'] !== undefined) {
+      updateObj['active'] = updateData['active']
+    }
 
     const { data: updated, error } = await supabaseAdmin
       .from('categories')

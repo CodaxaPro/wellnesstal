@@ -3,10 +3,14 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 import jwt from 'jsonwebtoken'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']
+const supabaseKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables')
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 function verifyToken(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -15,7 +19,7 @@ function verifyToken(request: NextRequest) {
   }
   const token = authHeader.substring(7)
   try {
-    return jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret')
+    return jwt.verify(token, process.env['JWT_SECRET'] || 'fallback-secret')
   } catch {
     return null
   }
@@ -43,6 +47,7 @@ export async function GET(request: NextRequest) {
     if (error) {
       // Check if error is about table not existing
       if (error.message?.includes('does not exist') || error.message?.includes('relation') || error.code === '42P01') {
+        // eslint-disable-next-line no-console
         console.log('page_categories table does not exist yet, returning empty array')
         return NextResponse.json({
           success: true,
@@ -58,10 +63,11 @@ export async function GET(request: NextRequest) {
       data: categories || []
     })
 
-  } catch (error: any) {
-    console.error('Categories GET error:', error)
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : { message: 'Unknown error', code: undefined }
+    console.error('Categories GET error:', errorObj.message)
     // If it's a table not found error, return empty array
-    if (error?.message?.includes('does not exist') || error?.message?.includes('relation') || error?.code === '42P01') {
+    if (errorObj.message?.includes('does not exist') || errorObj.message?.includes('relation') || (errorObj as { code?: string }).code === '42P01') {
       return NextResponse.json({
         success: true,
         data: [],
@@ -69,7 +75,7 @@ export async function GET(request: NextRequest) {
       })
     }
     return NextResponse.json(
-      { success: false, error: error?.message || 'Failed to fetch categories' },
+      { success: false, error: errorObj.message || 'Failed to fetch categories' },
       { status: 500 }
     )
   }
@@ -123,8 +129,9 @@ export async function POST(request: NextRequest) {
           { status: 409 }
         )
       }
-    } catch (e: any) {
-      if (e?.message?.includes('does not exist') || e?.message?.includes('relation') || e?.code === '42P01') {
+    } catch (e: unknown) {
+      const errorObj = e instanceof Error ? e : { message: 'Unknown error', code: undefined }
+      if (errorObj.message?.includes('does not exist') || errorObj.message?.includes('relation') || (errorObj as { code?: string }).code === '42P01') {
         return NextResponse.json(
           { success: false, error: 'Categories table not found. Please run migration 014_page_categories.sql in Supabase SQL Editor' },
           { status: 503 }
@@ -151,8 +158,9 @@ export async function POST(request: NextRequest) {
           )
         }
         finalOrderNum = maxOrder ? maxOrder.order_num + 1 : 0
-      } catch (e: any) {
-        if (e?.message?.includes('does not exist') || e?.message?.includes('relation') || e?.code === '42P01') {
+      } catch (e: unknown) {
+        const errorObj = e instanceof Error ? e : { message: 'Unknown error', code: undefined }
+        if (errorObj.message?.includes('does not exist') || errorObj.message?.includes('relation') || (errorObj as { code?: string }).code === '42P01') {
           return NextResponse.json(
             { success: false, error: 'Categories table not found. Please run migration 014_page_categories.sql in Supabase SQL Editor' },
             { status: 503 }
@@ -192,10 +200,11 @@ export async function POST(request: NextRequest) {
       message: 'Category created successfully'
     })
 
-  } catch (error: any) {
-    console.error('Categories POST error:', error)
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : { message: 'Failed to create category' }
+    console.error('Categories POST error:', errorObj.message)
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to create category' },
+      { success: false, error: errorObj.message || 'Failed to create category' },
       { status: 500 }
     )
   }
@@ -244,8 +253,9 @@ export async function PUT(request: NextRequest) {
             { status: 409 }
           )
         }
-      } catch (e: any) {
-        if (e?.message?.includes('does not exist') || e?.message?.includes('relation') || e?.code === '42P01') {
+      } catch (e: unknown) {
+        const errorObj = e instanceof Error ? e : { message: 'Unknown error', code: undefined }
+        if (errorObj.message?.includes('does not exist') || errorObj.message?.includes('relation') || (errorObj as { code?: string }).code === '42P01') {
           return NextResponse.json(
             { success: false, error: 'Categories table not found. Please run migration 014_page_categories.sql in Supabase SQL Editor' },
             { status: 503 }
@@ -278,10 +288,11 @@ export async function PUT(request: NextRequest) {
       message: 'Category updated successfully'
     })
 
-  } catch (error: any) {
-    console.error('Categories PUT error:', error)
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : { message: 'Failed to update category' }
+    console.error('Categories PUT error:', errorObj.message)
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to update category' },
+      { success: false, error: errorObj.message || 'Failed to update category' },
       { status: 500 }
     )
   }
@@ -326,8 +337,9 @@ export async function DELETE(request: NextRequest) {
           { status: 409 }
         )
       }
-    } catch (e: any) {
-      if (e?.message?.includes('does not exist') || e?.message?.includes('relation') || e?.code === '42P01') {
+    } catch (e: unknown) {
+      const errorObj = e instanceof Error ? e : { message: 'Unknown error', code: undefined }
+      if (errorObj.message?.includes('does not exist') || errorObj.message?.includes('relation') || (errorObj as { code?: string }).code === '42P01') {
         return NextResponse.json(
           { success: false, error: 'Categories table not found. Please run migration 014_page_categories.sql in Supabase SQL Editor' },
           { status: 503 }
@@ -356,10 +368,11 @@ export async function DELETE(request: NextRequest) {
       message: 'Category deleted successfully'
     })
 
-  } catch (error: any) {
-    console.error('Categories DELETE error:', error)
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : { message: 'Failed to delete category' }
+    console.error('Categories DELETE error:', errorObj.message)
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to delete category' },
+      { success: false, error: errorObj.message || 'Failed to delete category' },
       { status: 500 }
     )
   }

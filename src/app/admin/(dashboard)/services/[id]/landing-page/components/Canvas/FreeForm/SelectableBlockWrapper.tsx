@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 
-import type { LayoutElement, SectionConfig, ContainerConfig, StackConfig, GridConfig } from './primitives.types';
+import type { ContainerConfig, GridConfig, LayoutElement, StackConfig } from './primitives.types';
 
 interface SelectableBlockWrapperProps {
   element: LayoutElement;
@@ -37,7 +37,7 @@ const ELEMENT_COLORS = {
 export function SelectableBlockWrapper({ element, selectedId, onSelect, children }: SelectableBlockWrapperProps) {
   const [isHovered, setIsHovered] = useState(false);
   const isSelected = element.id === selectedId;
-  
+
   const elementType = element.type as 'section' | 'container' | 'stack' | 'grid';
   const colors = ELEMENT_COLORS[elementType];
 

@@ -30,7 +30,7 @@ function LandingPageContent({ service }: { service: ServiceData }) {
               <p className="text-sm text-gray-500">{service.title}</p>
             </div>
             <div className="flex gap-2">
-              <Link 
+              <Link
                 href="/admin/services"
                 className="px-4 py-2 text-gray-600 hover:text-gray-900"
               >
@@ -54,8 +54,8 @@ function LandingPageContent({ service }: { service: ServiceData }) {
 
 export default function LandingPageBuilder() {
   const params = useParams()
-  const serviceId = params.id as string
-  
+  const serviceId = params['id'] as string
+
   const [service, setService] = useState<ServiceData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
@@ -70,7 +70,7 @@ export default function LandingPageBuilder() {
           duration: '90 dk',
           image: '/images/default-service.jpg'
         }
-        
+
         setService(mockService)
         setIsLoading(false)
       } catch (error) {
@@ -98,7 +98,7 @@ export default function LandingPageBuilder() {
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-gray-900 mb-4">Service not found</h1>
-          <Link 
+          <Link
             href="/admin/services"
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
           >
@@ -110,7 +110,7 @@ export default function LandingPageBuilder() {
   }
 
   return (
-    <EditorProvider 
+    <EditorProvider
       initialData={{
         header: {
           logo: { url: '', alt: 'Logo' },
@@ -123,8 +123,8 @@ export default function LandingPageBuilder() {
           content: { title: '', subtitle: '', description: '' },
           buttons: [],
           images: { main: '', background: '' },
-          style: { 
-            backgroundColor: '#ffffff', 
+          style: {
+            backgroundColor: '#ffffff',
             textColor: '#000000',
             overlay: { enabled: false, color: '#000000', opacity: 0.5 }
           },

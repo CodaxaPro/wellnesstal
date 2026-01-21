@@ -6,10 +6,14 @@ import jwt from 'jsonwebtoken'
 import { logger } from '@/lib/logger'
 import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-)
+const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']
+const supabaseKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('Missing Supabase environment variables')
+}
+
+const supabase = createClient(supabaseUrl, supabaseKey)
 
 function verifyToken(request: NextRequest) {
   const authHeader = request.headers.get('authorization')
@@ -22,18 +26,21 @@ function verifyToken(request: NextRequest) {
   }
   const token = authHeader.substring(7)
   try {
-    return jwt.verify(token, process.env.JWT_SECRET || 'fallback-secret')
-  } catch (error: any) {
+    return jwt.verify(token, process.env['JWT_SECRET'] || 'fallback-secret')
+  } catch (error: unknown) {
+    const errorObj = error instanceof Error ? error : { name: 'unknown', message: 'unknown' }
     logger.warn('Token verification failed: Invalid or expired token', {
-      error: error?.name || 'unknown',
-      message: error?.message || 'unknown'
+      error: errorObj.name || 'unknown',
+      message: errorObj.message || 'unknown'
     })
     return null
   }
 }
 
 // Deep merge helper: merges source into target but skips empty-string/null/undefined
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function deepMerge(target: any, source: any): any {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const out: any = { ...(target || {}) }
   if (!source || typeof source !== 'object') {
 return out
@@ -77,7 +84,7 @@ return out
 
     // Special handling: Deep merge nested objects to preserve all properties
     if (nestedObjectFields.includes(key) && typeof s === 'object' && s !== null && !Array.isArray(s)) {
-      out[key] = deepMerge((target || {})[key] || {}, s)
+      out[key] = deepMerge((target?.[key] as Record<string, unknown>) || {}, s)
       continue
     }
 
@@ -87,7 +94,7 @@ return out
     }
 
     if (typeof s === 'object' && s !== null && !Array.isArray(s)) {
-      out[key] = deepMerge((target || {})[key], s)
+      out[key] = deepMerge(target?.[key] as Record<string, unknown>, s)
     } else {
       out[key] = s
     }
@@ -191,10 +198,6 @@ export async function POST(request: NextRequest) {
       page_id: body.page_id,
       block_type: body.block_type
     })
-    // Extract an optional client-supplied timestamp (same logic as POST)
-    const incomingTsRaw = (body && (body.clientUpdatedAt || body._clientUpdatedAt)) || (body?.content?._meta?.clientUpdatedAt)
-    const incomingTs = incomingTsRaw ? Number(incomingTsRaw) : null
-
     // Extract an optional client-supplied timestamp to guard against
     // older/stale updates overwriting newer content. Clients send
     // `clientUpdatedAt` as a numeric epoch millis value when updating.
@@ -236,7 +239,7 @@ export async function POST(request: NextRequest) {
         .limit(1)
 
       if (positionError) {
-        logger.warn('Error fetching last block position', positionError, { page_id })
+        logger.warn('Error fetching last block position', { error: positionError, page_id })
       }
 
       const lastBlock = lastBlocks && lastBlocks.length > 0 ? lastBlocks[0] : null
@@ -353,6 +356,7 @@ export async function PUT(request: NextRequest) {
     const incomingTs = incomingTsRaw ? Number(incomingTsRaw) : null
 
     // Debug: log incoming update payload to help track persistence issues
+    // eslint-disable-next-line no-console
     console.log('[DEBUG] PUT /api/pages/blocks - incoming updateData:', JSON.stringify(updateData).slice(0, 10000))
 
     // If content is provided, fetch existing block and deep-merge to avoid
@@ -370,6 +374,7 @@ export async function PUT(request: NextRequest) {
         const existingTsRaw = existing?.content?._meta?.clientUpdatedAt
         const existingTs = existingTsRaw ? Number(existingTsRaw) : null
         if (incomingTs && existingTs && incomingTs <= existingTs) {
+          // eslint-disable-next-line no-console
           console.log('[DEBUG] PUT /api/pages/blocks - incoming update older than stored; skipping update for id:', id, 'incomingTs:', incomingTs, 'existingTs:', existingTs)
           return NextResponse.json({ success: true, data: existing, message: 'No update: older client timestamp' })
         }
@@ -387,18 +392,20 @@ export async function PUT(request: NextRequest) {
         merged._meta.clientUpdatedAt = incomingTs || Date.now()
 
         updateData.content = merged
+        // eslint-disable-next-line no-console
         console.log('[DEBUG] PUT /api/pages/blocks - merged content preview:', JSON.stringify(updateData.content).slice(0, 2000))
         // If merged content is identical to existing content, skip the DB update
         try {
           if (existing && JSON.stringify(existing.content || {}) === JSON.stringify(merged || {})) {
+            // eslint-disable-next-line no-console
             console.log('[DEBUG] PUT /api/pages/blocks - no changes detected, skipping update for id:', id)
             return NextResponse.json({ success: true, data: existing, message: 'No changes' })
           }
-        } catch (e) {
+        } catch (_e) {
           // If stringify fails, continue to update
         }
-      } catch (e) {
-        console.log('[DEBUG] PUT /api/pages/blocks - could not fetch existing block for merge', e)
+      } catch (_e) {
+        // Could not fetch existing block for merge, continue without merge
       }
     }
 
@@ -410,12 +417,14 @@ export async function PUT(request: NextRequest) {
       .single()
 
     // Debug: log result of update
+    // eslint-disable-next-line no-console
     console.log('[DEBUG] PUT /api/pages/blocks - result block id:', id, 'error:', error ? error.message : null)
     if (block) {
       try {
+        // eslint-disable-next-line no-console
         console.log('[DEBUG] PUT /api/pages/blocks - saved content preview:', JSON.stringify(block.content).slice(0, 2000))
-      } catch (e) {
-        console.log('[DEBUG] PUT /api/pages/blocks - saved content (non-serializable)')
+      } catch (_e) {
+        // Saved content is non-serializable
       }
     }
     if (error) {

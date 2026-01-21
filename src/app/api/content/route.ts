@@ -9,8 +9,17 @@ import { supabaseAdmin } from '@/lib/supabase-server'
 // File path for fallback (existing content.json)
 const DATA_FILE_PATH = path.join(process.cwd(), 'data', 'content.json')
 
+// Content type from file
+interface FileContentItem {
+  section?: string
+  title?: string
+  description?: string
+  content?: unknown
+  [key: string]: unknown
+}
+
 // Read content from JSON file (fallback)
-function readContentFromFile(): any[] {
+function readContentFromFile(): FileContentItem[] {
   try {
     if (!fs.existsSync(DATA_FILE_PATH)) {
       return []
@@ -59,11 +68,11 @@ export async function GET(request: NextRequest) {
     }
 
     // Fallback to file-based content
-    console.log('Falling back to file-based content')
+    console.warn('Falling back to file-based content')
     const fileContent = readContentFromFile()
 
     if (section) {
-      const content = fileContent.find((c: any) => c.section === section)
+      const content = fileContent.find((c: FileContentItem) => c.section === section)
       if (!content) {
         return NextResponse.json(
           { success: false, error: 'Section not found' },
@@ -85,7 +94,7 @@ export async function GET(request: NextRequest) {
       const section = searchParams.get('section')
 
       if (section) {
-        const content = fileContent.find((c: any) => c.section === section)
+        const content = fileContent.find((c: FileContentItem) => c.section === section)
         return NextResponse.json({ success: true, data: content || null })
       }
       return NextResponse.json({ success: true, data: fileContent })
@@ -120,8 +129,6 @@ export async function PUT(request: NextRequest) {
     }
 
     // Try to update in Supabase
-    const query = supabaseAdmin.from('content')
-
     // Find the record first
     const findQuery = id
       ? supabaseAdmin.from('content').select('*').eq('id', id).single()

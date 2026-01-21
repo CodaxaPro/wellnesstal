@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import CharacterCount from '@tiptap/extension-character-count';
 import { Color } from '@tiptap/extension-color';
@@ -11,9 +11,9 @@ import TextAlign from '@tiptap/extension-text-align';
 import { TextStyle } from '@tiptap/extension-text-style';
 import Typography from '@tiptap/extension-typography';
 import Underline from '@tiptap/extension-underline';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { EditorContent, useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence, motion } from 'framer-motion';
 
 interface TextEditorProps {
   value: string;
@@ -37,7 +37,7 @@ export default function TextEditor({
   const [showHighlightPicker, setShowHighlightPicker] = useState(false);
   const [showLinkDialog, setShowLinkDialog] = useState(false);
   const [linkUrl, setLinkUrl] = useState('');
-  const [showFontSizePicker, setShowFontSizePicker] = useState(false);
+  const [_showFontSizePicker, setShowFontSizePicker] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
 
   // Field type detection
@@ -167,12 +167,12 @@ return 'title';
   }, [isDragging, dragOffset]);
 
   // Save handler
-  const handleSave = () => {
+  const handleSave = useCallback(() => {
     if (editor) {
       const htmlContent = editor.getHTML();
       onSave(htmlContent);
     }
-  };
+  }, [editor, onSave]);
 
   // Keyboard shortcuts
   useEffect(() => {
@@ -189,7 +189,7 @@ return 'title';
 
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [editor]);
+  }, [editor, handleSave, onCancel]);
 
   // Link handlers
   const handleSetLink = () => {
@@ -257,16 +257,6 @@ return;
     { name: 'Green', value: '#D1FAE5' },
     { name: 'Lime', value: '#D9F99D' },
     { name: 'Amber', value: '#FEF9C3' },
-  ];
-
-  const fontSizes = [
-    { label: 'Extra Small', value: '0.75rem', class: 'text-xs' },
-    { label: 'Small', value: '0.875rem', class: 'text-sm' },
-    { label: 'Normal', value: '1rem', class: 'text-base' },
-    { label: 'Large', value: '1.125rem', class: 'text-lg' },
-    { label: 'Extra Large', value: '1.25rem', class: 'text-xl' },
-    { label: '2X Large', value: '1.5rem', class: 'text-2xl' },
-    { label: '3X Large', value: '1.875rem', class: 'text-3xl' },
   ];
 
   if (!editor) {
@@ -588,8 +578,9 @@ return null;
             {/* Link Button */}
             <button
               onClick={() => {
-                const previousUrl = editor.getAttributes('link').href;
-                setLinkUrl(previousUrl || '');
+                const linkAttrs = editor.getAttributes('link') as Record<string, unknown>
+                const previousUrl = (linkAttrs['href'] as string) || ''
+                setLinkUrl(previousUrl);
                 setShowLinkDialog(true);
                 setShowColorPicker(false);
                 setShowHighlightPicker(false);
@@ -717,7 +708,7 @@ setShowLinkDialog(false);
                 </div>
                 <span className="text-gray-400">characters</span>
               </div>
-              
+
               <div className="flex items-center gap-2 bg-white px-3 py-2 rounded-lg border border-gray-200 shadow-sm">
                 <span className="font-semibold text-gray-700">{wordCount}</span>
                 <span className="text-gray-500">words</span>

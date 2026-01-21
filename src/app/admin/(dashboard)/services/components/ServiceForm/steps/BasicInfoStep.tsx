@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 
-import { ServiceFormData } from '../../../../../../types/services'
+import type { ServiceFormData } from '@/types/services'
 import CategoryManager from '../shared/CategoryManager'
 
 interface Category {
@@ -40,7 +40,7 @@ export default function BasicInfoStep({
   }
 
   const handleCategoryUpdated = (updatedCategory: Category) => {
-    const updatedCategories = categories.map(cat => 
+    const updatedCategories = categories.map(cat =>
       cat.id === updatedCategory.id ? updatedCategory : cat
     )
     onCategoriesUpdate(updatedCategories)
@@ -62,7 +62,7 @@ export default function BasicInfoStep({
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-charcoal mb-4">Temel Bilgiler</h3>
-      
+
       {/* Service Name & Category */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>

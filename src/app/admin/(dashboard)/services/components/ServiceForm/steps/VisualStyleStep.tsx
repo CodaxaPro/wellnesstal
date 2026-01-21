@@ -1,6 +1,6 @@
 'use client'
 
-import { ServiceFormData } from '../../../../../../types/services'
+import type { ServiceFormData } from '@/types/services'
 
 interface VisualStyleStepProps {
   formData: ServiceFormData
@@ -18,18 +18,18 @@ export default function VisualStyleStep({
   return (
     <div className="space-y-6">
       <h3 className="text-lg font-semibold text-charcoal mb-4">Görsel ve Stil</h3>
-      
+
       <div>
         <label className="block text-sm font-medium text-charcoal mb-2">
           Hizmet Görseli
         </label>
-        
+
         {/* Current Image Preview */}
         {formData.image && formData.image !== '/images/default-service.jpg' && (
           <div className="relative w-32 h-32 mb-4 rounded-xl overflow-hidden border border-gray-200">
-            <img 
-              src={formData.image} 
-              alt="Service preview" 
+            <img
+              src={formData.image}
+              alt="Service preview"
               className="w-full h-full object-cover"
               onError={() => onInputChange('image', '/images/default-service.jpg')}
             />
@@ -95,7 +95,7 @@ export default function VisualStyleStep({
             <div className="grid grid-cols-4 gap-2">
               {[
                 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400',
-                'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400', 
+                'https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=400',
                 'https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=400',
                 'https://images.unsplash.com/photo-1515377905703-c4788e51af15?w=400'
               ].map((url, index) => (
@@ -111,7 +111,7 @@ export default function VisualStyleStep({
             </div>
           </div>
         </div>
-        
+
         {/* Gradient Color Selector */}
         <div className="bg-sage-50 p-4 rounded-xl mt-4">
           <label className="block text-sm font-medium text-charcoal mb-3">
@@ -131,15 +131,15 @@ export default function VisualStyleStep({
                 type="button"
                 onClick={() => onGradientColorChange(gradient.value)}
                 className={`h-16 rounded-xl bg-gradient-to-br ${gradient.value} border-2 transition-all ${
-                  gradientColor === gradient.value 
-                    ? 'border-sage-600 ring-2 ring-sage-200' 
+                  gradientColor === gradient.value
+                    ? 'border-sage-600 ring-2 ring-sage-200'
                     : 'border-gray-200 hover:border-sage-400'
                 }`}
                 title={gradient.name}
               />
             ))}
           </div>
-          
+
           {/* Preview */}
           <div className="mt-3 flex items-center gap-3">
             <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${gradientColor} flex items-center justify-center text-white`}>

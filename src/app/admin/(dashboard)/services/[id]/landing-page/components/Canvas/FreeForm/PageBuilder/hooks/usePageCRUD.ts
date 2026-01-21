@@ -3,9 +3,10 @@
 
 import { useCallback } from 'react';
 
-import type { HeadingConfig, TextConfig, ContentComponent } from '../../content.types';
-import type { SectionConfig, ContainerConfig, StackConfig, GridConfig } from '../../primitives.types';
-import { findElementById } from '../utils/elementFinders';
+import toast from 'react-hot-toast';
+
+import type { ContentComponent, HeadingConfig, TextConfig } from '../../content.types';
+import type { ContainerConfig, GridConfig, SectionConfig, StackConfig } from '../../primitives.types';
 import { regenerateIds } from '../utils/idGenerator';
 
 // PageSection type'ını buraya kopyala (geçici)
@@ -32,7 +33,7 @@ export function usePageCRUD(
   setSections: (sections: PageSection[] | ((prev: PageSection[]) => PageSection[])) => void,
   selectedId: string | null
 ): UsePageCRUDReturn {
-  
+
   // ============================================================================
   // ADD OPERATIONS
   // ============================================================================
@@ -94,7 +95,7 @@ export function usePageCRUD(
    */
   const handleAddStack = useCallback((newStack: StackConfig) => {
     if (!selectedId) {
-      alert('Please select a Section or Container first');
+      toast.error('Please select a Section or Container first');
       return;
     }
 
@@ -153,7 +154,7 @@ export function usePageCRUD(
    */
   const handleAddGrid = useCallback((newGrid: GridConfig) => {
     if (!selectedId) {
-      alert('Please select a Section or Container first');
+      toast.error('Please select a Section or Container first');
       return;
     }
 
@@ -190,7 +191,7 @@ export function usePageCRUD(
    */
   const handleAddContent = useCallback((newContent: ContentComponent) => {
     if (!selectedId) {
-      alert('Please select a Stack or Grid first');
+      toast.error('Please select a Stack or Grid first');
       return;
     }
 
@@ -262,9 +263,10 @@ return true;
    * Element sil
    */
   const handleDelete = useCallback((id: string) => {
-    if (!confirm('Are you sure you want to delete this element?')) {
-return;
-}
+    // eslint-disable-next-line no-alert
+    if (!window.confirm('Are you sure you want to delete this element?')) {
+      return;
+    }
 
     // Section silme
     const filteredSections = sections.filter((ps) => ps.section.id !== id);
@@ -290,7 +292,7 @@ return;
       };
 
       const updatedStacks = deleteFromElements(pageSection.stacks) as StackConfig[];
-      
+
       const filteredGrids = pageSection.grids.filter((g) => g.id !== id);
       const updatedGrids = filteredGrids.map((grid) => ({
         ...grid,
@@ -317,8 +319,9 @@ return;
   const handleDuplicate = useCallback((id: string) => {
     // Section kopyalama
     for (let i = 0; i < sections.length; i++) {
-      if (sections[i].section.id === id) {
-        const duplicated = JSON.parse(JSON.stringify(sections[i]));
+      const section = sections[i];
+      if (section && section.section.id === id) {
+        const duplicated = JSON.parse(JSON.stringify(section));
         const regeneratedSection = regenerateIds(duplicated);
         const newSections = [...sections];
         newSections.splice(i + 1, 0, regeneratedSection);
@@ -333,22 +336,26 @@ return;
         elements: (StackConfig | ContentComponent)[]
       ): (StackConfig | ContentComponent)[] | null => {
         for (let i = 0; i < elements.length; i++) {
-          if (elements[i].id === id) {
-            const duplicated = JSON.parse(JSON.stringify(elements[i]));
+          const element = elements[i];
+          if (!element) {
+            continue;
+          }
+          if (element.id === id) {
+            const duplicated = JSON.parse(JSON.stringify(element));
             duplicated.id = `${duplicated.type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-            
+
             const newElements = [...elements];
             newElements.splice(i + 1, 0, duplicated);
             return newElements;
           }
 
-          if (elements[i].type === 'stack' && 'children' in elements[i]) {
-            const stackElement = elements[i] as StackConfig;
+          if (element.type === 'stack' && 'children' in element) {
+            const stackElement = element as StackConfig;
             const result = duplicateInElements(stackElement.children);
             if (result) {
               const newElements = [...elements];
               newElements[i] = {
-                ...elements[i],
+                ...element,
                 children: result,
               } as StackConfig;
               return newElements;
@@ -367,22 +374,33 @@ return;
       }
 
       for (let i = 0; i < pageSection.grids.length; i++) {
-        if (pageSection.grids[i].id === id) {
-          const duplicated = JSON.parse(JSON.stringify(pageSection.grids[i]));
+        const grid = pageSection.grids[i];
+        if (!grid) {
+          continue;
+        }
+        if (grid.id === id) {
+          const duplicated = JSON.parse(JSON.stringify(grid));
           duplicated.id = `grid-${Date.now()}`;
           const newGrids = [...pageSection.grids];
           newGrids.splice(i + 1, 0, duplicated);
           return { ...pageSection, grids: newGrids };
         }
 
-        const contentIndex = pageSection.grids[i].children.findIndex((c) => c.id === id);
+        const contentIndex = grid.children.findIndex((c) => c.id === id);
         if (contentIndex !== -1) {
-          const duplicated = { ...pageSection.grids[i].children[contentIndex] };
+          const content = grid.children[contentIndex];
+          if (!content || typeof content !== 'object' || !('type' in content)) {
+            continue;
+          }
+          const duplicated = { ...content } as ContentComponent;
           duplicated.id = `${duplicated.type}-${Date.now()}`;
-          const newChildren = [...pageSection.grids[i].children];
+          const newChildren = [...grid.children];
           newChildren.splice(contentIndex + 1, 0, duplicated);
           const newGrids = [...pageSection.grids];
-          newGrids[i] = { ...newGrids[i], children: newChildren };
+          const updatedGrid = newGrids[i];
+          if (updatedGrid) {
+            newGrids[i] = { ...updatedGrid, id: updatedGrid.id || `grid-${Date.now()}`, children: newChildren };
+          }
           return { ...pageSection, grids: newGrids };
         }
       }
@@ -405,13 +423,17 @@ return;
 
     // Section taşıma
     for (let i = 0; i < sections.length; i++) {
-      if (sections[i].section.id === id) {
+      const section = sections[i];
+      if (section && section.section.id === id) {
         const newIndex = i + move;
         if (newIndex < 0 || newIndex >= sections.length) {
-return;
-}
+          return;
+        }
         const newSections = [...sections];
-        [newSections[i], newSections[newIndex]] = [newSections[newIndex], newSections[i]];
+        const targetSection = newSections[newIndex];
+        if (section && targetSection) {
+          [newSections[i], newSections[newIndex]] = [targetSection, section];
+        }
         setSections(newSections);
         return;
       }
@@ -426,21 +448,29 @@ return;
         if (index !== -1) {
           const newIndex = index + move;
           if (newIndex < 0 || newIndex >= elements.length) {
-return elements;
-}
+            return elements;
+          }
           const newElements = [...elements];
-          [newElements[index], newElements[newIndex]] = [newElements[newIndex], newElements[index]];
+          const sourceElement = newElements[index];
+          const targetElement = newElements[newIndex];
+          if (sourceElement && targetElement) {
+            [newElements[index], newElements[newIndex]] = [targetElement, sourceElement];
+          }
           return newElements;
         }
 
         for (let i = 0; i < elements.length; i++) {
-          if (elements[i].type === 'stack' && 'children' in elements[i]) {
-            const stackElement = elements[i] as StackConfig;
+          const element = elements[i];
+          if (!element) {
+            continue;
+          }
+          if (element.type === 'stack' && 'children' in element) {
+            const stackElement = element as StackConfig;
             const result = moveInElements(stackElement.children);
             if (result && result !== stackElement.children) {
               const newElements = [...elements];
               newElements[i] = {
-                ...elements[i],
+                ...element,
                 children: result,
               } as StackConfig;
               return newElements;
@@ -462,10 +492,14 @@ return elements;
       if (gridIndex !== -1) {
         const newIndex = gridIndex + move;
         if (newIndex < 0 || newIndex >= pageSection.grids.length) {
-return pageSection;
-}
+          return pageSection;
+        }
         const newGrids = [...pageSection.grids];
-        [newGrids[gridIndex], newGrids[newIndex]] = [newGrids[newIndex], newGrids[gridIndex]];
+        const sourceGrid = newGrids[gridIndex];
+        const targetGrid = newGrids[newIndex];
+        if (sourceGrid && targetGrid) {
+          [newGrids[gridIndex], newGrids[newIndex]] = [targetGrid, sourceGrid];
+        }
         return { ...pageSection, grids: newGrids };
       }
 
@@ -474,10 +508,14 @@ return pageSection;
         if (contentIndex !== -1) {
           const newIndex = contentIndex + move;
           if (newIndex < 0 || newIndex >= grid.children.length) {
-return grid;
-}
+            return grid;
+          }
           const newChildren = [...grid.children];
-          [newChildren[contentIndex], newChildren[newIndex]] = [newChildren[newIndex], newChildren[contentIndex]];
+          const sourceContent = newChildren[contentIndex];
+          const targetContent = newChildren[newIndex];
+          if (sourceContent && targetContent) {
+            [newChildren[contentIndex], newChildren[newIndex]] = [targetContent, sourceContent];
+          }
           return { ...grid, children: newChildren };
         }
         return grid;
@@ -547,7 +585,7 @@ return grid;
             }
             return gridUpdate;
           }
-          
+
           const updatedChildren: ContentComponent[] = grid.children.map((content: ContentComponent): ContentComponent => {
             if (content.id === updated.id) {
               if (updated.type === 'section' || updated.type === 'container' || updated.type === 'grid' || updated.type === 'stack') {
@@ -560,11 +598,11 @@ return grid;
           return { ...grid, children: updatedChildren };
         });
 
-        return { 
+        return {
           section: pageSection.section,
           container: pageSection.container,
-          stacks: updatedStacks, 
-          grids: updatedGrids 
+          stacks: updatedStacks,
+          grids: updatedGrids
         };
       });
     });

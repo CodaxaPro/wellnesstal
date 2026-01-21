@@ -22,7 +22,7 @@ interface EditorProviderProps {
   onSave?: (data: LandingPageData) => Promise<void>
 }
 
-export function EditorProvider({ children, initialData, onSave }: EditorProviderProps) {
+export function EditorProvider({ children, initialData, onSave: _onSave }: EditorProviderProps) {
   const updateData = (section: string, newData: any) => {
     console.log('updateData called:', section, newData)
   }
