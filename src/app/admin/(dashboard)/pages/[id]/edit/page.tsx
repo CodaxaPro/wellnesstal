@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useEffect, use, useRef, useCallback } from 'react'
+import { use, useCallback, useEffect, useRef, useState } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -30,7 +30,7 @@ import TestimonialsBlockEditor from '@/components/blocks/editors/TestimonialsBlo
 import TextBlockEditor from '@/components/blocks/editors/TextBlockEditor'
 import VideoBlockEditor from '@/components/blocks/editors/VideoBlockEditor'
 import WhatsAppBlockEditor from '@/components/blocks/editors/WhatsAppBlockEditor'
-import { PageBlock, HeroContent, FeaturesContent, TextContent, CTAContent, PricingContent } from '@/components/blocks/types'
+import { AboutContent, CTAContent, DividerContent, EmbedContent, FeaturesContent, HeroContent, PageBlock, PricingContent, SEOContent, ServicesContent, StatsContent, TestimonialsContent, TextContent, VideoContent } from '@/components/blocks/types'
 
 interface PageCategory {
   id: string
@@ -60,7 +60,7 @@ interface BlockType {
   description: string
   icon: string
   category: string
-  default_content: Record<string, any>
+  default_content: Record<string, unknown>
 }
 
 export default function PageEditor({ params }: { params: Promise<{ id: string }> }) {
@@ -78,25 +78,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
   const [editingSlug, setEditingSlug] = useState(false)
   const [slugValue, setSlugValue] = useState('')
 
-  useEffect(() => {
-    fetchPage()
-    fetchBlockTypes()
-    fetchCategories()
-  }, [id])
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/pages/categories')
-      const data = await response.json()
-      if (data.success) {
-        setCategories(data.data || [])
-      }
-    } catch (error) {
-      console.error('Failed to fetch categories:', error)
-    }
-  }
-
-  const fetchPage = async () => {
+  const fetchPage = useCallback(async () => {
     try {
       const token = localStorage.getItem('adminToken')
       const response = await fetch(`/api/pages?id=${id}&withBlocks=true`, {
@@ -115,6 +97,18 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     } finally {
       setIsLoading(false)
     }
+  }, [id, router])
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/pages/categories')
+      const data = await response.json()
+      if (data.success) {
+        setCategories(data.data || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch categories:', error)
+    }
   }
 
   const fetchBlockTypes = async () => {
@@ -129,6 +123,12 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     }
   }
 
+  useEffect(() => {
+    void fetchPage()
+    void fetchBlockTypes()
+    void fetchCategories()
+  }, [id, fetchPage])
+
   const handleAddBlock = async (blockType: string) => {
     if (!page) {
       toast.error('Sayfa yüklenemedi. Lütfen sayfayı yenileyin.')
@@ -142,7 +142,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     }
 
     try {
-      console.log('[handleAddBlock] Adding block:', { page_id: page.id, block_type: blockType })
+      // Debug logging removed for production
 
       const response = await fetch('/api/pages/blocks', {
         method: 'POST',
@@ -157,7 +157,7 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
       })
 
       const json = await response.json()
-      console.log('[handleAddBlock] Response:', { status: response.status, ok: response.ok, json })
+      // Debug logging removed for production
 
       if (!response.ok) {
         const errorMessage = json?.error || json?.details || 'Blok oluşturulamadı'
@@ -194,9 +194,10 @@ export default function PageEditor({ params }: { params: Promise<{ id: string }>
     }
   }
 
-  const handleUpdateBlock = useCallback(async (blockId: string, content: Record<string, any>) => {
+  const handleUpdateBlock = useCallback(async (blockId: string, content: Record<string, unknown>) => {
     // Helper: deep merge source into target (immutable)
     // CRITICAL: Preserve empty strings and arrays for fields that should be cleared
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const deepMerge = (target: any, source: any): any => {
       if (source === undefined) {
 return target
@@ -224,7 +225,7 @@ return source
 
       for (const key of Object.keys(source)) {
         const s = source[key]
-        const t = (target as any)[key]
+        const t = (target as Record<string, unknown>)[key]
 
         // CRITICAL: Always update array fields (buttons, etc.)
         if (alwaysUpdateArrays.includes(key) && Array.isArray(s)) {
@@ -257,10 +258,13 @@ return source
             // Deep merge nested object properties to preserve all fields
             out[key] = { ...t, ...s }
             // Then merge nested properties recursively
-            for (const nestedKey in s) {
-              if (typeof s[nestedKey] === 'object' && s[nestedKey] !== null && !Array.isArray(s[nestedKey]) &&
-                  typeof t[nestedKey] === 'object' && t[nestedKey] !== null && !Array.isArray(t[nestedKey])) {
-                out[key][nestedKey] = deepMerge(t[nestedKey], s[nestedKey])
+            const sRecord = s as Record<string, unknown>
+            const tRecord = t as Record<string, unknown>
+            const outRecord = out[key] as Record<string, unknown>
+            for (const nestedKey in sRecord) {
+              if (typeof sRecord[nestedKey] === 'object' && sRecord[nestedKey] !== null && !Array.isArray(sRecord[nestedKey]) &&
+                  typeof tRecord[nestedKey] === 'object' && tRecord[nestedKey] !== null && !Array.isArray(tRecord[nestedKey])) {
+                outRecord[nestedKey] = deepMerge(tRecord[nestedKey], sRecord[nestedKey])
               }
             }
           } else {
@@ -280,9 +284,9 @@ return source
     // No-op if merge produces no change
     try {
       if (existing && JSON.stringify(existing.content) === JSON.stringify(merged)) {
-        return existing
+        return { success: true, data: existing } as { success?: boolean; data?: { id: string; content?: Record<string, unknown> }; error?: string }
       }
-    } catch (e) {
+    } catch (_e) {
       // ignore
     }
 
@@ -304,7 +308,6 @@ return source
       // Send the merged content to the API to avoid races where partial
       // payloads overwrite other fields. Server will still deep-merge and
       // ignore empty values, but sending the merged state reduces surprises.
-      console.debug('[debug] handleUpdateBlock: sending', { blockId, mergedPreview: JSON.stringify(merged).slice(0, 200), tokenPresent: !!token })
       const res = await fetch('/api/pages/blocks', {
         method: 'PUT',
         headers: {
@@ -315,14 +318,13 @@ return source
         keepalive: true // Keep request alive even if page closes/refreshes
       })
 
-      let json = null
+      let json: { success?: boolean; data?: { id: string; content?: Record<string, unknown> }; error?: string } | null = null
       try {
         json = await res.json()
       } catch (parseErr) {
         console.error('[debug] handleUpdateBlock: failed parsing JSON response', parseErr)
       }
 
-      console.debug('[debug] handleUpdateBlock: response', { status: res.status, ok: res.ok, bodyPreview: json ? JSON.stringify(json).slice(0, 500) : null })
 
       if (!res.ok) {
         // Handle unauthorized (401) - token expired or invalid
@@ -341,15 +343,11 @@ return source
       // Update local page state with server-saved block to ensure exact persisted state
       try {
         if (json?.data?.id) {
+          const savedBlock = json.data as PageBlock
           setPage(prev => prev ? ({
             ...prev,
-            blocks: prev.blocks.map(b => b.id === json.data.id ? json.data : b)
+            blocks: prev.blocks.map(b => b.id === savedBlock.id ? savedBlock : b)
           }) : null)
-          console.debug('[debug] handleUpdateBlock: Updated page state with saved block', {
-            blockId: json.data.id,
-            hasContent: !!json.data.content,
-            contentKeys: Object.keys(json.data.content || {}),
-          })
         } else {
           console.warn('[debug] handleUpdateBlock: server returned success but no data.block. Full response:', json)
         }
@@ -358,13 +356,13 @@ return source
       }
 
       toast.success('Değişiklikler kaydedildi')
-      return json
+      return json ?? undefined
     } catch (error) {
       console.error('Failed to update block:', error)
       await fetchPage()
       throw error
     }
-  }, [page])
+  }, [page, fetchPage, router])
 
   const handleDuplicateBlock = async (blockId: string) => {
     if (!page) {
@@ -425,9 +423,11 @@ return
   }
 
   const handleDeleteBlock = async (blockId: string) => {
-    if (!confirm('Bu bloğu silmek istediğinizden emin misiniz?')) {
-return
-}
+    // eslint-disable-next-line no-alert
+    const confirmed = window.confirm('Bu bloğu silmek istediğinizden emin misiniz?')
+    if (!confirmed) {
+      return
+    }
 
     try {
       const token = localStorage.getItem('adminToken')
@@ -441,8 +441,9 @@ return
         blocks: prev.blocks.filter(b => b.id !== blockId)
       } : null)
       setActiveBlockId(null)
-    } catch (error) {
-      alert('Blok silinirken hata oluştu')
+      toast.success('Blok başarıyla silindi')
+    } catch (_error) {
+      toast.error('Blok silinirken hata oluştu')
     }
   }
 
@@ -466,8 +467,10 @@ return
     const targetIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1
     const targetBlock = newBlocks[targetIndex]
     const currentBlock = newBlocks[currentIndex]
-    if (!targetBlock || !currentBlock) return
-    ;[newBlocks[currentIndex], newBlocks[targetIndex]] = [targetBlock, currentBlock]
+    if (!targetBlock || !currentBlock) {
+return
+    ;
+}[newBlocks[currentIndex], newBlocks[targetIndex]] = [targetBlock, currentBlock]
 
     // Update positions
     const reorderedBlocks = newBlocks.map((block, index) => ({
@@ -545,9 +548,10 @@ return
       if (response.ok) {
         const data = await response.json()
         setPage(prev => prev ? { ...prev, status: data.data.status, page_categories: data.data.page_categories } : null)
+        toast.success(page.status === 'published' ? 'Sayfa taslağa alındı' : 'Sayfa yayınlandı')
       }
-    } catch (error) {
-      alert('Durum güncellenirken hata oluştu')
+    } catch (_error) {
+      toast.error('Durum güncellenirken hata oluştu')
     } finally {
       setSaving(false)
     }
@@ -610,7 +614,7 @@ return
       const token = localStorage.getItem('adminToken')
 
       // If updating title and slug is empty or auto-generated, update slug too
-      const updateData: any = { id: page.id }
+      const updateData: { id: string; title?: string; slug?: string } = { id: page.id }
       if (field === 'title') {
         updateData.title = value
         // Only auto-update slug if it matches the old title's slug
@@ -664,7 +668,7 @@ return
       toast.error('Slug boş olamaz')
       return
     }
-    handleUpdatePageInfo('slug', slugValue)
+    void handleUpdatePageInfo('slug', slugValue)
   }
 
   const handleToggleActive = async () => {
@@ -721,9 +725,12 @@ return
   const blocksByCategory = blockTypes.reduce((acc, block) => {
     const cat = block.category || 'other'
     if (!acc[cat]) {
-acc[cat] = []
-}
-    acc[cat].push(block)
+      acc[cat] = []
+    }
+    const categoryBlocks = acc[cat]
+    if (categoryBlocks) {
+      categoryBlocks.push(block)
+    }
     return acc
   }, {} as Record<string, BlockType[]>)
 
@@ -765,7 +772,7 @@ acc[cat] = []
               onChange={(e) => setPage(prev => prev ? { ...prev, title: e.target.value } : null)}
               onBlur={(e) => {
                 if (e.target.value !== page.title) {
-                  handleUpdatePageInfo('title', e.target.value)
+                  void handleUpdatePageInfo('title', e.target.value)
                 }
               }}
               onKeyDown={(e) => {
@@ -861,7 +868,7 @@ acc[cat] = []
               Durum
             </label>
             <button
-              onClick={handleToggleActive}
+              onClick={() => void handleToggleActive()}
               className={`w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                 page.active !== false
                   ? 'bg-blue-50 text-blue-700 hover:bg-blue-100 border border-blue-200'
@@ -899,7 +906,7 @@ acc[cat] = []
             </label>
             <select
               value={page.category_id || ''}
-              onChange={(e) => handleCategoryChange(e.target.value)}
+              onChange={(e) => void handleCategoryChange(e.target.value)}
               className="w-full px-3 py-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent bg-white"
             >
               <option value="">Kategori Seçin</option>
@@ -955,8 +962,9 @@ acc[cat] = []
                     <div className="flex flex-col gap-1">
                       <button
                         onClick={(e) => {
- e.stopPropagation(); handleMoveBlock(block.id, 'up')
-}}
+                          e.stopPropagation()
+                          void handleMoveBlock(block.id, 'up')
+                        }}
                         disabled={index === 0}
                         className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
                       >
@@ -966,8 +974,9 @@ acc[cat] = []
                       </button>
                       <button
                         onClick={(e) => {
- e.stopPropagation(); handleMoveBlock(block.id, 'down')
-}}
+                          e.stopPropagation()
+                          void handleMoveBlock(block.id, 'down')
+                        }}
                         disabled={index === page.blocks.length - 1}
                         className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
                       >
@@ -987,8 +996,9 @@ acc[cat] = []
                     <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                       <button
                         onClick={(e) => {
- e.stopPropagation(); handleDuplicateBlock(block.id)
-}}
+                          e.stopPropagation()
+                          void handleDuplicateBlock(block.id)
+                        }}
                         className="p-1 text-slate-400 hover:text-sage-600"
                         title="Çoğalt"
                       >
@@ -998,8 +1008,9 @@ acc[cat] = []
                       </button>
                       <button
                         onClick={(e) => {
- e.stopPropagation(); handleToggleBlockVisibility(block.id)
-}}
+                          e.stopPropagation()
+                          void handleToggleBlockVisibility(block.id)
+                        }}
                         className="p-1 text-slate-400 hover:text-slate-600"
                         title={block.visible ? 'Gizle' : 'Göster'}
                       >
@@ -1013,8 +1024,9 @@ acc[cat] = []
                       </button>
                       <button
                         onClick={(e) => {
- e.stopPropagation(); handleDeleteBlock(block.id)
-}}
+                          e.stopPropagation()
+                          void handleDeleteBlock(block.id)
+                        }}
                         className="p-1 text-slate-400 hover:text-red-600"
                         title="Sil"
                       >
@@ -1053,7 +1065,7 @@ acc[cat] = []
             Önizle
           </button>
           <button
-            onClick={handlePublish}
+            onClick={() => void handlePublish()}
             disabled={saving}
             className={`w-full py-2.5 rounded-xl font-medium transition-colors flex items-center justify-center gap-2 ${
               page.status === 'published'
@@ -1181,7 +1193,7 @@ acc[cat] = []
                     {blocks.map((block) => (
                       <button
                         key={block.id}
-                        onClick={() => handleAddBlock(block.id)}
+                        onClick={() => void handleAddBlock(block.id)}
                         className="p-4 border border-slate-200 rounded-xl hover:border-sage-500 hover:bg-sage-50 transition-all text-left group"
                       >
                         <div className="flex items-start gap-3">
@@ -1259,7 +1271,7 @@ function BlockEditorForm({
 }: {
   block: PageBlock
   blockId: string
-  onUpdate: (blockId: string, content: Record<string, any>) => Promise<any>
+  onUpdate: (blockId: string, content: Record<string, unknown>) => Promise<{ success?: boolean; data?: { id: string; content?: Record<string, unknown> }; error?: string } | undefined>
 }) {
   // Note: This component has key={block.id} so it fully remounts when switching blocks
   // Sync content state with block.content when block changes (e.g., from API refresh)
@@ -1272,7 +1284,7 @@ function BlockEditorForm({
   const isManualSavingRef = useRef(false) // Flag to prevent debounced saves during manual save
   const savingBlockRef = useRef(false) // Additional ref for immediate synchronous check
   const debouncedSaveExecutingRef = useRef(false) // Flag to prevent multiple debounced saves from executing simultaneously
-  const lastSavedContentRef = useRef<any>(null) // Track last successfully saved content
+  const lastSavedContentRef = useRef<Record<string, unknown> | null>(null) // Track last successfully saved content
 
   // Keep contentRef in sync with content state
   useEffect(() => {
@@ -1293,11 +1305,8 @@ function BlockEditorForm({
       const currentStr = JSON.stringify(content)
       const blockStr = JSON.stringify(block.content)
       if (currentStr !== blockStr) {
-        console.debug('[BlockEditorForm] Syncing content from block.content (after save)', {
-          contentKeys: Object.keys(content || {}),
-          blockContentKeys: Object.keys(block.content || {}),
-        })
         setContent(block.content)
+
         contentRef.current = block.content
         lastSavedContentRef.current = block.content
         // After syncing from server, content should match, so mark as not dirty
@@ -1306,12 +1315,14 @@ function BlockEditorForm({
         // Even if strings match, update lastSavedContentRef to ensure consistency
         lastSavedContentRef.current = block.content
       }
-    } catch (e) {
+    } catch (_e) {
       // If stringify fails, update anyway
       setContent(block.content)
+
       contentRef.current = block.content
       lastSavedContentRef.current = block.content
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [block.content])
 
   // Track dirty state - improved to detect empty string changes
@@ -1323,7 +1334,7 @@ function BlockEditorForm({
         const currentContent = contentRef.current || content
 
         // Normalize both objects for comparison (handle undefined, null, empty string)
-        const normalizeValue = (val: any): string => {
+        const normalizeValue = (val: unknown): string => {
           if (val === null || val === undefined) {
 return ''
 }
@@ -1334,7 +1345,7 @@ return val
         }
 
         // Deep comparison function that handles empty strings correctly
-        const deepEqual = (a: any, b: any): boolean => {
+        const deepEqual = (a: unknown, b: unknown): boolean => {
           if (a === b) {
 return true
 }
@@ -1369,7 +1380,9 @@ return false
             if (!keysB.includes(key)) {
 return false
 }
-            if (!deepEqual(a[key], b[key])) {
+            const aRecord = a as Record<string, unknown>
+            const bRecord = b as Record<string, unknown>
+            if (!deepEqual(aRecord[key], bRecord[key])) {
 return false
 }
           }
@@ -1385,12 +1398,6 @@ return false
         const isDirty = !matchesLastSaved && !matchesBlockContent
         setDirty(isDirty)
 
-        console.debug('[BlockEditorForm] Dirty state check:', {
-          isDirty,
-          usingRef: !!contentRef.current,
-          contentKeys: Object.keys(currentContent || {}),
-          blockKeys: Object.keys(block.content || {}),
-        })
       } catch (e) {
         console.error('[BlockEditorForm] Dirty state check error:', e)
         setDirty(true)
@@ -1398,7 +1405,8 @@ return false
     }, 50) // Small delay to ensure state updates have propagated
 
     return () => clearTimeout(timeoutId)
-  }, [content, block.content])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [block.content])
 
   // Flush pending saves when unmounting (switching blocks)
   useEffect(() => {
@@ -1439,9 +1447,10 @@ return false
 
   // Memoize the update handler with blockId bound - prevents re-creating on every render
   // This handles updates from child editors (like SEOBlockEditor) that send full content
-  const handleUpdate = useCallback((updatedContent: Partial<any> | any) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const handleUpdate = useCallback((updatedContent: any) => {
     // Update local content state immediately for responsive UI
-    let mergedContent: any
+    let mergedContent: Record<string, unknown>
     setContent(prev => {
       // If updatedContent is a full object (from block editors, etc.), use it directly
       // Otherwise merge with previous content
@@ -1451,24 +1460,21 @@ return false
         if (keys.length > 1 || (keys.length === 1 && keys[0] !== 'title' && keys[0] !== 'text')) {
           // Likely a full content object, merge it (including empty strings for cleared fields)
           mergedContent = { ...prev, ...updatedContent }
+          contentRef.current = mergedContent
           return mergedContent
         }
       }
       // Partial update, merge (including empty strings)
       mergedContent = { ...prev, ...updatedContent }
+      contentRef.current = mergedContent
       return mergedContent
     })
-
-    // Update contentRef immediately to ensure it's available in setTimeout
-    if (mergedContent) {
-      contentRef.current = mergedContent
-    }
 
     // CRITICAL: Immediately check if content is dirty and update dirty state
     // This ensures "Kayıt Et" button becomes active immediately when content changes
     const checkDirty = () => {
       try {
-        const normalizeValue = (val: any): string => {
+        const normalizeValue = (val: unknown): string => {
           if (val === null || val === undefined) {
 return ''
 }
@@ -1478,7 +1484,7 @@ return val
           return JSON.stringify(val)
         }
 
-        const deepEqual = (a: any, b: any): boolean => {
+        const deepEqual = (a: unknown, b: unknown): boolean => {
           if (a === b) {
 return true
 }
@@ -1507,25 +1513,22 @@ return false
 return false
 }
 
+          const aRecord = a as Record<string, unknown>
+          const bRecord = b as Record<string, unknown>
           for (const key of keysA) {
             if (!keysB.includes(key)) {
 return false
 }
-            if (!deepEqual(a[key], b[key])) {
+            if (!deepEqual(aRecord[key], bRecord[key])) {
 return false
 }
           }
           return true
         }
 
-        const isDirty = !deepEqual(mergedContent, block.content)
+        const currentContent = contentRef.current || content
+        const isDirty = !deepEqual(currentContent, block.content)
         setDirty(isDirty)
-
-        console.debug('[BlockEditorForm] handleUpdate - Dirty state updated:', {
-          isDirty,
-          descriptionsCount: mergedContent?.descriptions?.length || 0,
-          blockDescriptionsCount: block.content?.descriptions?.length || 0,
-        })
       } catch (e) {
         console.error('[BlockEditorForm] handleUpdate - Dirty check error:', e)
         setDirty(true) // On error, assume dirty to allow saving
@@ -1537,11 +1540,6 @@ return false
 
     // Skip debounced save if manual save is in progress OR if a debounced save is already executing
     if (isManualSavingRef.current || savingBlockRef.current || debouncedSaveExecutingRef.current) {
-      console.debug('[BlockEditorForm] handleUpdate - Skipping debounced save (save in progress)', {
-        isManualSaving: isManualSavingRef.current,
-        savingBlock: savingBlockRef.current,
-        debouncedSaveExecuting: debouncedSaveExecutingRef.current,
-      })
       return
     }
 
@@ -1557,11 +1555,6 @@ return false
       // CRITICAL: Double-check flags at the START of the callback (before any async operations)
       // This prevents race conditions where flags might be set after the timeout fires
       if (isManualSavingRef.current || savingBlockRef.current || debouncedSaveExecutingRef.current) {
-        console.debug('[BlockEditorForm] handleUpdate - Skipping debounced save (flags set during debounce)', {
-          isManualSaving: isManualSavingRef.current,
-          savingBlock: savingBlockRef.current,
-          debouncedSaveExecuting: debouncedSaveExecutingRef.current,
-        })
         pendingSaveRef.current = null
         return
       }
@@ -1569,24 +1562,24 @@ return false
       // Mark that debounced save is executing IMMEDIATELY (before any async operations)
       debouncedSaveExecutingRef.current = true
       // Use the merged content directly (already captured above)
-      const currentContent = mergedContent || contentRef.current || content
+      const currentContent = contentRef.current || content
+      const updatedContentRecord = updatedContent as Record<string, unknown>
+      const currentContentRecord = currentContent as Record<string, unknown>
       // Ensure all content fields are included, especially empty strings for cleared fields
       const fullContent = {
         ...currentContent,
         ...updatedContent,
         // Explicitly preserve all fields, including empty strings and arrays
-        title: updatedContent.title !== undefined ? updatedContent.title : currentContent.title,
-        buttons: updatedContent.buttons !== undefined ? updatedContent.buttons : currentContent.buttons,
+        title: updatedContentRecord['title'] !== undefined ? updatedContentRecord['title'] : currentContentRecord['title'],
+        buttons: updatedContentRecord['buttons'] !== undefined ? updatedContentRecord['buttons'] : currentContentRecord['buttons'],
       }
-      console.debug('[BlockEditorForm] Saving block (debounced):', {
-        blockId,
-      })
 
       // Call onUpdate and wait for it to complete
       onUpdate(blockId, fullContent).then((result) => {
         // After successful save, update contentRef and check dirty state
         if (result?.data?.content) {
           const savedContent = result.data.content
+
           contentRef.current = savedContent
           lastSavedContentRef.current = savedContent
           // Update local content state to match server
@@ -1595,6 +1588,7 @@ return false
           // If save was successful, mark as not dirty immediately
           setDirty(false)
         } else {
+
           contentRef.current = fullContent
           lastSavedContentRef.current = fullContent
           // Even without server response, if save didn't error, assume it's saved
@@ -1612,7 +1606,7 @@ return false
     }, 200) // 200ms debounce for faster saves
   }, [blockId, onUpdate, content, block.content])
 
-  const handleChange = (key: string, value: any) => {
+  const handleChange = (key: string, value: unknown) => {
     const newContent = { ...content, [key]: value }
     setContent(newContent)
     handleUpdate(newContent)
@@ -1621,11 +1615,6 @@ return false
   const handleSaveBlock = async () => {
     // CRITICAL: Check ref first (synchronous) before any async state updates
     if (savingBlockRef.current || isManualSavingRef.current) {
-      console.debug('[BlockEditorForm] handleSaveBlock - Already saving (ref check), skipping duplicate call', {
-        savingBlockRef: savingBlockRef.current,
-        isManualSavingRef: isManualSavingRef.current,
-        savingBlockState: savingBlock,
-      })
       return
     }
 
@@ -1650,42 +1639,26 @@ return false
       // Fallback to state if ref is not available (shouldn't happen, but safety check)
       const currentContent = contentRef.current || content
 
-      console.debug('[BlockEditorForm] handleSaveBlock - Current content source:', {
-        usingRef: !!contentRef.current,
-        refKeys: contentRef.current ? Object.keys(contentRef.current) : [],
-        stateKeys: Object.keys(content),
-        dirty,
-      })
-
       // Ensure all content is included, especially empty strings for cleared fields
       const fullContent = {
         ...currentContent,
         // Explicitly preserve all fields, including empty strings and arrays
-        title: currentContent.title !== undefined ? currentContent.title : '',
-        buttons: currentContent.buttons !== undefined ? currentContent.buttons : [],
+        title: currentContent['title'] !== undefined ? currentContent['title'] : '',
+        buttons: currentContent['buttons'] !== undefined ? currentContent['buttons'] : [],
         // Preserve all nested objects
-        titleHighlight: currentContent.titleHighlight !== undefined ? currentContent.titleHighlight : undefined,
-        titleStyles: currentContent.titleStyles !== undefined ? currentContent.titleStyles : undefined,
-        image: currentContent.image !== undefined ? currentContent.image : undefined,
-        video: currentContent.video !== undefined ? currentContent.video : undefined,
-        imageStyles: currentContent.imageStyles || {},
-        gradientColors: currentContent.gradientColors !== undefined ? currentContent.gradientColors : undefined,
-        backgroundOverlay: currentContent.backgroundOverlay !== undefined ? currentContent.backgroundOverlay : undefined,
-        animations: currentContent.animations || {},
-        responsive: currentContent.responsive || {},
-        elementAlignments: currentContent.elementAlignments !== undefined ? currentContent.elementAlignments : undefined,
-        trustIndicator: currentContent.trustIndicator !== undefined ? currentContent.trustIndicator : undefined,
-        padding: currentContent.padding || {},
+        titleHighlight: currentContent['titleHighlight'] !== undefined ? currentContent['titleHighlight'] : undefined,
+        titleStyles: currentContent['titleStyles'] !== undefined ? currentContent['titleStyles'] : undefined,
+        image: currentContent['image'] !== undefined ? currentContent['image'] : undefined,
+        video: currentContent['video'] !== undefined ? currentContent['video'] : undefined,
+        imageStyles: currentContent['imageStyles'] || {},
+        gradientColors: currentContent['gradientColors'] !== undefined ? currentContent['gradientColors'] : undefined,
+        backgroundOverlay: currentContent['backgroundOverlay'] !== undefined ? currentContent['backgroundOverlay'] : undefined,
+        animations: currentContent['animations'] || {},
+        responsive: currentContent['responsive'] || {},
+        elementAlignments: currentContent['elementAlignments'] !== undefined ? currentContent['elementAlignments'] : undefined,
+        trustIndicator: currentContent['trustIndicator'] !== undefined ? currentContent['trustIndicator'] : undefined,
+        padding: currentContent['padding'] || {},
       }
-      console.debug('[BlockEditorForm] Manual save:', {
-        blockId,
-        usingRef: !!contentRef.current,
-        subtitle: (fullContent as any).subtitle,
-        subtitleIsEmpty: (fullContent as any).subtitle === '',
-        description: (fullContent as any).description,
-        dirty,
-        fullContentKeys: Object.keys(fullContent),
-      })
       // Call parent handler which performs optimistic update + API save
       // CRITICAL: Only call once - check flag again before calling
       if (!isManualSavingRef.current) {
@@ -1699,20 +1672,15 @@ return false
       if (result?.data?.content) {
         const savedContent = result.data.content
         setContent(savedContent)
+        // eslint-disable-next-line require-atomic-updates
         contentRef.current = savedContent
         lastSavedContentRef.current = savedContent
-        console.debug('[BlockEditorForm] handleSaveBlock - Updated from server response', {
-          blockId,
-          savedContentKeys: Object.keys(savedContent),
-        })
       } else {
         // Fallback: use the content we sent
         setContent(fullContent)
+        // eslint-disable-next-line require-atomic-updates
         contentRef.current = fullContent
         lastSavedContentRef.current = fullContent
-        console.debug('[BlockEditorForm] handleSaveBlock - Using sent content (no server response)', {
-          blockId,
-        })
       }
 
       // After successful save, mark as not dirty immediately
@@ -1746,12 +1714,6 @@ return false
           console.error('[BlockEditorForm] handleSaveBlock - Error checking dirty state:', e)
         }
       }, 100)
-
-      console.debug('[BlockEditorForm] handleSaveBlock - Save completed successfully', {
-        blockId,
-        hasResult: !!result,
-        hasData: !!result?.data,
-      })
     } catch (error) {
       console.error('[BlockEditorForm] Failed to save block:', error)
       // Don't clear dirty state on error - user should be able to retry
@@ -1759,6 +1721,7 @@ return false
       throw error // Re-throw so caller knows it failed
     } finally {
       setSavingBlock(false)
+      // eslint-disable-next-line require-atomic-updates
       savingBlockRef.current = false
       // Clear flag after a short delay to allow state updates to propagate
       setTimeout(() => {
@@ -1768,16 +1731,19 @@ return false
   }
 
   const handleRevert = async () => {
-    if (!confirm('Yaptığınız değişiklikleri geri almak istiyor musunuz?')) {
-return
-}
+    // eslint-disable-next-line no-alert
+    const confirmed = window.confirm('Yaptığınız değişiklikleri geri almak istiyor musunuz?')
+    if (!confirmed) {
+      return
+    }
     setContent(block.content)
     try {
       await onUpdate(blockId, block.content)
       setDirty(false)
-    } catch (error) {
-      console.error('Failed to revert block:', error)
-      alert('Geri alma sırasında hata oluştu.')
+      toast.success('Değişiklikler geri alındı')
+    } catch (_error) {
+      console.error('Failed to revert block:', _error)
+      toast.error('Geri alma sırasında hata oluştu.')
     }
   }
 
@@ -1877,7 +1843,7 @@ return
         // HeaderBlockEditor manages its own state with debouncing
         return (
           <HeaderBlockEditor
-            content={content as any}
+            content={content as unknown as Parameters<typeof HeaderBlockEditor>[0]['content']}
             onUpdate={handleUpdate}
           />
         )
@@ -1886,7 +1852,7 @@ return
         // FooterBlockEditor manages its own state with debouncing
         return (
           <FooterBlockEditor
-            content={content as any}
+            content={content as unknown as Parameters<typeof FooterBlockEditor>[0]['content']}
             onUpdate={handleUpdate}
           />
         )
@@ -1972,7 +1938,7 @@ return
               <label className="block text-sm font-medium text-slate-700 mb-2">Başlık</label>
               <input
                 type="text"
-                value={content.title || ''}
+                value={content['title'] || ''}
                 onChange={(e) => handleChange('title', e.target.value)}
                 className="w-full px-4 py-3 border border-slate-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
               />
@@ -2003,7 +1969,7 @@ return
         </div>
         <div className="flex items-center gap-2">
           <button
-            onClick={handleRevert}
+            onClick={() => void handleRevert()}
             disabled={!dirty || savingBlock}
             className={`px-3 py-2 rounded-lg border border-slate-200 text-sm transition-colors ${
               !dirty || savingBlock
@@ -2017,7 +1983,7 @@ return
             onClick={(e) => {
               e.preventDefault()
               e.stopPropagation()
-              handleSaveBlock()
+              void handleSaveBlock()
             }}
             disabled={savingBlock}
             className={`px-4 py-2 rounded-lg text-sm font-medium text-white transition-colors ${
