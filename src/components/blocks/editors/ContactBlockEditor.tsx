@@ -42,19 +42,21 @@ const defaultContent: ContactBlockContent = {
 }
 
 export default function ContactBlockEditor({ content, onUpdate }: ContactBlockEditorProps) {
-  const [localContent, setLocalContent] = useState<ContactBlockContent>(() => ({
-    ...defaultContent,
-    ...content,
-    cards: { ...defaultContent.cards, ...content?.cards },
-    map: { ...defaultContent.map, ...content?.map },
-    openingHoursLabels: { ...defaultContent.openingHoursLabels, ...content?.openingHoursLabels },
-    contact: {
+  const [localContent, setLocalContent] = useState<ContactBlockContent>(() => {
+    const merged: ContactBlockContent = {
+      ...defaultContent,
+      ...content,
+      cards: { ...defaultContent.cards, ...content?.cards },
+      map: { ...defaultContent.map, ...content?.map },
+      openingHoursLabels: { ...defaultContent.openingHoursLabels, ...content?.openingHoursLabels },
+      contact: {
       ...defaultContent.contact,
       ...content?.contact,
       address: { ...defaultContent.contact?.address, ...content?.contact?.address },
       openingHours: { ...defaultContent.contact?.openingHours, ...content?.contact?.openingHours }
     }
-  }))
+    return merged
+  })
 
   const [expandedSections, setExpandedSections] = useState<string[]>([])
   const debounceRef = useRef<NodeJS.Timeout | null>(null)

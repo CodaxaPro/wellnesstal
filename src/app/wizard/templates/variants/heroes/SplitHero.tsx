@@ -38,29 +38,29 @@ export default function SplitHero(props: SplitHeroProps) {
     if (!html) {
 return html;
 }
-    
+
     const styleAttributes: string[] = [];
-    
+
     styleAttributes.push(`font-family: ${config.fontFamily || defaultStyle.fontFamily || 'inherit'}`);
     styleAttributes.push(`font-size: ${config.fontSize ? `${config.fontSize}px` : defaultStyle.fontSize}`);
     styleAttributes.push(`font-weight: ${config.fontWeight || defaultStyle.fontWeight}`);
     styleAttributes.push(`color: ${config.textColor || defaultStyle.color}`);
     styleAttributes.push(`line-height: ${config.lineHeight || defaultStyle.lineHeight || 'normal'}`);
-    
+
     if (config.letterSpacing !== undefined) {
       styleAttributes.push(`letter-spacing: ${config.letterSpacing}px`);
     }
-    
+
     if (config.textAlign) {
       styleAttributes.push(`text-align: ${config.textAlign}`);
     }
-    
+
     if (config.textTransform) {
       styleAttributes.push(`text-transform: ${config.textTransform}`);
     }
-    
+
     const styleString = styleAttributes.join('; ');
-    
+
     // Add style to first tag in HTML
     return html.replace(/^<(\w+)([^>]*)>/, `<$1$2 style="${styleString}">`);
   };
@@ -89,7 +89,7 @@ return html;
   useEffect(() => {
     if (image !== currentImage) {
       setIsLoading(true);
-      
+
       const img = new Image();
       img.onload = () => {
         setTimeout(() => {
@@ -107,7 +107,7 @@ return html;
 
   const getImageStyle = (): React.CSSProperties => {
     const filters: string[] = [];
-    
+
     if (imageConfig.brightness) {
 filters.push(`brightness(${1 + imageConfig.brightness / 100})`);
 }
@@ -132,7 +132,7 @@ filters.push('sepia(100%)');
     if (imageConfig.invert) {
 filters.push('invert(100%)');
 }
-    
+
     const filterPresets: Record<string, string> = {
       vibrant: 'saturate(1.4) contrast(1.1)',
       warm: 'sepia(0.3) saturate(1.2)',
@@ -143,18 +143,21 @@ filters.push('invert(100%)');
       dramatic: 'contrast(1.4) saturate(1.3) brightness(0.9)',
       soft: 'contrast(0.85) saturate(0.9) brightness(1.05)',
     };
-    
-    if (imageConfig.filter && imageConfig.filter !== 'none' && filterPresets[imageConfig.filter]) {
-      filters.push(filterPresets[imageConfig.filter]);
+
+    if (imageConfig.filter && imageConfig.filter !== 'none') {
+      const filterKey = imageConfig.filter as keyof typeof filterPresets
+      if (filterPresets[filterKey]) {
+        filters.push(filterPresets[filterKey]);
+      }
     }
-    
+
     return {
       filter: filters.join(' ') || 'none',
       opacity: imageConfig.opacity ? imageConfig.opacity / 100 : 1,
       transform: `rotate(${imageConfig.rotate || 0}deg) scaleX(${imageConfig.flipH ? -1 : 1}) scaleY(${imageConfig.flipV ? -1 : 1})`,
       objectFit: imageConfig.objectFit || 'cover',
       objectPosition: imageConfig.objectPosition || 'center',
-      boxShadow: imageConfig.shadowX !== undefined 
+      boxShadow: imageConfig.shadowX !== undefined
         ? `${imageConfig.shadowX}px ${imageConfig.shadowY}px ${imageConfig.shadowBlur}px ${imageConfig.shadowColor || '#000000'}`
         : '0 4px 8px rgba(0,0,0,0.1)',
     };
@@ -193,12 +196,12 @@ filters.push('invert(100%)');
         <div className="grid md:grid-cols-2 gap-12 items-center">
           {/* Left - Text */}
           <div>
-            <div 
+            <div
               className="mb-6 leading-tight"
               data-editable-hero-title
               dangerouslySetInnerHTML={{ __html: styledTitle }}
             />
-            <div 
+            <div
               className="mb-8"
               data-editable-hero-subtitle
               dangerouslySetInnerHTML={{ __html: styledSubtitle }}
@@ -206,7 +209,7 @@ filters.push('invert(100%)');
             <div className="flex gap-4">
               <button
                 className="px-8 py-4 rounded-lg font-semibold shadow-lg hover:opacity-90 transition-all"
-                style={{ 
+                style={{
                   backgroundColor: primaryColor,
                   color: 'white',
                 }}
@@ -227,7 +230,7 @@ filters.push('invert(100%)');
                 initial={getEntranceAnimation()}
                 animate={{ opacity: 1, scale: 1, y: 0, x: 0, rotate: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ 
+                transition={{
                   duration,
                   ...(easing === 'linear' && { ease: 'linear' as const }),
                   ...(easing === 'ease-in-out' && { ease: 'easeInOut' as const }),
@@ -235,13 +238,13 @@ filters.push('invert(100%)');
                 }}
                 className="relative"
               >
-                <motion.div 
+                <motion.div
                   className="rounded-2xl overflow-hidden shadow-2xl relative"
                   data-editable-hero-image
                   whileHover={imageConfig.hover !== 'none' ? getHoverAnimation() : {}}
                   transition={{ duration: 0.3 }}
                 >
-                  <img 
+                  <img
                     src={currentImage}
                     alt={imageConfig.alt || "Hero"}
                     title={imageConfig.title || ""}
@@ -290,24 +293,24 @@ filters.push('invert(100%)');
             </AnimatePresence>
 
             <motion.div
-              animate={{ 
+              animate={{
                 y: [0, -20, 0],
                 rotate: [0, 5, 0]
               }}
-              transition={{ 
-                duration: 4, 
+              transition={{
+                duration: 4,
                 repeat: Infinity,
                 ease: "easeInOut"
               }}
               className="absolute -top-4 -right-4 w-24 h-24 bg-purple-600 rounded-full opacity-20 blur-2xl pointer-events-none"
             />
             <motion.div
-              animate={{ 
+              animate={{
                 y: [0, 20, 0],
                 rotate: [0, -5, 0]
               }}
-              transition={{ 
-                duration: 5, 
+              transition={{
+                duration: 5,
                 repeat: Infinity,
                 ease: "easeInOut",
                 delay: 1

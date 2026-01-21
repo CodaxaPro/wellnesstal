@@ -8,14 +8,14 @@ interface MinimalHeaderProps {
 
 export default function MinimalHeader(props: MinimalHeaderProps) {
   const businessName = props.businessName || "Your Business";
-  const menuItems = props.menuItems || ["Home", "Services", "About", "Contact"];
+  // const menuItems = props.menuItems || ["Home", "Services", "About", "Contact"];
   const primaryColor = props.primaryColor || "#9333ea";
 
   return (
     <header className="bg-white border-b border-gray-100 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-14">
-          <div 
+          <div
             className="text-lg font-semibold text-gray-900"
             data-editable-header-business
             dangerouslySetInnerHTML={{ __html: businessName }}
@@ -31,8 +31,8 @@ export default function MinimalHeader(props: MinimalHeaderProps) {
             <a href="#about" className="text-sm text-gray-600 hover:text-gray-900 transition-colors">
               About
             </a>
-            <a 
-              href="#contact" 
+            <a
+              href="#contact"
               className="text-sm font-medium px-4 py-2 rounded transition-colors"
               style={{ color: primaryColor }}
             >

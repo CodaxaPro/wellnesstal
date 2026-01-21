@@ -17,7 +17,7 @@ interface DashboardStats {
 export default function TenantDashboard() {
   const router = useRouter()
   const { user, tenantId, signOut, loading } = useAuth()
-  const [stats, setStats] = useState<DashboardStats>({
+  const [stats] = useState<DashboardStats>({
     totalServices: 0,
     activeTestimonials: 0,
     monthlyViews: 0,
@@ -57,7 +57,7 @@ export default function TenantDashboard() {
                 <span className="text-charcoal font-medium">Dashboard</span>
               </nav>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="text-sm text-gray-custom">
                 Willkommen, <span className="font-medium text-charcoal">{user.email}</span>
@@ -83,7 +83,7 @@ export default function TenantDashboard() {
           <p className="text-gray-custom">
             Verwalten Sie Ihre Landing Pages und Services
           </p>
-          
+
           <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 bg-blue-50 border border-blue-200 rounded-full">
             <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse" />
             <span className="text-sm font-medium text-blue-800">

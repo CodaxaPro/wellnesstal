@@ -31,12 +31,12 @@ export default function TypographyTab({ content, updateContent }: TypographyTabP
   const fontSizes = ['12px', '14px', '16px', '18px', '20px', '24px', '30px', '36px', '48px', '72px']
   const fontWeights = ['400', '500', '600', '700', '800', '900']
 
-  const StyleSection = ({ 
-    title, 
+  const StyleSection = ({
+    title,
     section,
     hasBackground = false,
     hasBorder = false
-  }: { 
+  }: {
     title: string
     section: keyof AboutStyles
     hasBackground?: boolean
@@ -44,7 +44,7 @@ export default function TypographyTab({ content, updateContent }: TypographyTabP
   }) => (
     <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-3">
       <h4 className="text-xs font-semibold text-slate-700">{title}</h4>
-      
+
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs text-slate-500 mb-1">Font</label>
@@ -110,13 +110,13 @@ export default function TypographyTab({ content, updateContent }: TypographyTabP
           <div className="flex gap-2">
             <input
               type="color"
-              value={content.styles?.[section]?.backgroundColor || '#ffffff'}
+              value={(content.styles?.[section] as { backgroundColor?: string })?.backgroundColor || '#ffffff'}
               onChange={(e) => updateStyle(section, 'backgroundColor', e.target.value)}
               className="w-10 h-8 rounded border border-slate-200 cursor-pointer"
             />
             <input
               type="text"
-              value={content.styles?.[section]?.backgroundColor || '#ffffff'}
+              value={(content.styles?.[section] as { backgroundColor?: string })?.backgroundColor || '#ffffff'}
               onChange={(e) => updateStyle(section, 'backgroundColor', e.target.value)}
               className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-sm font-mono"
             />
@@ -130,13 +130,13 @@ export default function TypographyTab({ content, updateContent }: TypographyTabP
           <div className="flex gap-2">
             <input
               type="color"
-              value={content.styles?.[section]?.borderColor || '#9CAF88'}
+              value={(content.styles?.[section] as { borderColor?: string })?.borderColor || '#9CAF88'}
               onChange={(e) => updateStyle(section, 'borderColor', e.target.value)}
               className="w-10 h-8 rounded border border-slate-200 cursor-pointer"
             />
             <input
               type="text"
-              value={content.styles?.[section]?.borderColor || '#9CAF88'}
+              value={(content.styles?.[section] as { borderColor?: string })?.borderColor || '#9CAF88'}
               onChange={(e) => updateStyle(section, 'borderColor', e.target.value)}
               className="flex-1 px-2 py-1.5 border border-slate-200 rounded text-sm font-mono"
             />

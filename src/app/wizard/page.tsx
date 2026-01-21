@@ -8,7 +8,7 @@ import WizardProgress from './components/WizardProgress';
 import { useWizardStore } from './store/useWizardStore';  // ✅ ../ yerine ./
 
 export default function WizardPage() {
-  const { mode, currentStep, setMode } = useWizardStore();
+  const { currentStep, setMode } = useWizardStore();
 
   const handleSelectMode = (selectedMode: 'ai' | 'manual') => {
     setMode(selectedMode);

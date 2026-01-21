@@ -81,7 +81,6 @@ export default function CtaBlock({ block }: BlockProps) {
   const {
     layout,
     alignment,
-    verticalAlignment,
     minHeight,
     maxWidth,
     customMaxWidth,
@@ -127,7 +126,7 @@ export default function CtaBlock({ block }: BlockProps) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setIsVisible(true)
           observer.disconnect()
         }
@@ -234,16 +233,16 @@ return 'translate(0, 0) scale(1)'
     transition: `opacity ${animations.duration}ms ease-out ${delay}ms, transform ${animations.duration}ms ease-out ${delay}ms`
   })
 
-  // Max width classes
-  const maxWidthClass: Record<string, string> = {
-    sm: 'max-w-sm',
-    md: 'max-w-md',
-    lg: 'max-w-lg',
-    xl: 'max-w-xl',
-    '2xl': 'max-w-2xl',
-    full: 'max-w-full',
-    custom: ''
-  }
+  // Max width classes (unused but kept for future use)
+  // const maxWidthClass: Record<string, string> = {
+  //   sm: 'max-w-sm',
+  //   md: 'max-w-md',
+  //   lg: 'max-w-lg',
+  //   xl: 'max-w-xl',
+  //   '2xl': 'max-w-2xl',
+  //   full: 'max-w-full',
+  //   custom: ''
+  // }
 
   // Shadow classes
   const shadowClass: Record<string, string> = {

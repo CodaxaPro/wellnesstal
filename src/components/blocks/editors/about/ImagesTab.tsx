@@ -43,14 +43,14 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
           newImages[index] = {
             ...newImages[index],
             url: data.data.url,
-            alt: newImages[index].alt || file.name.split('.')[0]
+            alt: newImages[index]?.alt || file.name.split('.')[0] || ''
           }
           updateContent({ images: newImages })
         } else {
           // Add new image
           const newImage: AboutImage = {
             url: data.data.url,
-            alt: file.name.split('.')[0]
+            alt: file.name.split('.')[0] || ''
           }
           updateContent({
             images: [...(content.images || []), newImage]
@@ -96,7 +96,9 @@ export default function ImagesTab({ content, updateContent }: ImagesTabProps) {
 return
 }
 
-    [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]]
+    if (newImages[index] && newImages[targetIndex]) {
+      [newImages[index], newImages[targetIndex]] = [newImages[targetIndex], newImages[index]]
+    }
     updateContent({ images: newImages })
   }
 

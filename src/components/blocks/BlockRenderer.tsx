@@ -55,7 +55,7 @@ const blockComponents: Record<string, React.ComponentType<BlockProps>> = {
   'sticky-button': StickyButtonBlock,
 }
 
-export default function BlockRenderer({ blocks, isEditing, onBlockUpdate, pageSlug }: BlockRendererProps) {
+export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: BlockRendererProps) {
   // Sort blocks by position
   const sortedBlocks = [...blocks].sort((a, b) => a.position - b.position)
 
@@ -86,11 +86,18 @@ return null
             data-block-id={block.id}
             data-block-type={block.block_type}
           >
-            <BlockComponent
-              block={block}
-              isEditing={isEditing}
-              onUpdate={onBlockUpdate ? (content) => onBlockUpdate(block.id, content) : undefined}
-            />
+            {onBlockUpdate ? (
+              <BlockComponent
+                block={block}
+                isEditing={isEditing ?? false}
+                onUpdate={(content) => onBlockUpdate(block.id, content)}
+              />
+            ) : (
+              <BlockComponent
+                block={block}
+                isEditing={isEditing ?? false}
+              />
+            )}
           </div>
         )
       })}

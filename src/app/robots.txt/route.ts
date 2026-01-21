@@ -3,16 +3,16 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env['NEXT_PUBLIC_SUPABASE_URL']!,
+  process.env['SUPABASE_SERVICE_ROLE_KEY']!
 )
 
 // Enterprise robots.txt Generator
 // Optimized for all search engines: Google, Bing, Yandex, Baidu
 // AI crawlers: ChatGPT, Perplexity, Claude, etc.
 export async function GET() {
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL 
-    ? `https://${process.env.VERCEL_URL}` 
+  const baseUrl = process.env['NEXT_PUBLIC_SITE_URL'] || process.env['VERCEL_URL']
+    ? `https://${process.env['VERCEL_URL']}`
     : 'https://wellnesstal.de'
   const sitemapUrl = `${baseUrl}/sitemap.xml`
 

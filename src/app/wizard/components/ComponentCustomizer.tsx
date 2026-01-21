@@ -62,12 +62,12 @@ export default function ComponentCustomizer() {
 
   // Store'dan selections'ı al
   const selections = {
-    header: customization.header || 'classic',
-    hero: customization.hero || 'split',
-    features: customization.features || 'grid-3',
-    services: customization.services || 'cards',
-    cta: customization.cta || 'simple',
-    footer: customization.footer || '4-col',
+    header: customization['header'] || 'classic',
+    hero: customization['hero'] || 'split',
+    features: customization['features'] || 'grid-3',
+    services: customization['services'] || 'cards',
+    cta: customization['cta'] || 'simple',
+    footer: customization['footer'] || '4-col',
   };
 
   return (
@@ -87,7 +87,7 @@ export default function ComponentCustomizer() {
             <h3 className="text-xl font-bold mb-4 capitalize">
               {section === 'cta' ? 'CTA' : section}
             </h3>
-            
+
             <div className="grid grid-cols-3 gap-4">
               {variants.map((variant) => (
                 <button
@@ -128,14 +128,14 @@ export default function ComponentCustomizer() {
 
       {/* Navigation */}
       <div className="mt-8 flex justify-between">
-        <button 
+        <button
           onClick={handleBack}
           className="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300"
         >
           ← Geri
         </button>
-        
-        <button 
+
+        <button
           onClick={handleNext}
           className="bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700"
         >

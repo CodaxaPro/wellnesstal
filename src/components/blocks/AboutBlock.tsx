@@ -99,9 +99,6 @@ export default function AboutBlock({ block }: BlockProps) {
 
   const badge = content.badge || defaultContent.badge
   const title = content.title || defaultContent.title || ''
-  // Ana sayfadaki gibi: title'ın son kelimesi highlightedText olur
-  const highlightedText = content.highlightedText || (title ? title.split(' ').slice(-1)[0] : 'Baesweiler')
-  const titleWithoutHighlight = title ? title.split(' ').slice(0, -1).join(' ') : (title || 'Ihre Wellness-Oase im Herzen von')
   const description = content.description || defaultContent.description
   const stats = content.stats || defaultContent.stats || []
   const images = content.images || defaultContent.images || []

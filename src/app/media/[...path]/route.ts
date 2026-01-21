@@ -6,13 +6,13 @@ const STORAGE_BUCKET = 'wellnesstal'
 
 /**
  * Media Route - /media/[...path]
- * 
+ *
  * Resimleri /media/ formatında serve eder
  * Örnek: /media/hero/image.jpg
  * → Supabase Storage'dan çeker ve döner
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {

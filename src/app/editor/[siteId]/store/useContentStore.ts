@@ -35,7 +35,7 @@ interface ContentStore {
   duplicateSection: (id: string) => void;
   reorderSections: (sections: Section[]) => void;
   toggleSectionVisibility: (id: string) => void;
-  
+
   loadFromWizard: (wizardData: any) => void;
 }
 
@@ -44,65 +44,72 @@ const defaultContent: ContentData = {
   sections: [],
 };
 
-export const useContentStore = create<ContentStore>((set, get) => ({
+export const useContentStore = create<ContentStore>((set) => ({
   content: defaultContent,
   isEditMode: false,
   activeField: null,
 
   setEditMode: (mode) => set({ isEditMode: mode }),
-  
+
   setActiveField: (field) => set({ activeField: field }),
 
   updateContent: (path, value) => {
     console.log('📝 updateContent:', path, '=', typeof value === 'object' ? '{...}' : value);
     return set((state) => {
       const keys = path.split('.');
-      
+
       // businessName (top-level)
       if (keys[0] === 'businessName') {
         return { content: { ...state.content, businessName: value } };
       }
-      
+
       // Simple section update: hero.title, hero.titleConfig, hero.imageConfig, etc.
       if (keys.length === 2) {
         const [sectionType, field] = keys;
         const sections = [...state.content.sections];
         const sectionIndex = sections.findIndex(s => s.type === sectionType);
-        
-        if (sectionIndex !== -1) {
+
+        if (sectionIndex !== -1 && sections[sectionIndex] && typeof field === 'string') {
+          const currentSection = sections[sectionIndex]
           sections[sectionIndex] = {
-            ...sections[sectionIndex],
+            ...currentSection,
             content: {
-              ...sections[sectionIndex].content,
+              ...currentSection.content,
               [field]: value,
             },
           };
-          
+
           console.log('✅ Updated:', sectionType, field, typeof value);
           return { content: { ...state.content, sections } };
         }
       }
-      
+
       // Nested section updates: sections.hero-1.content.title
       if (keys[0] === 'sections' && keys.length >= 4) {
         const sectionId = keys[1];
         const sections = [...state.content.sections];
         const sectionIndex = sections.findIndex(s => s.id === sectionId);
-        
-        if (sectionIndex !== -1) {
+
+        if (sectionIndex !== -1 && sections[sectionIndex]) {
           const section = { ...sections[sectionIndex] };
           let current: any = section;
-          
+
           for (let i = 2; i < keys.length - 1; i++) {
-            current = current[keys[i]];
+            const key = keys[i]
+            if (key && current) {
+              current = current[key];
+            }
           }
-          current[keys[keys.length - 1]] = value;
-          
+          const lastKey = keys[keys.length - 1]
+          if (lastKey && current) {
+            current[lastKey] = value;
+          }
+
           sections[sectionIndex] = section;
           return { content: { ...state.content, sections } };
         }
       }
-      
+
       console.warn(`⚠️ updateContent: Path not handled: ${path}`);
       return state;
     });
@@ -114,7 +121,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     console.log('🔄 loadFromWizard CALLED');
     console.log('📥 wizardData:', wizardData);
     console.log('📊 Current sections:', state.content.sections.length);
-    
+
     if (!wizardData?.customization) {
       console.error('❌ Invalid wizardData');
       return state;
@@ -231,7 +238,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
     }
 
     newContent.sections = newSections;
-    
+
     console.log('✅ Created sections:', newSections.length);
     console.log('📋 Sections:', newSections.map(s => `${s.type}:${s.variant}`));
 
@@ -241,7 +248,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   addSection: (type, variant, afterId) => set((state) => {
     const sections = [...state.content.sections];
     const newId = `${type}-${Date.now()}`;
-    
+
     let insertIndex = sections.length;
     if (afterId) {
       const afterIndex = sections.findIndex(s => s.id === afterId);
@@ -249,15 +256,15 @@ export const useContentStore = create<ContentStore>((set, get) => ({
         insertIndex = afterIndex + 1;
       }
     }
-    
+
     const getDefaultContent = (sectionType: SectionType) => {
       switch (sectionType) {
         case 'header':
           return { ctaText: 'Book Now' };
         case 'hero':
-          return { 
-            title: 'New Hero Title', 
-            subtitle: 'New subtitle', 
+          return {
+            title: 'New Hero Title',
+            subtitle: 'New subtitle',
             ctaText: 'Click Here',
             image: 'https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800'
           };
@@ -273,28 +280,29 @@ export const useContentStore = create<ContentStore>((set, get) => ({
           return {};
       }
     };
-    
+
+    const defaultContent = getDefaultContent(type)
     const newSection: Section = {
       id: newId,
       type,
       variant,
       order: insertIndex,
       visible: true,
-      content: getDefaultContent(type),
+      content: defaultContent,
     };
-    
+
     sections.splice(insertIndex, 0, newSection);
     sections.forEach((s, i) => {
- s.order = i; 
+ s.order = i;
 });
-    
+
     return { content: { ...state.content, sections } };
   }),
 
   removeSection: (id) => set((state) => {
     const sections = state.content.sections.filter(s => s.id !== id);
     sections.forEach((s, i) => {
- s.order = i; 
+ s.order = i;
 });
     return { content: { ...state.content, sections } };
   }),
@@ -302,22 +310,24 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   duplicateSection: (id) => set((state) => {
     const sections = [...state.content.sections];
     const index = sections.findIndex(s => s.id === id);
-    
-    if (index !== -1) {
+
+    if (index !== -1 && sections[index]) {
       const original = sections[index];
       const duplicate: Section = {
-        ...original,
         id: `${original.type}-${Date.now()}`,
+        type: original.type,
+        variant: original.variant,
         order: index + 1,
+        visible: original.visible,
         content: { ...original.content },
       };
-      
+
       sections.splice(index + 1, 0, duplicate);
       sections.forEach((s, i) => {
- s.order = i; 
-});
+        s.order = i;
+      });
     }
-    
+
     return { content: { ...state.content, sections } };
   }),
 
@@ -327,7 +337,7 @@ export const useContentStore = create<ContentStore>((set, get) => ({
   }),
 
   toggleSectionVisibility: (id) => set((state) => {
-    const sections = state.content.sections.map(s => 
+    const sections = state.content.sections.map(s =>
       s.id === id ? { ...s, visible: !s.visible } : s
     );
     return { content: { ...state.content, sections } };

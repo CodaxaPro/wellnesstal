@@ -7,7 +7,7 @@ interface AdvancedTabProps {
   updateContent: (updates: Partial<AboutContent>) => void
 }
 
-export default function AdvancedTab({ content, updateContent }: AdvancedTabProps) {
+export default function AdvancedTab({ content: _content, updateContent: _updateContent }: AdvancedTabProps) {
   return (
     <div className="space-y-6">
       <div className="p-4 bg-white rounded-xl border border-slate-200">

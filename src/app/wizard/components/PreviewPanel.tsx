@@ -16,14 +16,14 @@ export default function PreviewPanel() {
   // ✅ CREATE SITE - CONTENT EKLENDİ
   const handleCreate = () => {
     const siteId = `site-${Date.now()}`;
-    
+
     const wizardData = {
       siteId,
       mode,
       category,
       theme,
       customization,
-      
+
       // ✅ CONTENT EKLENDI - Editor'da düzenlenebilir
       content: {
         businessName: 'Your Business',
@@ -54,16 +54,16 @@ export default function PreviewPanel() {
           ctaText: 'Book Now'
         }
       },
-      
+
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString()
     };
-    
+
     // Save to localStorage
     localStorage.setItem('wizardData', JSON.stringify(wizardData));
-    
+
     console.log('✅ Creating page with:', wizardData);
-    
+
     // Redirect to editor
     router.push(`/editor/${siteId}`);
   };
@@ -75,12 +75,12 @@ export default function PreviewPanel() {
   };
 
   // Get selected components
-  const HeaderComponent = getVariantComponent('headers', customization.header || 'classic');
-  const HeroComponent = getVariantComponent('heroes', customization.hero || 'split');
-  const FeaturesComponent = getVariantComponent('features', customization.features || 'grid-3');
-  const ServicesComponent = getVariantComponent('services', customization.services || 'cards');
-  const CTAComponent = getVariantComponent('cta', customization.cta || 'simple');
-  const FooterComponent = getVariantComponent('footers', customization.footer || '4-col');
+  const HeaderComponent = getVariantComponent('headers', customization['header'] || 'classic');
+  const HeroComponent = getVariantComponent('heroes', customization['hero'] || 'split');
+  const FeaturesComponent = getVariantComponent('features', customization['features'] || 'grid-3');
+  const ServicesComponent = getVariantComponent('services', customization['services'] || 'cards');
+  const CTAComponent = getVariantComponent('cta', customization['cta'] || 'simple');
+  const FooterComponent = getVariantComponent('footers', customization['footer'] || '4-col');
 
   // Theme colors
   const themeColors: any = {
@@ -160,7 +160,7 @@ export default function PreviewPanel() {
         <div className="bg-white">
           {/* Header */}
           {HeaderComponent && (
-            <HeaderComponent 
+            <HeaderComponent
               businessName="Your Business"
               ctaText="Book Now"
               primaryColor={primaryColor}
@@ -169,7 +169,7 @@ export default function PreviewPanel() {
 
           {/* Hero */}
           {HeroComponent && (
-            <HeroComponent 
+            <HeroComponent
               title="Welcome to Your Business"
               subtitle="Premium services designed for you"
               ctaText="Get Started"
@@ -179,7 +179,7 @@ export default function PreviewPanel() {
 
           {/* Features */}
           {FeaturesComponent && (
-            <FeaturesComponent 
+            <FeaturesComponent
               title="Why Choose Us"
               subtitle="Discover what makes us different"
               primaryColor={primaryColor}
@@ -188,7 +188,7 @@ export default function PreviewPanel() {
 
           {/* Services */}
           {ServicesComponent && (
-            <ServicesComponent 
+            <ServicesComponent
               title="Our Services"
               subtitle="Choose the perfect package for you"
               primaryColor={primaryColor}
@@ -197,7 +197,7 @@ export default function PreviewPanel() {
 
           {/* CTA */}
           {CTAComponent && (
-            <CTAComponent 
+            <CTAComponent
               title="Ready to Get Started?"
               subtitle="Join thousands of satisfied customers"
               ctaText="Book Appointment"
@@ -207,7 +207,7 @@ export default function PreviewPanel() {
 
           {/* Footer */}
           {FooterComponent && (
-            <FooterComponent 
+            <FooterComponent
               businessName="Your Business"
               phone="+1 (555) 123-4567"
               email="info@yourbusiness.com"
@@ -220,21 +220,21 @@ export default function PreviewPanel() {
 
       {/* Navigation */}
       <div className="flex justify-between items-center">
-        <button 
+        <button
           onClick={handleBack}
           className="bg-gray-200 text-gray-700 px-8 py-3 rounded-lg font-semibold hover:bg-gray-300"
         >
           ← Geri
         </button>
 
-        <button 
+        <button
           onClick={handleRestart}
           className="text-gray-500 hover:text-gray-700 underline"
         >
           Baştan Başla
         </button>
-        
-        <button 
+
+        <button
           onClick={handleCreate}
           className="bg-green-600 text-white px-12 py-4 rounded-lg font-bold text-lg hover:bg-green-700 shadow-lg"
         >

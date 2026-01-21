@@ -283,8 +283,8 @@ export default function ContactBlock({ block }: BlockProps) {
   const [isLoading, setIsLoading] = useState(false)
 
   // Check if we should use global contact
-  const useGlobalContact = block.content?.useGlobalContact !== false // default: true
-  const brandName = block.content?.brandName || 'Wellnesstal Studio'
+  const useGlobalContact = block.content?.['useGlobalContact'] !== false // default: true
+  const brandName = block.content?.['brandName'] || 'Wellnesstal Studio'
 
   // Fetch global contact data when useGlobalContact is true
   useEffect(() => {
@@ -379,20 +379,20 @@ export default function ContactBlock({ block }: BlockProps) {
   const sectionContent: ContactSectionContent = useGlobalContact && globalSectionData
     ? globalSectionData
     : {
-        badge: block.content?.badge || defaultSectionContent.badge,
-        sectionTitle: block.content?.sectionTitle || defaultSectionContent.sectionTitle,
-        highlightedText: block.content?.highlightedText || defaultSectionContent.highlightedText,
-        description: block.content?.description || defaultSectionContent.description,
+        badge: block.content?.['badge'] || defaultSectionContent.badge,
+        sectionTitle: block.content?.['sectionTitle'] || defaultSectionContent.sectionTitle,
+        highlightedText: block.content?.['highlightedText'] || defaultSectionContent.highlightedText,
+        description: block.content?.['description'] || defaultSectionContent.description,
         cards: {
-          phone: { ...defaultSectionContent.cards.phone, ...block.content?.cards?.phone },
-          whatsapp: { ...defaultSectionContent.cards.whatsapp, ...block.content?.cards?.whatsapp },
-          email: { ...defaultSectionContent.cards.email, ...block.content?.cards?.email },
+          phone: { ...defaultSectionContent.cards.phone, ...block.content?.['cards']?.phone },
+          whatsapp: { ...defaultSectionContent.cards.whatsapp, ...block.content?.['cards']?.whatsapp },
+          email: { ...defaultSectionContent.cards.email, ...block.content?.['cards']?.email },
         },
-        map: { ...defaultSectionContent.map, ...block.content?.map },
-        openingHours: { ...defaultSectionContent.openingHours, ...block.content?.openingHoursLabels },
+        map: { ...defaultSectionContent.map, ...block.content?.['map'] },
+        openingHours: { ...defaultSectionContent.openingHours, ...block.content?.['openingHoursLabels'] },
         styles: {
           ...defaultStyles,
-          ...block.content?.styles,
+          ...block.content?.['styles'],
         }
       }
 
@@ -401,10 +401,10 @@ export default function ContactBlock({ block }: BlockProps) {
   // Custom mode: use block content, otherwise fallback to default
   const contactData: ContactDataContent = useGlobalContact
     ? (globalContactData || defaultContactData)
-    : (block.content?.contact || defaultContactData)
+    : (block.content?.['contact'] || defaultContactData)
 
   // Get maps URL
-  const mapsUrl = useGlobalContact ? googleMapsUrl : (block.content?.googleMapsUrl || '')
+  const mapsUrl = useGlobalContact ? googleMapsUrl : (block.content?.['googleMapsUrl'] || '')
 
   // Show loading state when fetching global data
   if (useGlobalContact && isLoading) {
@@ -683,7 +683,7 @@ export default function ContactBlock({ block }: BlockProps) {
                       color: sectionContent.styles?.mapTitle?.color || defaultStyles.mapTitle?.color,
                     }}
                   >
-                    {useGlobalContact 
+                    {useGlobalContact
                       ? (businessInfoName || contactData.businessName || brandName)
                       : (contactData.businessName || brandName)}
                   </h3>

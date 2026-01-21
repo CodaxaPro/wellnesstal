@@ -3,8 +3,8 @@ import { NextResponse } from 'next/server'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
+  process.env['NEXT_PUBLIC_SUPABASE_URL']!,
+  process.env['SUPABASE_SERVICE_ROLE_KEY']!
 )
 
 // Enterprise Sitemap Generator
@@ -12,8 +12,8 @@ const supabase = createClient(
 // Optimized for Google, Bing, Yandex, and AI crawlers (ChatGPT, Perplexity, etc.)
 export async function GET() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
+    const baseUrl = process.env['NEXT_PUBLIC_SITE_URL'] || process.env['VERCEL_URL']
+      ? `https://${process.env['VERCEL_URL']}`
       : 'https://wellnesstal.de'
 
     // Fetch all published and active pages (automatically included when status = 'published' and active = true)
@@ -70,7 +70,7 @@ images.push(block.content.image)
 images.push(block.content.backgroundImage)
 }
       if (images.length > 0) {
-        pageImagesMap.set(block.page_id, images.map(img => typeof img === 'string' ? img : img.url).filter(Boolean))
+        pageImagesMap.set(block.page_id, images.map((img: string | { url?: string }) => typeof img === 'string' ? img : (img?.url || '')).filter(Boolean) as string[])
       }
     })
 
@@ -92,7 +92,7 @@ images.push(block.content.backgroundImage)
           console.warn(`Skipping page ${page.id} - no slug`)
           return false
         }
-        
+
         // Check if page should be excluded from sitemap (via SEOBlock settings)
         const seoSettings = seoSettingsMap.get(page.id)
         if (seoSettings?.include === false) {
@@ -113,7 +113,7 @@ images.push(block.content.backgroundImage)
         // Clean slug (remove leading/trailing slashes)
         const cleanSlug = page.slug.trim().replace(/^\/+|\/+$/g, '')
         const url = cleanSlug ? `${baseUrl}/${cleanSlug}` : baseUrl
-        
+
         // Get images for this page (for image sitemap support)
         const images = pageImagesMap.get(page.id) || []
         const imageTags = images.slice(0, 10).map(img => {
@@ -129,13 +129,13 @@ images.push(block.content.backgroundImage)
     <lastmod>${lastmodDate}</lastmod>
     <changefreq>${changeFreq}</changefreq>
     <priority>${priority.toFixed(1)}</priority>`
-        
+
         if (imageTags) {
           urlEntry += `\n${imageTags}`
         }
-        
+
         urlEntry += `\n  </url>`
-        
+
         return urlEntry
       })
       .join('\n')

@@ -9,7 +9,7 @@ interface ModernHeaderProps {
 
 export default function ModernHeader(props: ModernHeaderProps) {
   const businessName = props.businessName || "Your Business";
-  const menuItems = props.menuItems || ["Home", "Services", "About", "Contact"];
+  // const menuItems = props.menuItems || ["Home", "Services", "About", "Contact"];
   const ctaText = props.ctaText || "Book Now";
   const primaryColor = props.primaryColor || "#9333ea";
 
@@ -18,7 +18,7 @@ export default function ModernHeader(props: ModernHeaderProps) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           <div className="flex items-center">
-            <div 
+            <div
               className="text-3xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent"
               data-editable-header-business
               dangerouslySetInnerHTML={{ __html: businessName }}
@@ -43,7 +43,7 @@ export default function ModernHeader(props: ModernHeaderProps) {
           <div className="flex items-center">
             <button
               className="px-8 py-3 rounded-full font-bold text-white shadow-lg hover:shadow-xl transition-all hover:scale-105"
-              style={{ 
+              style={{
                 background: `linear-gradient(135deg, ${primaryColor} 0%, ${primaryColor}dd 100%)`
               }}
               data-editable-header-cta

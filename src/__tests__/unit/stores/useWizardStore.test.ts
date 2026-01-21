@@ -160,13 +160,13 @@ describe('useWizardStore', () => {
     it('should overwrite existing customization key', () => {
       useWizardStore.getState().setCustomization('header', 'classic')
       useWizardStore.getState().setCustomization('header', 'modern')
-      expect(useWizardStore.getState().customization.header).toBe('modern')
+      expect(useWizardStore.getState().customization['header']).toBe('modern')
     })
 
     it('should handle complex values', () => {
       const complexValue = { variant: 'split', color: '#000' }
       useWizardStore.getState().setCustomization('hero', complexValue)
-      expect(useWizardStore.getState().customization.hero).toEqual(complexValue)
+      expect(useWizardStore.getState().customization['hero']).toEqual(complexValue)
     })
   })
 

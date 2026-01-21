@@ -140,7 +140,7 @@ export const handlers = [
   }),
 
   http.get(`${API_BASE}/services/:id`, ({ params }) => {
-    const service = mockServices.find(s => s.id === params.id)
+    const service = mockServices.find(s => s.id === params['id'])
 
     if (!service) {
       return HttpResponse.json(
@@ -167,7 +167,7 @@ export const handlers = [
 
   http.put(`${API_BASE}/services/:id`, async ({ params, request }) => {
     const body = await request.json() as Record<string, unknown>
-    const index = mockServices.findIndex(s => s.id === params.id)
+    const index = mockServices.findIndex(s => s.id === params['id'])
 
     if (index === -1) {
       return HttpResponse.json(
@@ -180,13 +180,13 @@ export const handlers = [
       ...mockServices[index],
       ...body,
       updatedAt: new Date().toISOString()
-    }
+    } as typeof mockServices[0]
 
     return HttpResponse.json({ success: true, data: mockServices[index] })
   }),
 
   http.delete(`${API_BASE}/services/:id`, ({ params }) => {
-    const index = mockServices.findIndex(s => s.id === params.id)
+    const index = mockServices.findIndex(s => s.id === params['id'])
 
     if (index === -1) {
       return HttpResponse.json(
@@ -260,7 +260,7 @@ export const handlers = [
   }),
 
   http.get(`${API_BASE}/categories/:id`, ({ params }) => {
-    const category = mockCategories.find(c => c.id === params.id)
+    const category = mockCategories.find(c => c.id === params['id'])
 
     if (!category) {
       return HttpResponse.json(
@@ -288,7 +288,7 @@ export const handlers = [
 
   http.put(`${API_BASE}/categories/:id`, async ({ params, request }) => {
     const body = await request.json() as Record<string, unknown>
-    const index = mockCategories.findIndex(c => c.id === params.id)
+    const index = mockCategories.findIndex(c => c.id === params['id'])
 
     if (index === -1) {
       return HttpResponse.json(
@@ -301,13 +301,13 @@ export const handlers = [
       ...mockCategories[index],
       ...body,
       updatedAt: new Date().toISOString()
-    }
+    } as typeof mockCategories[0]
 
     return HttpResponse.json({ success: true, data: mockCategories[index] })
   }),
 
   http.delete(`${API_BASE}/categories/:id`, ({ params }) => {
-    const index = mockCategories.findIndex(c => c.id === params.id)
+    const index = mockCategories.findIndex(c => c.id === params['id'])
 
     if (index === -1) {
       return HttpResponse.json(
@@ -356,7 +356,7 @@ export const handlers = [
   }),
 
   http.get(`${API_BASE}/pages/:id`, ({ params }) => {
-    const page = mockPages.find(p => p.id === params.id)
+    const page = mockPages.find(p => p.id === params['id'])
 
     if (!page) {
       return HttpResponse.json(
@@ -372,7 +372,7 @@ export const handlers = [
     const body = await request.json() as Record<string, unknown>
 
     // Check slug uniqueness
-    if (mockPages.some(p => p.slug === body.slug)) {
+    if (mockPages.some(p => p.slug === body['slug'])) {
       return HttpResponse.json(
         { success: false, error: 'Slug already exists' },
         { status: 400 }
@@ -393,7 +393,7 @@ export const handlers = [
 
   http.put(`${API_BASE}/pages/:id`, async ({ params, request }) => {
     const body = await request.json() as Record<string, unknown>
-    const index = mockPages.findIndex(p => p.id === params.id)
+    const index = mockPages.findIndex(p => p.id === params['id'])
 
     if (index === -1) {
       return HttpResponse.json(
@@ -403,7 +403,7 @@ export const handlers = [
     }
 
     // Check slug uniqueness (excluding current page)
-    if (body.slug && mockPages.some(p => p.slug === body.slug && p.id !== params.id)) {
+    if (body['slug'] && mockPages.some(p => p.slug === body['slug'] && p.id !== params['id'])) {
       return HttpResponse.json(
         { success: false, error: 'Slug already exists' },
         { status: 400 }
@@ -414,13 +414,13 @@ export const handlers = [
       ...mockPages[index],
       ...body,
       updatedAt: new Date().toISOString()
-    }
+    } as typeof mockPages[0]
 
     return HttpResponse.json({ success: true, data: mockPages[index] })
   }),
 
   http.delete(`${API_BASE}/pages/:id`, ({ params }) => {
-    const index = mockPages.findIndex(p => p.id === params.id)
+    const index = mockPages.findIndex(p => p.id === params['id'])
 
     if (index === -1) {
       return HttpResponse.json(

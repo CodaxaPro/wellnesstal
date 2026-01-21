@@ -6,13 +6,13 @@ const STORAGE_BUCKET = 'wellnesstal'
 
 /**
  * Uploads Route - /uploads/[...path]
- * 
+ *
  * Resimleri /uploads/ formatında serve eder
  * Örnek: /uploads/about/image.jpg
  * → Supabase Storage'dan çeker ve döner
  */
 export async function GET(
-  request: NextRequest,
+  _request: NextRequest,
   { params }: { params: Promise<{ path: string[] }> }
 ) {
   try {
@@ -22,19 +22,19 @@ export async function GET(
     // veya ['hero', 'image.jpg'] → önce uploads/hero/ sonra media/hero/ kontrol et
     const pathParts = resolvedParams.path
     let imagePath = `uploads/${pathParts.join('/')}`
-    
+
     // Önce uploads/ klasöründe kontrol et, yoksa media/ klasöründe dene
     let { data, error } = await supabaseAdmin.storage
       .from(STORAGE_BUCKET)
       .download(imagePath)
-    
+
     // Eğer uploads/ klasöründe yoksa, media/ klasöründe dene
     if (error && pathParts.length > 0) {
       const mediaPath = `media/${pathParts.join('/')}`
       const mediaResult = await supabaseAdmin.storage
         .from(STORAGE_BUCKET)
         .download(mediaPath)
-      
+
       if (!mediaResult.error && mediaResult.data) {
         imagePath = mediaPath
         data = mediaResult.data

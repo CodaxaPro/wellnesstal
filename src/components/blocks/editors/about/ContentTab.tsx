@@ -1,6 +1,6 @@
 'use client'
 
-import { AboutContent, AboutStat, AboutImage } from '../../types'
+import { AboutContent, AboutStat } from '../../types'
 
 interface ContentTabProps {
   content: AboutContent
@@ -27,31 +27,32 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
     updateContent({ stats: newStats })
   }
 
-  const updateImage = (index: number, field: 'url' | 'alt', value: string) => {
-    const newImages = [...(content.images || [])]
-    if (!newImages[index]) {
-      newImages[index] = { url: '', alt: '' }
-    }
-    newImages[index] = { ...newImages[index], [field]: value }
-    updateContent({ images: newImages })
-  }
+  // Unused functions - kept for future use
+  // const updateImage = (index: number, field: 'url' | 'alt', value: string) => {
+  //   const newImages = [...(content.images || [])]
+  //   if (!newImages[index]) {
+  //     newImages[index] = { url: '', alt: '' }
+  //   }
+  //   newImages[index] = { ...newImages[index], [field]: value }
+  //   updateContent({ images: newImages })
+  // }
 
-  const addImage = () => {
-    const newImage: AboutImage = { url: '', alt: '' }
-    updateContent({ images: [...(content.images || []), newImage] })
-  }
+  // const addImage = () => {
+  //   const newImage: AboutImage = { url: '', alt: '' }
+  //   updateContent({ images: [...(content.images || []), newImage] })
+  // }
 
-  const removeImage = (index: number) => {
-    const newImages = (content.images || []).filter((_, i) => i !== index)
-    updateContent({ images: newImages })
-  }
+  // const removeImage = (index: number) => {
+  //   const newImages = (content.images || []).filter((_, i) => i !== index)
+  //   updateContent({ images: newImages })
+  // }
 
   return (
     <div className="space-y-6">
       {/* Header Content */}
       <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-4">
         <h3 className="text-sm font-semibold text-slate-700">Bölüm Başlığı</h3>
-        
+
         <div>
           <label className="block text-xs text-slate-500 mb-1">Badge</label>
           <input
@@ -144,7 +145,7 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
       {/* Buttons */}
       <div className="p-4 bg-white rounded-xl border border-slate-200 space-y-4">
         <h3 className="text-sm font-semibold text-slate-700">Butonlar</h3>
-        
+
         <div className="grid grid-cols-2 gap-3">
           <div>
             <label className="block text-xs text-slate-500 mb-1">Birincil Buton Metni</label>
