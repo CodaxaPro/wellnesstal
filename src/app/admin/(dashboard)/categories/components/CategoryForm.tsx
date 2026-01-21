@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
-import { CategoryFormData, Category } from '../types'
+import { Category, CategoryFormData } from '../types'
 
 interface CategoryFormProps {
   isOpen: boolean
@@ -25,7 +25,7 @@ const PREDEFINED_COLORS = [
 ]
 
 const PREDEFINED_ICONS = [
-  '🌿', '💆', '🧘', '💅', '✨', '🌸', '🏥', '💊', 
+  '🌿', '💆', '🧘', '💅', '✨', '🌸', '🏥', '💊',
   '🍽️', '☕', '🍕', '🥗', '🛍️', '👕', '📱', '🎨'
 ]
 
@@ -88,7 +88,7 @@ export default function CategoryForm({
       newErrors.name = 'Kategori adı en az 2 karakter olmalıdır'
     } else {
       // Check for duplicate names
-      const isDuplicate = existingCategories.some(cat => 
+      const isDuplicate = existingCategories.some(cat =>
         cat.name.toLowerCase() === formData.name.trim().toLowerCase() &&
         cat.id !== editingCategory?.id
       )
@@ -113,7 +113,7 @@ export default function CategoryForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -129,9 +129,9 @@ export default function CategoryForm({
     }
   }
 
-  const handleInputChange = (field: keyof CategoryFormData, value: any) => {
+  const handleInputChange = (field: keyof CategoryFormData, value: CategoryFormData[keyof CategoryFormData]) => {
     setFormData(prev => ({ ...prev, [field]: value }))
-    
+
     // Clear error for this field when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
@@ -167,7 +167,7 @@ return null
           </div>
         </div>
 
-        <form onSubmit={handleSubmit} className="p-6 space-y-6">
+        <form onSubmit={(e) => void handleSubmit(e)} className="p-6 space-y-6">
           {/* Category Name */}
           <div>
             <label className="block text-sm font-medium text-charcoal mb-2">

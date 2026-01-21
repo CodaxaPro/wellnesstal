@@ -166,9 +166,13 @@ setExpandedNavItem(null)
     const navItems = [...localContent.navItems]
     const newIndex = direction === 'up' ? index - 1 : index + 1
     if (newIndex < 0 || newIndex >= navItems.length) {
-return
-    ;
-}[navItems[index], navItems[newIndex]] = [navItems[newIndex], navItems[index]]
+      return
+    }
+    const item1 = navItems[index]
+    const item2 = navItems[newIndex]
+    if (!item1 || !item2) return
+    navItems[index] = item2
+    navItems[newIndex] = item1
     const newContent = { ...localContent, navItems }
     setLocalContent(newContent)
     debouncedUpdate(newContent)

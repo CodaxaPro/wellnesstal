@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 
 import { Color } from '@tiptap/extension-color'
 import { Highlight } from '@tiptap/extension-highlight'
@@ -9,7 +9,7 @@ import { Placeholder } from '@tiptap/extension-placeholder'
 import { TextAlign } from '@tiptap/extension-text-align'
 import { TextStyle } from '@tiptap/extension-text-style'
 import { Underline } from '@tiptap/extension-underline'
-import { useEditor, EditorContent } from '@tiptap/react'
+import { EditorContent, useEditor } from '@tiptap/react'
 import StarterKit from '@tiptap/starter-kit'
 
 
@@ -33,7 +33,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
 
   // Create a ref to track the latest settings for onUpdate
   const settingsRef = useRef({ autoTrimWhitespace, removeEmptyParagraphs, paragraphSpacing, bulletListStyle })
-  
+
   // Track if editor is being updated by user (to prevent infinite loops)
   const isUserEditingRef = useRef(false)
   const lastContentRef = useRef(content)
@@ -79,10 +79,10 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
     },
     onUpdate: ({ editor }) => {
       let html = editor.getHTML()
-      
+
       // Use ref values to ensure we have the latest settings
       const currentSettings = settingsRef.current
-      
+
       // Add marker attributes
       const markerStyles: Record<string, string> = {
         'check': 'check',
@@ -97,10 +97,10 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
       if (markerStyles[currentSettings.bulletListStyle]) {
         html = html.replace(/<ul>/g, `<ul data-marker="${markerStyles[currentSettings.bulletListStyle]}">`)
       }
-      
+
       // Fix invalid HTML: Remove <p> tags inside <li> tags
       html = html.replace(/<li><p([^>]*)>(.*?)<\/p><\/li>/gi, '<li$1>$2</li>')
-      
+
       // Remove empty paragraphs FIRST (before other processing)
       if (currentSettings.removeEmptyParagraphs) {
         // Remove empty <p></p> tags
@@ -112,7 +112,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
         // Remove <p> tags with only <br> and whitespace
         html = html.replace(/<p[^>]*>[\s\u00A0]*<br\s*\/?>[\s\u00A0]*<\/p>/gi, '')
       }
-      
+
       // Whitespace management - ONLY normalize multiple spaces, preserve single spaces and word boundaries
       // This allows users to add spaces between words
       if (currentSettings.autoTrimWhitespace && typeof window !== 'undefined') {
@@ -120,7 +120,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
           // Use DOM parser for safe HTML manipulation
           const parser = new DOMParser()
           const doc = parser.parseFromString(html, 'text/html')
-          
+
           // Clean text nodes - only normalize multiple spaces, preserve single spaces and word boundaries
           const cleanTextNodes = (node: Node) => {
             if (node.nodeType === Node.TEXT_NODE) {
@@ -137,19 +137,19 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
               Array.from(node.childNodes).forEach(cleanTextNodes)
             }
           }
-          
+
           // Clean all text nodes
           Array.from(doc.body.childNodes).forEach(cleanTextNodes)
-          
+
           // Get cleaned HTML - preserve structure
           html = doc.body.innerHTML
-          
+
           // Only remove whitespace between tags that are not text nodes
           // This preserves spaces within text content
           // Don't remove all whitespace between tags - only normalize excessive whitespace
           html = html.replace(/>[\s\n\r\t]{2,}</g, '><')
           // Don't trim the entire HTML - preserve structure
-        } catch (e) {
+        } catch (_e) {
           // Fallback to simple regex if DOM parsing fails
           // Only normalize multiple spaces, don't remove single spaces
           html = html.replace(/[ \t\n\r]{2,}/g, ' ')
@@ -157,7 +157,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
           html = html.replace(/>[\s\n\r\t]{2,}</g, '><')
         }
       }
-      
+
       // Add paragraph spacing attribute (only if not already present)
       html = html.replace(/<p([^>]*?)(?:\s+data-spacing="[^"]*")?([^>]*)>/gi, (match) => {
         // Check if data-spacing already exists
@@ -168,13 +168,13 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
       // Add new data-spacing before closing >
       return match.replace(/(<p[^>]*)(>)/, `$1 data-spacing="${currentSettings.paragraphSpacing}"$2`)
       })
-      
+
       // Update lastContentRef
       lastContentRef.current = html
-      
+
       // Call onUpdate
       onUpdate(html)
-      
+
       // Reset editing flag after a short delay
       setTimeout(() => {
         isUserEditingRef.current = false
@@ -188,25 +188,27 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
       const currentHtml = editor.getHTML()
       // Only update if content is significantly different (avoid minor updates)
       if (content !== currentHtml) {
-        editor.commands.setContent(content || '', false)
+        editor.commands.setContent(content || '', { emitUpdate: false })
         lastContentRef.current = content
-        
+
         if (content) {
           const markerMatch = content.match(/<ul[^>]*data-marker="([^"]+)"/)
           if (markerMatch) {
             const marker = markerMatch[1]
-            const reverseMap: Record<string, string> = {
-              'check': 'check',
-              'check-circle': 'check-circle',
-              'arrow': 'arrow',
-              'arrow-right': 'arrow-right',
-              'star': 'star',
-              'diamond': 'diamond',
-              'dash': 'dash',
-              'dot': 'dot',
-            }
-            if (reverseMap[marker]) {
-              setBulletListStyle(reverseMap[marker])
+            if (marker) {
+              const reverseMap: Record<string, string> = {
+                'check': 'check',
+                'check-circle': 'check-circle',
+                'arrow': 'arrow',
+                'arrow-right': 'arrow-right',
+                'star': 'star',
+                'diamond': 'diamond',
+                'dash': 'dash',
+                'dot': 'dot',
+              }
+              if (reverseMap[marker]) {
+                setBulletListStyle(reverseMap[marker])
+              }
             }
           }
         }
@@ -221,12 +223,12 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
   // Update ref and apply settings when they change
   useEffect(() => {
     settingsRef.current = { autoTrimWhitespace, removeEmptyParagraphs, paragraphSpacing, bulletListStyle }
-    
+
     // When settings change, trigger editor update to apply changes
     if (editor) {
       // Get current HTML
       let html = editor.getHTML()
-      
+
       // Apply all transformations
       const markerStyles: Record<string, string> = {
         'check': 'check',
@@ -246,10 +248,10 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
           return `<ul${attrs} data-marker="${markerStyles[bulletListStyle]}">`
         })
       }
-      
+
       // Fix invalid HTML: Remove <p> tags inside <li> tags
       html = html.replace(/<li([^>]*)><p([^>]*)>(.*?)<\/p><\/li>/gi, '<li$1>$3</li>')
-      
+
       // Remove empty paragraphs
       if (removeEmptyParagraphs) {
         html = html.replace(/<p[^>]*>\s*<\/p>/gi, '')
@@ -257,7 +259,7 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
         html = html.replace(/<p[^>]*><br\s*\/?><\/p>/gi, '')
         html = html.replace(/<p[^>]*>[\s\u00A0]*<br\s*\/?>[\s\u00A0]*<\/p>/gi, '')
       }
-      
+
       // Whitespace management - preserve word boundaries
       if (autoTrimWhitespace && typeof window !== 'undefined') {
         try {
@@ -279,13 +281,13 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
           Array.from(doc.body.childNodes).forEach(cleanTextNodes)
           // Only remove excessive whitespace between tags, not all whitespace
           html = doc.body.innerHTML.replace(/>[\s\n\r\t]{2,}</g, '><')
-        } catch (e) {
+        } catch (_e) {
           // Fallback - only normalize multiple spaces
           html = html.replace(/[ \t\n\r]{2,}/g, ' ')
           html = html.replace(/>[\s\n\r\t]{2,}</g, '><')
         }
       }
-      
+
       // Update paragraph spacing
       html = html.replace(/<p([^>]*?)(?:\s+data-spacing="[^"]*")?([^>]*)>/gi, (match) => {
         if (match.includes('data-spacing=')) {
@@ -293,17 +295,17 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
         }
         return match.replace(/(<p[^>]*)(>)/, `$1 data-spacing="${paragraphSpacing}"$2`)
       })
-      
+
       // Only update if HTML changed
       if (html !== editor.getHTML()) {
         const selection = editor.state.selection
-        editor.commands.setContent(html, false)
+        editor.commands.setContent(html, { emitUpdate: false })
         // Try to restore selection
         try {
           if (selection?.from !== undefined) {
             editor.commands.setTextSelection(selection)
           }
-        } catch (e) {
+        } catch (_e) {
           // Selection restore failed, that's okay
         }
       }
@@ -311,119 +313,118 @@ export default function DescriptionRichEditor({ content, onUpdate }: Description
   }, [editor, autoTrimWhitespace, removeEmptyParagraphs, paragraphSpacing, bulletListStyle])
 
   useEffect(() => {
-    if (editor) {
-      const style = document.createElement('style')
-      style.id = 'description-editor-styles'
-      const markerStyles: Record<string, string> = {
-        'check': '✓',
-        'check-circle': '✓',
-        'arrow': '→',
-        'arrow-right': '▶',
-        'star': '★',
-        'diamond': '◆',
-        'dash': '—',
-        'dot': '•',
+    if (!editor) return
+    const style = document.createElement('style')
+    style.id = 'description-editor-styles'
+    const markerStyles: Record<string, string> = {
+      'check': '✓',
+      'check-circle': '✓',
+      'arrow': '→',
+      'arrow-right': '▶',
+      'star': '★',
+      'diamond': '◆',
+      'dash': '—',
+      'dot': '•',
+    }
+    const isCustomMarker = markerStyles[bulletListStyle]
+    const markerChar = isCustomMarker || '✓'
+
+    style.textContent = `
+      .ProseMirror {
+        font-size: 16px;
+        line-height: 1.75;
+        color: #2C2C2C;
       }
-      const isCustomMarker = markerStyles[bulletListStyle]
-      const markerChar = isCustomMarker || '✓'
-      
-      style.textContent = `
-        .ProseMirror {
-          font-size: 16px;
-          line-height: 1.75;
-          color: #2C2C2C;
+      .ProseMirror ul {
+        ${isCustomMarker
+          ? `list-style: none; padding-left: 0;`
+          : `list-style-type: ${bulletListStyle}; padding-left: 1.75rem;`
         }
-        .ProseMirror ul { 
-          ${isCustomMarker 
-            ? `list-style: none; padding-left: 0;`
-            : `list-style-type: ${bulletListStyle}; padding-left: 1.75rem;`
-          }
-          margin: 0.75rem 0;
-        }
-        ${isCustomMarker ? `
-          .ProseMirror ul li {
-            position: relative;
-            padding-left: 1.75rem;
-            margin: 0.5rem 0;
-          }
-          .ProseMirror ul li::before {
-            content: "${markerChar}";
-            position: absolute;
-            left: 0;
-            ${bulletListStyle === 'check-circle' ? `
-              display: inline-flex;
-              align-items: center;
-              justify-content: center;
-              width: 1.3em;
-              height: 1.3em;
-              border-radius: 50%;
-              background-color: #9CAF88;
-              color: white;
-              font-size: 0.85em;
-              font-weight: bold;
-            ` : `
-              color: #637554;
-              font-weight: 600;
-              font-size: 1.1em;
-            `}
-          }
-        ` : ''}
-        .ProseMirror ol { 
-          list-style-type: ${orderedListStyle}; 
-          padding-left: 1.75rem; 
-          margin: 0.75rem 0;
-        }
-        .ProseMirror li {
+        margin: 0.75rem 0;
+      }
+      ${isCustomMarker ? `
+        .ProseMirror ul li {
+          position: relative;
+          padding-left: 1.75rem;
           margin: 0.5rem 0;
         }
-        .ProseMirror a { 
-          color: ${linkColor}; 
-          text-decoration: ${linkStyle === 'underline' ? 'underline' : linkStyle === 'none' ? 'none' : linkStyle === 'hover-underline' ? 'none' : 'underline'};
-          ${linkStyle === 'bold' ? 'font-weight: 600;' : ''}
-          transition: all 0.2s ease;
+        .ProseMirror ul li::before {
+          content: "${markerChar}";
+          position: absolute;
+          left: 0;
+          ${bulletListStyle === 'check-circle' ? `
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 1.3em;
+            height: 1.3em;
+            border-radius: 50%;
+            background-color: #9CAF88;
+            color: white;
+            font-size: 0.85em;
+            font-weight: bold;
+          ` : `
+            color: #637554;
+            font-weight: 600;
+            font-size: 1.1em;
+          `}
         }
-        ${linkStyle === 'hover-underline' ? '.ProseMirror a:hover { text-decoration: underline; }' : ''}
-        .ProseMirror strong {
-          font-weight: 700;
-          color: #2C2C2C;
-        }
-        .ProseMirror em {
-          font-style: italic;
-        }
-        .ProseMirror u {
-          text-decoration: underline;
-          text-decoration-thickness: 2px;
-        }
-        .ProseMirror p {
-          margin: 0.75rem 0;
-        }
-        .ProseMirror p[data-spacing="compact"] {
-          margin: 0.25rem 0;
-        }
-        .ProseMirror p[data-spacing="normal"] {
-          margin: 0.75rem 0;
-        }
-        .ProseMirror p[data-spacing="relaxed"] {
-          margin: 1.25rem 0;
-        }
-        .ProseMirror p.is-editor-empty:first-child::before {
-          content: attr(data-placeholder);
-          float: left;
-          color: #9CA3AF;
-          pointer-events: none;
-          height: 0;
-        }
-      `
-      const oldStyle = document.getElementById('description-editor-styles')
-      if (oldStyle) {
-oldStyle.remove()
-}
-      document.head.appendChild(style)
-      return () => {
-        const styleToRemove = document.getElementById('description-editor-styles')
-        if (styleToRemove) {
-styleToRemove.remove()
-}
+      ` : ''}
+      .ProseMirror ol {
+        list-style-type: ${orderedListStyle};
+        padding-left: 1.75rem;
+        margin: 0.75rem 0;
+      }
+      .ProseMirror li {
+        margin: 0.5rem 0;
+      }
+      .ProseMirror a {
+        color: ${linkColor};
+        text-decoration: ${linkStyle === 'underline' ? 'underline' : linkStyle === 'none' ? 'none' : linkStyle === 'hover-underline' ? 'none' : 'underline'};
+        ${linkStyle === 'bold' ? 'font-weight: 600;' : ''}
+        transition: all 0.2s ease;
+      }
+      ${linkStyle === 'hover-underline' ? '.ProseMirror a:hover { text-decoration: underline; }' : ''}
+      .ProseMirror strong {
+        font-weight: 700;
+        color: #2C2C2C;
+      }
+      .ProseMirror em {
+        font-style: italic;
+      }
+      .ProseMirror u {
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+      }
+      .ProseMirror p {
+        margin: 0.75rem 0;
+      }
+      .ProseMirror p[data-spacing="compact"] {
+        margin: 0.25rem 0;
+      }
+      .ProseMirror p[data-spacing="normal"] {
+        margin: 0.75rem 0;
+      }
+      .ProseMirror p[data-spacing="relaxed"] {
+        margin: 1.25rem 0;
+      }
+      .ProseMirror p.is-editor-empty:first-child::before {
+        content: attr(data-placeholder);
+        float: left;
+        color: #9CA3AF;
+        pointer-events: none;
+        height: 0;
+      }
+    `
+    const oldStyle = document.getElementById('description-editor-styles')
+    if (oldStyle) {
+      oldStyle.remove()
+    }
+    document.head.appendChild(style)
+    return () => {
+      const styleToRemove = document.getElementById('description-editor-styles')
+      if (styleToRemove) {
+        styleToRemove.remove()
       }
     }
   }, [editor, bulletListStyle, orderedListStyle, linkColor, linkStyle])
@@ -436,13 +437,13 @@ styleToRemove.remove()
     )
   }
 
-  const ToolbarButton = ({ 
-    onClick, 
-    isActive, 
-    title, 
-    icon, 
-    disabled = false 
-  }: { 
+  const ToolbarButton = ({
+    onClick,
+    isActive,
+    title,
+    icon,
+    disabled = false
+  }: {
     onClick: () => void
     isActive?: boolean
     title: string
@@ -467,12 +468,12 @@ styleToRemove.remove()
     </button>
   )
 
-  const TabButton = ({ 
-    id, 
-    label, 
-    icon 
-  }: { 
-    id: 'format' | 'style' | 'list' | 'link'
+  const TabButton = ({
+    id,
+    label,
+    icon
+  }: {
+    id: 'format' | 'style' | 'list' | 'link' | 'spacing'
     label: string
     icon: React.ReactNode
   }) => (
@@ -498,45 +499,45 @@ styleToRemove.remove()
       <div className="bg-gradient-to-r from-gray-50 to-white border-b border-gray-200 rounded-t-xl">
         {/* Tab Navigation */}
         <div className="px-4 pt-4 pb-2 flex items-center gap-2 border-b border-gray-200">
-          <TabButton 
-            id="format" 
-            label="Format" 
+          <TabButton
+            id="format"
+            label="Format"
             icon={
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             }
           />
-          <TabButton 
-            id="style" 
-            label="Stil" 
+          <TabButton
+            id="style"
+            label="Stil"
             icon={
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
               </svg>
             }
           />
-          <TabButton 
-            id="list" 
-            label="Liste" 
+          <TabButton
+            id="list"
+            label="Liste"
             icon={
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             }
           />
-          <TabButton 
-            id="link" 
-            label="Link" 
+          <TabButton
+            id="link"
+            label="Link"
             icon={
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1" />
               </svg>
             }
           />
-          <TabButton 
-            id="spacing" 
-            label="Boşluk" 
+          <TabButton
+            id="spacing"
+            label="Boşluk"
             icon={
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -639,7 +640,7 @@ styleToRemove.remove()
                 <div className="relative">
                   <input
                     type="color"
-                    value={editor.getAttributes('textStyle').color || '#2C2C2C'}
+                    value={editor.getAttributes('textStyle')['color'] || '#2C2C2C'}
                     onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
                     className="w-10 h-10 rounded-lg border-2 border-gray-200 cursor-pointer hover:border-sage-400 transition-colors"
                     title="Metin Rengi"
@@ -647,7 +648,7 @@ styleToRemove.remove()
                 </div>
                 <input
                   type="text"
-                  value={editor.getAttributes('textStyle').color || '#2C2C2C'}
+                  value={editor.getAttributes('textStyle')['color'] || '#2C2C2C'}
                   onChange={(e) => editor.chain().focus().setColor(e.target.value).run()}
                   className="w-20 px-2 py-1.5 text-xs font-mono border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
                   placeholder="#000000"
@@ -661,7 +662,7 @@ styleToRemove.remove()
                 <div className="relative">
                   <input
                     type="color"
-                    value={editor.getAttributes('highlight').color || '#FEF08A'}
+                    value={editor.getAttributes('highlight')['color'] || '#FEF08A'}
                     onChange={(e) => editor.chain().focus().toggleHighlight({ color: e.target.value }).run()}
                     className="w-10 h-10 rounded-lg border-2 border-gray-200 cursor-pointer hover:border-sage-400 transition-colors"
                     title="Vurgu Rengi"
@@ -669,7 +670,7 @@ styleToRemove.remove()
                 </div>
                 <input
                   type="text"
-                  value={editor.getAttributes('highlight').color || '#FEF08A'}
+                  value={editor.getAttributes('highlight')['color'] || '#FEF08A'}
                   onChange={(e) => editor.chain().focus().toggleHighlight({ color: e.target.value }).run()}
                   className="w-20 px-2 py-1.5 text-xs font-mono border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
                   placeholder="#FEF08A"
@@ -822,6 +823,7 @@ styleToRemove.remove()
                     const { from, to } = editor.state.selection
                     const selectedText = editor.state.doc.textBetween(from, to, ' ')
                     if (selectedText) {
+                      // eslint-disable-next-line no-alert
                       const url = window.prompt('Link URL:', 'https://')
                       if (url) {
                         editor.chain().focus().setLink({ href: url }).run()
@@ -885,7 +887,7 @@ styleToRemove.remove()
                       >
                         <option value="underline">Altı Çizili</option>
                         <option value="none">Altı Çizili Yok</option>
-                        <option value="hover-underline">Hover'da Altı Çizili</option>
+                        <option value="hover-underline">Hover&apos;da Altı Çizili</option>
                         <option value="bold">Kalın</option>
                       </select>
                     </div>
@@ -959,13 +961,13 @@ styleToRemove.remove()
                                 // Only remove excessive whitespace between tags
                                 const cleanedHtml = doc.body.innerHTML.replace(/>[\s\n\r\t]{2,}</g, '><')
                                 if (cleanedHtml !== html) {
-                                  editor.commands.setContent(cleanedHtml, false)
+                                  editor.commands.setContent(cleanedHtml, { emitUpdate: false })
                                 }
-                              } catch (e) {
+                              } catch (_e) {
                                 // Fallback - only normalize multiple spaces
                                 const cleanedHtml = html.replace(/[ \t\n\r]{2,}/g, ' ').replace(/>[\s\n\r\t]{2,}</g, '><')
                                 if (cleanedHtml !== html) {
-                                  editor.commands.setContent(cleanedHtml, false)
+                                  editor.commands.setContent(cleanedHtml, { emitUpdate: false })
                                 }
                               }
                             }
@@ -975,8 +977,8 @@ styleToRemove.remove()
                       className="sr-only peer"
                     />
                     <div className={`w-11 h-6 rounded-full peer transition-colors ${
-                      autoTrimWhitespace 
-                        ? 'bg-sage-500' 
+                      autoTrimWhitespace
+                        ? 'bg-sage-500'
                         : 'bg-gray-200'
                     } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
                   </label>
@@ -1007,7 +1009,7 @@ styleToRemove.remove()
                               html = html.replace(/<p[^>]*><br\s*\/?><\/p>/gi, '')
                               html = html.replace(/<p[^>]*>[\s\u00A0]*<br\s*\/?>[\s\u00A0]*<\/p>/gi, '')
                               if (html !== editor.getHTML()) {
-                                editor.commands.setContent(html, false)
+                                editor.commands.setContent(html, { emitUpdate: false })
                               }
                             }
                           }, 50)
@@ -1016,8 +1018,8 @@ styleToRemove.remove()
                       className="sr-only peer"
                     />
                     <div className={`w-11 h-6 rounded-full peer transition-colors ${
-                      removeEmptyParagraphs 
-                        ? 'bg-sage-500' 
+                      removeEmptyParagraphs
+                        ? 'bg-sage-500'
                         : 'bg-gray-200'
                     } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
                   </label>
@@ -1051,7 +1053,7 @@ styleToRemove.remove()
                                 return match.replace(/(<p[^>]*)(>)/, `$1 data-spacing="${newSpacing}"$2`)
                               })
                               if (html !== editor.getHTML()) {
-                                editor.commands.setContent(html, false)
+                                editor.commands.setContent(html, { emitUpdate: false })
                               }
                             }, 50)
                           }

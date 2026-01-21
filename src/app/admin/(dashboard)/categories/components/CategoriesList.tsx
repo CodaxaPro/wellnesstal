@@ -48,7 +48,7 @@ export default function CategoriesList({
 
   const handleDrop = (e: React.DragEvent, targetCategoryId: string) => {
     e.preventDefault()
-    
+
     if (!draggedItem || draggedItem === targetCategoryId) {
       setDraggedItem(null)
       setDragOverItem(null)
@@ -57,7 +57,7 @@ export default function CategoriesList({
 
     const draggedIndex = categories.findIndex(cat => cat.id === draggedItem)
     const targetIndex = categories.findIndex(cat => cat.id === targetCategoryId)
-    
+
     if (draggedIndex === -1 || targetIndex === -1) {
 return
 }
@@ -65,7 +65,9 @@ return
     // Create new order
     const reorderedCategories = [...categories]
     const [removed] = reorderedCategories.splice(draggedIndex, 1)
-    if (!removed) return
+    if (!removed) {
+      return
+    }
     reorderedCategories.splice(targetIndex, 0, removed)
 
     // Generate new order values
@@ -80,6 +82,7 @@ return
   }
 
   const handleDeleteClick = (categoryId: string, categoryName: string) => {
+    // eslint-disable-next-line no-alert
     if (window.confirm(`"${categoryName}" kategorisini silmek istediğinizden emin misiniz?`)) {
       onDelete(categoryId)
     }
@@ -192,7 +195,7 @@ return
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <div className="flex items-center">
-                    <div 
+                    <div
                       className="h-8 w-8 rounded-lg flex items-center justify-center mr-3"
                       style={{ backgroundColor: category.color }}
                     >

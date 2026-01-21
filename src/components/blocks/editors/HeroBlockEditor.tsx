@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
-import { HeroContent } from '../types'
+import { HeroContent, HeroImageStyles, HeroStyles, HeroTextStyle } from '../types'
 
 import DescriptionRichEditor from './hero/DescriptionRichEditor'
 
@@ -37,13 +37,33 @@ const getDefaultContent = (): HeroContent => ({
   imageStyles: {
     borderRadius: '24px',
     boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)',
-    opacity: '100',
-    hoverScale: '105',
-    brightness: '100',
-    contrast: '100',
-    saturation: '100',
-    overlayOpacity: '20',
-    overlayColor: '#2C2C2C'
+    opacity: 100,
+    hoverScale: 105,
+    brightness: 100,
+    contrast: 100,
+    saturation: 100,
+    blur: 0,
+    overlayOpacity: 20,
+    overlayColor: '#2C2C2C',
+    objectFit: 'cover',
+    objectPosition: 'center',
+    sizeMode: 'auto',
+    width: '100%',
+    height: 'auto',
+    maxWidth: '100%',
+    maxHeight: '100%',
+    minWidth: '0',
+    minHeight: '0',
+    aspectRatio: 'auto',
+    customAspectRatio: '',
+    containerWidth: 'full',
+    customContainerWidth: '',
+    containerHeight: 'auto',
+    customContainerHeight: '',
+    mobileWidth: '100%',
+    mobileHeight: 'auto',
+    tabletWidth: '100%',
+    tabletHeight: 'auto'
   },
   styles: {
     badge: {
@@ -189,7 +209,7 @@ export default function HeroBlockEditor({ content: initialContent, onUpdate }: H
     ...getDefaultContent(),
     ...initialContent
   }))
-  
+
   const [expandedStyleFields, setExpandedStyleFields] = useState<string[]>([])
   const [uploadingHeroImage, setUploadingHeroImage] = useState(false)
   const [showEmojiPicker, setShowEmojiPicker] = useState(false)
@@ -283,7 +303,7 @@ return
       const data = await response.json()
       if (data.success) {
         updateContent({
-          image: { ...content.image, url: data.data.url }
+          image: { url: data.data.url, alt: content.image?.alt || 'Hero image' }
         })
       }
     } catch (error) {
@@ -298,10 +318,11 @@ return
     const imageUrl = content.image?.url
     if (!imageUrl?.startsWith('/uploads/')) {
       updateContent({
-        image: { ...content.image, url: '' }
+        image: { url: '', alt: content.image?.alt || '' }
       })
       return
     }
+    // eslint-disable-next-line no-alert
     if (!confirm('Hero görseli silinecek. Bu işlem geri alınamaz. Devam etmek istiyor musunuz?')) {
 return
 }
@@ -314,7 +335,7 @@ return
       const data = await response.json()
       if (data.success) {
         updateContent({
-          image: { ...content.image, url: '' }
+          image: { url: '', alt: content.image?.alt || 'Hero image' }
         })
       }
     } catch (error) {
@@ -325,13 +346,13 @@ return
   // Update style field
   const updateStyleField = (fieldName: string, styleKey: string, value: string) => {
     setContent(prev => {
-      const newStyles = {
+      const newStyles: HeroStyles = {
         ...prev.styles,
         [fieldName]: {
-          ...prev.styles?.[fieldName],
+          ...(prev.styles?.[fieldName as keyof HeroStyles] as HeroTextStyle | undefined),
           [styleKey]: value
         }
-      }
+      } as HeroStyles
       const newContent = { ...prev, styles: newStyles }
       debouncedUpdate(newContent)
       return newContent
@@ -341,10 +362,10 @@ return
   // Update image style field
   const updateImageStyleField = (field: string, value: string) => {
     setContent(prev => {
-      const newImageStyles = {
+      const newImageStyles: HeroImageStyles = {
         ...prev.imageStyles,
         [field]: value
-      }
+      } as HeroImageStyles
       const newContent = { ...prev, imageStyles: newImageStyles }
       debouncedUpdate(newContent)
       return newContent
@@ -362,9 +383,9 @@ return
 
   // Simple style editor component
   const renderStyleEditor = (fieldName: string, label: string, hasBackground = false, hasBorder = false) => {
-    const styles = content.styles?.[fieldName] || {}
+    const styles = content.styles?.[fieldName as keyof HeroStyles] as HeroTextStyle | undefined || {}
     const isExpanded = expandedStyleFields.includes(fieldName)
-    const defaultStyles = getDefaultContent().styles?.[fieldName] || {}
+    const defaultStyles = getDefaultContent().styles?.[fieldName as keyof HeroStyles] as HeroTextStyle | undefined || {}
 
     return (
       <div className="mt-2">
@@ -523,7 +544,7 @@ return
             </span>
           </label>
         </div>
-        
+
         {content.badgeEnabled !== false && (
           <>
             <label className="block text-xs font-medium text-gray-600 mb-2">Badge Metni</label>
@@ -555,7 +576,7 @@ return
       <div className="p-4 bg-white rounded-xl border border-gray-200">
         <label className="block text-sm font-semibold text-charcoal mb-2">Vurgulanan Kelimeler</label>
         <p className="text-xs text-gray-500 mb-3">Ana başlıktan hangi kelimelerin vurgulanacağını seçin</p>
-        
+
         {/* Word Selection */}
         {content.mainTitle && (
           <div className="mb-4 p-3 bg-gray-50 rounded-lg">
@@ -592,7 +613,7 @@ return
             )}
           </div>
         )}
-        
+
         {renderStyleEditor('highlightedText', 'Vurgulanan Metin Stili')}
       </div>
 
@@ -628,7 +649,7 @@ return
             <input
               type="text"
               value={content.primaryButton ?? ''}
-              onChange={(e) => updateContent({ primaryButton: e.target.value.trim() || null })}
+              onChange={(e) => updateContent({ primaryButton: e.target.value.trim() || '' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
@@ -637,12 +658,12 @@ return
             <input
               type="text"
               value={content.primaryButtonLink ?? ''}
-              onChange={(e) => updateContent({ primaryButtonLink: e.target.value.trim() || null })}
+              onChange={(e) => updateContent({ primaryButtonLink: e.target.value.trim() || '' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
         </div>
-        
+
         {/* Icon Selection */}
         <div className="mb-4 relative">
           <label className="block text-xs font-medium text-gray-500 mb-2">İkon</label>
@@ -678,7 +699,7 @@ return
               </button>
             )}
           </div>
-          
+
           {showPrimaryIconPicker && (
             <div className="absolute z-50 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl p-4 max-w-2xl max-h-96 overflow-y-auto">
               <div className="mb-3">
@@ -692,7 +713,7 @@ return
               </div>
               <div className="space-y-4">
                 {Object.entries(buttonIcons).map(([category, icons]) => {
-                  const filtered = icons.filter(icon => 
+                  const filtered = icons.filter(icon =>
                     iconSearch === '' || icon.name.toLowerCase().includes(iconSearch.toLowerCase())
                   )
                   if (filtered.length === 0) {
@@ -707,7 +728,7 @@ return null
                             key={`${category}-${index}`}
                             type="button"
                             onClick={() => {
-                              updateContent({ 
+                              updateContent({
                                 primaryButtonIcon: icon.svg,
                                 primaryButtonIconPosition: content.primaryButtonIconPosition || 'left'
                               })
@@ -716,7 +737,7 @@ return null
                             className="flex flex-col items-center gap-1 p-3 border border-gray-200 rounded-lg hover:border-sage-400 hover:bg-sage-50 transition-colors"
                             title={icon.name}
                           >
-                            <div 
+                            <div
                               className="w-6 h-6 text-gray-700"
                               dangerouslySetInnerHTML={{ __html: icon.svg }}
                             />
@@ -730,7 +751,7 @@ return null
               </div>
             </div>
           )}
-          
+
           {content.primaryButtonIcon && (
             <div className="mt-3">
               <label className="block text-xs font-medium text-gray-500 mb-1">İkon Pozisyonu</label>
@@ -761,7 +782,7 @@ return null
             </div>
           )}
         </div>
-        
+
         {renderStyleEditor('primaryButton', 'Ana Buton', true)}
       </div>
 
@@ -774,7 +795,7 @@ return null
             <input
               type="text"
               value={content.secondaryButton ?? ''}
-              onChange={(e) => updateContent({ secondaryButton: e.target.value.trim() || null })}
+              onChange={(e) => updateContent({ secondaryButton: e.target.value.trim() || '' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
@@ -783,12 +804,12 @@ return null
             <input
               type="text"
               value={content.secondaryButtonLink ?? ''}
-              onChange={(e) => updateContent({ secondaryButtonLink: e.target.value.trim() || null })}
+              onChange={(e) => updateContent({ secondaryButtonLink: e.target.value.trim() || '' })}
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
             />
           </div>
         </div>
-        
+
         {/* Icon Selection */}
         <div className="mb-4 relative">
           <label className="block text-xs font-medium text-gray-500 mb-2">İkon</label>
@@ -824,7 +845,7 @@ return null
               </button>
             )}
           </div>
-          
+
           {showSecondaryIconPicker && (
             <div className="absolute z-50 mt-2 bg-white border border-gray-200 rounded-xl shadow-xl p-4 max-w-2xl max-h-96 overflow-y-auto">
               <div className="mb-3">
@@ -838,7 +859,7 @@ return null
               </div>
               <div className="space-y-4">
                 {Object.entries(buttonIcons).map(([category, icons]) => {
-                  const filtered = icons.filter(icon => 
+                  const filtered = icons.filter(icon =>
                     iconSearch === '' || icon.name.toLowerCase().includes(iconSearch.toLowerCase())
                   )
                   if (filtered.length === 0) {
@@ -853,7 +874,7 @@ return null
                             key={`${category}-${index}`}
                             type="button"
                             onClick={() => {
-                              updateContent({ 
+                              updateContent({
                                 secondaryButtonIcon: icon.svg,
                                 secondaryButtonIconPosition: content.secondaryButtonIconPosition || 'left'
                               })
@@ -862,7 +883,7 @@ return null
                             className="flex flex-col items-center gap-1 p-3 border border-gray-200 rounded-lg hover:border-sage-400 hover:bg-sage-50 transition-colors"
                             title={icon.name}
                           >
-                            <div 
+                            <div
                               className="w-6 h-6 text-gray-700"
                               dangerouslySetInnerHTML={{ __html: icon.svg }}
                             />
@@ -876,7 +897,7 @@ return null
               </div>
             </div>
           )}
-          
+
           {content.secondaryButtonIcon && (
             <div className="mt-3">
               <label className="block text-xs font-medium text-gray-500 mb-1">İkon Pozisyonu</label>
@@ -907,7 +928,7 @@ return null
             </div>
           )}
         </div>
-        
+
         {renderStyleEditor('secondaryButton', 'İkincil Buton', false, true)}
       </div>
 
@@ -923,7 +944,7 @@ return null
             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent"
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-semibold text-charcoal mb-2">Güven Göstergesi (Alt Metin)</label>
           <input
@@ -982,8 +1003,8 @@ return null
               className="sr-only peer"
             />
             <div className={`w-11 h-6 rounded-full peer transition-colors ${
-              content.scrollIndicator?.enabled !== false 
-                ? 'bg-sage-500' 
+              content.scrollIndicator?.enabled !== false
+                ? 'bg-sage-500'
                 : 'bg-gray-200'
             } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
           </label>
@@ -1094,7 +1115,7 @@ return null
                 style={{
                   borderRadius: content.imageStyles?.borderRadius || '24px',
                   filter: `brightness(${content.imageStyles?.brightness || 100}%) contrast(${content.imageStyles?.contrast || 100}%) saturate(${content.imageStyles?.saturation || 100}%)`,
-                  opacity: parseInt(content.imageStyles?.opacity || '100') / 100,
+                  opacity: parseInt(String(content.imageStyles?.opacity || '100')) / 100,
                 }}
                 onError={(e) => {
                   (e.target as HTMLImageElement).src = 'https://via.placeholder.com/800x400?text=Görsel+Yüklenemedi'
@@ -1109,8 +1130,8 @@ return null
                     onChange={(e) => {
                       const file = e.target.files?.[0]
                       if (file) {
-handleHeroImageUpload(file)
-}
+                        void handleHeroImageUpload(file)
+                      }
                     }}
                     disabled={uploadingHeroImage}
                   />
@@ -1125,7 +1146,7 @@ handleHeroImageUpload(file)
                 </label>
                 <button
                   type="button"
-                  onClick={handleHeroImageDelete}
+                  onClick={() => void handleHeroImageDelete()}
                   className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors flex items-center gap-2"
                 >
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -1144,8 +1165,8 @@ handleHeroImageUpload(file)
                 onChange={(e) => {
                   const file = e.target.files?.[0]
                   if (file) {
-handleHeroImageUpload(file)
-}
+                    void handleHeroImageUpload(file)
+                  }
                 }}
                 disabled={uploadingHeroImage}
               />
@@ -1175,7 +1196,7 @@ handleHeroImageUpload(file)
               type="text"
               value={content.image?.url || ''}
               onChange={(e) => updateContent({
-                image: { ...content.image, url: e.target.value }
+                image: { url: e.target.value, alt: content.image?.alt || 'Hero image' }
               })}
               placeholder="https://..."
               className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
@@ -1187,7 +1208,7 @@ handleHeroImageUpload(file)
               type="text"
               value={content.image?.alt || ''}
               onChange={(e) => updateContent({
-                image: { ...content.image, alt: e.target.value }
+                image: { url: content.image?.url || '', alt: e.target.value }
               })}
               placeholder="Görsel açıklaması..."
               className="w-full px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
@@ -1352,7 +1373,7 @@ handleHeroImageUpload(file)
           <div className="flex items-center justify-between">
             <div>
               <label className="block text-sm font-semibold text-charcoal mb-1">Durum Rozeti</label>
-              <p className="text-xs text-gray-500">"Jetzt geöffnet" gibi durum göstergesi</p>
+              <p className="text-xs text-gray-500">&quot;Jetzt geöffnet&quot; gibi durum göstergesi</p>
             </div>
             <label className="relative inline-flex items-center cursor-pointer">
               <input
@@ -1372,8 +1393,8 @@ handleHeroImageUpload(file)
                 className="sr-only peer"
               />
               <div className={`w-11 h-6 rounded-full peer transition-colors ${
-                content.imageFloatingElements?.statusBadge?.enabled !== false 
-                  ? 'bg-sage-500' 
+                content.imageFloatingElements?.statusBadge?.enabled !== false
+                  ? 'bg-sage-500'
                   : 'bg-gray-200'
               } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
             </label>
@@ -1482,8 +1503,8 @@ handleHeroImageUpload(file)
                 className="sr-only peer"
               />
               <div className={`w-11 h-6 rounded-full peer transition-colors ${
-                content.imageFloatingElements?.premiumCard?.enabled !== false 
-                  ? 'bg-sage-500' 
+                content.imageFloatingElements?.premiumCard?.enabled !== false
+                  ? 'bg-sage-500'
                   : 'bg-gray-200'
               } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
             </label>
@@ -1515,7 +1536,6 @@ handleHeroImageUpload(file)
                     <button
                       type="button"
                       onClick={() => {
-                        const currentEmoji = content.imageFloatingElements?.premiumCard?.emoji || ''
                         setShowEmojiPicker(!showEmojiPicker)
                       }}
                       className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-sage-500 transition-colors"
@@ -1538,7 +1558,7 @@ handleHeroImageUpload(file)
                       </div>
                       <div className="max-h-64 overflow-y-auto">
                         {Object.entries(emojiCategories).map(([category, emojis]) => {
-                          const filtered = emojis.filter(emoji => 
+                          const filtered = emojis.filter(emoji =>
                             emojiSearch === '' || emoji.includes(emojiSearch)
                           )
                           if (filtered.length === 0) {
@@ -1700,8 +1720,8 @@ return null
                 className="sr-only peer"
               />
               <div className={`w-11 h-6 rounded-full peer transition-colors ${
-                content.imageFloatingElements?.reviewsBadge?.enabled !== false 
-                  ? 'bg-sage-500' 
+                content.imageFloatingElements?.reviewsBadge?.enabled !== false
+                  ? 'bg-sage-500'
                   : 'bg-gray-200'
               } peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-sage-300 peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all`} />
             </label>
@@ -1816,14 +1836,15 @@ return null
               onChange={(e) => {
                 // Remove # character if user types it
                 const value = e.target.value.replace(/^#/, '')
-                // If empty, set to null to allow clearing
-                updateContent({ sectionId: value.trim() === '' ? null : value })
+                // If empty, set to empty string to allow clearing
+                const trimmedValue = value.trim()
+                updateContent(trimmedValue === '' ? { sectionId: '' } : { sectionId: trimmedValue })
               }}
               placeholder="home"
               className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent font-mono"
             />
             <p className="text-xs text-gray-400 mt-2">
-              Link'lerde kullanmak için: #{content.sectionId || 'home'}
+              Link&apos;lerde kullanmak için: #{content.sectionId || 'home'}
             </p>
           </div>
         </div>

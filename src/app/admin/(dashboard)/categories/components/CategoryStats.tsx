@@ -64,7 +64,7 @@ export default function CategoryStats({ stats, isLoading = false }: CategoryStat
     return (
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
         {Array.from({ length: 4 }).map((_, index) => (
-          <div key={index} className="bg-white rounded-xl p-6 shadow-soft">
+          <div key={`loading-${index}`} className="bg-white rounded-xl p-6 shadow-soft">
             <div className="animate-pulse">
               <div className="flex items-center justify-between mb-4">
                 <div className="h-4 bg-gray-200 rounded w-20" />
@@ -80,8 +80,8 @@ export default function CategoryStats({ stats, isLoading = false }: CategoryStat
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-      {statsData.map((stat, index) => (
-        <div key={index} className="bg-white rounded-xl p-6 shadow-soft hover:shadow-lg transition-shadow">
+      {statsData.map((stat) => (
+        <div key={stat.title} className="bg-white rounded-xl p-6 shadow-soft hover:shadow-lg transition-shadow">
           <div className="flex items-center justify-between mb-4">
             <h3 className="text-sm font-medium text-gray-600">{stat.title}</h3>
             <div className={`p-2 rounded-lg ${stat.bgColor}`}>
@@ -100,7 +100,7 @@ export default function CategoryStats({ stats, isLoading = false }: CategoryStat
               </span>
             )}
           </div>
-          
+
           {/* Progress bar for active ratio */}
           {stat.title === 'Aktif Oran' && stats.total > 0 && (
             <div className="mt-3">
@@ -112,7 +112,7 @@ export default function CategoryStats({ stats, isLoading = false }: CategoryStat
               </div>
             </div>
           )}
-          
+
           {/* Additional info for totals */}
           {stat.title === 'Toplam Kategori' && stats.total > 0 && (
             <p className="text-xs text-gray-500 mt-2">

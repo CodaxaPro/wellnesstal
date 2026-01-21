@@ -1,8 +1,8 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
-import { Category, CategoryFilters, CategoryResponse, CategoryFormData } from '../types'
+import { Category, CategoryFilters, CategoryFormData, CategoryResponse } from '../types'
 
 export function useCategories() {
   const [categories, setCategories] = useState<Category[]>([])
@@ -10,40 +10,24 @@ export function useCategories() {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [token, setToken] = useState<string>('')
-  
+
   const [filters, setFilters] = useState<CategoryFilters>({
     search: '',
     sortBy: 'order',
     sortOrder: 'asc'
   })
-  
+
   const [stats, setStats] = useState({
     total: 0,
     active: 0,
     inactive: 0
   })
 
-  // Initialize token
-  useEffect(() => {
-    const adminToken = localStorage.getItem('adminToken')
-    if (adminToken) {
-      setToken(adminToken)
-      fetchCategories(adminToken)
-    } else {
-      fetchCategories()
-    }
-  }, [])
-
-  // Apply filters when categories or filters change
-  useEffect(() => {
-    applyFilters()
-  }, [categories, filters])
-
   // Fetch categories from API
-  const fetchCategories = async (authToken?: string) => {
+  const fetchCategories = useCallback(async (authToken?: string) => {
     setIsLoading(true)
     setError(null)
-    
+
     try {
       const headers: HeadersInit = {}
       if (authToken) {
@@ -81,10 +65,21 @@ params.append('sortOrder', filters.sortOrder)
     } finally {
       setIsLoading(false)
     }
-  }
+  }, [filters.search, filters.active, filters.sortBy, filters.sortOrder])
+
+  // Initialize token
+  useEffect(() => {
+    const adminToken = localStorage.getItem('adminToken')
+    if (adminToken) {
+      setToken(adminToken)
+      void fetchCategories(adminToken)
+    } else {
+      void fetchCategories()
+    }
+  }, [fetchCategories])
 
   // Client-side filtering
-  const applyFilters = () => {
+  const applyFilters = useCallback(() => {
     let filtered = [...categories]
 
     // Search filter
@@ -103,7 +98,8 @@ params.append('sortOrder', filters.sortOrder)
 
     // Sorting
     filtered.sort((a, b) => {
-      let aVal: any, bVal: any
+      let aVal: string | number | Date
+      let bVal: string | number | Date
 
       switch (filters.sortBy) {
         case 'name':
@@ -129,7 +125,12 @@ params.append('sortOrder', filters.sortOrder)
     })
 
     setFilteredCategories(filtered)
-  }
+  }, [categories, filters])
+
+  // Apply filters when categories or filters change
+  useEffect(() => {
+    applyFilters()
+  }, [applyFilters])
 
   // Create category
   const createCategory = async (categoryData: CategoryFormData): Promise<boolean> => {
@@ -190,7 +191,7 @@ params.append('sortOrder', filters.sortOrder)
       const data: CategoryResponse = await response.json()
 
       if (data.success && data.data && !Array.isArray(data.data)) {
-        setCategories(prev => prev.map(cat => 
+        setCategories(prev => prev.map(cat =>
           cat.id === id ? data.data as Category : cat
         ))
         return true
@@ -305,7 +306,7 @@ return false
     deleteCategory,
     toggleActive,
     reorderCategories,
-    
+
     // Utilities
     clearError: () => setError(null)
   }

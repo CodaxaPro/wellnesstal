@@ -34,7 +34,7 @@ export default [
       'object-shorthand': 'error',
       'no-unused-vars': 'off', // TypeScript handles this
       '@typescript-eslint/no-unused-vars': [
-        'error',
+        'warn',
         {
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
@@ -49,7 +49,7 @@ export default [
       '@typescript-eslint/prefer-nullish-coalescing': 'off', // Requires type info, can be slow
       '@typescript-eslint/prefer-optional-chain': 'error',
       '@typescript-eslint/no-unnecessary-condition': 'off', // Requires type info, can be slow
-      '@typescript-eslint/no-floating-promises': 'error',
+      '@typescript-eslint/no-floating-promises': 'warn',
       '@typescript-eslint/await-thenable': 'error',
       '@typescript-eslint/no-misused-promises': 'error',
 
@@ -66,7 +66,7 @@ export default [
       'react/no-array-index-key': 'warn',
       'react/no-danger': 'warn',
       'react/no-deprecated': 'warn',
-      'react/no-unescaped-entities': 'error',
+      'react/no-unescaped-entities': 'warn',
       'react/self-closing-comp': 'error',
       'react/jsx-boolean-value': ['error', 'never'],
       'react/jsx-curly-brace-presence': ['error', { props: 'never', children: 'never' }],

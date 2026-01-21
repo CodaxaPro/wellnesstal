@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 
-import { SEOContent, SEORobotsDirectives, SEOOpenGraph, SEOTwitterCard, SEOSchemaSettings, SchemaLocalBusiness } from '../types'
+import { SEOContent, SEORobotsDirectives, SEOOpenGraph, SEOTwitterCard, SchemaLocalBusiness } from '../types'
 
 import LocalBusinessEditor from './seo/LocalBusinessEditor'
 
@@ -199,7 +199,6 @@ function SocialPreview({ type, title, description, image, siteName }: {
   siteName?: string
 }) {
   const bgColor = type === 'facebook' ? 'bg-[#f0f2f5]' : 'bg-black'
-  const textColor = type === 'facebook' ? 'text-slate-900' : 'text-white'
   const [imageError, setImageError] = useState(false)
   const hasValidImage = image?.trim() && !imageError
 
@@ -217,9 +216,9 @@ function SocialPreview({ type, title, description, image, siteName }: {
         {hasValidImage ? (
           <div className="h-40 bg-slate-200 flex items-center justify-center relative overflow-hidden">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={image} 
-              alt="OG Image" 
+            <img
+              src={image}
+              alt="OG Image"
               className="w-full h-full object-cover"
               onError={() => setImageError(true)}
               onLoad={() => setImageError(false)}
@@ -341,7 +340,7 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
     ...defaultContent,
     ...content
   })
-  const [expandedSections, setExpandedSections] = useState<string[]>(['meta', 'preview'])
+  // const [, setExpandedSections] = useState<string[]>(['meta', 'preview'])
   const [activeTab, setActiveTab] = useState<'meta' | 'social' | 'schema' | 'technical' | 'advanced'>('meta')
   const [keywordInput, setKeywordInput] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -361,7 +360,7 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
     if (isInitialMount.current) {
       return // Skip on initial mount
     }
-    
+
     try {
       const incomingStr = JSON.stringify({ ...defaultContent, ...content })
       const currentStr = JSON.stringify(localContent)
@@ -411,12 +410,12 @@ export default function SEOBlockEditor({ content, onUpdate }: SEOBlockEditorProp
       try {
         // Validate before saving
         const validationErrors: Record<string, string> = {}
-        
+
         // Validate canonical URL
         if (localContent.canonicalUrl) {
-          const urlError = validateUrl(localContent.canonicalUrl)
+          const urlError = validateUrl(localContent['canonicalUrl'] || '')
           if (urlError) {
-validationErrors.canonicalUrl = urlError
+            validationErrors['canonicalUrl'] = urlError
 }
         }
 
@@ -424,7 +423,7 @@ validationErrors.canonicalUrl = urlError
         if (localContent.openGraph?.image?.url) {
           const imageError = validateImageUrl(localContent.openGraph.image.url)
           if (imageError) {
-validationErrors.ogImage = imageError
+validationErrors['ogImage'] = imageError
 }
         }
 
@@ -432,7 +431,7 @@ validationErrors.ogImage = imageError
         if (localContent.twitter?.image?.url) {
           const imageError = validateImageUrl(localContent.twitter.image.url)
           if (imageError) {
-validationErrors.twitterImage = imageError
+validationErrors['twitterImage'] = imageError
 }
         }
 
@@ -542,14 +541,26 @@ validationErrors.twitterImage = imageError
   // Calculate SEO score
   const seoScore = useMemo(() => calculateSEOScore(localContent), [localContent])
 
-  // Toggle section
-  const toggleSection = (section: string) => {
-    setExpandedSections(prev =>
-      prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]
-    )
-  }
+  // Toggle section - unused for now
+  // const toggleSection = (section: string) => {
+  //   setExpandedSections(prev =>
+  //     prev.includes(section) ? prev.filter(s => s !== section) : [...prev, section]
+  //   )
+  // }
 
   // Validation functions
+  // const validateEmail = (email: string): string | null => {
+  //   if (!email) return null
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  //   return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi giriniz'
+  // }
+
+  // const validatePhone = (phone: string): string | null => {
+  //   if (!phone) return null
+  //   const phoneRegex = /^[\d\s\-\+\(\)]+$/
+  //   return phoneRegex.test(phone) ? null : 'Geçerli bir telefon numarası giriniz'
+  // }
+
   const validateUrl = (url: string): string | null => {
     if (!url) {
 return null
@@ -562,21 +573,21 @@ return null
     }
   }
 
-  const validateEmail = (email: string): string | null => {
-    if (!email) {
-return null
-}
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi girin'
-  }
+  // const validateEmail = (email: string): string | null => {
+  //   if (!email) {
+  //     return null
+  //   }
+  //   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  //   return emailRegex.test(email) ? null : 'Geçerli bir e-posta adresi girin'
+  // }
 
-  const validatePhone = (phone: string): string | null => {
-    if (!phone) {
-return null
-}
-    const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
-    return phoneRegex.test(phone.replace(/\s/g, '')) ? null : 'Geçerli bir telefon numarası girin'
-  }
+  // const validatePhone = (phone: string): string | null => {
+  //   if (!phone) {
+  //     return null
+  //   }
+  //   const phoneRegex = /^[\+]?[(]?[0-9]{1,4}[)]?[-\s\.]?[(]?[0-9]{1,4}[)]?[-\s\.]?[0-9]{1,9}$/
+  //   return phoneRegex.test(phone.replace(/\s/g, '')) ? null : 'Geçerli bir telefon numarası girin'
+  // }
 
   const validateImageUrl = (url: string): string | null => {
     if (!url) {
@@ -823,7 +834,7 @@ return urlError
                 <SERPPreview
                   title={localContent.title || ''}
                   description={localContent.description || ''}
-                  url={localContent.canonicalUrl || ''}
+                  url={localContent['canonicalUrl'] || ''}
                 />
               </div>
             </div>
@@ -889,11 +900,12 @@ return urlError
                       <input
                         type="number"
                         value={localContent.openGraph?.image?.width || 1200}
-                        onChange={(e) => updateOpenGraph({ 
-                          image: { 
-                            ...localContent.openGraph?.image, 
-                            width: parseInt(e.target.value) || 1200 
-                          } 
+                        onChange={(e) => updateOpenGraph({
+                          image: {
+                            ...localContent.openGraph?.image,
+                            url: localContent.openGraph?.image?.url || '',
+                            width: parseInt(e.target.value) || 1200
+                          }
                         })}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
                         min={200}
@@ -905,11 +917,12 @@ return urlError
                       <input
                         type="number"
                         value={localContent.openGraph?.image?.height || 630}
-                        onChange={(e) => updateOpenGraph({ 
-                          image: { 
-                            ...localContent.openGraph?.image, 
-                            height: parseInt(e.target.value) || 630 
-                          } 
+                        onChange={(e) => updateOpenGraph({
+                          image: {
+                            ...localContent.openGraph?.image,
+                            url: localContent.openGraph?.image?.url || '',
+                            height: parseInt(e.target.value) || 630
+                          }
                         })}
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
                         min={200}
@@ -921,11 +934,12 @@ return urlError
                       <input
                         type="text"
                         value={localContent.openGraph?.image?.alt || ''}
-                        onChange={(e) => updateOpenGraph({ 
-                          image: { 
-                            ...localContent.openGraph?.image, 
-                            alt: e.target.value 
-                          } 
+                        onChange={(e) => updateOpenGraph({
+                          image: {
+                            ...localContent.openGraph?.image,
+                            url: localContent.openGraph?.image?.url || '',
+                            alt: e.target.value
+                          }
                         })}
                         placeholder="Görsel açıklaması"
                         className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm"
@@ -976,11 +990,11 @@ return urlError
                         }}
                         placeholder="https://example.com/image.jpg"
                         className={`w-full px-3 py-2 border rounded-lg text-sm ${
-                          errors.ogImage ? 'border-red-300' : 'border-slate-300'
+                          errors['ogImage'] ? 'border-red-300' : 'border-slate-300'
                         }`}
                       />
-                      {errors.ogImage && (
-                        <p className="text-xs text-red-500 mt-1">{errors.ogImage}</p>
+                      {errors['ogImage'] && (
+                        <p className="text-xs text-red-500 mt-1">{errors['ogImage']}</p>
                       )}
                       <p className="text-xs text-slate-500 mt-1">
                         Önerilen: 1200x630px (Facebook/LinkedIn için ideal)
@@ -1136,7 +1150,7 @@ return urlError
 
                 {localContent.schema?.faq?.enabled && (
                   <div className="space-y-3 mt-4">
-                    {(localContent.schema.faq.questions || []).map((q, i) => (
+                    {(localContent.schema.faq?.questions || []).map((q, i) => (
                       <div key={i} className="p-3 bg-slate-50 rounded-lg space-y-2">
                         <div className="flex justify-between items-center">
                           <span className="text-sm font-medium text-slate-700">Soru {i + 1}</span>
@@ -1146,7 +1160,8 @@ return urlError
                                 ...localContent.schema,
                                 faq: {
                                   ...localContent.schema.faq,
-                                  questions: localContent.schema.faq.questions.filter((_, idx) => idx !== i)
+                                  enabled: localContent.schema.faq?.enabled ?? true,
+                                  questions: (localContent.schema.faq?.questions || []).filter((_, idx) => idx !== i)
                                 }
                               }
                             })}
@@ -1159,12 +1174,12 @@ return urlError
                           type="text"
                           value={q.question || ''}
                           onChange={(e) => {
-                            const questions = [...(localContent.schema.faq.questions || [])]
-                            questions[i] = { ...questions[i], question: e.target.value }
+                            const questions = [...(localContent.schema.faq?.questions || [])]
+                            questions[i] = { ...questions[i], question: e.target.value, answer: questions[i]?.answer || '' }
                             updateContent({
                               schema: {
                                 ...localContent.schema,
-                                faq: { ...localContent.schema.faq, questions }
+                                faq: { ...localContent.schema.faq, enabled: localContent.schema.faq?.enabled ?? true, questions }
                               }
                             })
                           }}
@@ -1174,12 +1189,12 @@ return urlError
                         <textarea
                           value={q.answer || ''}
                           onChange={(e) => {
-                            const questions = [...(localContent.schema.faq.questions || [])]
-                            questions[i] = { ...questions[i], answer: e.target.value }
+                            const questions = [...(localContent.schema.faq?.questions || [])]
+                            questions[i] = { ...questions[i], answer: e.target.value, question: questions[i]?.question || '' }
                             updateContent({
                               schema: {
                                 ...localContent.schema,
-                                faq: { ...localContent.schema.faq, questions }
+                                faq: { ...localContent.schema.faq, enabled: localContent.schema.faq?.enabled ?? true, questions }
                               }
                             })
                           }}
@@ -1195,7 +1210,8 @@ return urlError
                           ...localContent.schema,
                           faq: {
                             ...localContent.schema.faq,
-                            questions: [...(localContent.schema.faq.questions || []), { question: '', answer: '' }]
+                            enabled: localContent.schema.faq?.enabled ?? true,
+                            questions: [...(localContent.schema.faq?.questions || []), { question: '', answer: '' }]
                           }
                         }
                       })}
@@ -1249,6 +1265,7 @@ return urlError
                             ...localContent.schema,
                             breadcrumb: {
                               ...localContent.schema.breadcrumb,
+                              enabled: localContent.schema.breadcrumb?.enabled ?? true,
                               autoGenerate: e.target.checked
                             }
                           }
@@ -1265,12 +1282,17 @@ return urlError
                               type="text"
                               value={item.name || ''}
                               onChange={(e) => {
-                                const items = [...(localContent.schema.breadcrumb.items || [])]
-                                items[i] = { ...items[i], name: e.target.value }
+                                const items = [...(localContent.schema.breadcrumb?.items || [])]
+                                items[i] = { ...items[i], name: e.target.value, url: items[i]?.url || '' }
                                 updateContent({
                                   schema: {
                                     ...localContent.schema,
-                                    breadcrumb: { ...localContent.schema.breadcrumb, items }
+                                    breadcrumb: {
+                                      ...localContent.schema.breadcrumb,
+                                      enabled: localContent.schema.breadcrumb?.enabled ?? true,
+                                      autoGenerate: localContent.schema.breadcrumb?.autoGenerate ?? true,
+                                      items
+                                    }
                                   }
                                 })
                               }}
@@ -1281,12 +1303,17 @@ return urlError
                               type="url"
                               value={item.url || ''}
                               onChange={(e) => {
-                                const items = [...(localContent.schema.breadcrumb.items || [])]
-                                items[i] = { ...items[i], url: e.target.value }
+                                const items = [...(localContent.schema.breadcrumb?.items || [])]
+                                items[i] = { ...items[i], url: e.target.value, name: items[i]?.name || '' }
                                 updateContent({
                                   schema: {
                                     ...localContent.schema,
-                                    breadcrumb: { ...localContent.schema.breadcrumb, items }
+                                    breadcrumb: {
+                                      ...localContent.schema.breadcrumb,
+                                      enabled: localContent.schema.breadcrumb?.enabled ?? true,
+                                      autoGenerate: localContent.schema.breadcrumb?.autoGenerate ?? true,
+                                      items
+                                    }
                                   }
                                 })
                               }}
@@ -1299,7 +1326,9 @@ return urlError
                                   ...localContent.schema,
                                   breadcrumb: {
                                     ...localContent.schema.breadcrumb,
-                                    items: localContent.schema.breadcrumb.items.filter((_, idx) => idx !== i)
+                                    enabled: localContent.schema.breadcrumb?.enabled ?? true,
+                                    autoGenerate: localContent.schema.breadcrumb?.autoGenerate ?? true,
+                                    items: (localContent.schema.breadcrumb?.items || []).filter((_, idx) => idx !== i)
                                   }
                                 }
                               })}
@@ -1315,7 +1344,9 @@ return urlError
                               ...localContent.schema,
                               breadcrumb: {
                                 ...localContent.schema.breadcrumb,
-                                items: [...(localContent.schema.breadcrumb.items || []), { name: '', url: '' }]
+                                enabled: localContent.schema.breadcrumb?.enabled ?? true,
+                                autoGenerate: localContent.schema.breadcrumb?.autoGenerate ?? true,
+                                items: [...(localContent.schema.breadcrumb?.items || []), { name: '', url: '' }]
                               }
                             }
                           })}
@@ -1492,7 +1523,7 @@ return urlError
                 </label>
                 <input
                   type="url"
-                  value={localContent.canonicalUrl || ''}
+                  value={localContent['canonicalUrl'] || ''}
                   onChange={(e) => {
                     const url = e.target.value
                     updateContent({ canonicalUrl: url })
@@ -1501,13 +1532,13 @@ return urlError
                   }}
                   placeholder="https://wellnesstal.de/sayfa"
                   className={`w-full px-4 py-2 border rounded-lg ${
-                    errors.canonicalUrl ? 'border-red-300' : 'border-slate-300'
+                    errors['canonicalUrl'] ? 'border-red-300' : 'border-slate-300'
                   }`}
                 />
-                {errors.canonicalUrl && (
-                  <p className="text-xs text-red-500 mt-1">{errors.canonicalUrl}</p>
+                {errors['canonicalUrl'] && (
+                  <p className="text-xs text-red-500 mt-1">{errors['canonicalUrl']}</p>
                 )}
-                {!errors.canonicalUrl && localContent.canonicalUrl && (
+                {!errors['canonicalUrl'] && localContent['canonicalUrl'] && (
                   <p className="text-xs text-green-600 mt-1">✓ Geçerli URL</p>
                 )}
                 <p className="text-xs text-slate-500 mt-1">Duplicate content'i önlemek için - Sayfa URL'inizi girin</p>

@@ -102,6 +102,7 @@ return
 
     const newImages = [...content.images]
     const draggedItem = newImages[draggedIndex]
+    if (!draggedItem) return
     newImages.splice(draggedIndex, 1)
     newImages.splice(index, 0, draggedItem)
 

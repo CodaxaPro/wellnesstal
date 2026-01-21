@@ -9,7 +9,7 @@ interface AlignmentSelectorProps {
 export default function AlignmentSelector({
   value,
   onChange,
-  label
+  label: _label
 }: AlignmentSelectorProps) {
   const options: { value: ContentAlignment; icon: React.ReactNode; title: string }[] = [
     {

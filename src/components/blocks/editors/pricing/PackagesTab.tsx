@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 
-import { PricingContent, PricingPackage } from '../../types'
+import { PricingContent, PricingPackage, PricingFeatureItem } from '../../types'
 
 import { getDefaultPackage } from './defaults'
 
@@ -13,19 +13,19 @@ interface PackagesTabProps {
 
 export default function PackagesTab({ content, updateContent }: PackagesTabProps) {
   let packages = content.packages || []
-  
+
   // Sort packages by order property if ALL packages have order, otherwise maintain original order
   const allHaveOrder = packages.length > 0 && packages.every(pkg => pkg.order !== undefined)
   if (allHaveOrder) {
     packages = [...packages].sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
   }
-  
+
   // Auto-set order property based on current array order if missing (only once on mount)
   useEffect(() => {
     if (packages.length === 0) {
 return
 }
-    
+
     // Check if any package is missing order property
     const hasMissingOrder = packages.some(pkg => pkg.order === undefined)
     if (hasMissingOrder) {
@@ -37,7 +37,7 @@ return
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []) // Only run once on mount
-  
+
   const [activePackageId, setActivePackageId] = useState<string | null>(
     packages[0]?.id || null
   )
@@ -112,14 +112,20 @@ return
 
     const newPackages = [...packages]
     const targetIndex = direction === 'up' ? index - 1 : index + 1
-    ;[newPackages[index], newPackages[targetIndex]] = [newPackages[targetIndex], newPackages[index]]
-    
+
+    // Validate indices
+    if (targetIndex < 0 || targetIndex >= newPackages.length || !newPackages[index] || !newPackages[targetIndex]) {
+      return
+    }
+
+    ;[newPackages[index], newPackages[targetIndex]] = [newPackages[targetIndex]!, newPackages[index]!]
+
     // Update order property for all packages to reflect new order
     const updatedPackages = newPackages.map((pkg, idx) => ({
       ...pkg,
       order: idx
     }))
-    
+
     updateContent({ packages: updatedPackages })
   }
 
@@ -148,11 +154,21 @@ return
       const currentFeature = features[index]
       if (typeof currentFeature === 'string') {
         features[index] = value
+      } else if (currentFeature) {
+        features[index] = { ...currentFeature, text: value, id: currentFeature.id || `feat-${Date.now()}` }
       } else {
-        features[index] = { ...currentFeature, text: value }
+        features[index] = value
       }
     } else {
-      features[index] = value
+      // Ensure value has required id property
+      if (typeof value === 'object' && value !== null && 'id' in value && typeof value.id === 'string') {
+        features[index] = value as PricingFeatureItem
+      } else if (typeof value === 'object' && value !== null && 'text' in value) {
+        const id = ('id' in value && typeof value.id === 'string') ? value.id : `feat-${Date.now()}`
+        features[index] = { ...value, id } as PricingFeatureItem
+      } else {
+        features[index] = value
+      }
     }
     updatePackage(packageId, { features })
   }
@@ -166,8 +182,8 @@ return
     const feature = features[index]
     if (typeof feature === 'string') {
       features[index] = { id: `feat-${Date.now()}`, text: feature, included: false }
-    } else {
-      features[index] = { ...feature, included: !(feature.included !== false) }
+    } else if (feature) {
+      features[index] = { ...feature, included: !(feature.included !== false), id: feature.id || `feat-${Date.now()}` }
     }
     updatePackage(packageId, { features })
   }
@@ -227,7 +243,7 @@ return
               <div className="flex flex-col gap-0.5">
                 <button
                   onClick={(e) => {
- e.stopPropagation(); movePackage(pkg.id, 'up') 
+ e.stopPropagation(); movePackage(pkg.id, 'up')
 }}
                   disabled={index === 0}
                   className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
@@ -238,7 +254,7 @@ return
                 </button>
                 <button
                   onClick={(e) => {
- e.stopPropagation(); movePackage(pkg.id, 'down') 
+ e.stopPropagation(); movePackage(pkg.id, 'down')
 }}
                   disabled={index === packages.length - 1}
                   className="p-0.5 text-slate-400 hover:text-slate-600 disabled:opacity-30"
@@ -429,7 +445,7 @@ return
                       <input
                         type="checkbox"
                         checked={activePackage.isPartner ?? false}
-                        onChange={(e) => updatePackage(activePackage.id, { 
+                        onChange={(e) => updatePackage(activePackage.id, {
                           isPartner: e.target.checked,
                           partnerLabel: e.target.checked ? (activePackage.partnerLabel || '2x') : undefined
                         })}

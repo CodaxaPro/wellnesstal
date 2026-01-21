@@ -36,7 +36,7 @@ return
     }
 
     const success = await onBulkAction(operation)
-    
+
     if (success) {
       setIsModalOpen(false)
       setPendingAction(null)
@@ -71,14 +71,14 @@ return
     if (!pendingAction) {
 return ''
 }
-    
+
     const count = selectedCategories.length
     const actionText = getActionText(pendingAction)
-    
+
     if (pendingAction === 'delete') {
       return `${count} kategoriyi silmek istediğinizden emin misiniz? Bu işlem geri alınamaz ve bu kategorilere ait tüm hizmetler "Kategorisiz" durumuna geçecektir.`
     }
-    
+
     return `${count} kategoriyi ${actionText} istediğinizden emin misiniz?`
   }
 
@@ -151,11 +151,11 @@ return ''
                 Toplu İşlem Onayı
               </h3>
             </div>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               {getConfirmationMessage()}
             </p>
-            
+
             <div className="flex justify-end space-x-4">
               <button
                 onClick={handleCancel}
@@ -165,7 +165,7 @@ return ''
                 İptal
               </button>
               <button
-                onClick={handleConfirmAction}
+                onClick={() => void handleConfirmAction()}
                 disabled={isLoading}
                 className={`px-4 py-2 rounded-lg text-white font-medium transition-colors disabled:opacity-50 ${
                   pendingAction ? getActionColor(pendingAction) : 'bg-gray-500'

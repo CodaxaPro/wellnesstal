@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback, useEffect, useRef } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { SchemaLocalBusiness } from '../../types'
 
@@ -250,7 +250,7 @@ return null
     }
     const t = setTimeout(() => {
       try {
- console.debug('[debug][LocalBusinessEditor] debounced full onUpdate', { preview: { name: local.name, description: local.description } }) 
+ console.debug('[debug][LocalBusinessEditor] debounced full onUpdate', { preview: { name: local.name, description: local.description } })
 } catch (e) {}
       onUpdate(local)
     }, 300)
@@ -274,7 +274,7 @@ return null
       }
     }
     try {
- console.debug('[debug][LocalBusinessEditor] updateAddress', { field, value, payloadPreview: { streetAddress: next.address.streetAddress, addressLocality: next.address.addressLocality } }) 
+ console.debug('[debug][LocalBusinessEditor] updateAddress', { field, value, payloadPreview: { streetAddress: next.address.streetAddress, addressLocality: next.address.addressLocality } })
 } catch (e) {}
     setLocal(prev => ({ ...prev, ...next }))
   }, [])
@@ -283,7 +283,7 @@ return null
   const updateGeo = useCallback((field: 'latitude' | 'longitude', value: number) => {
     const next = { geo: { latitude: local.geo?.latitude || 0, longitude: local.geo?.longitude || 0, ...(local.geo || {}), [field]: value } }
     try {
- console.debug('[debug][LocalBusinessEditor] updateGeo', { field, value, payload: next }) 
+ console.debug('[debug][LocalBusinessEditor] updateGeo', { field, value, payload: next })
 } catch (e) {}
     setLocal(prev => ({ ...prev, ...next }))
   }, [])
@@ -292,7 +292,7 @@ return null
   const updateRating = useCallback((field: string, value: number) => {
     const next = { aggregateRating: { ratingValue: local.aggregateRating?.ratingValue || 0, reviewCount: local.aggregateRating?.reviewCount || 0, ...(local.aggregateRating || {}), [field]: value } }
     try {
- console.debug('[debug][LocalBusinessEditor] updateRating', { field, value, payload: next }) 
+ console.debug('[debug][LocalBusinessEditor] updateRating', { field, value, payload: next })
 } catch (e) {}
     setLocal(prev => ({ ...prev, ...next }))
   }, [])
@@ -304,7 +304,7 @@ return null
       hours[index] = { ...hours[index], [field]: value }
     }
     try {
- console.debug('[debug][LocalBusinessEditor] updateOpeningHours', { index, field, value, payloadPreview: hours[index] }) 
+ console.debug('[debug][LocalBusinessEditor] updateOpeningHours', { index, field, value, payloadPreview: hours[index] })
 } catch (e) {}
     setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
   }, [])
@@ -314,7 +314,7 @@ return null
     const hours = [...(local.openingHoursSpecification || [])]
     hours.push({ dayOfWeek: 'Monday', opens: '09:00', closes: '18:00' })
     try {
- console.debug('[debug][LocalBusinessEditor] addOpeningHours', { payload: hours }) 
+ console.debug('[debug][LocalBusinessEditor] addOpeningHours', { payload: hours })
 } catch (e) {}
     setLocal(prev => ({ ...prev, openingHoursSpecification: hours }))
   }, [])
@@ -538,8 +538,8 @@ return null
                     type="tel"
                     required
                   />
-                  {errors.telephone && (
-                    <p className="text-xs text-red-500 mt-1">{errors.telephone}</p>
+                  {errors['telephone'] && (
+                    <p className="text-xs text-red-500 mt-1">{errors['telephone']}</p>
                   )}
                 </div>
                 <div>
@@ -554,8 +554,8 @@ return null
                     placeholder="info@wellnesstal.de"
                     type="email"
                   />
-                  {errors.email && (
-                    <p className="text-xs text-red-500 mt-1">{errors.email}</p>
+                  {errors['email'] && (
+                    <p className="text-xs text-red-500 mt-1">{errors['email']}</p>
                   )}
                 </div>
               </div>
@@ -572,10 +572,10 @@ return null
                   placeholder="https://wellnesstal.de"
                   type="url"
                 />
-                {errors.url && (
-                  <p className="text-xs text-red-500 mt-1">{errors.url}</p>
+                {errors['url'] && (
+                  <p className="text-xs text-red-500 mt-1">{errors['url']}</p>
                 )}
-                {!errors.url && local.url && (
+                {!errors['url'] && local.url && (
                   <p className="text-xs text-green-600 mt-1">✓ Geçerli URL</p>
                 )}
               </div>
@@ -830,7 +830,7 @@ return null
                                   newDays = [hours.dayOfWeek, day.value].filter(Boolean)
                                 }
                               }
-                              updateOpeningHours(index, 'dayOfWeek', newDays.length === 1 ? newDays[0] : newDays)
+                              updateOpeningHours(index, 'dayOfWeek', newDays.length === 1 ? newDays[0]! : newDays)
                             }}
                             className={`px-3 py-1.5 text-xs rounded-full transition-colors ${
                               isSelected

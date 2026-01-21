@@ -4,7 +4,7 @@ import { ContactSettings } from '../types'
 
 interface AddressTabProps {
   settings: ContactSettings
-  handleInputChange: (section: keyof ContactSettings, field: string, value: any) => void
+  handleInputChange: (section: keyof ContactSettings, field: string, value: string | number | boolean | string[]) => void
 }
 
 export function AddressTab({ settings, handleInputChange }: AddressTabProps) {

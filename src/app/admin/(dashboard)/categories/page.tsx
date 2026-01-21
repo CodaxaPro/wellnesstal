@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -8,7 +8,9 @@ import { useRouter } from 'next/navigation'
 // Template Engine imports
 import EntityList, { EntityData } from '../../../../components/shared/EntityList'
 import { templateEngine } from '../../../../lib/template-engine'
-import { TemplateConfig, EntityConfig } from '../../../../types/templates'
+import { EntityConfig, TemplateConfig } from '../../../../types/templates'
+
+import { CategoryFormData } from './types'
 
 // EntityList component
 
@@ -35,7 +37,7 @@ interface AdminUser {
 // CategoryForm Component
 interface CategoryFormProps {
   category: Category | null
-  onSubmit: (data: any) => void
+  onSubmit: (data: CategoryFormData) => void
   onCancel: () => void
   loading: boolean
   templateConfig: TemplateConfig | null
@@ -56,7 +58,7 @@ function CategoryForm({ category, onSubmit, onCancel, loading, templateConfig }:
     onSubmit(formData)
   }
 
-  const handleChange = (field: string, value: any) => {
+  const handleChange = (field: string, value: string | number | boolean) => {
     setFormData(prev => ({ ...prev, [field]: value }))
   }
 
@@ -104,7 +106,7 @@ function CategoryForm({ category, onSubmit, onCancel, loading, templateConfig }:
             className="w-full h-10 rounded-lg border border-gray-300"
           />
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Icon
@@ -132,7 +134,7 @@ function CategoryForm({ category, onSubmit, onCancel, loading, templateConfig }:
             <span className="ml-2 text-sm font-medium text-gray-700">Active</span>
           </label>
         </div>
-        
+
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">
             Display Order
@@ -173,7 +175,7 @@ function CategoryForm({ category, onSubmit, onCancel, loading, templateConfig }:
 export default function CategoriesManagement() {
   const router = useRouter()
   const [user, setUser] = useState<AdminUser | null>(null)
-  
+
   // Template Engine State
   const [templateConfig, setTemplateConfig] = useState<TemplateConfig | null>(null)
   const [templateLoading, setTemplateLoading] = useState(true)
@@ -193,7 +195,7 @@ export default function CategoriesManagement() {
     const initializeTemplate = async () => {
       try {
         setTemplateLoading(true)
-        
+
         // Same config as dashboard for consistency
         const config: TemplateConfig = {
           id: "wellness-basic",
@@ -201,7 +203,7 @@ export default function CategoriesManagement() {
           industry: "wellness" as const,
           version: "1.0.0",
           description: "Complete wellness and spa management system",
-          
+
           entities: {
             primary: {
               name: "Services",
@@ -219,7 +221,7 @@ export default function CategoriesManagement() {
               }
             },
             secondary: {
-              name: "Categories", 
+              name: "Categories",
               singular: "Category",
               plural: "Categories",
               icon: "FolderOpen",
@@ -236,7 +238,7 @@ export default function CategoriesManagement() {
                   placeholder: "Enter category name..."
                 },
                 {
-                  key: "description", 
+                  key: "description",
                   label: "Description",
                   type: "textarea",
                   required: false,
@@ -245,7 +247,7 @@ export default function CategoriesManagement() {
                 },
                 {
                   key: "color",
-                  label: "Category Color", 
+                  label: "Category Color",
                   type: "color",
                   required: false,
                   order: 3
@@ -282,7 +284,7 @@ export default function CategoriesManagement() {
               }
             }
           },
-          
+
           ui: {
             theme: {
               primaryColor: "#10B981",
@@ -292,7 +294,7 @@ export default function CategoriesManagement() {
               fontSize: {
                 sm: "0.875rem",
                 base: "1rem",
-                lg: "1.125rem", 
+                lg: "1.125rem",
                 xl: "1.25rem"
               },
               borderRadius: "0.75rem",
@@ -317,24 +319,26 @@ export default function CategoriesManagement() {
               }
             }
           },
-          
+
           business: {
             workflows: [],
             validations: {},
             automations: []
           },
-          
+
           features: {
             enabled: ["dashboard", "admin-panel", "analytics"],
             disabled: []
           }
         }
-        
-        templateEngine.registerTemplate(config as any)
+
+        templateEngine.registerTemplate(config as Parameters<typeof templateEngine.registerTemplate>[0])
         templateEngine.setActiveTemplate('wellness-basic')
         setTemplateConfig(config)
-        setEntityConfig(config.entities.secondary!)
-        
+        if (config.entities.secondary) {
+          setEntityConfig(config.entities.secondary)
+        }
+
       } catch (err) {
         console.error('Categories template initialization failed:', err)
         setError('Template initialization failed')
@@ -342,15 +346,16 @@ export default function CategoriesManagement() {
         setTemplateLoading(false)
       }
     }
-    
-    initializeTemplate()
+
+    void initializeTemplate()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Authentication check
   useEffect(() => {
     const token = localStorage.getItem('adminToken')
     const userData = localStorage.getItem('adminUser')
-    
+
     if (!token || !userData) {
       router.push('/admin')
       return
@@ -361,24 +366,24 @@ export default function CategoriesManagement() {
 
   // Fetch categories data from API
   useEffect(() => {
-    fetchCategories()
+    void fetchCategories()
   }, [])
 
   const fetchCategories = async () => {
     try {
       setLoading(true)
       setError(null)
-      
+
       // Real API call to categories endpoint
       const response = await fetch('/api/categories?includeServiceCount=true')
       const result = await response.json()
-      
+
       if (!response.ok || !result.success) {
         throw new Error(result.error || 'Failed to fetch categories')
       }
-      
+
       setCategories(result.data || [])
-      
+
     } catch (err) {
       console.error('Failed to fetch categories:', err)
       setError(err instanceof Error ? err.message : 'Failed to load categories')
@@ -387,10 +392,10 @@ export default function CategoriesManagement() {
     }
   }
 
-  const handleFormSubmit = async (formData: any) => {
+  const handleFormSubmit = async (formData: CategoryFormData) => {
     try {
       setLoading(true)
-      
+
       const apiData = {
         name: formData.name,
         description: formData.description || '',
@@ -413,18 +418,19 @@ export default function CategoriesManagement() {
             ...apiData
           })
         })
-        
+
         const result = await response.json()
-        
+
         if (!response.ok || !result.success) {
           throw new Error(result.error || 'Failed to update category')
         }
-        
+
         // Update local state
-        setCategories(prev => 
+        setCategories(prev =>
           prev.map(cat => cat.id === editingCategory.id ? result.data : cat)
         )
-        
+
+        // eslint-disable-next-line no-console
         console.log('Category updated successfully')
       } else {
         // Create new category via API
@@ -436,21 +442,22 @@ export default function CategoriesManagement() {
           },
           body: JSON.stringify(apiData)
         })
-        
+
         const result = await response.json()
-        
+
         if (!response.ok || !result.success) {
           throw new Error(result.error || 'Failed to create category')
         }
-        
+
         // Add to local state
         setCategories(prev => [...prev, result.data])
+        // eslint-disable-next-line no-console
         console.log('Category created successfully')
       }
-      
+
       setIsFormModalOpen(false)
       setEditingCategory(null)
-      
+
     } catch (err) {
       console.error('Form submission failed:', err)
       setError(err instanceof Error ? err.message : 'Failed to save category')
@@ -471,13 +478,14 @@ export default function CategoriesManagement() {
   }
 
   const handleDelete = async (category: EntityData) => {
+    // eslint-disable-next-line no-alert
     if (!confirm(`Are you sure you want to delete "${(category as Category).name}"?`)) {
       return
     }
 
     try {
       setLoading(true)
-      
+
       // Delete via API
       const response = await fetch(`/api/categories?id=${category.id}`, {
         method: 'DELETE',
@@ -485,9 +493,9 @@ export default function CategoriesManagement() {
           'Authorization': 'Bearer valid-admin-token' // In real app, use actual token
         }
       })
-      
+
       const result = await response.json()
-      
+
       if (!response.ok || !result.success) {
         if (result.code === 'CATEGORY_HAS_SERVICES') {
           setError(`Cannot delete category: ${result.error}`)
@@ -495,12 +503,13 @@ export default function CategoriesManagement() {
         }
         throw new Error(result.error || 'Failed to delete category')
       }
-      
+
       // Remove from local state
       setCategories(prev => prev.filter(cat => cat.id !== category.id))
-      
+
+      // eslint-disable-next-line no-console
       console.log('Category deleted successfully')
-      
+
     } catch (err) {
       console.error('Failed to delete category:', err)
       setError(err instanceof Error ? err.message : 'Failed to delete category')
@@ -511,31 +520,39 @@ export default function CategoriesManagement() {
 
   const handleView = (category: EntityData) => {
     // Navigate to category detail view or open modal
+    // eslint-disable-next-line no-console
     console.log('Viewing category:', (category as Category).name)
   }
 
   const handleBulkAction = async (action: string, items: EntityData[]) => {
     try {
       setLoading(true)
-      
+
       switch (action) {
         case 'delete':
           // Mock bulk delete
-          await new Promise(resolve => setTimeout(resolve, 1000))
+          await new Promise<void>(resolve => {
+            setTimeout(() => {
+              resolve()
+            }, 1000)
+          })
           const idsToDelete = items.map(item => item.id)
           setCategories(prev => prev.filter(cat => !idsToDelete.includes(cat.id)))
+          // eslint-disable-next-line no-console
           console.log(`Deleted ${items.length} categories`)
           break
-          
+
         case 'export':
           // Mock export
+          // eslint-disable-next-line no-console
           console.log(`Exporting ${items.length} categories`)
           break
-          
+
         default:
+          // eslint-disable-next-line no-console
           console.log(`Bulk action: ${action} on ${items.length} items`)
       }
-      
+
     } catch (err) {
       console.error('Bulk action failed:', err)
       setError('Bulk action failed')
@@ -550,7 +567,7 @@ export default function CategoriesManagement() {
       setLoading(true)
       const response = await fetch(`/api/categories?search=${encodeURIComponent(query)}&includeServiceCount=true`)
       const result = await response.json()
-      
+
       if (result.success) {
         setCategories(result.data || [])
       }
@@ -561,21 +578,21 @@ export default function CategoriesManagement() {
     }
   }
 
-  const handleFilter = async (filters: Record<string, any>) => {
+  const handleFilter = async (filters: Record<string, unknown>) => {
     try {
       setLoading(true)
       const params = new URLSearchParams()
       params.append('includeServiceCount', 'true')
-      
+
       Object.entries(filters).forEach(([key, value]) => {
         if (value !== '' && value !== null && value !== undefined) {
           params.append(key, String(value))
         }
       })
-      
+
       const response = await fetch(`/api/categories?${params.toString()}`)
       const result = await response.json()
-      
+
       if (result.success) {
         setCategories(result.data || [])
       }
@@ -591,7 +608,7 @@ export default function CategoriesManagement() {
       setLoading(true)
       const response = await fetch(`/api/categories?sortBy=${field}&sortOrder=${direction}&includeServiceCount=true`)
       const result = await response.json()
-      
+
       if (result.success) {
         setCategories(result.data || [])
       }
@@ -599,16 +616,20 @@ export default function CategoriesManagement() {
       console.error('Sort failed:', err)
       // Fallback to local sort if API fails
       const sortedCategories = [...categories].sort((a, b) => {
-        const aValue = (a as any)[field]
-        const bValue = (b as any)[field]
-        
+        const aValue = a[field as keyof Category] as string | number | undefined
+        const bValue = b[field as keyof Category] as string | number | undefined
+
+        if (aValue === undefined || bValue === undefined) {
+          return 0
+        }
+
         if (direction === 'asc') {
           return aValue > bValue ? 1 : -1
         } else {
           return aValue < bValue ? 1 : -1
         }
       })
-      
+
       setCategories(sortedCategories)
     } finally {
       setLoading(false)
@@ -667,7 +688,7 @@ export default function CategoriesManagement() {
                 )}
               </nav>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               <div className="text-sm text-gray-custom">
                 Welcome, <span className="font-medium text-charcoal">{user.username}</span>
@@ -679,7 +700,7 @@ export default function CategoriesManagement() {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        
+
         {/* Template Status Badge */}
         {templateConfig && (
           <div className="mb-8 inline-flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-full">
@@ -715,14 +736,14 @@ export default function CategoriesManagement() {
               data={categories}
               loading={loading}
               {...(error ? { error } : {})}
-              onSearch={handleSearch}
-              onFilter={handleFilter}
-              onSort={handleSort}
+              onSearch={(query) => void handleSearch(query)}
+              onFilter={(filters) => void handleFilter(filters)}
+              onSort={(field, direction) => void handleSort(field, direction)}
               onCreate={handleCreate}
               onEdit={handleEdit}
-              onDelete={handleDelete}
+              onDelete={(category) => void handleDelete(category)}
               onView={handleView}
-              onBulkAction={handleBulkAction}
+              onBulkAction={(action, items) => void handleBulkAction(action, items)}
               showSearch
               showFilters
               showBulkActions
@@ -750,10 +771,10 @@ export default function CategoriesManagement() {
                   </svg>
                 </button>
               </div>
-              
+
               <CategoryForm
                 category={editingCategory}
-                onSubmit={handleFormSubmit}
+                onSubmit={(formData) => void handleFormSubmit(formData)}
                 onCancel={() => setIsFormModalOpen(false)}
                 loading={loading}
                 templateConfig={templateConfig}

@@ -5,7 +5,7 @@ import { ContactSettings, ContactStyles, TextStyle } from '../types'
 
 interface BusinessTabProps {
   settings: ContactSettings
-  handleInputChange: (section: keyof ContactSettings, field: string, value: any) => void
+  handleInputChange: (section: keyof ContactSettings, field: string, value: string | number | boolean | string[]) => void
   expandedStyleEditors: { [key: string]: boolean }
   toggleStyleEditor: (key: string) => void
   updateStyleField: (styleKey: keyof ContactStyles, field: keyof TextStyle, value: string) => void
@@ -30,7 +30,7 @@ export function BusinessTab({
           <h3 style={{
             fontFamily: settings.styles?.businessName?.fontFamily,
             fontSize: settings.styles?.businessName?.fontSize,
-            fontWeight: settings.styles?.businessName?.fontWeight as any,
+            fontWeight: settings.styles?.businessName?.fontWeight as React.CSSProperties['fontWeight'],
             color: settings.styles?.businessName?.color
           }}>
             {settings.businessInfo.name}
@@ -38,7 +38,7 @@ export function BusinessTab({
           <p style={{
             fontFamily: settings.styles?.tagline?.fontFamily,
             fontSize: settings.styles?.tagline?.fontSize,
-            fontWeight: settings.styles?.tagline?.fontWeight as any,
+            fontWeight: settings.styles?.tagline?.fontWeight as React.CSSProperties['fontWeight'],
             color: settings.styles?.tagline?.color
           }}>
             {settings.businessInfo.tagline}
@@ -46,7 +46,7 @@ export function BusinessTab({
           <p style={{
             fontFamily: settings.styles?.description?.fontFamily,
             fontSize: settings.styles?.description?.fontSize,
-            fontWeight: settings.styles?.description?.fontWeight as any,
+            fontWeight: settings.styles?.description?.fontWeight as React.CSSProperties['fontWeight'],
             color: settings.styles?.description?.color
           }}>
             {settings.businessInfo.description}
