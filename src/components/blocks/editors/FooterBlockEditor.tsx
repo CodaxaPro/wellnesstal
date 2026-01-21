@@ -9,13 +9,6 @@ interface FooterBlockEditorProps {
   onUpdate: (content: FooterBlockContent) => void
 }
 
-// Style interface
-interface TextStyle {
-  fontFamily?: string
-  fontSize?: string
-  fontWeight?: string
-  color?: string
-}
 
 // Default styles - original footer colors
 const defaultStyles = {

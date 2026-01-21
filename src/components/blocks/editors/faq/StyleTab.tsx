@@ -190,7 +190,12 @@ export default function StyleTab({ content, updateContent }: StyleTabProps) {
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Golge</label>
                 <select
                   value={accordionStyle.shadow ?? 'sm'}
-                  onChange={(e) => updateAccordionStyle({ shadow: e.target.value as FAQAccordionStyle['shadow'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQAccordionStyle['shadow']
+                    if (value) {
+                      updateAccordionStyle({ shadow: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {SHADOW_OPTIONS.map(opt => (
@@ -217,7 +222,12 @@ export default function StyleTab({ content, updateContent }: StyleTabProps) {
                   <label className="block text-[10px] text-slate-500 mb-1">Ikon Tipi</label>
                   <select
                     value={accordionStyle.expandIcon ?? 'chevron'}
-                    onChange={(e) => updateAccordionStyle({ expandIcon: e.target.value as FAQAccordionStyle['expandIcon'] })}
+                    onChange={(e) => {
+                      const value = e.target.value as FAQAccordionStyle['expandIcon']
+                      if (value) {
+                        updateAccordionStyle({ expandIcon: value })
+                      }
+                    }}
                     className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                   >
                     {EXPAND_ICON_OPTIONS.map(opt => (
@@ -283,7 +293,12 @@ export default function StyleTab({ content, updateContent }: StyleTabProps) {
                   <label className="block text-[10px] text-slate-500 mb-1">Golge</label>
                   <select
                     value={accordionStyle.openShadow ?? 'md'}
-                    onChange={(e) => updateAccordionStyle({ openShadow: e.target.value as FAQAccordionStyle['openShadow'] })}
+                    onChange={(e) => {
+                      const value = e.target.value as FAQAccordionStyle['openShadow']
+                      if (value) {
+                        updateAccordionStyle({ openShadow: value })
+                      }
+                    }}
                     className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                   >
                     {SHADOW_OPTIONS.map(opt => (
@@ -372,7 +387,12 @@ export default function StyleTab({ content, updateContent }: StyleTabProps) {
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Golge</label>
                 <select
                   value={cardStyle.shadow ?? 'md'}
-                  onChange={(e) => updateCardStyle({ shadow: e.target.value as FAQCardStyle['shadow'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQCardStyle['shadow']
+                    if (value) {
+                      updateCardStyle({ shadow: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {SHADOW_OPTIONS.map(opt => (
@@ -384,7 +404,12 @@ export default function StyleTab({ content, updateContent }: StyleTabProps) {
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Hover Efekti</label>
                 <select
                   value={cardStyle.hoverEffect ?? 'lift'}
-                  onChange={(e) => updateCardStyle({ hoverEffect: e.target.value as FAQCardStyle['hoverEffect'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQCardStyle['hoverEffect']
+                    if (value) {
+                      updateCardStyle({ hoverEffect: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {HOVER_EFFECT_OPTIONS.map(opt => (

@@ -29,10 +29,11 @@ return
     try {
       for (let i = 0; i < files.length; i++) {
         const file = files[i]
+        if (!file) continue
         const formData = new FormData()
         formData.append('file', file)
         formData.append('category', 'gallery')
-        formData.append('alt_text', file.name.split('.')[0])
+        formData.append('alt_text', file.name?.split('.')[0] ?? 'image')
 
         const token = localStorage.getItem('adminToken')
         const response = await fetch('/api/media', {
@@ -46,7 +47,7 @@ return
           newImages.push({
             id: crypto.randomUUID(),
             url: data.data.file_path,  // API returns file_path, not url
-            alt: file.name.split('.')[0],
+            alt: file.name?.split('.')[0] ?? 'image',
             caption: '',
             category: ''
           })

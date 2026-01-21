@@ -1,11 +1,10 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useRef, useState } from 'react'
 
 import Image from 'next/image'
 
 import { FeatureItem } from '../../../types'
-import { PRESET_ICONS } from '../defaults'
 
 import IconSelector, { FeatureIcon } from './IconSelector'
 
@@ -64,6 +63,7 @@ export default function FeatureItemEditor({
       }
     } catch (error) {
       console.error('Failed to upload image:', error)
+      // eslint-disable-next-line no-alert
       alert('Resim yüklenirken hata oluştu')
     } finally {
       setUploadingImage(false)
@@ -72,10 +72,12 @@ export default function FeatureItemEditor({
 
   // Handle image delete
   const handleImageDelete = () => {
+    // eslint-disable-next-line no-alert
     if (!confirm('Resmi silmek istediğinizden emin misiniz?')) {
-return
-}
-    onUpdate(index, { image: undefined })
+      return
+    }
+    const { image: _image, ...rest } = feature
+    onUpdate(index, rest)
   }
 
   return (
@@ -131,8 +133,10 @@ return
             onClick={() => {
               if (feature.image?.url) {
                 // If image exists, show delete option
+                // eslint-disable-next-line no-alert
                 if (confirm('Resmi silmek istediğinizden emin misiniz?')) {
-                  onUpdate(index, { image: undefined })
+                  const { image, ...rest } = feature
+                  onUpdate(index, rest)
                 }
               } else {
                 // If no image, trigger upload
@@ -354,8 +358,8 @@ return
               onChange={(e) => {
                 const file = e.target.files?.[0]
                 if (file) {
-handleImageUpload(file)
-}
+                  void handleImageUpload(file)
+                }
               }}
               className="hidden"
               disabled={uploadingImage}
@@ -608,14 +612,21 @@ handleImageUpload(file)
                   <input
                     type="checkbox"
                     checked={!!feature.badge}
-                    onChange={(e) => onUpdate(index, {
-                      badge: e.target.checked ? {
-                        text: 'Yeni',
-                        backgroundColor: '#10b981',
-                        textColor: '#ffffff',
-                        position: 'top-right'
-                      } : undefined
-                    })}
+                    onChange={(e) => {
+                      if (e.target.checked) {
+                        onUpdate(index, {
+                          badge: {
+                            text: 'Yeni',
+                            backgroundColor: '#10b981',
+                            textColor: '#ffffff',
+                            position: 'top-right'
+                          }
+                        })
+                      } else {
+                        const { badge: _badge, ...rest } = feature
+                        onUpdate(index, rest)
+                      }
+                    }}
                     className="rounded border-slate-300 text-sage-500 focus:ring-sage-500"
                   />
                   <span className="text-sm font-medium text-slate-700">Badge Ekle</span>

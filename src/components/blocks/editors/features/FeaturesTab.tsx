@@ -1,6 +1,6 @@
 'use client'
 
-import { FeaturesContent, FeatureItem } from '../../types'
+import { FeatureItem, FeaturesContent } from '../../types'
 
 import { getDefaultFeatureItem } from './defaults'
 import FeatureItemEditor from './shared/FeatureItemEditor'
@@ -24,7 +24,7 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
     const mergedUpdates: Partial<FeatureItem> = { ...updates }
 
     // If updating image, merge with existing image object (if it exists)
-    if (updates.image) {
+    if (updates.image && currentFeature) {
       if (currentFeature.image) {
         // Merge with existing image - preserve all properties
         mergedUpdates.image = {
@@ -37,8 +37,10 @@ export default function FeaturesTab({ content, updateContent }: FeaturesTabProps
       }
     }
 
-    newFeatures[index] = { ...currentFeature, ...mergedUpdates }
-    updateContent({ features: newFeatures })
+    if (currentFeature) {
+      newFeatures[index] = { ...currentFeature, ...mergedUpdates } as FeatureItem
+      updateContent({ features: newFeatures })
+    }
   }
 
   const deleteFeature = (index: number) => {
@@ -52,15 +54,20 @@ return
 }
     const newFeatures = [...content.features]
     const [movedItem] = newFeatures.splice(fromIndex, 1)
-    newFeatures.splice(toIndex, 0, movedItem)
+    if (movedItem) {
+      newFeatures.splice(toIndex, 0, movedItem)
+    }
     updateContent({ features: newFeatures })
   }
 
   const duplicateFeature = (index: number) => {
     const feature = content.features[index]
+    if (!feature) {
+      return
+    }
     // Create unique ID with timestamp and random number to avoid collisions
     const uniqueId = `feature-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
-    const duplicated = {
+    const duplicated: FeatureItem = {
       ...feature,
       id: uniqueId,
       title: `${feature.title} (Kopya)`
@@ -149,8 +156,8 @@ return
                 index={index}
                 onUpdate={updateFeature}
                 onDelete={deleteFeature}
-                onMoveUp={index > 0 ? () => moveFeature(index, index - 1) : undefined}
-                onMoveDown={index < content.features.length - 1 ? () => moveFeature(index, index + 1) : undefined}
+                {...(index > 0 ? { onMoveUp: () => moveFeature(index, index - 1) } : {})}
+                {...(index < content.features.length - 1 ? { onMoveDown: () => moveFeature(index, index + 1) } : {})}
                 showAdvanced={content.showLinks}
               />
 
@@ -206,6 +213,7 @@ return
             </button>
             <button
               onClick={() => {
+                // eslint-disable-next-line no-alert
                 if (confirm('Tüm özellikleri silmek istediğinizden emin misiniz?')) {
                   updateContent({ features: [] })
                 }
@@ -261,7 +269,7 @@ return
             },
           ].map((template, idx) => (
             <button
-              key={idx}
+              key={`template-${idx}-${template.label || 'default'}`}
               onClick={() => {
                 const newFeatures = template.features.map((f, i) => ({
                   ...getDefaultFeatureItem(),

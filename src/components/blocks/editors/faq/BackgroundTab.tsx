@@ -1,6 +1,6 @@
 'use client'
 
-import { FAQContent, FAQBackground } from '../../types'
+import { FAQBackground, FAQContent } from '../../types'
 
 import { BACKGROUND_TYPE_OPTIONS, GRADIENT_DIRECTION_OPTIONS, PATTERN_OPTIONS } from './defaults'
 
@@ -116,7 +116,12 @@ export default function BackgroundTab({ content, updateContent }: BackgroundTabP
                 {GRADIENT_DIRECTION_OPTIONS.map(dir => (
                   <button
                     key={dir.id}
-                    onClick={() => updateBackground({ gradientDirection: dir.id as FAQBackground['gradientDirection'] })}
+                    onClick={() => {
+                      const value = dir.id as FAQBackground['gradientDirection']
+                      if (value) {
+                        updateBackground({ gradientDirection: value })
+                      }
+                    }}
                     className={`py-2 rounded-lg text-xs transition-colors ${
                       background.gradientDirection === dir.id
                         ? 'bg-sage-500 text-white'
@@ -187,8 +192,7 @@ export default function BackgroundTab({ content, updateContent }: BackgroundTabP
                     key={i}
                     onClick={() => updateBackground({
                       gradientFrom: preset.from,
-                      gradientTo: preset.to,
-                      gradientVia: undefined
+                      gradientTo: preset.to
                     })}
                     className="h-10 rounded-lg border border-slate-200 hover:border-sage-400 transition-colors"
                     style={{
@@ -329,7 +333,12 @@ export default function BackgroundTab({ content, updateContent }: BackgroundTabP
                 {PATTERN_OPTIONS.map(pattern => (
                   <button
                     key={pattern.id}
-                    onClick={() => updateBackground({ pattern: pattern.id as FAQBackground['pattern'] })}
+                    onClick={() => {
+                      const value = pattern.id as FAQBackground['pattern']
+                      if (value) {
+                        updateBackground({ pattern: value })
+                      }
+                    }}
                     className={`py-3 rounded-lg text-sm transition-colors ${
                       background.pattern === pattern.id
                         ? 'bg-sage-500 text-white'

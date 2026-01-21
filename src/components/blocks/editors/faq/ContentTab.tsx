@@ -44,7 +44,12 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
           {FAQ_LAYOUT_OPTIONS.map(layout => (
             <button
               key={layout.id}
-              onClick={() => updateContent({ layout: layout.id as FAQContent['layout'] })}
+              onClick={() => {
+                const value = layout.id as FAQContent['layout']
+                if (value) {
+                  updateContent({ layout: value })
+                }
+              }}
               className={`p-3 rounded-xl border text-center transition-all ${
                 content.layout === layout.id
                   ? 'border-sage-500 bg-sage-50 shadow-sm'
@@ -263,7 +268,12 @@ export default function ContentTab({ content, updateContent }: ContentTabProps) 
               {MAX_WIDTH_OPTIONS.map(opt => (
                 <button
                   key={opt.id}
-                  onClick={() => updateContent({ maxWidth: opt.id as FAQContent['maxWidth'] })}
+                  onClick={() => {
+                    const value = opt.id as FAQContent['maxWidth']
+                    if (value) {
+                      updateContent({ maxWidth: value })
+                    }
+                  }}
                   className={`py-2 rounded-lg text-xs font-medium transition-colors ${
                     content.maxWidth === opt.id
                       ? 'bg-sage-500 text-white'

@@ -1,13 +1,13 @@
 'use client'
 
-import { FAQContent, FAQAnimations, FAQResponsive, FAQSearchConfig, FAQHelpfulVotes, FAQContactCTA } from '../../types'
+import { FAQAnimations, FAQContactCTA, FAQContent, FAQHelpfulVotes, FAQResponsive, FAQSearchConfig } from '../../types'
 
 import {
   ANIMATION_TYPE_OPTIONS,
-  EXPAND_ANIMATION_OPTIONS,
   CATEGORY_STYLE_OPTIONS,
-  HELPFUL_STYLE_OPTIONS,
-  CTA_BUTTON_STYLE_OPTIONS
+  CTA_BUTTON_STYLE_OPTIONS,
+  EXPAND_ANIMATION_OPTIONS,
+  HELPFUL_STYLE_OPTIONS
 } from './defaults'
 
 interface AdvancedTabProps {
@@ -141,7 +141,12 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
               <label className="block text-xs font-medium text-slate-600 mb-1.5">Pozisyon</label>
               <select
                 value={search.position ?? 'above-items'}
-                onChange={(e) => updateSearch({ position: e.target.value as FAQSearchConfig['position'] })}
+                onChange={(e) => {
+                  const value = e.target.value as FAQSearchConfig['position']
+                  if (value) {
+                    updateSearch({ position: value })
+                  }
+                }}
                 className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
               >
                 <option value="above-items">Sorularin Ustunde</option>
@@ -198,7 +203,12 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
               {CATEGORY_STYLE_OPTIONS.map(style => (
                 <button
                   key={style.id}
-                  onClick={() => updateContent({ categoryStyle: style.id as FAQContent['categoryStyle'] })}
+                  onClick={() => {
+                    const value = style.id as FAQContent['categoryStyle']
+                    if (value) {
+                      updateContent({ categoryStyle: value })
+                    }
+                  }}
                   className={`py-2 rounded-lg text-sm transition-colors ${
                     content.categoryStyle === style.id
                       ? 'bg-sage-500 text-white'
@@ -237,7 +247,12 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Giris Animasyonu</label>
                 <select
                   value={animations.type ?? 'fade'}
-                  onChange={(e) => updateAnimations({ type: e.target.value as FAQAnimations['type'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQAnimations['type']
+                    if (value) {
+                      updateAnimations({ type: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {ANIMATION_TYPE_OPTIONS.map(opt => (
@@ -249,7 +264,12 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Acilis Animasyonu</label>
                 <select
                   value={animations.expandAnimation ?? 'smooth'}
-                  onChange={(e) => updateAnimations({ expandAnimation: e.target.value as FAQAnimations['expandAnimation'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQAnimations['expandAnimation']
+                    if (value) {
+                      updateAnimations({ expandAnimation: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {EXPAND_ANIMATION_OPTIONS.map(opt => (
@@ -498,7 +518,12 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Stil</label>
                 <select
                   value={helpfulVotes.style ?? 'buttons'}
-                  onChange={(e) => updateHelpfulVotes({ style: e.target.value as FAQHelpfulVotes['style'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQHelpfulVotes['style']
+                    if (value) {
+                      updateHelpfulVotes({ style: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {HELPFUL_STYLE_OPTIONS.map(opt => (
@@ -585,7 +610,12 @@ export default function AdvancedTab({ content, updateContent }: AdvancedTabProps
                 <label className="block text-xs font-medium text-slate-600 mb-1.5">Buton Stili</label>
                 <select
                   value={contactCTA.buttonStyle ?? 'primary'}
-                  onChange={(e) => updateContactCTA({ buttonStyle: e.target.value as FAQContactCTA['buttonStyle'] })}
+                  onChange={(e) => {
+                    const value = e.target.value as FAQContactCTA['buttonStyle']
+                    if (value) {
+                      updateContactCTA({ buttonStyle: value })
+                    }
+                  }}
                   className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                 >
                   {CTA_BUTTON_STYLE_OPTIONS.map(opt => (

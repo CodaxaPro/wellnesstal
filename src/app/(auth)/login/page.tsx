@@ -22,8 +22,8 @@ export default function LoginPage() {
     try {
       await signIn(email, password)
       router.push('/tenant/dashboard')// Ana sayfaya yönlendir (geçici)
-    } catch (err: any) {
-      setError(err.message)
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred')
     } finally {
       setLoading(false)
     }
@@ -32,14 +32,17 @@ export default function LoginPage() {
   return (
     <div className="bg-white p-8 rounded-lg shadow">
       <h1 className="text-2xl font-bold mb-6">Tenant Login</h1>
-      
+
       {error && (
         <div className="bg-red-50 text-red-600 p-3 rounded mb-4">
           {error}
         </div>
       )}
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={(e) => {
+        e.preventDefault()
+        void handleSubmit(e)
+      }}>
         <div className="mb-4">
           <label className="block text-sm font-medium mb-2">Email</label>
           <input
@@ -72,7 +75,7 @@ export default function LoginPage() {
       </form>
 
       <p className="mt-4 text-center text-sm">
-        Don't have an account?{' '}
+        Don&apos;t have an account?{' '}
         <Link href="/register" className="text-blue-600 hover:underline">
           Register
         </Link>

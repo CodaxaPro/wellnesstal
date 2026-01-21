@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react'
 
-import { ContactBlockContent } from '../ContactBlock'
+import { ContactBlockContent, ContactDataContent } from '../ContactBlock'
 
 interface ContactBlockEditorProps {
   content: ContactBlockContent
@@ -49,11 +49,21 @@ export default function ContactBlockEditor({ content, onUpdate }: ContactBlockEd
       cards: { ...defaultContent.cards, ...content?.cards },
       map: { ...defaultContent.map, ...content?.map },
       openingHoursLabels: { ...defaultContent.openingHoursLabels, ...content?.openingHoursLabels },
-      contact: {
-      ...defaultContent.contact,
-      ...content?.contact,
-      address: { ...defaultContent.contact?.address, ...content?.contact?.address },
-      openingHours: { ...defaultContent.contact?.openingHours, ...content?.contact?.openingHours }
+      contact: (content?.contact ? {
+        businessName: content.contact.businessName || defaultContent.contact!.businessName,
+        phone: content.contact.phone || defaultContent.contact!.phone,
+        email: content.contact.email || defaultContent.contact!.email,
+        address: {
+          street: content.contact.address?.street || defaultContent.contact!.address.street,
+          city: content.contact.address?.city || defaultContent.contact!.address.city,
+          postalCode: content.contact.address?.postalCode || defaultContent.contact!.address.postalCode,
+          country: content.contact.address?.country || defaultContent.contact!.address.country
+        },
+        openingHours: {
+          ...defaultContent.contact!.openingHours,
+          ...content.contact.openingHours
+        }
+      } : defaultContent.contact) as ContactDataContent
     }
     return merged
   })
@@ -84,11 +94,11 @@ clearTimeout(debounceRef.current)
     debouncedUpdate(newContent)
   }
 
-  // Update nested field
-  const updateNestedField = (parent: string, field: string, value: any) => {
-    const parentObj = (localContent as any)[parent] || {}
-    updateContent({ [parent]: { ...parentObj, [field]: value } })
-  }
+  // Update nested field (unused - kept for future use)
+  // const updateNestedField = (parent: string, field: string, value: any) => {
+  //   const parentObj = (localContent as any)[parent] || {}
+  //   updateContent({ [parent]: { ...parentObj, [field]: value } })
+  // }
 
   // Toggle section
   const toggleSection = (section: string) => {

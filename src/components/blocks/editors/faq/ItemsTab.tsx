@@ -55,7 +55,9 @@ return
 
     const newItems = [...items]
     const [removed] = newItems.splice(index, 1)
-    newItems.splice(newIndex, 0, removed)
+    if (removed) {
+      newItems.splice(newIndex, 0, removed)
+    }
 
     // Update order values
     newItems.forEach((item, i) => {
@@ -99,7 +101,13 @@ return
     // Remove category and clear categoryId from items
     updateContent({
       categories: categories.filter(cat => cat.id !== id),
-      items: items.map(item => item.categoryId === id ? { ...item, categoryId: undefined } : item)
+      items: items.map(item => {
+        if (item.categoryId === id) {
+          const { categoryId, ...rest } = item
+          return rest
+        }
+        return item
+      })
     })
   }
 
@@ -310,7 +318,15 @@ return
                         <label className="block text-xs font-medium text-slate-600 mb-1.5">Kategori</label>
                         <select
                           value={item.categoryId || ''}
-                          onChange={(e) => updateItem(item.id, { categoryId: e.target.value || undefined })}
+                          onChange={(e) => {
+                            const value = e.target.value
+                            if (value) {
+                              updateItem(item.id, { categoryId: value })
+                            } else {
+                              const { categoryId, ...rest } = item
+                              updateItem(item.id, rest)
+                            }
+                          }}
                           className="w-full px-3 py-2 border border-slate-200 rounded-lg text-sm"
                         >
                           <option value="">Kategori secin...</option>
@@ -354,7 +370,10 @@ return
                               value={link.text ?? ''}
                               onChange={(e) => {
                                 const newLinks = [...(item.relatedLinks || [])]
-                                newLinks[linkIndex] = { ...newLinks[linkIndex], text: e.target.value }
+                                const existingLink = newLinks[linkIndex]
+                                if (existingLink) {
+                                  newLinks[linkIndex] = { ...existingLink, text: e.target.value, url: existingLink.url || '' }
+                                }
                                 updateItem(item.id, { relatedLinks: newLinks })
                               }}
                               className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm"
@@ -365,7 +384,10 @@ return
                               value={link.url ?? ''}
                               onChange={(e) => {
                                 const newLinks = [...(item.relatedLinks || [])]
-                                newLinks[linkIndex] = { ...newLinks[linkIndex], url: e.target.value }
+                                const existingLink = newLinks[linkIndex]
+                                if (existingLink) {
+                                  newLinks[linkIndex] = { ...existingLink, url: e.target.value, text: existingLink.text || '' }
+                                }
                                 updateItem(item.id, { relatedLinks: newLinks })
                               }}
                               className="flex-1 px-3 py-2 border border-slate-200 rounded-lg text-sm"

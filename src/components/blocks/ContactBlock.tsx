@@ -55,7 +55,7 @@ interface ContactSectionContent {
   styles?: ContactSectionStyles
 }
 
-interface ContactDataContent {
+export interface ContactDataContent {
   businessName: string
   phone: string
   email: string
