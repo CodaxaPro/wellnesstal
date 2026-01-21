@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -66,55 +66,7 @@ export default function PagesManagement() {
   const [saving, setSaving] = useState(false)
   const [savingCategory, setSavingCategory] = useState(false)
 
-  useEffect(() => {
-    fetchCategories()
-    fetchPages()
-    // Check and run migration if needed
-    checkAndRunMigration()
-  }, [selectedStatus, selectedCategory])
-
-  const checkAndRunMigration = async () => {
-    try {
-      const token = localStorage.getItem('adminToken')
-      if (!token) {
-return
-}
-
-      // Check if active column exists by trying to fetch a page with active field
-      const response = await fetch('/api/pages/migrate-active', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`
-        }
-      })
-
-      const data = await response.json()
-      
-      if (!data.success && data.sql) {
-        // Migration needed - show instructions
-        console.log('Migration gerekli:', data.message)
-        // Optionally show a toast or modal with instructions
-      }
-    } catch (error) {
-      // Silent fail - migration check is optional
-      console.log('Migration check failed (non-critical):', error)
-    }
-  }
-
-  const fetchCategories = async () => {
-    try {
-      const response = await fetch('/api/pages/categories')
-      const data = await response.json()
-      if (data.success) {
-        setCategories(data.data || [])
-      }
-    } catch (error) {
-      console.error('Failed to fetch categories:', error)
-    }
-  }
-
-  const fetchPages = async () => {
+  const fetchPages = useCallback(async () => {
     try {
       const token = localStorage.getItem('adminToken')
       const params = new URLSearchParams()
@@ -143,6 +95,52 @@ return
     } finally {
       setIsLoading(false)
     }
+  }, [selectedStatus, selectedCategory])
+
+  useEffect(() => {
+    void fetchCategories()
+    void fetchPages()
+    // Check and run migration if needed
+    void checkAndRunMigration()
+  }, [selectedStatus, selectedCategory, fetchPages])
+
+  const checkAndRunMigration = async () => {
+    try {
+      const token = localStorage.getItem('adminToken')
+      if (!token) {
+return
+}
+
+      // Check if active column exists by trying to fetch a page with active field
+      const response = await fetch('/api/pages/migrate-active', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      })
+
+      const data = await response.json()
+
+      if (!data.success && data.sql) {
+        // Migration needed - show instructions
+        // Optionally show a toast or modal with instructions
+      }
+    } catch (_error) {
+      // Silent fail - migration check is optional
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const response = await fetch('/api/pages/categories')
+      const data = await response.json()
+      if (data.success) {
+        setCategories(data.data || [])
+      }
+    } catch (error) {
+      console.error('Failed to fetch categories:', error)
+    }
   }
 
   const handleCreatePage = async (e: React.FormEvent) => {
@@ -168,16 +166,16 @@ return
         router.push(`/admin/pages/${data.data.id}/edit`)
       } else {
         const error = await response.json()
-        alert(`Hata: ${error.error}`)
+        toast.error(`Hata: ${error.error}`)
       }
-    } catch (error) {
-      alert('Sayfa oluşturulurken hata oluştu')
+    } catch (_error) {
+      toast.error('Sayfa oluşturulurken hata oluştu')
     } finally {
       setSaving(false)
     }
   }
 
-  const handleDuplicatePage = async (pageId: string, title: string) => {
+  const handleDuplicatePage = async (pageId: string) => {
     try {
       const token = localStorage.getItem('adminToken')
       const response = await fetch('/api/pages', {
@@ -191,20 +189,22 @@ return
 
       if (response.ok) {
         const data = await response.json()
-        fetchPages()
+        void fetchPages()
         // Navigate to the duplicated page editor
         router.push(`/admin/pages/${data.data.id}/edit`)
       } else {
         const error = await response.json()
-        alert(`Hata: ${error.error}`)
+        toast.error(`Hata: ${error.error}`)
       }
-    } catch (error) {
-      alert('Sayfa çoğaltılırken hata oluştu')
+    } catch (_error) {
+      toast.error('Sayfa çoğaltılırken hata oluştu')
     }
   }
 
   const handleDeletePage = async (pageId: string, title: string) => {
-    if (!confirm(`"${title}" sayfasını silmek istediğinizden emin misiniz?`)) {
+    // eslint-disable-next-line no-alert
+    const confirmed = window.confirm(`"${title}" sayfasını silmek istediğinizden emin misiniz?`)
+    if (!confirmed) {
       return
     }
 
@@ -216,10 +216,11 @@ return
       })
 
       if (response.ok) {
-        fetchPages()
+        void fetchPages()
+        toast.success('Sayfa başarıyla silindi')
       }
-    } catch (error) {
-      alert('Sayfa silinirken hata oluştu')
+    } catch (_error) {
+      toast.error('Sayfa silinirken hata oluştu')
     }
   }
 
@@ -238,10 +239,11 @@ return
       })
 
       if (response.ok) {
-        fetchPages()
+        void fetchPages()
+        toast.success(`Sayfa ${newStatus === 'published' ? 'yayınlandı' : 'taslağa alındı'}`)
       }
-    } catch (error) {
-      alert('Durum güncellenirken hata oluştu')
+    } catch (_error) {
+      toast.error('Durum güncellenirken hata oluştu')
     }
   }
 
@@ -260,13 +262,13 @@ return
       })
 
       if (response.ok) {
-        fetchPages()
+        void fetchPages()
         toast.success(newActive ? 'Sayfa aktif edildi' : 'Sayfa pasif edildi')
       } else {
         const errorData = await response.json()
         toast.error(errorData.error || 'Güncelleme başarısız')
       }
-    } catch (error) {
+    } catch (_error) {
       toast.error('Aktif/pasif durumu güncellenirken hata oluştu')
     }
   }
@@ -300,22 +302,24 @@ return
         </div>
         <div className="flex items-center gap-3">
           <button
-            onClick={async () => {
-              const token = localStorage.getItem('adminToken')
+            onClick={() => {
+              void (async () => {
+                const token = localStorage.getItem('adminToken')
               if (!token) {
                 toast.error('Giriş yapmanız gerekiyor')
                 return
               }
-              
-              const run = confirm(
+
+              // eslint-disable-next-line no-alert
+              const run = window.confirm(
                 'Migration çalıştırılacak. Active kolonu eklenecek.\n\n' +
                 'Devam etmek istiyor musunuz?'
               )
-              
+
               if (!run) {
 return
 }
-              
+
               try {
                 const response = await fetch('/api/pages/migrate-active', {
                   method: 'POST',
@@ -324,28 +328,30 @@ return
                     'Authorization': `Bearer ${token}`
                   }
                 })
-                
+
                 const data = await response.json()
-                
+
                 if (data.success) {
                   toast.success('✅ Migration başarıyla tamamlandı!')
-                  fetchPages()
+                  void fetchPages()
                 } else if (data.dashboardUrl) {
-                  const open = confirm(
+                  // eslint-disable-next-line no-alert
+                  const open = window.confirm(
                     `Migration manuel olarak çalıştırılmalı.\n\n` +
                     `Supabase Dashboard açılsın mı?\n\n` +
                     `SQL:\n${data.sql?.substring(0, 150)}...`
                   )
                   if (open) {
                     window.open(data.dashboardUrl, '_blank')
-                    toast.info('Supabase Dashboard açıldı. SQL Editor\'da migration\'ı çalıştırın.')
+                    toast.success('Supabase Dashboard açıldı. SQL Editor\'da migration\'ı çalıştırın.')
                   }
                 } else {
                   toast.error(data.error || 'Migration başarısız')
                 }
-              } catch (error) {
+              } catch (_error) {
                 toast.error('Migration çalıştırılırken hata oluştu')
               }
+              })()
             }}
             className="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
             title="Active kolonu migration'ını çalıştır"
@@ -498,7 +504,7 @@ return
                   </td>
                   <td className="px-6 py-4">
                     {page.page_categories ? (
-                      <span 
+                      <span
                         className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-lg text-white"
                         style={{ backgroundColor: page.page_categories.color || '#9CAF88' }}
                       >
@@ -519,7 +525,7 @@ return
                   <td className="px-6 py-4">
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => handleToggleStatus(page)}
+                        onClick={() => void handleToggleStatus(page)}
                         className={`inline-flex px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
                           page.status === 'published'
                             ? 'bg-green-100 text-green-700 hover:bg-green-200'
@@ -529,7 +535,7 @@ return
                         {page.status === 'published' ? 'Yayında' : 'Taslak'}
                       </button>
                       <button
-                        onClick={() => handleToggleActive(page)}
+                        onClick={() => void handleToggleActive(page)}
                         className={`inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium rounded-lg transition-colors ${
                           page.active !== false
                             ? 'bg-blue-100 text-blue-700 hover:bg-blue-200'
@@ -572,7 +578,7 @@ return
                         </svg>
                       </Link>
                       <button
-                        onClick={() => handleDuplicatePage(page.id, page.title)}
+                        onClick={() => void handleDuplicatePage(page.id)}
                         className="p-2 text-slate-400 hover:text-purple-600 hover:bg-purple-50 rounded-lg transition-all"
                         title="Çoğalt"
                       >
@@ -590,7 +596,7 @@ return
                         </svg>
                       </Link>
                       <button
-                        onClick={() => handleDeletePage(page.id, page.title)}
+                        onClick={() => void handleDeletePage(page.id, page.title)}
                         className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                         title="Sil"
                       >
@@ -646,7 +652,10 @@ return
               </div>
             </div>
 
-            <form onSubmit={handleCreatePage} className="p-6 space-y-5">
+            <form onSubmit={(e) => {
+              e.preventDefault()
+              void handleCreatePage(e)
+            }} className="p-6 space-y-5">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
                   Sayfa Başlığı *
@@ -819,7 +828,7 @@ return
                               setNewCategoryForm({
                                 name: cat.name,
                                 slug: cat.slug,
-                                description: (cat as any).description || '',
+                                description: (cat as { description?: string }).description || '',
                                 color: cat.color,
                                 icon: cat.icon
                               })
@@ -832,8 +841,11 @@ return
                             </svg>
                           </button>
                           <button
-                            onClick={async () => {
-                              if (!confirm(`"${cat.name}" kategorisini silmek istediğinizden emin misiniz?`)) {
+                            onClick={() => {
+                              void (async () => {
+                                // eslint-disable-next-line no-alert
+                                const confirmed = window.confirm(`"${cat.name}" kategorisini silmek istediğinizden emin misiniz?`)
+                              if (!confirmed) {
                                 return
                               }
                               try {
@@ -845,12 +857,14 @@ return
                                 const data = await response.json()
                                 if (data.success) {
                                   await fetchCategories()
+                                  toast.success('Kategori başarıyla silindi')
                                 } else {
-                                  alert(`Hata: ${data.error}`)
+                                  toast.error(`Hata: ${data.error}`)
                                 }
-                              } catch (error) {
-                                alert('Kategori silinirken hata oluştu')
+                              } catch (_error) {
+                                toast.error('Kategori silinirken hata oluştu')
                               }
+                              })()
                             }}
                             className="p-2 text-slate-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-all"
                             title="Sil"
@@ -873,9 +887,10 @@ return
 
               {/* Category Form */}
               {(editingCategory || categories.length === 0) && (
-                <form onSubmit={async (e) => {
+                <form onSubmit={(e) => {
                   e.preventDefault()
-                  setSavingCategory(true)
+                  void (async () => {
+                    setSavingCategory(true)
                   try {
                     const token = localStorage.getItem('adminToken')
                     const url = editingCategory
@@ -903,13 +918,14 @@ return
                         setIsCategoryModalOpen(false)
                       }
                     } else {
-                      alert(`Hata: ${data.error}`)
+                      toast.error(`Hata: ${data.error}`)
                     }
-                  } catch (error) {
-                    alert('Kategori kaydedilirken hata oluştu')
+                  } catch (_error) {
+                    toast.error('Kategori kaydedilirken hata oluştu')
                   } finally {
                     setSavingCategory(false)
                   }
+                  })()
                 }} className="p-6 space-y-5 border-t border-slate-200">
               <div>
                 <label className="block text-sm font-medium text-slate-700 mb-2">
