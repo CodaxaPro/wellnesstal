@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, useCallback } from 'react'
 
 import type { ButtonType, Service, ServiceFormData } from '@/types/services'
 
@@ -81,6 +81,52 @@ export function useServiceForm({
   // Track the last editing service ID to prevent unnecessary resets
   const lastEditingServiceIdRef = useRef<string | null>(null)
 
+  // Reset form to initial state
+  const resetForm = useCallback(() => {
+    const maxOrder = Math.max(...existingServices.map(s => s.order), 0)
+
+    setFormData({
+      title: '',
+      shortDescription: '',
+      longDescription: '',
+      duration: '',
+      price: '',
+      benefits: '',
+      popular: false,
+      active: true,
+      featured: false,
+      order: maxOrder + 1,
+      category: '',
+      tags: '',
+      image: '/images/default-service.jpg',
+
+      primaryButtonText: 'Jetzt buchen',
+      primaryButtonType: 'phone',
+      primaryButtonValue: '',
+      primaryButtonMessage: '',
+      secondaryButtonText: 'Mehr Details',
+      secondaryButtonType: 'page',
+      secondaryButtonValue: '',
+      secondaryButtonMessage: '',
+
+      primaryModalLeftButtonText: 'Jetzt anrufen',
+      primaryModalLeftButtonType: 'phone',
+      primaryModalLeftButtonValue: '',
+      primaryModalRightButtonText: 'WhatsApp schreiben',
+      primaryModalRightButtonType: 'whatsapp',
+      primaryModalRightButtonValue: '',
+      secondaryModalLeftButtonText: 'Jetzt anrufen',
+      secondaryModalLeftButtonType: 'phone',
+      secondaryModalLeftButtonValue: '',
+      secondaryModalRightButtonText: 'WhatsApp schreiben',
+      secondaryModalRightButtonType: 'whatsapp',
+      secondaryModalRightButtonValue: ''
+    })
+
+    setGradientColor('from-sage-400 to-forest-500')
+    setErrors({})
+  }, [existingServices])
+
   // Initialize form data when modal opens or editing service ID changes
   useEffect(() => {
     if (isOpen) {
@@ -152,7 +198,7 @@ export function useServiceForm({
       // Modal closed, reset the ref
       lastEditingServiceIdRef.current = null
     }
-  }, [isOpen, editingService?.id])
+  }, [isOpen, editingService?.id, existingServices, resetForm])
 
   // Handle input changes
   const handleInputChange = (field: keyof ServiceFormData, value: any) => {
@@ -226,52 +272,6 @@ newErrors.secondaryButtonText = 'Secondary button text gereklidir'
     }
 
     return processed
-  }
-
-  // Reset form to initial state
-  const resetForm = () => {
-    const maxOrder = Math.max(...existingServices.map(s => s.order), 0)
-
-    setFormData({
-      title: '',
-      shortDescription: '',
-      longDescription: '',
-      duration: '',
-      price: '',
-      benefits: '',
-      popular: false,
-      active: true,
-      featured: false,
-      order: maxOrder + 1,
-      category: '',
-      tags: '',
-      image: '/images/default-service.jpg',
-
-      primaryButtonText: 'Jetzt buchen',
-      primaryButtonType: 'phone',
-      primaryButtonValue: '',
-      primaryButtonMessage: '',
-      secondaryButtonText: 'Mehr Details',
-      secondaryButtonType: 'page',
-      secondaryButtonValue: '',
-      secondaryButtonMessage: '',
-
-      primaryModalLeftButtonText: 'Jetzt anrufen',
-      primaryModalLeftButtonType: 'phone',
-      primaryModalLeftButtonValue: '',
-      primaryModalRightButtonText: 'WhatsApp schreiben',
-      primaryModalRightButtonType: 'whatsapp',
-      primaryModalRightButtonValue: '',
-      secondaryModalLeftButtonText: 'Jetzt anrufen',
-      secondaryModalLeftButtonType: 'phone',
-      secondaryModalLeftButtonValue: '',
-      secondaryModalRightButtonText: 'WhatsApp schreiben',
-      secondaryModalRightButtonType: 'whatsapp',
-      secondaryModalRightButtonValue: ''
-    })
-
-    setGradientColor('from-sage-400 to-forest-500')
-    setErrors({})
   }
 
   return {
