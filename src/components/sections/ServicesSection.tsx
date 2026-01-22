@@ -166,24 +166,27 @@ const ServicesSection = () => {
 
         if (sectionData.success && sectionData.data?.content) {
           const ctaData = sectionData.data.content.cta || {}
+          const apiContent = sectionData.data.content
+          
           setSectionContent({
-            badge: sectionData.data.content.badge || defaultSectionContent.badge,
-            sectionTitle: sectionData.data.content.sectionTitle || defaultSectionContent.sectionTitle,
-            highlightedText: sectionData.data.content.highlightedText || defaultSectionContent.highlightedText,
-            description: sectionData.data.content.description || defaultSectionContent.description,
-            images: sectionData.data.content.images || [],
+            // Only use API content if it exists and is not empty, otherwise use empty string
+            badge: apiContent.badge && apiContent.badge.trim() !== '' ? apiContent.badge : '',
+            sectionTitle: apiContent.sectionTitle && apiContent.sectionTitle.trim() !== '' ? apiContent.sectionTitle : '',
+            highlightedText: apiContent.highlightedText && apiContent.highlightedText.trim() !== '' ? apiContent.highlightedText : '',
+            description: apiContent.description && apiContent.description.trim() !== '' ? apiContent.description : '',
+            images: apiContent.images || [],
             cta: {
               visible: ctaData.visible !== false,
-              title: ctaData.title || defaultSectionContent.cta.title,
-              description: ctaData.description || defaultSectionContent.cta.description,
-              primaryButtonText: ctaData.primaryButtonText || defaultSectionContent.cta.primaryButtonText,
+              title: ctaData.title && ctaData.title.trim() !== '' ? ctaData.title : '',
+              description: ctaData.description && ctaData.description.trim() !== '' ? ctaData.description : '',
+              primaryButtonText: ctaData.primaryButtonText && ctaData.primaryButtonText.trim() !== '' ? ctaData.primaryButtonText : '',
               primaryButtonType: (ctaData.primaryButtonType as 'phone' | 'whatsapp' | 'url' | 'email') || defaultSectionContent.cta.primaryButtonType,
-              primaryButtonLink: ctaData.primaryButtonLink || defaultSectionContent.cta.primaryButtonLink,
-              secondaryButtonText: ctaData.secondaryButtonText || defaultSectionContent.cta.secondaryButtonText,
+              primaryButtonLink: ctaData.primaryButtonLink && ctaData.primaryButtonLink.trim() !== '' ? ctaData.primaryButtonLink : '',
+              secondaryButtonText: ctaData.secondaryButtonText && ctaData.secondaryButtonText.trim() !== '' ? ctaData.secondaryButtonText : '',
               secondaryButtonType: (ctaData.secondaryButtonType as 'phone' | 'whatsapp' | 'url' | 'email') || defaultSectionContent.cta.secondaryButtonType,
-              secondaryButtonLink: ctaData.secondaryButtonLink || defaultSectionContent.cta.secondaryButtonLink
+              secondaryButtonLink: ctaData.secondaryButtonLink && ctaData.secondaryButtonLink.trim() !== '' ? ctaData.secondaryButtonLink : ''
             },
-            styles: sectionData.data.content.styles || {}
+            styles: apiContent.styles || {}
           })
         }
       } catch (error) {
