@@ -330,11 +330,11 @@ export function ServicesSectionEditor({
               if (!imageUrl) return null
               
               return (
-                <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-sage-500 transition-all bg-gray-50">
+                <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-sage-500 transition-all bg-white">
                   <img
                     src={imageUrl}
                     alt={imageAlt}
-                    className="w-full h-full object-contain p-2"
+                    className="w-full h-full object-contain p-4"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect fill="%23ddd" width="300" height="300"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="14" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EGörsel Yüklenemedi%3C/text%3E%3C/svg%3E'
                     }}

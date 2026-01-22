@@ -406,12 +406,12 @@ const ServicesSection = () => {
                 return (
                   <div
                     key={index}
-                    className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-gray-100"
+                    className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-white border border-gray-200"
                   >
                     <img
                       src={imageUrl}
                       alt={imageAlt}
-                      className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 p-2"
+                      className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 p-4"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Crect fill="%23ddd" width="400" height="400"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="16" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EGörsel Yüklenemedi%3C/text%3E%3C/svg%3E'
                       }}
