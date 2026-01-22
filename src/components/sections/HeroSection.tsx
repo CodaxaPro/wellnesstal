@@ -277,8 +277,9 @@ const HeroSection = () => {
               </span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-normal sm:leading-tight mb-6 break-words">
               <span
+                className="block mb-1 sm:mb-0"
                 style={{
                   fontFamily: content.styles?.mainTitle?.fontFamily || defaultStyles.mainTitle?.fontFamily,
                   fontWeight: content.styles?.mainTitle?.fontWeight || defaultStyles.mainTitle?.fontWeight,
@@ -287,9 +288,8 @@ const HeroSection = () => {
               >
                 {content.mainTitle.split(' ').slice(0, 2).join(' ')}
               </span>
-              <br />
               <span
-                className="relative"
+                className="relative block mt-2 sm:mt-0 sm:inline"
                 style={{
                   fontFamily: content.styles?.highlightedText?.fontFamily || defaultStyles.highlightedText?.fontFamily,
                   fontWeight: content.styles?.highlightedText?.fontWeight || defaultStyles.highlightedText?.fontWeight,
@@ -298,7 +298,7 @@ const HeroSection = () => {
               >
                 {content.mainTitle.split(' ').slice(2, 3).join(' ') || 'Entspannung'}
                 <svg
-                  className="absolute -bottom-2 left-0 w-full h-3"
+                  className="absolute -bottom-2 left-0 w-full h-3 hidden sm:block"
                   style={{ color: `${content.styles?.highlightedText?.color || defaultStyles.highlightedText?.color}40` }}
                   viewBox="0 0 200 12"
                   fill="currentColor"
@@ -307,15 +307,15 @@ const HeroSection = () => {
                   <path d="M0,7 Q50,0 100,7 T200,7 L200,12 L0,12 Z" />
                 </svg>
               </span>
-              <br />
               <span
+                className="block mt-2 sm:mt-0 sm:inline"
                 style={{
                   fontFamily: content.styles?.mainTitle?.fontFamily || defaultStyles.mainTitle?.fontFamily,
                   fontWeight: content.styles?.mainTitle?.fontWeight || defaultStyles.mainTitle?.fontWeight,
                   color: content.styles?.mainTitle?.color || defaultStyles.mainTitle?.color,
                 }}
               >
-                {content.mainTitle.split(' ').slice(3).join(' ') || 'in Baesweiler'}
+                {' '}{content.mainTitle.split(' ').slice(3).join(' ') || 'in Baesweiler'}
               </span>
             </h1>
 
