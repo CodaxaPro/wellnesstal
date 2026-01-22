@@ -404,9 +404,11 @@ export async function PUT(request: NextRequest) {
     }
     
     // Store button config as JSON - try metadata first (most likely to exist)
+    // But don't fail if column doesn't exist - just skip saving button config
+    const updateObjForDB = { ...updateObj }
     if (Object.keys(buttonConfig).length > 0) {
       // Try metadata column first (more likely to exist)
-      updateObj['metadata'] = { button_config: buttonConfig }
+      updateObjForDB['metadata'] = { button_config: buttonConfig }
     }
 
     // Try to update
@@ -416,7 +418,7 @@ export async function PUT(request: NextRequest) {
     // First attempt: try with metadata
     const firstAttempt = await supabaseAdmin
       .from('services')
-      .update(updateObj)
+      .update(updateObjForDB)
       .eq('id', id)
       .select()
       .single()
@@ -445,11 +447,16 @@ export async function PUT(request: NextRequest) {
       
       updated = retryAttempt.data
       error = retryAttempt.error
-      
-      // Manually add button config to response so frontend can use it
-      if (updated && !error) {
-        updated.button_config = buttonConfig
+    }
+    
+    // Always add button config to response (even if not saved to DB)
+    // This way frontend can use it immediately
+    if (updated && !error && Object.keys(buttonConfig).length > 0) {
+      if (!updated.metadata) {
+        updated.metadata = {}
       }
+      updated.metadata.button_config = buttonConfig
+      updated.button_config = buttonConfig
     } else if (updated && !error && updated.metadata?.button_config) {
       // Extract button_config from metadata for easier access
       updated.button_config = updated.metadata.button_config
