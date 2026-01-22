@@ -50,16 +50,40 @@ export async function GET(request: NextRequest) {
     // If Supabase works and has data
     if (!error && dbContent && dbContent.length > 0) {
       // Transform for frontend compatibility
-      const transformedData = dbContent.map(c => ({
-        id: c.id,
-        section: c.section,
-        title: c.title,
-        description: c.description,
-        content: c.content,
-        defaults: c.defaults,
-        lastUpdated: c.last_updated,
-        updatedBy: c.updated_by
-      }))
+      const transformedData = dbContent.map(c => {
+        // Handle content field - it might be a string that needs parsing
+        let parsedContent = c.content
+        if (typeof c.content === 'string') {
+          try {
+            parsedContent = JSON.parse(c.content)
+          } catch (e) {
+            console.warn(`Failed to parse content for section ${c.section}:`, e)
+            parsedContent = c.content
+          }
+        }
+
+        // Handle defaults field similarly
+        let parsedDefaults = c.defaults
+        if (typeof c.defaults === 'string') {
+          try {
+            parsedDefaults = JSON.parse(c.defaults)
+          } catch (e) {
+            console.warn(`Failed to parse defaults for section ${c.section}:`, e)
+            parsedDefaults = c.defaults
+          }
+        }
+
+        return {
+          id: c.id,
+          section: c.section,
+          title: c.title,
+          description: c.description,
+          content: parsedContent,
+          defaults: parsedDefaults,
+          lastUpdated: c.last_updated,
+          updatedBy: c.updated_by
+        }
+      })
 
       if (section) {
         return NextResponse.json({ success: true, data: transformedData[0] })
@@ -86,6 +110,8 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('GET /api/content error:', error)
+    console.error('Error details:', error instanceof Error ? error.message : String(error))
+    console.error('Error stack:', error instanceof Error ? error.stack : 'No stack trace')
 
     // Final fallback to file
     try {
@@ -98,9 +124,10 @@ export async function GET(request: NextRequest) {
         return NextResponse.json({ success: true, data: content || null })
       }
       return NextResponse.json({ success: true, data: fileContent })
-    } catch {
+    } catch (fallbackError) {
+      console.error('Fallback error:', fallbackError)
       return NextResponse.json(
-        { success: false, error: 'Failed to fetch content' },
+        { success: false, error: 'Failed to fetch content', details: error instanceof Error ? error.message : String(error) },
         { status: 500 }
       )
     }
