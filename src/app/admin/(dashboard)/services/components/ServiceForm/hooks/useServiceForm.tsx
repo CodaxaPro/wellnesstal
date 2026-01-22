@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 
 import type { ButtonType, Service, ServiceFormData } from '@/types/services'
 
@@ -77,11 +77,26 @@ export function useServiceForm({
 
   const [errors, setErrors] = useState<Partial<ServiceFormData>>({})
   const [gradientColor, setGradientColor] = useState('from-sage-400 to-forest-500')
+  
+  // Track the last editing service ID to prevent unnecessary resets
+  const lastEditingServiceIdRef = useRef<string | null>(null)
 
-  // Initialize form data when modal opens or editing service changes
+  // Initialize form data when modal opens or editing service ID changes
   useEffect(() => {
     if (isOpen) {
-      if (editingService) {
+      const currentServiceId = editingService?.id || null
+      
+      // Only reset form if:
+      // 1. Modal just opened (lastEditingServiceIdRef.current is null)
+      // 2. Different service is being edited (ID changed)
+      // 3. No service is being edited (editingService is null)
+      const shouldReset = 
+        lastEditingServiceIdRef.current === null || 
+        lastEditingServiceIdRef.current !== currentServiceId ||
+        (!editingService && lastEditingServiceIdRef.current !== null)
+      
+      if (shouldReset) {
+        if (editingService) {
         setFormData({
           title: editingService.title,
           shortDescription: editingService.shortDescription,
@@ -125,13 +140,19 @@ export function useServiceForm({
           secondaryModalRightButtonType: (editingService.secondaryModalRightButtonType as ButtonType) || 'whatsapp',
           secondaryModalRightButtonValue: editingService.secondaryModalRightButtonValue || ''
         })
-        setGradientColor((editingService as any).gradientColor || 'from-sage-400 to-forest-500')
-      } else {
-        resetForm()
+          setGradientColor((editingService as any).gradientColor || 'from-sage-400 to-forest-500')
+          lastEditingServiceIdRef.current = editingService.id
+        } else {
+          resetForm()
+          lastEditingServiceIdRef.current = null
+        }
+        setErrors({})
       }
-      setErrors({})
+    } else {
+      // Modal closed, reset the ref
+      lastEditingServiceIdRef.current = null
     }
-  }, [isOpen, editingService, existingServices])
+  }, [isOpen, editingService?.id])
 
   // Handle input changes
   const handleInputChange = (field: keyof ServiceFormData, value: any) => {
