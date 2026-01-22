@@ -322,16 +322,23 @@ export function ServicesSectionEditor({
         {/* Image Grid */}
         {images.length > 0 && (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
-            {images.map((image: any, index: number) => (
-              <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-sage-500 transition-all">
-                <img
-                  src={image.url || image}
-                  alt={image.alt || `Resim ${index + 1}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300?text=Görsel+Yüklenemedi'
-                  }}
-                />
+            {images.map((image: any, index: number) => {
+              // Handle both string and object formats
+              const imageUrl = typeof image === 'string' ? image : (image?.url || '')
+              const imageAlt = typeof image === 'string' ? `Resim ${index + 1}` : (image?.alt || `Resim ${index + 1}`)
+              
+              if (!imageUrl) return null
+              
+              return (
+                <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-sage-500 transition-all">
+                  <img
+                    src={imageUrl}
+                    alt={imageAlt}
+                    className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="300" height="300"%3E%3Crect fill="%23ddd" width="300" height="300"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="14" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EGörsel Yüklenemedi%3C/text%3E%3C/svg%3E'
+                    }}
+                  />
                 {isEditing && (
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <button
@@ -358,11 +365,12 @@ export function ServicesSectionEditor({
                     </button>
                   </div>
                 )}
-                <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
-                  {index + 1}
+                  <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                    {index + 1}
+                  </div>
                 </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         )}
 
