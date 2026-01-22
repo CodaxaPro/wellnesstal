@@ -20,6 +20,54 @@ function generateSlug(title: string): string {
     .replace(/^-|-$/g, '')
 }
 
+// Helper function to transform service for frontend response
+function transformServiceForResponse(s: any) {
+  const buttonConfig = s.button_config || (s.metadata as any)?.button_config || {}
+  
+  return {
+    id: s.id,
+    title: s.title,
+    slug: s.slug,
+    description: s.description,
+    shortDescription: s.short_description,
+    longDescription: s.long_description || s.description,
+    categoryId: s.category_id,
+    price: s.price,
+    duration: s.duration,
+    image: s.image,
+    active: s.active,
+    order: s.order_num,
+    benefits: s.benefits || [],
+    popular: s.popular || false,
+    featured: s.featured || false,
+    tags: s.tags || [],
+    // Button fields - from button_config JSON, metadata, or individual columns
+    primaryButtonText: buttonConfig.primary?.text || s.primary_button_text || null,
+    primaryButtonType: buttonConfig.primary?.type || s.primary_button_type || null,
+    primaryButtonValue: buttonConfig.primary?.value || s.primary_button_value || null,
+    primaryButtonMessage: buttonConfig.primary?.message || s.primary_button_message || null,
+    secondaryButtonText: buttonConfig.secondary?.text || s.secondary_button_text || null,
+    secondaryButtonType: buttonConfig.secondary?.type || s.secondary_button_type || null,
+    secondaryButtonValue: buttonConfig.secondary?.value || s.secondary_button_value || null,
+    secondaryButtonMessage: buttonConfig.secondary?.message || s.secondary_button_message || null,
+    // Modal button fields
+    primaryModalLeftButtonText: buttonConfig.primaryModal?.left?.text || s.primary_modal_left_button_text || null,
+    primaryModalLeftButtonType: buttonConfig.primaryModal?.left?.type || s.primary_modal_left_button_type || null,
+    primaryModalLeftButtonValue: buttonConfig.primaryModal?.left?.value || s.primary_modal_left_button_value || null,
+    primaryModalRightButtonText: buttonConfig.primaryModal?.right?.text || s.primary_modal_right_button_text || null,
+    primaryModalRightButtonType: buttonConfig.primaryModal?.right?.type || s.primary_modal_right_button_type || null,
+    primaryModalRightButtonValue: buttonConfig.primaryModal?.right?.value || s.primary_modal_right_button_value || null,
+    secondaryModalLeftButtonText: buttonConfig.secondaryModal?.left?.text || s.secondary_modal_left_button_text || null,
+    secondaryModalLeftButtonType: buttonConfig.secondaryModal?.left?.type || s.secondary_modal_left_button_type || null,
+    secondaryModalLeftButtonValue: buttonConfig.secondaryModal?.left?.value || s.secondary_modal_left_button_value || null,
+    secondaryModalRightButtonText: buttonConfig.secondaryModal?.right?.text || s.secondary_modal_right_button_text || null,
+    secondaryModalRightButtonType: buttonConfig.secondaryModal?.right?.type || s.secondary_modal_right_button_type || null,
+    secondaryModalRightButtonValue: buttonConfig.secondaryModal?.right?.value || s.secondary_modal_right_button_value || null,
+    createdAt: s.created_at,
+    updatedAt: s.updated_at
+  }
+}
+
 // GET /api/services
 export async function GET(request: NextRequest) {
   try {
@@ -68,48 +116,7 @@ export async function GET(request: NextRequest) {
     const allServices = services || []
 
     // Transform for frontend compatibility
-    const transformedData = allServices.map(s => ({
-      id: s.id,
-      title: s.title,
-      slug: s.slug,
-      description: s.description,
-      shortDescription: s.short_description,
-      longDescription: s.long_description || s.description,
-      categoryId: s.category_id,
-      price: s.price,
-      duration: s.duration,
-      image: s.image,
-      active: s.active,
-      order: s.order_num,
-      benefits: s.benefits || [],
-      popular: s.popular || false,
-      featured: s.featured || false,
-      tags: s.tags || [],
-      // Button fields
-      primaryButtonText: s.primary_button_text,
-      primaryButtonType: s.primary_button_type,
-      primaryButtonValue: s.primary_button_value,
-      primaryButtonMessage: s.primary_button_message,
-      secondaryButtonText: s.secondary_button_text,
-      secondaryButtonType: s.secondary_button_type,
-      secondaryButtonValue: s.secondary_button_value,
-      secondaryButtonMessage: s.secondary_button_message,
-      // Modal button fields
-      primaryModalLeftButtonText: s.primary_modal_left_button_text,
-      primaryModalLeftButtonType: s.primary_modal_left_button_type,
-      primaryModalLeftButtonValue: s.primary_modal_left_button_value,
-      primaryModalRightButtonText: s.primary_modal_right_button_text,
-      primaryModalRightButtonType: s.primary_modal_right_button_type,
-      primaryModalRightButtonValue: s.primary_modal_right_button_value,
-      secondaryModalLeftButtonText: s.secondary_modal_left_button_text,
-      secondaryModalLeftButtonType: s.secondary_modal_left_button_type,
-      secondaryModalLeftButtonValue: s.secondary_modal_left_button_value,
-      secondaryModalRightButtonText: s.secondary_modal_right_button_text,
-      secondaryModalRightButtonType: s.secondary_modal_right_button_type,
-      secondaryModalRightButtonValue: s.secondary_modal_right_button_value,
-      createdAt: s.created_at,
-      updatedAt: s.updated_at
-    }))
+    const transformedData = allServices.map(s => transformServiceForResponse(s))
 
     return NextResponse.json({
       success: true,
@@ -155,50 +162,116 @@ export async function POST(request: NextRequest) {
 
     const nextOrder = (maxOrderResult?.order_num || 0) + 1
 
+    // Prepare button config as JSON
+    const buttonConfig: Record<string, any> = {}
+    if (body.primaryButtonText || body.primaryButtonType || body.primaryButtonValue || body.primaryButtonMessage) {
+      buttonConfig.primary = {
+        text: body.primaryButtonText || null,
+        type: body.primaryButtonType || null,
+        value: body.primaryButtonValue || null,
+        message: body.primaryButtonMessage || null
+      }
+    }
+    if (body.secondaryButtonText || body.secondaryButtonType || body.secondaryButtonValue || body.secondaryButtonMessage) {
+      buttonConfig.secondary = {
+        text: body.secondaryButtonText || null,
+        type: body.secondaryButtonType || null,
+        value: body.secondaryButtonValue || null,
+        message: body.secondaryButtonMessage || null
+      }
+    }
+    if (body.primaryModalLeftButtonText || body.primaryModalLeftButtonType || body.primaryModalLeftButtonValue) {
+      buttonConfig.primaryModal = {
+        left: {
+          text: body.primaryModalLeftButtonText || null,
+          type: body.primaryModalLeftButtonType || null,
+          value: body.primaryModalLeftButtonValue || null
+        },
+        right: {
+          text: body.primaryModalRightButtonText || null,
+          type: body.primaryModalRightButtonType || null,
+          value: body.primaryModalRightButtonValue || null
+        }
+      }
+    }
+    if (body.secondaryModalLeftButtonText || body.secondaryModalLeftButtonType || body.secondaryModalLeftButtonValue) {
+      buttonConfig.secondaryModal = {
+        left: {
+          text: body.secondaryModalLeftButtonText || null,
+          type: body.secondaryModalLeftButtonType || null,
+          value: body.secondaryModalLeftButtonValue || null
+        },
+        right: {
+          text: body.secondaryModalRightButtonText || null,
+          type: body.secondaryModalRightButtonType || null,
+          value: body.secondaryModalRightButtonValue || null
+        }
+      }
+    }
+
     // Create new service
-    const { data: newService, error } = await supabaseAdmin
+    const insertData: Record<string, any> = {
+      title: body.title.trim(),
+      slug: body.slug || generateSlug(body.title),
+      description: body.description?.trim() || '',
+      short_description: body.shortDescription?.trim() || '',
+      long_description: body.longDescription?.trim() || null,
+      category_id: body.categoryId || null,
+      price: body.price || null,
+      duration: body.duration || null,
+      image: body.image || null,
+      active: body.active ?? true,
+      order_num: body.order ?? nextOrder,
+      benefits: body.benefits || [],
+      popular: body.popular || false,
+      featured: body.featured || false,
+      tags: body.tags || []
+    }
+    
+    // Try to add button_config, fallback to metadata
+    if (Object.keys(buttonConfig).length > 0) {
+      insertData['button_config'] = buttonConfig
+    }
+
+    let newService: any
+    let error: any
+    
+    const firstAttempt = await supabaseAdmin
       .from('services')
-      .insert({
-        title: body.title.trim(),
-        slug: body.slug || generateSlug(body.title),
-        description: body.description?.trim() || '',
-        short_description: body.shortDescription?.trim() || '',
-        long_description: body.longDescription?.trim() || null,
-        category_id: body.categoryId || null,
-        price: body.price || null,
-        duration: body.duration || null,
-        image: body.image || null,
-        active: body.active ?? true,
-        order_num: body.order ?? nextOrder,
-        benefits: body.benefits || [],
-        popular: body.popular || false,
-        featured: body.featured || false,
-        tags: body.tags || [],
-        // Button fields
-        primary_button_text: body.primaryButtonText || null,
-        primary_button_type: body.primaryButtonType || null,
-        primary_button_value: body.primaryButtonValue || null,
-        primary_button_message: body.primaryButtonMessage || null,
-        secondary_button_text: body.secondaryButtonText || null,
-        secondary_button_type: body.secondaryButtonType || null,
-        secondary_button_value: body.secondaryButtonValue || null,
-        secondary_button_message: body.secondaryButtonMessage || null,
-        // Modal button fields
-        primary_modal_left_button_text: body.primaryModalLeftButtonText || null,
-        primary_modal_left_button_type: body.primaryModalLeftButtonType || null,
-        primary_modal_left_button_value: body.primaryModalLeftButtonValue || null,
-        primary_modal_right_button_text: body.primaryModalRightButtonText || null,
-        primary_modal_right_button_type: body.primaryModalRightButtonType || null,
-        primary_modal_right_button_value: body.primaryModalRightButtonValue || null,
-        secondary_modal_left_button_text: body.secondaryModalLeftButtonText || null,
-        secondary_modal_left_button_type: body.secondaryModalLeftButtonType || null,
-        secondary_modal_left_button_value: body.secondaryModalLeftButtonValue || null,
-        secondary_modal_right_button_text: body.secondaryModalRightButtonText || null,
-        secondary_modal_right_button_type: body.secondaryModalRightButtonType || null,
-        secondary_modal_right_button_value: body.secondaryModalRightButtonValue || null
-      })
+      .insert(insertData)
       .select()
       .single()
+    
+    newService = firstAttempt.data
+    error = firstAttempt.error
+    
+    // If button_config column doesn't exist, try metadata
+    if (error && error.message && error.message.includes('button_config')) {
+      delete insertData['button_config']
+      insertData['metadata'] = { button_config: buttonConfig }
+      
+      const retryAttempt = await supabaseAdmin
+        .from('services')
+        .insert(insertData)
+        .select()
+        .single()
+      
+      newService = retryAttempt.data
+      error = retryAttempt.error
+      
+      // If still error, remove metadata and continue without button config
+      if (error) {
+        delete insertData['metadata']
+        const finalAttempt = await supabaseAdmin
+          .from('services')
+          .insert(insertData)
+          .select()
+          .single()
+        
+        newService = finalAttempt.data
+        error = finalAttempt.error
+      }
+    }
 
     if (error) {
       console.error('Supabase insert error:', error)
@@ -351,31 +424,53 @@ export async function PUT(request: NextRequest) {
     updated = firstAttempt.data
     error = firstAttempt.error
 
-    // If error and it's related to button columns, retry without button fields
+    // If error and it's related to button_config column, try using metadata instead
     if (error && error.message && (
-      error.message.includes('button') ||
+      error.message.includes('button_config') ||
       error.message.includes('column') ||
       error.code === '42703' // PostgreSQL undefined column error
     )) {
-      console.warn('Button columns may not exist, retrying without button fields:', error.message)
-
-      // Remove button fields and retry
-      const updateObjWithoutButtons = { ...updateObj }
-      Object.keys(updateObjWithoutButtons).forEach(key => {
-        if (key.includes('button')) {
-          delete updateObjWithoutButtons[key]
+      console.warn('button_config column may not exist, trying metadata:', error.message)
+      
+      // Try using metadata column if it exists
+      if (updateObj['button_config']) {
+        const updateObjWithMetadata = { ...updateObj }
+        delete updateObjWithMetadata['button_config']
+        updateObjWithMetadata['metadata'] = { button_config: updateObj['button_config'] }
+        
+        const retryAttempt = await supabaseAdmin
+          .from('services')
+          .update(updateObjWithMetadata)
+          .eq('id', id)
+          .select()
+          .single()
+        
+        updated = retryAttempt.data
+        error = retryAttempt.error
+        
+        // If still error, remove button config and continue
+        if (error) {
+          console.warn('metadata column also doesn\'t exist, removing button config:', error.message)
+          const updateObjWithoutButtons = { ...updateObj }
+          delete updateObjWithoutButtons['button_config']
+          delete updateObjWithoutButtons['metadata']
+          
+          const finalAttempt = await supabaseAdmin
+            .from('services')
+            .update(updateObjWithoutButtons)
+            .eq('id', id)
+            .select()
+            .single()
+          
+          updated = finalAttempt.data
+          error = finalAttempt.error
+        } else {
+          // Update button_config from metadata in response
+          if (updated.metadata?.button_config) {
+            updated.button_config = updated.metadata.button_config
+          }
         }
-      })
-
-      const retryAttempt = await supabaseAdmin
-        .from('services')
-        .update(updateObjWithoutButtons)
-        .eq('id', id)
-        .select()
-        .single()
-
-      updated = retryAttempt.data
-      error = retryAttempt.error
+      }
     }
 
     if (error) {
