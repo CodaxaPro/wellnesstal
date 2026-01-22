@@ -108,7 +108,15 @@ const ServicesSection = () => {
         return `mailto:${value}`
       case 'url':
       case 'link':
-        return value.startsWith('http') ? value : `https://${value}`
+        if (!value || value.trim() === '') {
+          return '#'
+        }
+        // Ensure URL has protocol
+        const trimmedValue = value.trim()
+        if (trimmedValue.startsWith('http://') || trimmedValue.startsWith('https://')) {
+          return trimmedValue
+        }
+        return `https://${trimmedValue}`
       case 'page':
         return '#' // Will be handled by click handler
       default:
