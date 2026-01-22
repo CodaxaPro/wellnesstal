@@ -23,7 +23,7 @@ function generateSlug(title: string): string {
 // Helper function to transform service for frontend response
 function transformServiceForResponse(s: any) {
   const buttonConfig = s.button_config || (s.metadata as any)?.button_config || {}
-  
+
   return {
     id: s.id,
     title: s.title,
@@ -227,7 +227,7 @@ export async function POST(request: NextRequest) {
       featured: body.featured || false,
       tags: body.tags || []
     }
-    
+
     // Try to add button_config, fallback to metadata
     if (Object.keys(buttonConfig).length > 0) {
       insertData['button_config'] = buttonConfig
@@ -235,30 +235,30 @@ export async function POST(request: NextRequest) {
 
     let newService: any
     let error: any
-    
+
     const firstAttempt = await supabaseAdmin
       .from('services')
       .insert(insertData)
       .select()
       .single()
-    
+
     newService = firstAttempt.data
     error = firstAttempt.error
-    
+
     // If button_config column doesn't exist, try metadata
     if (error && error.message && error.message.includes('button_config')) {
       delete insertData['button_config']
       insertData['metadata'] = { button_config: buttonConfig }
-      
+
       const retryAttempt = await supabaseAdmin
         .from('services')
         .insert(insertData)
         .select()
         .single()
-      
+
       newService = retryAttempt.data
       error = retryAttempt.error
-      
+
       // If still error, remove metadata and continue without button config
       if (error) {
         delete insertData['metadata']
@@ -267,7 +267,7 @@ export async function POST(request: NextRequest) {
           .insert(insertData)
           .select()
           .single()
-        
+
         newService = finalAttempt.data
         error = finalAttempt.error
       }
@@ -349,9 +349,9 @@ export async function PUT(request: NextRequest) {
     }
     // Button fields - store as JSON in button_config column
     const buttonConfig: Record<string, any> = {}
-    
+
     // Primary button
-    if (updateData['primaryButtonText'] !== undefined || updateData['primaryButtonType'] !== undefined || 
+    if (updateData['primaryButtonText'] !== undefined || updateData['primaryButtonType'] !== undefined ||
         updateData['primaryButtonValue'] !== undefined || updateData['primaryButtonMessage'] !== undefined) {
       buttonConfig.primary = {
         text: updateData['primaryButtonText'] || null,
@@ -360,9 +360,9 @@ export async function PUT(request: NextRequest) {
         message: updateData['primaryButtonMessage'] || null
       }
     }
-    
+
     // Secondary button
-    if (updateData['secondaryButtonText'] !== undefined || updateData['secondaryButtonType'] !== undefined || 
+    if (updateData['secondaryButtonText'] !== undefined || updateData['secondaryButtonType'] !== undefined ||
         updateData['secondaryButtonValue'] !== undefined || updateData['secondaryButtonMessage'] !== undefined) {
       buttonConfig.secondary = {
         text: updateData['secondaryButtonText'] || null,
@@ -371,9 +371,9 @@ export async function PUT(request: NextRequest) {
         message: updateData['secondaryButtonMessage'] || null
       }
     }
-    
+
     // Primary modal buttons
-    if (updateData['primaryModalLeftButtonText'] !== undefined || updateData['primaryModalLeftButtonType'] !== undefined || 
+    if (updateData['primaryModalLeftButtonText'] !== undefined || updateData['primaryModalLeftButtonType'] !== undefined ||
         updateData['primaryModalLeftButtonValue'] !== undefined) {
       buttonConfig.primaryModal = {
         left: {
@@ -388,9 +388,9 @@ export async function PUT(request: NextRequest) {
         }
       }
     }
-    
+
     // Secondary modal buttons
-    if (updateData['secondaryModalLeftButtonText'] !== undefined || updateData['secondaryModalLeftButtonType'] !== undefined || 
+    if (updateData['secondaryModalLeftButtonText'] !== undefined || updateData['secondaryModalLeftButtonType'] !== undefined ||
         updateData['secondaryModalLeftButtonValue'] !== undefined) {
       buttonConfig.secondaryModal = {
         left: {
@@ -405,7 +405,7 @@ export async function PUT(request: NextRequest) {
         }
       }
     }
-    
+
     // Store button config as JSON - try metadata first (most likely to exist)
     // But don't fail if column doesn't exist - just skip saving button config
     const updateObjForDB = { ...updateObj }
@@ -414,42 +414,64 @@ export async function PUT(request: NextRequest) {
       updateObjForDB['metadata'] = { button_config: buttonConfig }
     }
 
-    // Try to update
+    // Try to update with retry logic for missing columns
     let updated: any
     let error: any
+    let attempt = 0
+    const maxAttempts = 3
+    const fieldsToTryRemove = ['metadata', 'long_description']
 
-    // First attempt: try with metadata
-    const firstAttempt = await supabaseAdmin
-      .from('services')
-      .update(updateObjForDB)
-      .eq('id', id)
-      .select()
-      .single()
-
-    updated = firstAttempt.data
-    error = firstAttempt.error
-
-    // If error and it's related to metadata column, remove it and continue
-    if (error && error.message && (
-      error.message.includes('metadata') ||
-      error.message.includes('column') ||
-      error.code === '42703' // PostgreSQL undefined column error
-    )) {
-      console.warn('metadata column may not exist, removing button config and continuing:', error.message)
+    while (attempt < maxAttempts) {
+      const currentUpdateObj = { ...updateObjForDB }
       
-      // Remove metadata and retry without button config
-      const updateObjWithoutMetadata = { ...updateObj }
-      delete updateObjWithoutMetadata['metadata']
-      
-      const retryAttempt = await supabaseAdmin
+      // On retry attempts, remove fields that might not exist
+      if (attempt > 0) {
+        // Remove fields that might not exist in database
+        if (attempt === 1) {
+          // First retry: remove metadata if it caused error
+          if (error?.message?.includes('metadata')) {
+            delete currentUpdateObj['metadata']
+          }
+          // Also try removing long_description if it caused error
+          if (error?.message?.includes('long_description')) {
+            delete currentUpdateObj['long_description']
+          }
+        } else if (attempt === 2) {
+          // Second retry: remove both metadata and long_description
+          delete currentUpdateObj['metadata']
+          delete currentUpdateObj['long_description']
+        }
+      }
+
+      const attemptResult = await supabaseAdmin
         .from('services')
-        .update(updateObjWithoutMetadata)
+        .update(currentUpdateObj)
         .eq('id', id)
         .select()
         .single()
-      
-      updated = retryAttempt.data
-      error = retryAttempt.error
+
+      updated = attemptResult.data
+      error = attemptResult.error
+
+      // If no error, break out of loop
+      if (!error) {
+        break
+      }
+
+      // Check if error is due to missing columns
+      const isColumnMissingError = 
+        error.code === '42703' || // PostgreSQL undefined column error
+        error.message?.includes('column') ||
+        error.message?.includes('does not exist')
+
+      if (isColumnMissingError && attempt < maxAttempts - 1) {
+        console.warn(`Attempt ${attempt + 1} failed due to missing column, retrying:`, error.message)
+        attempt++
+        continue
+      } else {
+        // Not a column error, or max attempts reached
+        break
+      }
     }
     
     // Always add button config to response (even if not saved to DB)
