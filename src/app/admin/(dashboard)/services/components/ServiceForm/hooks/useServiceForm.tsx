@@ -154,9 +154,7 @@ newErrors.title = 'Hizmet adı gereklidir'
       if (!formData.shortDescription?.trim()) {
 newErrors.shortDescription = 'Kısa açıklama gereklidir'
 }
-      if (!formData.longDescription?.trim()) {
-newErrors.longDescription = 'Detaylı açıklama gereklidir'
-}
+      // longDescription is optional, no validation needed
       if (!formData.duration?.trim()) {
 newErrors.duration = 'Süre gereklidir'
 }
