@@ -326,6 +326,9 @@ export async function PUT(request: NextRequest) {
     if (updateData['shortDescription'] !== undefined) {
       updateObj['short_description'] = updateData['shortDescription'] ? String(updateData['shortDescription']).trim() : null
     }
+    if (updateData['longDescription'] !== undefined) {
+      updateObj['long_description'] = updateData['longDescription'] ? String(updateData['longDescription']).trim() : null
+    }
     if (updateData['categoryId'] !== undefined) {
       updateObj['category_id'] = updateData['categoryId']
     }
