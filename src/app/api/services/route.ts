@@ -74,12 +74,39 @@ export async function GET(request: NextRequest) {
       slug: s.slug,
       description: s.description,
       shortDescription: s.short_description,
+      longDescription: s.long_description || s.description,
       categoryId: s.category_id,
       price: s.price,
       duration: s.duration,
       image: s.image,
       active: s.active,
       order: s.order_num,
+      benefits: s.benefits || [],
+      popular: s.popular || false,
+      featured: s.featured || false,
+      tags: s.tags || [],
+      // Button fields
+      primaryButtonText: s.primary_button_text,
+      primaryButtonType: s.primary_button_type,
+      primaryButtonValue: s.primary_button_value,
+      primaryButtonMessage: s.primary_button_message,
+      secondaryButtonText: s.secondary_button_text,
+      secondaryButtonType: s.secondary_button_type,
+      secondaryButtonValue: s.secondary_button_value,
+      secondaryButtonMessage: s.secondary_button_message,
+      // Modal button fields
+      primaryModalLeftButtonText: s.primary_modal_left_button_text,
+      primaryModalLeftButtonType: s.primary_modal_left_button_type,
+      primaryModalLeftButtonValue: s.primary_modal_left_button_value,
+      primaryModalRightButtonText: s.primary_modal_right_button_text,
+      primaryModalRightButtonType: s.primary_modal_right_button_type,
+      primaryModalRightButtonValue: s.primary_modal_right_button_value,
+      secondaryModalLeftButtonText: s.secondary_modal_left_button_text,
+      secondaryModalLeftButtonType: s.secondary_modal_left_button_type,
+      secondaryModalLeftButtonValue: s.secondary_modal_left_button_value,
+      secondaryModalRightButtonText: s.secondary_modal_right_button_text,
+      secondaryModalRightButtonType: s.secondary_modal_right_button_type,
+      secondaryModalRightButtonValue: s.secondary_modal_right_button_value,
       createdAt: s.created_at,
       updatedAt: s.updated_at
     }))
@@ -234,6 +261,68 @@ export async function PUT(request: NextRequest) {
     if (updateData['order'] !== undefined) {
       updateObj['order_num'] = updateData['order']
     }
+    // Button fields
+    if (updateData['primaryButtonText'] !== undefined) {
+      updateObj['primary_button_text'] = updateData['primaryButtonText']
+    }
+    if (updateData['primaryButtonType'] !== undefined) {
+      updateObj['primary_button_type'] = updateData['primaryButtonType']
+    }
+    if (updateData['primaryButtonValue'] !== undefined) {
+      updateObj['primary_button_value'] = updateData['primaryButtonValue']
+    }
+    if (updateData['primaryButtonMessage'] !== undefined) {
+      updateObj['primary_button_message'] = updateData['primaryButtonMessage']
+    }
+    if (updateData['secondaryButtonText'] !== undefined) {
+      updateObj['secondary_button_text'] = updateData['secondaryButtonText']
+    }
+    if (updateData['secondaryButtonType'] !== undefined) {
+      updateObj['secondary_button_type'] = updateData['secondaryButtonType']
+    }
+    if (updateData['secondaryButtonValue'] !== undefined) {
+      updateObj['secondary_button_value'] = updateData['secondaryButtonValue']
+    }
+    if (updateData['secondaryButtonMessage'] !== undefined) {
+      updateObj['secondary_button_message'] = updateData['secondaryButtonMessage']
+    }
+    // Modal button fields
+    if (updateData['primaryModalLeftButtonText'] !== undefined) {
+      updateObj['primary_modal_left_button_text'] = updateData['primaryModalLeftButtonText']
+    }
+    if (updateData['primaryModalLeftButtonType'] !== undefined) {
+      updateObj['primary_modal_left_button_type'] = updateData['primaryModalLeftButtonType']
+    }
+    if (updateData['primaryModalLeftButtonValue'] !== undefined) {
+      updateObj['primary_modal_left_button_value'] = updateData['primaryModalLeftButtonValue']
+    }
+    if (updateData['primaryModalRightButtonText'] !== undefined) {
+      updateObj['primary_modal_right_button_text'] = updateData['primaryModalRightButtonText']
+    }
+    if (updateData['primaryModalRightButtonType'] !== undefined) {
+      updateObj['primary_modal_right_button_type'] = updateData['primaryModalRightButtonType']
+    }
+    if (updateData['primaryModalRightButtonValue'] !== undefined) {
+      updateObj['primary_modal_right_button_value'] = updateData['primaryModalRightButtonValue']
+    }
+    if (updateData['secondaryModalLeftButtonText'] !== undefined) {
+      updateObj['secondary_modal_left_button_text'] = updateData['secondaryModalLeftButtonText']
+    }
+    if (updateData['secondaryModalLeftButtonType'] !== undefined) {
+      updateObj['secondary_modal_left_button_type'] = updateData['secondaryModalLeftButtonType']
+    }
+    if (updateData['secondaryModalLeftButtonValue'] !== undefined) {
+      updateObj['secondary_modal_left_button_value'] = updateData['secondaryModalLeftButtonValue']
+    }
+    if (updateData['secondaryModalRightButtonText'] !== undefined) {
+      updateObj['secondary_modal_right_button_text'] = updateData['secondaryModalRightButtonText']
+    }
+    if (updateData['secondaryModalRightButtonType'] !== undefined) {
+      updateObj['secondary_modal_right_button_type'] = updateData['secondaryModalRightButtonType']
+    }
+    if (updateData['secondaryModalRightButtonValue'] !== undefined) {
+      updateObj['secondary_modal_right_button_value'] = updateData['secondaryModalRightButtonValue']
+    }
 
     const { data: updated, error } = await supabaseAdmin
       .from('services')
@@ -254,12 +343,39 @@ export async function PUT(request: NextRequest) {
       slug: updated.slug,
       description: updated.description,
       shortDescription: updated.short_description,
+      longDescription: updated.long_description || updated.description,
       categoryId: updated.category_id,
       price: updated.price,
       duration: updated.duration,
       image: updated.image,
       active: updated.active,
       order: updated.order_num,
+      benefits: updated.benefits || [],
+      popular: updated.popular || false,
+      featured: updated.featured || false,
+      tags: updated.tags || [],
+      // Button fields
+      primaryButtonText: updated.primary_button_text,
+      primaryButtonType: updated.primary_button_type,
+      primaryButtonValue: updated.primary_button_value,
+      primaryButtonMessage: updated.primary_button_message,
+      secondaryButtonText: updated.secondary_button_text,
+      secondaryButtonType: updated.secondary_button_type,
+      secondaryButtonValue: updated.secondary_button_value,
+      secondaryButtonMessage: updated.secondary_button_message,
+      // Modal button fields
+      primaryModalLeftButtonText: updated.primary_modal_left_button_text,
+      primaryModalLeftButtonType: updated.primary_modal_left_button_type,
+      primaryModalLeftButtonValue: updated.primary_modal_left_button_value,
+      primaryModalRightButtonText: updated.primary_modal_right_button_text,
+      primaryModalRightButtonType: updated.primary_modal_right_button_type,
+      primaryModalRightButtonValue: updated.primary_modal_right_button_value,
+      secondaryModalLeftButtonText: updated.secondary_modal_left_button_text,
+      secondaryModalLeftButtonType: updated.secondary_modal_left_button_type,
+      secondaryModalLeftButtonValue: updated.secondary_modal_left_button_value,
+      secondaryModalRightButtonText: updated.secondary_modal_right_button_text,
+      secondaryModalRightButtonType: updated.secondary_modal_right_button_type,
+      secondaryModalRightButtonValue: updated.secondary_modal_right_button_value,
       createdAt: updated.created_at,
       updatedAt: updated.updated_at
     }
