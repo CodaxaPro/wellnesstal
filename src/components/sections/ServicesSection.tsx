@@ -167,7 +167,7 @@ const ServicesSection = () => {
         if (sectionData.success && sectionData.data?.content) {
           const ctaData = sectionData.data.content.cta || {}
           const apiContent = sectionData.data.content
-          
+
           setSectionContent({
             // Only use API content if it exists and is not empty, otherwise use empty string
             badge: apiContent.badge && apiContent.badge.trim() !== '' ? apiContent.badge : '',
