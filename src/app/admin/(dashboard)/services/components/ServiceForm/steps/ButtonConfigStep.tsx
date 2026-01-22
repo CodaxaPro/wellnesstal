@@ -66,14 +66,15 @@ export default function ButtonConfigStep({
                 />
               ) : (
                 <input
-                  type="text"
+                  type={formData.primaryButtonType === 'link' ? 'url' : 'text'}
                   value={formData.primaryButtonValue || ''}
                   onChange={(e) => onInputChange('primaryButtonValue', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
                   placeholder={
                     formData.primaryButtonType === 'phone' ? '+491733828581' :
                     formData.primaryButtonType === 'whatsapp' ? '+491733828581' :
-                    'https://example.com'
+                    formData.primaryButtonType === 'link' ? 'https://example.com' :
+                    ''
                   }
                 />
               )}
@@ -223,14 +224,15 @@ export default function ButtonConfigStep({
                 />
               ) : (
                 <input
-                  type="text"
+                  type={formData.secondaryButtonType === 'link' ? 'url' : 'text'}
                   value={formData.secondaryButtonValue || ''}
                   onChange={(e) => onInputChange('secondaryButtonValue', e.target.value)}
                   className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
                   placeholder={
                     formData.secondaryButtonType === 'phone' ? '+491733828581' :
                     formData.secondaryButtonType === 'whatsapp' ? '+491733828581' :
-                    'https://example.com'
+                    formData.secondaryButtonType === 'link' ? 'https://example.com' :
+                    ''
                   }
                 />
               )}
