@@ -107,7 +107,7 @@ const ServicesSection = () => {
     if (!price) return ''
     const priceNum = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.,]/g, '').replace(',', '.')) : price
     if (isNaN(priceNum)) return String(price)
-    return `ab ${Math.round(priceNum)}€`
+    return `${Math.round(priceNum)}€`
   }
 
   // Generate button href based on type and value
