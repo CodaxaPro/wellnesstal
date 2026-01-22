@@ -205,51 +205,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 })
     }
 
-    // Transform for frontend
-    const transformed = {
-      id: newService.id,
-      title: newService.title,
-      slug: newService.slug,
-      description: newService.description,
-      shortDescription: newService.short_description,
-      longDescription: newService.long_description || newService.description,
-      categoryId: newService.category_id,
-      price: newService.price,
-      duration: newService.duration,
-      image: newService.image,
-      active: newService.active,
-      order: newService.order_num,
-      benefits: newService.benefits || [],
-      popular: newService.popular || false,
-      featured: newService.featured || false,
-      tags: newService.tags || [],
-      // Button fields
-      primaryButtonText: newService.primary_button_text,
-      primaryButtonType: newService.primary_button_type,
-      primaryButtonValue: newService.primary_button_value,
-      primaryButtonMessage: newService.primary_button_message,
-      secondaryButtonText: newService.secondary_button_text,
-      secondaryButtonType: newService.secondary_button_type,
-      secondaryButtonValue: newService.secondary_button_value,
-      secondaryButtonMessage: newService.secondary_button_message,
-      // Modal button fields
-      primaryModalLeftButtonText: newService.primary_modal_left_button_text,
-      primaryModalLeftButtonType: newService.primary_modal_left_button_type,
-      primaryModalLeftButtonValue: newService.primary_modal_left_button_value,
-      primaryModalRightButtonText: newService.primary_modal_right_button_text,
-      primaryModalRightButtonType: newService.primary_modal_right_button_type,
-      primaryModalRightButtonValue: newService.primary_modal_right_button_value,
-      secondaryModalLeftButtonText: newService.secondary_modal_left_button_text,
-      secondaryModalLeftButtonType: newService.secondary_modal_left_button_type,
-      secondaryModalLeftButtonValue: newService.secondary_modal_left_button_value,
-      secondaryModalRightButtonText: newService.secondary_modal_right_button_text,
-      secondaryModalRightButtonType: newService.secondary_modal_right_button_type,
-      secondaryModalRightButtonValue: newService.secondary_modal_right_button_value,
-      createdAt: newService.created_at,
-      updatedAt: newService.updated_at
-    }
-
-    return NextResponse.json({ success: true, data: transformed })
+    return NextResponse.json({ success: true, data: transformServiceForResponse(newService) })
 
   } catch (error) {
     console.error('POST /api/services error:', error)
@@ -315,79 +271,75 @@ export async function PUT(request: NextRequest) {
     if (updateData['order'] !== undefined) {
       updateObj['order_num'] = updateData['order']
     }
-    // Button fields - only update if they exist in the request
-    // Note: These columns may not exist in the database yet, so we'll skip them if they cause errors
-    const buttonFields: Record<string, any> = {}
-    if (updateData['primaryButtonText'] !== undefined) {
-      buttonFields['primary_button_text'] = updateData['primaryButtonText'] || null
-    }
-    if (updateData['primaryButtonType'] !== undefined) {
-      buttonFields['primary_button_type'] = updateData['primaryButtonType'] || null
-    }
-    if (updateData['primaryButtonValue'] !== undefined) {
-      buttonFields['primary_button_value'] = updateData['primaryButtonValue'] || null
-    }
-    if (updateData['primaryButtonMessage'] !== undefined) {
-      buttonFields['primary_button_message'] = updateData['primaryButtonMessage'] || null
-    }
-    if (updateData['secondaryButtonText'] !== undefined) {
-      buttonFields['secondary_button_text'] = updateData['secondaryButtonText'] || null
-    }
-    if (updateData['secondaryButtonType'] !== undefined) {
-      buttonFields['secondary_button_type'] = updateData['secondaryButtonType'] || null
-    }
-    if (updateData['secondaryButtonValue'] !== undefined) {
-      buttonFields['secondary_button_value'] = updateData['secondaryButtonValue'] || null
-    }
-    if (updateData['secondaryButtonMessage'] !== undefined) {
-      buttonFields['secondary_button_message'] = updateData['secondaryButtonMessage'] || null
-    }
-    // Modal button fields
-    if (updateData['primaryModalLeftButtonText'] !== undefined) {
-      buttonFields['primary_modal_left_button_text'] = updateData['primaryModalLeftButtonText'] || null
-    }
-    if (updateData['primaryModalLeftButtonType'] !== undefined) {
-      buttonFields['primary_modal_left_button_type'] = updateData['primaryModalLeftButtonType'] || null
-    }
-    if (updateData['primaryModalLeftButtonValue'] !== undefined) {
-      buttonFields['primary_modal_left_button_value'] = updateData['primaryModalLeftButtonValue'] || null
-    }
-    if (updateData['primaryModalRightButtonText'] !== undefined) {
-      buttonFields['primary_modal_right_button_text'] = updateData['primaryModalRightButtonText'] || null
-    }
-    if (updateData['primaryModalRightButtonType'] !== undefined) {
-      buttonFields['primary_modal_right_button_type'] = updateData['primaryModalRightButtonType'] || null
-    }
-    if (updateData['primaryModalRightButtonValue'] !== undefined) {
-      buttonFields['primary_modal_right_button_value'] = updateData['primaryModalRightButtonValue'] || null
-    }
-    if (updateData['secondaryModalLeftButtonText'] !== undefined) {
-      buttonFields['secondary_modal_left_button_text'] = updateData['secondaryModalLeftButtonText'] || null
-    }
-    if (updateData['secondaryModalLeftButtonType'] !== undefined) {
-      buttonFields['secondary_modal_left_button_type'] = updateData['secondaryModalLeftButtonType'] || null
-    }
-    if (updateData['secondaryModalLeftButtonValue'] !== undefined) {
-      buttonFields['secondary_modal_left_button_value'] = updateData['secondaryModalLeftButtonValue'] || null
-    }
-    if (updateData['secondaryModalRightButtonText'] !== undefined) {
-      buttonFields['secondary_modal_right_button_text'] = updateData['secondaryModalRightButtonText'] || null
-    }
-    if (updateData['secondaryModalRightButtonType'] !== undefined) {
-      buttonFields['secondary_modal_right_button_type'] = updateData['secondaryModalRightButtonType'] || null
-    }
-    if (updateData['secondaryModalRightButtonValue'] !== undefined) {
-      buttonFields['secondary_modal_right_button_value'] = updateData['secondaryModalRightButtonValue'] || null
+    // Button fields - store as JSON in button_config column
+    const buttonConfig: Record<string, any> = {}
+    
+    // Primary button
+    if (updateData['primaryButtonText'] !== undefined || updateData['primaryButtonType'] !== undefined || 
+        updateData['primaryButtonValue'] !== undefined || updateData['primaryButtonMessage'] !== undefined) {
+      buttonConfig.primary = {
+        text: updateData['primaryButtonText'] || null,
+        type: updateData['primaryButtonType'] || null,
+        value: updateData['primaryButtonValue'] || null,
+        message: updateData['primaryButtonMessage'] || null
+      }
     }
     
-    // Only add button fields to updateObj if they exist (columns may not exist in DB yet)
-    // We'll try to update them, but if they fail, we'll continue without them
-    Object.assign(updateObj, buttonFields)
+    // Secondary button
+    if (updateData['secondaryButtonText'] !== undefined || updateData['secondaryButtonType'] !== undefined || 
+        updateData['secondaryButtonValue'] !== undefined || updateData['secondaryButtonMessage'] !== undefined) {
+      buttonConfig.secondary = {
+        text: updateData['secondaryButtonText'] || null,
+        type: updateData['secondaryButtonType'] || null,
+        value: updateData['secondaryButtonValue'] || null,
+        message: updateData['secondaryButtonMessage'] || null
+      }
+    }
+    
+    // Primary modal buttons
+    if (updateData['primaryModalLeftButtonText'] !== undefined || updateData['primaryModalLeftButtonType'] !== undefined || 
+        updateData['primaryModalLeftButtonValue'] !== undefined) {
+      buttonConfig.primaryModal = {
+        left: {
+          text: updateData['primaryModalLeftButtonText'] || null,
+          type: updateData['primaryModalLeftButtonType'] || null,
+          value: updateData['primaryModalLeftButtonValue'] || null
+        },
+        right: {
+          text: updateData['primaryModalRightButtonText'] || null,
+          type: updateData['primaryModalRightButtonType'] || null,
+          value: updateData['primaryModalRightButtonValue'] || null
+        }
+      }
+    }
+    
+    // Secondary modal buttons
+    if (updateData['secondaryModalLeftButtonText'] !== undefined || updateData['secondaryModalLeftButtonType'] !== undefined || 
+        updateData['secondaryModalLeftButtonValue'] !== undefined) {
+      buttonConfig.secondaryModal = {
+        left: {
+          text: updateData['secondaryModalLeftButtonText'] || null,
+          type: updateData['secondaryModalLeftButtonType'] || null,
+          value: updateData['secondaryModalLeftButtonValue'] || null
+        },
+        right: {
+          text: updateData['secondaryModalRightButtonText'] || null,
+          type: updateData['secondaryModalRightButtonType'] || null,
+          value: updateData['secondaryModalRightButtonValue'] || null
+        }
+      }
+    }
+    
+    // Store button config as JSON
+    if (Object.keys(buttonConfig).length > 0) {
+      // Try to use button_config column, fallback to metadata or create JSONB column
+      updateObj['button_config'] = buttonConfig
+    }
 
     // Try to update, but if button fields cause errors, retry without them
     let updated: any
     let error: any
-    
+
     // First attempt: try with all fields including button fields
     const firstAttempt = await supabaseAdmin
       .from('services')
@@ -395,18 +347,18 @@ export async function PUT(request: NextRequest) {
       .eq('id', id)
       .select()
       .single()
-    
+
     updated = firstAttempt.data
     error = firstAttempt.error
-    
+
     // If error and it's related to button columns, retry without button fields
     if (error && error.message && (
-      error.message.includes('button') || 
+      error.message.includes('button') ||
       error.message.includes('column') ||
       error.code === '42703' // PostgreSQL undefined column error
     )) {
       console.warn('Button columns may not exist, retrying without button fields:', error.message)
-      
+
       // Remove button fields and retry
       const updateObjWithoutButtons = { ...updateObj }
       Object.keys(updateObjWithoutButtons).forEach(key => {
@@ -414,18 +366,18 @@ export async function PUT(request: NextRequest) {
           delete updateObjWithoutButtons[key]
         }
       })
-      
+
       const retryAttempt = await supabaseAdmin
         .from('services')
         .update(updateObjWithoutButtons)
         .eq('id', id)
         .select()
         .single()
-      
+
       updated = retryAttempt.data
       error = retryAttempt.error
     }
-    
+
     if (error) {
       console.error('Supabase update error:', error)
       console.error('Update object:', JSON.stringify(updateObj, null, 2))
@@ -436,51 +388,7 @@ export async function PUT(request: NextRequest) {
       }, { status: 500 })
     }
 
-    // Transform for frontend
-    const transformed = {
-      id: updated.id,
-      title: updated.title,
-      slug: updated.slug,
-      description: updated.description,
-      shortDescription: updated.short_description,
-      longDescription: updated.long_description || updated.description,
-      categoryId: updated.category_id,
-      price: updated.price,
-      duration: updated.duration,
-      image: updated.image,
-      active: updated.active,
-      order: updated.order_num,
-      benefits: updated.benefits || [],
-      popular: updated.popular || false,
-      featured: updated.featured || false,
-      tags: updated.tags || [],
-      // Button fields
-      primaryButtonText: updated.primary_button_text,
-      primaryButtonType: updated.primary_button_type,
-      primaryButtonValue: updated.primary_button_value,
-      primaryButtonMessage: updated.primary_button_message,
-      secondaryButtonText: updated.secondary_button_text,
-      secondaryButtonType: updated.secondary_button_type,
-      secondaryButtonValue: updated.secondary_button_value,
-      secondaryButtonMessage: updated.secondary_button_message,
-      // Modal button fields
-      primaryModalLeftButtonText: updated.primary_modal_left_button_text,
-      primaryModalLeftButtonType: updated.primary_modal_left_button_type,
-      primaryModalLeftButtonValue: updated.primary_modal_left_button_value,
-      primaryModalRightButtonText: updated.primary_modal_right_button_text,
-      primaryModalRightButtonType: updated.primary_modal_right_button_type,
-      primaryModalRightButtonValue: updated.primary_modal_right_button_value,
-      secondaryModalLeftButtonText: updated.secondary_modal_left_button_text,
-      secondaryModalLeftButtonType: updated.secondary_modal_left_button_type,
-      secondaryModalLeftButtonValue: updated.secondary_modal_left_button_value,
-      secondaryModalRightButtonText: updated.secondary_modal_right_button_text,
-      secondaryModalRightButtonType: updated.secondary_modal_right_button_type,
-      secondaryModalRightButtonValue: updated.secondary_modal_right_button_value,
-      createdAt: updated.created_at,
-      updatedAt: updated.updated_at
-    }
-
-    return NextResponse.json({ success: true, data: transformed })
+    return NextResponse.json({ success: true, data: transformServiceForResponse(updated) })
 
   } catch (error) {
     console.error('PUT /api/services error:', error)
