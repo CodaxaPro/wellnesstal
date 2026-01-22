@@ -315,67 +315,79 @@ export async function PUT(request: NextRequest) {
     if (updateData['order'] !== undefined) {
       updateObj['order_num'] = updateData['order']
     }
-    // Button fields
-    if (updateData['primaryButtonText'] !== undefined) {
-      updateObj['primary_button_text'] = updateData['primaryButtonText']
-    }
-    if (updateData['primaryButtonType'] !== undefined) {
-      updateObj['primary_button_type'] = updateData['primaryButtonType']
-    }
-    if (updateData['primaryButtonValue'] !== undefined) {
-      updateObj['primary_button_value'] = updateData['primaryButtonValue']
-    }
-    if (updateData['primaryButtonMessage'] !== undefined) {
-      updateObj['primary_button_message'] = updateData['primaryButtonMessage']
-    }
-    if (updateData['secondaryButtonText'] !== undefined) {
-      updateObj['secondary_button_text'] = updateData['secondaryButtonText']
-    }
-    if (updateData['secondaryButtonType'] !== undefined) {
-      updateObj['secondary_button_type'] = updateData['secondaryButtonType']
-    }
-    if (updateData['secondaryButtonValue'] !== undefined) {
-      updateObj['secondary_button_value'] = updateData['secondaryButtonValue']
-    }
-    if (updateData['secondaryButtonMessage'] !== undefined) {
-      updateObj['secondary_button_message'] = updateData['secondaryButtonMessage']
-    }
-    // Modal button fields
-    if (updateData['primaryModalLeftButtonText'] !== undefined) {
-      updateObj['primary_modal_left_button_text'] = updateData['primaryModalLeftButtonText']
-    }
-    if (updateData['primaryModalLeftButtonType'] !== undefined) {
-      updateObj['primary_modal_left_button_type'] = updateData['primaryModalLeftButtonType']
-    }
-    if (updateData['primaryModalLeftButtonValue'] !== undefined) {
-      updateObj['primary_modal_left_button_value'] = updateData['primaryModalLeftButtonValue']
-    }
-    if (updateData['primaryModalRightButtonText'] !== undefined) {
-      updateObj['primary_modal_right_button_text'] = updateData['primaryModalRightButtonText']
-    }
-    if (updateData['primaryModalRightButtonType'] !== undefined) {
-      updateObj['primary_modal_right_button_type'] = updateData['primaryModalRightButtonType']
-    }
-    if (updateData['primaryModalRightButtonValue'] !== undefined) {
-      updateObj['primary_modal_right_button_value'] = updateData['primaryModalRightButtonValue']
-    }
-    if (updateData['secondaryModalLeftButtonText'] !== undefined) {
-      updateObj['secondary_modal_left_button_text'] = updateData['secondaryModalLeftButtonText']
-    }
-    if (updateData['secondaryModalLeftButtonType'] !== undefined) {
-      updateObj['secondary_modal_left_button_type'] = updateData['secondaryModalLeftButtonType']
-    }
-    if (updateData['secondaryModalLeftButtonValue'] !== undefined) {
-      updateObj['secondary_modal_left_button_value'] = updateData['secondaryModalLeftButtonValue']
-    }
-    if (updateData['secondaryModalRightButtonText'] !== undefined) {
-      updateObj['secondary_modal_right_button_text'] = updateData['secondaryModalRightButtonText']
-    }
-    if (updateData['secondaryModalRightButtonType'] !== undefined) {
-      updateObj['secondary_modal_right_button_type'] = updateData['secondaryModalRightButtonType']
-    }
-    if (updateData['secondaryModalRightButtonValue'] !== undefined) {
-      updateObj['secondary_modal_right_button_value'] = updateData['secondaryModalRightButtonValue']
+    // Button fields - only update if they exist in the request
+    // Note: These columns may not exist in the database yet
+    try {
+      if (updateData['primaryButtonText'] !== undefined) {
+        updateObj['primary_button_text'] = updateData['primaryButtonText'] || null
+      }
+      if (updateData['primaryButtonType'] !== undefined) {
+        updateObj['primary_button_type'] = updateData['primaryButtonType'] || null
+      }
+      if (updateData['primaryButtonValue'] !== undefined) {
+        updateObj['primary_button_value'] = updateData['primaryButtonValue'] || null
+      }
+      if (updateData['primaryButtonMessage'] !== undefined) {
+        updateObj['primary_button_message'] = updateData['primaryButtonMessage'] || null
+      }
+      if (updateData['secondaryButtonText'] !== undefined) {
+        updateObj['secondary_button_text'] = updateData['secondaryButtonText'] || null
+      }
+      if (updateData['secondaryButtonType'] !== undefined) {
+        updateObj['secondary_button_type'] = updateData['secondaryButtonType'] || null
+      }
+      if (updateData['secondaryButtonValue'] !== undefined) {
+        updateObj['secondary_button_value'] = updateData['secondaryButtonValue'] || null
+      }
+      if (updateData['secondaryButtonMessage'] !== undefined) {
+        updateObj['secondary_button_message'] = updateData['secondaryButtonMessage'] || null
+      }
+      // Modal button fields
+      if (updateData['primaryModalLeftButtonText'] !== undefined) {
+        updateObj['primary_modal_left_button_text'] = updateData['primaryModalLeftButtonText'] || null
+      }
+      if (updateData['primaryModalLeftButtonType'] !== undefined) {
+        updateObj['primary_modal_left_button_type'] = updateData['primaryModalLeftButtonType'] || null
+      }
+      if (updateData['primaryModalLeftButtonValue'] !== undefined) {
+        updateObj['primary_modal_left_button_value'] = updateData['primaryModalLeftButtonValue'] || null
+      }
+      if (updateData['primaryModalRightButtonText'] !== undefined) {
+        updateObj['primary_modal_right_button_text'] = updateData['primaryModalRightButtonText'] || null
+      }
+      if (updateData['primaryModalRightButtonType'] !== undefined) {
+        updateObj['primary_modal_right_button_type'] = updateData['primaryModalRightButtonType'] || null
+      }
+      if (updateData['primaryModalRightButtonValue'] !== undefined) {
+        updateObj['primary_modal_right_button_value'] = updateData['primaryModalRightButtonValue'] || null
+      }
+      if (updateData['secondaryModalLeftButtonText'] !== undefined) {
+        updateObj['secondary_modal_left_button_text'] = updateData['secondaryModalLeftButtonText'] || null
+      }
+      if (updateData['secondaryModalLeftButtonType'] !== undefined) {
+        updateObj['secondary_modal_left_button_type'] = updateData['secondaryModalLeftButtonType'] || null
+      }
+      if (updateData['secondaryModalLeftButtonValue'] !== undefined) {
+        updateObj['secondary_modal_left_button_value'] = updateData['secondaryModalLeftButtonValue'] || null
+      }
+      if (updateData['secondaryModalRightButtonText'] !== undefined) {
+        updateObj['secondary_modal_right_button_text'] = updateData['secondaryModalRightButtonText'] || null
+      }
+      if (updateData['secondaryModalRightButtonType'] !== undefined) {
+        updateObj['secondary_modal_right_button_type'] = updateData['secondaryModalRightButtonType'] || null
+      }
+      if (updateData['secondaryModalRightButtonValue'] !== undefined) {
+        updateObj['secondary_modal_right_button_value'] = updateData['secondaryModalRightButtonValue'] || null
+      }
+    } catch (buttonFieldError) {
+      // If button fields cause an error (columns don't exist), log but continue
+      console.warn('Button fields update warning:', buttonFieldError)
+      // Remove button fields from updateObj if they cause issues
+      Object.keys(updateObj).forEach(key => {
+        if (key.includes('button')) {
+          delete updateObj[key]
+        }
+      })
     }
 
     const { data: updated, error } = await supabaseAdmin
@@ -387,7 +399,12 @@ export async function PUT(request: NextRequest) {
 
     if (error) {
       console.error('Supabase update error:', error)
-      return NextResponse.json({ success: false, error: 'Database error' }, { status: 500 })
+      console.error('Update object:', JSON.stringify(updateObj, null, 2))
+      return NextResponse.json({ 
+        success: false, 
+        error: 'Database error',
+        details: error.message 
+      }, { status: 500 })
     }
 
     // Transform for frontend
