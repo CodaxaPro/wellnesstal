@@ -384,13 +384,48 @@ export async function PUT(request: NextRequest) {
     // We'll try to update them, but if they fail, we'll continue without them
     Object.assign(updateObj, buttonFields)
 
-    const { data: updated, error } = await supabaseAdmin
+    // Try to update, but if button fields cause errors, retry without them
+    let updated: any
+    let error: any
+    
+    // First attempt: try with all fields including button fields
+    const firstAttempt = await supabaseAdmin
       .from('services')
       .update(updateObj)
       .eq('id', id)
       .select()
       .single()
-
+    
+    updated = firstAttempt.data
+    error = firstAttempt.error
+    
+    // If error and it's related to button columns, retry without button fields
+    if (error && error.message && (
+      error.message.includes('button') || 
+      error.message.includes('column') ||
+      error.code === '42703' // PostgreSQL undefined column error
+    )) {
+      console.warn('Button columns may not exist, retrying without button fields:', error.message)
+      
+      // Remove button fields and retry
+      const updateObjWithoutButtons = { ...updateObj }
+      Object.keys(updateObjWithoutButtons).forEach(key => {
+        if (key.includes('button')) {
+          delete updateObjWithoutButtons[key]
+        }
+      })
+      
+      const retryAttempt = await supabaseAdmin
+        .from('services')
+        .update(updateObjWithoutButtons)
+        .eq('id', id)
+        .select()
+        .single()
+      
+      updated = retryAttempt.data
+      error = retryAttempt.error
+    }
+    
     if (error) {
       console.error('Supabase update error:', error)
       console.error('Update object:', JSON.stringify(updateObj, null, 2))
