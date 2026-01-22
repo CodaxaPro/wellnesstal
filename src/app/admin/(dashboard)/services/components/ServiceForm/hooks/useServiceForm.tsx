@@ -86,7 +86,7 @@ export function useServiceForm({
           title: editingService.title,
           shortDescription: editingService.shortDescription,
           longDescription: editingService.longDescription,
-          duration: editingService.duration,
+          duration: typeof editingService.duration === 'number' ? String(editingService.duration) : (editingService.duration || ''),
           price: typeof editingService.price === 'number' ? String(editingService.price) : (editingService.price || ''),
           benefits: Array.isArray(editingService.benefits)
             ? editingService.benefits.join(', ')
@@ -155,9 +155,10 @@ newErrors.title = 'Hizmet adı gereklidir'
 newErrors.shortDescription = 'Kısa açıklama gereklidir'
 }
       // longDescription is optional, no validation needed
-      if (!formData.duration?.trim()) {
-newErrors.duration = 'Süre gereklidir'
-}
+      const durationValue = typeof formData.duration === 'string' ? formData.duration.trim() : String(formData.duration || '').trim()
+      if (!durationValue) {
+        newErrors.duration = 'Süre gereklidir'
+      }
       const priceValue = typeof formData.price === 'string' ? formData.price.trim() : String(formData.price || '').trim()
       if (!priceValue) {
         newErrors.price = 'Fiyat gereklidir'
