@@ -198,9 +198,11 @@ return value.toString()
 
               return (
                 <h1
-                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-tight mb-6 break-words"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-normal sm:leading-tight mb-6"
                   style={{
                     fontSize: styles.mainTitle?.fontSize ? `clamp(1.875rem, 4vw, ${styles.mainTitle.fontSize})` : 'clamp(1.875rem, 4vw, 4.5rem)',
+                    wordBreak: 'break-word',
+                    hyphens: 'auto',
                   }}
                 >
                   {words.map((word, index) => {
