@@ -77,7 +77,7 @@ export function useServiceForm({
 
   const [errors, setErrors] = useState<Partial<ServiceFormData>>({})
   const [gradientColor, setGradientColor] = useState('from-sage-400 to-forest-500')
-  
+
   // Track the last editing service ID to prevent unnecessary resets
   const lastEditingServiceIdRef = useRef<string | null>(null)
 
@@ -131,16 +131,16 @@ export function useServiceForm({
   useEffect(() => {
     if (isOpen) {
       const currentServiceId = editingService?.id || null
-      
+
       // Only reset form if:
       // 1. Modal just opened (lastEditingServiceIdRef.current is null)
       // 2. Different service is being edited (ID changed)
       // 3. No service is being edited (editingService is null)
-      const shouldReset = 
-        lastEditingServiceIdRef.current === null || 
+      const shouldReset =
+        lastEditingServiceIdRef.current === null ||
         lastEditingServiceIdRef.current !== currentServiceId ||
         (!editingService && lastEditingServiceIdRef.current !== null)
-      
+
       if (shouldReset) {
         if (editingService) {
         setFormData({

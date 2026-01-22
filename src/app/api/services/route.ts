@@ -423,7 +423,7 @@ export async function PUT(request: NextRequest) {
 
     while (attempt < maxAttempts) {
       const currentUpdateObj = { ...updateObjForDB }
-      
+
       // On retry attempts, remove fields that might not exist
       if (attempt > 0) {
         // Remove fields that might not exist in database
@@ -459,7 +459,7 @@ export async function PUT(request: NextRequest) {
       }
 
       // Check if error is due to missing columns
-      const isColumnMissingError = 
+      const isColumnMissingError =
         error.code === '42703' || // PostgreSQL undefined column error
         error.message?.includes('column') ||
         error.message?.includes('does not exist')
@@ -473,7 +473,7 @@ export async function PUT(request: NextRequest) {
         break
       }
     }
-    
+
     // Always add button config to response (even if not saved to DB)
     // This way frontend can use it immediately
     if (updated && !error && Object.keys(buttonConfig).length > 0) {
