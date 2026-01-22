@@ -157,9 +157,9 @@ return value.toString()
 
 
   return (
-    <section id={sectionId} data-section={sectionId} className="relative bg-cream-gradient py-20 lg:py-32 min-h-screen flex items-center">
+    <section id={sectionId} data-section={sectionId} className="relative bg-cream-gradient py-12 sm:py-16 lg:py-20 xl:py-32 min-h-screen flex items-center">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 lg:gap-16 items-center">
           {/* Text Content */}
           <div
             className={`relative z-10 transition-all duration-1000 ${
