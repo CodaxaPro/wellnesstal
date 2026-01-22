@@ -49,7 +49,10 @@ interface HeroContent {
   primaryButtonLink: string
   secondaryButton: string
   secondaryButtonLink: string
-  trustIndicator: string
+  trustIndicator?: string
+  trustIndicatorSubtext?: string
+  trustIndicatorSecondary?: string
+  trustIndicatorSecondarySubtext?: string
   badge: string
   image?: HeroImage
   imageStyles?: HeroImageStyles
@@ -132,6 +135,9 @@ const defaultContent: HeroContent = {
   secondaryButton: 'Leistungen entdecken',
   secondaryButtonLink: '#services',
   trustIndicator: '500+ zufriedene Kunden',
+  trustIndicatorSubtext: '⭐ 4.9/5 Bewertungen',
+  trustIndicatorSecondary: 'Kostenlose Beratung',
+  trustIndicatorSecondarySubtext: 'Unverbindlich & persönlich',
   badge: '🌿 Willkommen in Baesweiler',
   image: defaultImage,
   imageStyles: defaultImageStyles,
@@ -341,52 +347,64 @@ const HeroSection = () => {
             </div>
 
             {/* Trust Indicators */}
-            <div className="flex items-center gap-8">
-              <div className="flex items-center gap-2">
-                <div className="flex -space-x-2">
-                  {['🙋🏻‍♀️', '🙋🏻‍♂️', '🙋🏼‍♀️', '🙋🏽‍♂️'].map((emoji, index) => (
-                    <div
-                      key={index}
-                      className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-white"
-                      style={{ backgroundColor: content.styles?.badge?.backgroundColor || defaultStyles.badge?.backgroundColor }}
-                    >
-                      <span className="text-sm">{emoji}</span>
+            {(content.trustIndicator || content.trustIndicatorSecondary) && (
+              <div className="flex items-center gap-8">
+                {content.trustIndicator && (
+                  <div className="flex items-center gap-2">
+                    <div className="flex -space-x-2">
+                      {['🙋🏻‍♀️', '🙋🏻‍♂️', '🙋🏼‍♀️', '🙋🏽‍♂️'].map((emoji, index) => (
+                        <div
+                          key={index}
+                          className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-white"
+                          style={{ backgroundColor: content.styles?.badge?.backgroundColor || defaultStyles.badge?.backgroundColor }}
+                        >
+                          <span className="text-sm">{emoji}</span>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                </div>
-                <div className="text-sm">
-                  <div
-                    style={{
-                      fontFamily: content.styles?.trustIndicator?.fontFamily || defaultStyles.trustIndicator?.fontFamily,
-                      fontWeight: content.styles?.trustIndicator?.fontWeight || defaultStyles.trustIndicator?.fontWeight,
-                      color: content.styles?.trustIndicator?.color || defaultStyles.trustIndicator?.color,
-                    }}
-                  >
-                    {content.trustIndicator}
+                    <div className="text-sm">
+                      <div
+                        style={{
+                          fontFamily: content.styles?.trustIndicator?.fontFamily || defaultStyles.trustIndicator?.fontFamily,
+                          fontWeight: content.styles?.trustIndicator?.fontWeight || defaultStyles.trustIndicator?.fontWeight,
+                          color: content.styles?.trustIndicator?.color || defaultStyles.trustIndicator?.color,
+                        }}
+                      >
+                        {content.trustIndicator}
+                      </div>
+                      {content.trustIndicatorSubtext && (
+                        <div className="text-xs" style={{ color: content.styles?.subtitle?.color || defaultStyles.subtitle?.color }}>
+                          {content.trustIndicatorSubtext}
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <div className="text-xs" style={{ color: content.styles?.subtitle?.color || defaultStyles.subtitle?.color }}>
-                    ⭐ 4.9/5 Bewertungen
+                )}
+
+                {content.trustIndicator && content.trustIndicatorSecondary && (
+                  <div className="hidden sm:block w-px h-12 bg-gray-200" />
+                )}
+
+                {content.trustIndicatorSecondary && (
+                  <div className="text-sm">
+                    <div
+                      style={{
+                        fontFamily: content.styles?.trustIndicator?.fontFamily || defaultStyles.trustIndicator?.fontFamily,
+                        fontWeight: content.styles?.trustIndicator?.fontWeight || defaultStyles.trustIndicator?.fontWeight,
+                        color: content.styles?.trustIndicator?.color || defaultStyles.trustIndicator?.color,
+                      }}
+                    >
+                      {content.trustIndicatorSecondary}
+                    </div>
+                    {content.trustIndicatorSecondarySubtext && (
+                      <div className="text-xs" style={{ color: content.styles?.subtitle?.color || defaultStyles.subtitle?.color }}>
+                        {content.trustIndicatorSecondarySubtext}
+                      </div>
+                    )}
                   </div>
-                </div>
+                )}
               </div>
-
-              <div className="hidden sm:block w-px h-12 bg-gray-200" />
-
-              <div className="text-sm">
-                <div
-                  style={{
-                    fontFamily: content.styles?.trustIndicator?.fontFamily || defaultStyles.trustIndicator?.fontFamily,
-                    fontWeight: content.styles?.trustIndicator?.fontWeight || defaultStyles.trustIndicator?.fontWeight,
-                    color: content.styles?.trustIndicator?.color || defaultStyles.trustIndicator?.color,
-                  }}
-                >
-                  Kostenlose Beratung
-                </div>
-                <div className="text-xs" style={{ color: content.styles?.subtitle?.color || defaultStyles.subtitle?.color }}>
-                  Unverbindlich & persönlich
-                </div>
-              </div>
-            </div>
+            )}
           </div>
 
           {/* Image Content */}
