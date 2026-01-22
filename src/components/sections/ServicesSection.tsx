@@ -127,7 +127,7 @@ const ServicesSection = () => {
         value: service.primaryModalLeftButtonValue || '+491733828581'
       } : {
         text: service.secondaryModalLeftButtonText || 'Jetzt anrufen',
-        type: service.secondaryModalLeftButtonType || 'phone', 
+        type: service.secondaryModalLeftButtonType || 'phone',
         value: service.secondaryModalLeftButtonValue || '+491733828581'
       },
       rightButton: buttonType === 'primary' ? {
@@ -202,7 +202,7 @@ const ServicesSection = () => {
   const getGradientColors = (index: number) => {
     const gradients = [
       'from-sage-400 to-forest-500',
-      'from-earth-400 to-sage-500', 
+      'from-earth-400 to-sage-500',
       'from-sage-500 to-earth-400',
       'from-forest-400 to-sage-600',
       'from-sage-300 to-forest-400',
@@ -252,8 +252,8 @@ const ServicesSection = () => {
 
   // Check if image URL is valid (not default or empty)
   const hasValidImage = (imageUrl: string) => {
-    return imageUrl && 
-           imageUrl !== '/images/default-service.jpg' && 
+    return imageUrl &&
+           imageUrl !== '/images/default-service.jpg' &&
            (imageUrl.startsWith('http') || imageUrl.startsWith('data:image/'))
   }
 
@@ -290,7 +290,7 @@ const ServicesSection = () => {
               {sectionContent.description}
             </p>
           </div>
-          
+
           {/* Loading Skeleton */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             {[1, 2, 3, 4].map((i) => (
@@ -397,37 +397,37 @@ const ServicesSection = () => {
               {sectionContent.images.map((image, index) => {
                 const imageUrl = typeof image === 'string' ? image : image.url
                 const imageAlt = typeof image === 'string' ? `Resim ${index + 1}` : (image.alt || `Resim ${index + 1}`)
-                
+
                 // Skip rendering if URL is empty or invalid
                 if (!imageUrl || imageUrl.trim() === '') {
                   return null
                 }
-                
+
                 return (
                   <div
                     key={index}
-                    className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                    className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl bg-gray-100"
                   >
                     <img
                       src={imageUrl}
                       alt={imageAlt}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 p-2"
                       onError={(e) => {
                         (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Crect fill="%23ddd" width="400" height="400"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="16" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EGörsel Yüklenemedi%3C/text%3E%3C/svg%3E'
                       }}
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                   </div>
                 )
               })}
             </div>
           </div>
         )}
-        
+
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
           {services.map((service, index) => (
-            <div 
+            <div
               key={service.id}
               className={`group relative bg-white rounded-3xl p-8 shadow-soft hover:shadow-large transition-all duration-500 cursor-pointer border border-transparent hover:border-sage-200 ${
                 activeService === service.id ? 'ring-2 ring-sage-500 shadow-large' : ''
@@ -450,8 +450,8 @@ const ServicesSection = () => {
                   {/* Image or Gradient Icon Container */}
                   {hasValidImage(service.image) ? (
                     <div className="w-16 h-16 rounded-2xl overflow-hidden shadow-medium group-hover:scale-110 transition-transform duration-300">
-                      <img 
-                        src={service.image} 
+                      <img
+                        src={service.image}
                         alt={service.title}
                         className="w-full h-full object-cover"
                         onError={(e) => {
@@ -471,7 +471,7 @@ const ServicesSection = () => {
                       {getServiceIcon(service.title)}
                     </div>
                   )}
-                  
+
                   <div>
                     <h3 className="text-2xl font-bold text-charcoal group-hover:text-sage-600 transition-colors">
                       {service.title}
@@ -486,10 +486,10 @@ const ServicesSection = () => {
               </div>
 
               {/* Service Description */}
-              <div 
+              <div
                 className="text-gray-custom leading-relaxed mb-6"
-                dangerouslySetInnerHTML={{ 
-                  __html: activeService === service.id ? service.longDescription : service.shortDescription 
+                dangerouslySetInnerHTML={{
+                  __html: activeService === service.id ? service.longDescription : service.shortDescription
                 }}
               />
 
@@ -522,8 +522,8 @@ const ServicesSection = () => {
                   ) : (
                     <a
                       href={generateButtonHref(
-                        service.primaryButtonType || '', 
-                        service.primaryButtonValue, 
+                        service.primaryButtonType || '',
+                        service.primaryButtonValue,
                         service.primaryButtonMessage,
                         service.title
                       )}
@@ -535,7 +535,7 @@ const ServicesSection = () => {
                     </a>
                   )
                 )}
-                
+
                 {/* Secondary Button */}
                 {service.secondaryButtonText && service.secondaryButtonValue && (
                   service.secondaryButtonType === 'page' ? (
@@ -548,8 +548,8 @@ const ServicesSection = () => {
                   ) : (
                     <a
                       href={generateButtonHref(
-                        service.secondaryButtonType || '', 
-                        service.secondaryButtonValue, 
+                        service.secondaryButtonType || '',
+                        service.secondaryButtonValue,
                         service.secondaryButtonMessage,
                         service.title
                       )}
@@ -561,7 +561,7 @@ const ServicesSection = () => {
                     </a>
                   )
                 )}
-                
+
                 {/* Fallback buttons if no custom buttons configured */}
                 {(!service.primaryButtonText || !service.primaryButtonValue) && (
                   <>
@@ -685,17 +685,17 @@ const ServicesSection = () => {
                 </button>
               </div>
             </div>
-            
+
             <div className="p-6">
-              <div 
+              <div
                 className="prose prose-sage max-w-none"
                 dangerouslySetInnerHTML={{ __html: modalContent.content }}
               />
-              
+
               {/* Contact buttons in modal */}
               <div className="mt-6 pt-6 border-t border-gray-200">
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <a 
+                  <a
                     href={generateButtonHref(modalContent.leftButton.type, modalContent.leftButton.value, undefined, modalContent.title)}
                     target={modalContent.leftButton.type === 'link' ? '_blank' : '_self'}
                     rel={modalContent.leftButton.type === 'link' ? 'noopener noreferrer' : undefined}
@@ -703,7 +703,7 @@ const ServicesSection = () => {
                   >
                     {modalContent.leftButton.text}
                   </a>
-                  <a 
+                  <a
                     href={generateButtonHref(modalContent.rightButton.type, modalContent.rightButton.value, undefined, modalContent.title)}
                     target={modalContent.rightButton.type === 'link' ? '_blank' : '_self'}
                     rel={modalContent.rightButton.type === 'link' ? 'noopener noreferrer' : undefined}
