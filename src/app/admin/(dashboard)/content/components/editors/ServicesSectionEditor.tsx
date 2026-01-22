@@ -17,6 +17,11 @@ interface ServicesSectionEditorProps {
   resetAllToDefaults: () => void
   updateField: (field: string, value: any) => void
   updateNestedField: (parent: string, field: string, value: any) => void
+  uploadingImage?: number | null
+  deletingImage?: number | null
+  handleImageUpload?: (index: number, file: File) => void
+  handleImageDelete?: (index: number) => void
+  setSaveMessage?: (msg: { type: 'success' | 'error', text: string } | null) => void
 }
 
 export function ServicesSectionEditor({
@@ -32,9 +37,15 @@ export function ServicesSectionEditor({
   isStylePropertyChanged,
   resetAllToDefaults,
   updateField,
-  updateNestedField
+  updateNestedField,
+  uploadingImage,
+  deletingImage,
+  handleImageUpload,
+  handleImageDelete,
+  setSaveMessage
 }: ServicesSectionEditorProps) {
   const content = isEditing ? editingContent : section.content
+  const images = content.images || []
 
   const renderStyleEditor = (fieldName: string, label: string, hasBackground = false, hasBorder = false) => (
     <StyleEditor
@@ -297,6 +308,160 @@ export function ServicesSectionEditor({
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Image Gallery Section */}
+      <div className="p-4 bg-purple-50 rounded-xl border border-purple-200">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h3 className="text-lg font-semibold text-charcoal">Resim Galerisi</h3>
+            <p className="text-xs text-gray-500 mt-1">Bölümde gösterilecek resimleri ekleyin - Max 5MB - JPG, PNG, WebP, GIF</p>
+          </div>
+        </div>
+
+        {/* Image Grid */}
+        {images.length > 0 && (
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
+            {images.map((image: any, index: number) => (
+              <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-sage-500 transition-all">
+                <img
+                  src={image.url || image}
+                  alt={image.alt || `Resim ${index + 1}`}
+                  className="w-full h-full object-cover"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).src = 'https://via.placeholder.com/300?text=Görsel+Yüklenemedi'
+                  }}
+                />
+                {isEditing && (
+                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (handleImageDelete) {
+                          handleImageDelete(index)
+                        } else {
+                          const newImages = images.filter((_: any, i: number) => i !== index)
+                          updateField('images', newImages)
+                        }
+                      }}
+                      disabled={deletingImage === index}
+                      className="bg-red-500 hover:bg-red-600 text-white px-3 py-2 rounded-lg transition-colors flex items-center gap-2 disabled:opacity-50"
+                    >
+                      {deletingImage === index ? (
+                        <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                      ) : (
+                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                      )}
+                      <span className="text-sm">Sil</span>
+                    </button>
+                  </div>
+                )}
+                <div className="absolute top-2 right-2 bg-black/50 text-white text-xs px-2 py-1 rounded">
+                  {index + 1}
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Upload Zone */}
+        {isEditing && (
+          <label className={`block w-full border-2 border-dashed rounded-xl p-8 text-center cursor-pointer transition-colors ${
+            uploadingImage !== null
+              ? 'border-sage-400 bg-sage-50'
+              : 'border-sage-300 hover:border-sage-500 hover:bg-sage-50'
+          }`}>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/gif"
+              multiple
+              className="hidden"
+              onChange={(e) => {
+                const files = Array.from(e.target.files || [])
+                if (files.length === 0) return
+
+                files.forEach((file, fileIndex) => {
+                  if (handleImageUpload) {
+                    handleImageUpload(images.length + fileIndex, file)
+                  } else {
+                    // Fallback: Direct URL input
+                    const reader = new FileReader()
+                    reader.onload = (event) => {
+                      const newImages = [...images, { url: event.target?.result, alt: file.name }]
+                      updateField('images', newImages)
+                    }
+                    reader.readAsDataURL(file)
+                  }
+                })
+              }}
+              disabled={uploadingImage !== null}
+            />
+            {uploadingImage !== null ? (
+              <div className="flex flex-col items-center">
+                <div className="animate-spin h-10 w-10 border-3 border-sage-500 border-t-transparent rounded-full mb-2" />
+                <span className="text-sm text-sage-600">Yükleniyor...</span>
+              </div>
+            ) : (
+              <>
+                <svg className="h-12 w-12 text-sage-400 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                <span className="text-sm text-sage-600 font-medium">
+                  Resim ekle (birden fazla seçebilirsiniz)
+                </span>
+                <span className="text-xs text-gray-400 mt-1 block">veya URL girin</span>
+              </>
+            )}
+          </label>
+        )}
+
+        {/* URL Input for Manual Image Addition */}
+        {isEditing && (
+          <div className="mt-4">
+            <label className="block text-xs font-medium text-gray-600 mb-1">Resim URL'si Ekle</label>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                placeholder="https://example.com/image.jpg"
+                className="flex-1 px-3 py-2 text-sm border border-gray-200 rounded-lg focus:ring-2 focus:ring-sage-500 focus:border-transparent"
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    const url = (e.target as HTMLInputElement).value.trim()
+                    if (url) {
+                      const newImages = [...images, { url, alt: '' }]
+                      updateField('images', newImages)
+                      ;(e.target as HTMLInputElement).value = ''
+                    }
+                  }
+                }}
+              />
+              <button
+                type="button"
+                onClick={(e) => {
+                  const input = (e.currentTarget.previousElementSibling as HTMLInputElement)
+                  const url = input.value.trim()
+                  if (url) {
+                    const newImages = [...images, { url, alt: '' }]
+                    updateField('images', newImages)
+                    input.value = ''
+                  }
+                }}
+                className="px-4 py-2 bg-sage-500 hover:bg-forest-600 text-white rounded-lg text-sm font-medium transition-colors"
+              >
+                Ekle
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Image Count */}
+        {images.length > 0 && (
+          <div className="mt-4 text-sm text-gray-600">
+            Toplam {images.length} resim
+          </div>
+        )}
       </div>
     </div>
   )

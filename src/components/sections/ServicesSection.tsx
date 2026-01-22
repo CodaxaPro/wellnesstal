@@ -171,6 +171,7 @@ const ServicesSection = () => {
             sectionTitle: sectionData.data.content.sectionTitle || defaultSectionContent.sectionTitle,
             highlightedText: sectionData.data.content.highlightedText || defaultSectionContent.highlightedText,
             description: sectionData.data.content.description || defaultSectionContent.description,
+            images: sectionData.data.content.images || [],
             cta: {
               visible: ctaData.visible !== false,
               title: ctaData.title || defaultSectionContent.cta.title,
@@ -388,6 +389,34 @@ const ServicesSection = () => {
             {sectionContent.description}
           </p>
         </div>
+
+        {/* Image Gallery */}
+        {sectionContent.images && sectionContent.images.length > 0 && (
+          <div className="mb-16">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {sectionContent.images.map((image, index) => {
+                const imageUrl = typeof image === 'string' ? image : image.url
+                const imageAlt = typeof image === 'string' ? `Resim ${index + 1}` : (image.alt || `Resim ${index + 1}`)
+                return (
+                  <div
+                    key={index}
+                    className="relative aspect-square rounded-2xl overflow-hidden group cursor-pointer transform transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                  >
+                    <img
+                      src={imageUrl}
+                      alt={imageAlt}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400?text=Görsel+Yüklenemedi'
+                      }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+        )}
         
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">

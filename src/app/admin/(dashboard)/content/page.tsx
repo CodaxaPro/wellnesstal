@@ -1099,6 +1099,11 @@ return null
             section={section}
             {...commonEditorProps}
             updateNestedField={updateNestedField}
+            uploadingImage={uploadingImage}
+            deletingImage={deletingImage}
+            handleImageUpload={handleImageUpload}
+            handleImageDelete={handleImageDelete}
+            setSaveMessage={setSaveMessage}
           />
         )
       case 'about':
