@@ -87,7 +87,7 @@ export function useServiceForm({
           shortDescription: editingService.shortDescription,
           longDescription: editingService.longDescription,
           duration: editingService.duration,
-          price: editingService.price,
+          price: typeof editingService.price === 'number' ? String(editingService.price) : (editingService.price || ''),
           benefits: Array.isArray(editingService.benefits)
             ? editingService.benefits.join(', ')
             : editingService.benefits,
@@ -160,9 +160,10 @@ newErrors.longDescription = 'Detaylı açıklama gereklidir'
       if (!formData.duration?.trim()) {
 newErrors.duration = 'Süre gereklidir'
 }
-      if (!formData.price?.trim()) {
-newErrors.price = 'Fiyat gereklidir'
-}
+      const priceValue = typeof formData.price === 'string' ? formData.price.trim() : String(formData.price || '').trim()
+      if (!priceValue) {
+        newErrors.price = 'Fiyat gereklidir'
+      }
     }
 
     if (step === 3) {
