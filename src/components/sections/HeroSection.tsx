@@ -42,6 +42,36 @@ interface HeroImageStyles {
   overlayColor?: string
 }
 
+interface ImageFloatingElements {
+  statusBadge?: {
+    enabled?: boolean
+    text?: string
+    position?: {
+      vertical: 'top' | 'center' | 'bottom'
+      horizontal: 'left' | 'center' | 'right'
+    }
+  }
+  premiumCard?: {
+    enabled?: boolean
+    emoji?: string
+    title?: string
+    subtitle?: string
+    position?: {
+      vertical: 'top' | 'center' | 'bottom'
+      horizontal: 'left' | 'center' | 'right'
+    }
+  }
+  reviewsBadge?: {
+    enabled?: boolean
+    rating?: string
+    text?: string
+    position?: {
+      vertical: 'top' | 'center' | 'bottom'
+      horizontal: 'left' | 'center' | 'right'
+    }
+  }
+}
+
 interface HeroContent {
   mainTitle: string
   subtitle: string
@@ -56,6 +86,7 @@ interface HeroContent {
   badge: string
   image?: HeroImage
   imageStyles?: HeroImageStyles
+  imageFloatingElements?: ImageFloatingElements
   styles?: HeroStyles
 }
 
@@ -245,7 +276,7 @@ const HeroSection = () => {
                 {content.badge}
               </span>
             </div>
-            
+
             <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-tight mb-6">
               <span
                 style={{
@@ -444,42 +475,94 @@ const HeroSection = () => {
                     background: `linear-gradient(to top, ${content.imageStyles?.overlayColor || defaultImageStyles.overlayColor}${Math.round((parseInt(content.imageStyles?.overlayOpacity || defaultImageStyles.overlayOpacity || '20') / 100) * 255).toString(16).padStart(2, '0')}, transparent)`,
                   }}
                  />
-                
-                {/* Floating Badge */}
-                <div className="absolute top-6 left-6 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-medium">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                    <span className="text-sm font-medium text-charcoal">Jetzt geöffnet</span>
-                  </div>
-                </div>
+
+                {/* Status Badge */}
+                {(() => {
+                  const statusBadge = content.imageFloatingElements?.statusBadge
+                  const isEnabled = statusBadge?.enabled !== false
+                  if (!isEnabled) return null
+
+                  const text = statusBadge?.text || 'Jetzt geöffnet'
+                  const position = statusBadge?.position || { vertical: 'top', horizontal: 'left' }
+                  const getPositionClasses = (pos: typeof position) => {
+                    const v = pos.vertical === 'top' ? 'top-6' : pos.vertical === 'bottom' ? 'bottom-6' : 'top-1/2 -translate-y-1/2'
+                    const h = pos.horizontal === 'left' ? 'left-6' : pos.horizontal === 'right' ? 'right-6' : 'left-1/2 -translate-x-1/2'
+                    return `${v} ${h}`
+                  }
+
+                  return (
+                    <div className={`absolute ${getPositionClasses(position)} bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-medium`}>
+                      <div className="flex items-center gap-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                        <span className="text-sm font-medium text-charcoal">{text}</span>
+                      </div>
+                    </div>
+                  )
+                })()}
               </div>
 
-              {/* Floating Cards */}
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-2xl shadow-medium max-w-xs">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-wellness-gradient rounded-full flex items-center justify-center">
-                    <span className="text-white text-xl">🧘🏻‍♀️</span>
+              {/* Premium Card */}
+              {(() => {
+                const premiumCard = content.imageFloatingElements?.premiumCard
+                const isEnabled = premiumCard?.enabled !== false
+                if (!isEnabled) return null
+
+                const emoji = premiumCard?.emoji || '🧘🏻‍♀️'
+                const title = premiumCard?.title || 'Premium Headspa'
+                const subtitle = premiumCard?.subtitle || '90 Min • ab 85€'
+                const position = premiumCard?.position || { vertical: 'bottom', horizontal: 'left' }
+                const getPositionClasses = (pos: typeof position, useNegative = true) => {
+                  const v = pos.vertical === 'top' ? (useNegative ? '-top-6' : 'top-6') : pos.vertical === 'bottom' ? (useNegative ? '-bottom-6' : 'bottom-6') : 'top-1/2 -translate-y-1/2'
+                  const h = pos.horizontal === 'left' ? (useNegative ? '-left-6' : 'left-6') : pos.horizontal === 'right' ? (useNegative ? '-right-6' : 'right-6') : 'left-1/2 -translate-x-1/2'
+                  return `${v} ${h}`
+                }
+
+                return (
+                  <div className={`absolute ${getPositionClasses(position)} bg-white p-4 rounded-2xl shadow-medium max-w-xs`}>
+                    <div className="flex items-center gap-3">
+                      <div className="w-12 h-12 bg-wellness-gradient rounded-full flex items-center justify-center">
+                        <span className="text-white text-xl">{emoji}</span>
+                      </div>
+                      <div>
+                        {title && <div className="font-semibold text-charcoal">{title}</div>}
+                        {subtitle && <div className="text-sm text-gray-custom">{subtitle}</div>}
+                      </div>
+                    </div>
                   </div>
-                  <div>
-                    <div className="font-semibold text-charcoal">Premium Headspa</div>
-                    <div className="text-sm text-gray-custom">90 Min • ab 85€</div>
+                )
+              })()}
+
+              {/* Reviews Badge */}
+              {(() => {
+                const reviewsBadge = content.imageFloatingElements?.reviewsBadge
+                const isEnabled = reviewsBadge?.enabled !== false
+                if (!isEnabled) return null
+
+                const rating = reviewsBadge?.rating || '4.9'
+                const text = reviewsBadge?.text || 'Google Reviews'
+                const position = reviewsBadge?.position || { vertical: 'top', horizontal: 'right' }
+                const getPositionClasses = (pos: typeof position, useNegative = true) => {
+                  const v = pos.vertical === 'top' ? (useNegative ? '-top-6' : 'top-6') : pos.vertical === 'bottom' ? (useNegative ? '-bottom-6' : 'bottom-6') : 'top-1/2 -translate-y-1/2'
+                  const h = pos.horizontal === 'left' ? (useNegative ? '-left-6' : 'left-6') : pos.horizontal === 'right' ? (useNegative ? '-right-6' : 'right-6') : 'left-1/2 -translate-x-1/2'
+                  return `${v} ${h}`
+                }
+
+                return (
+                  <div className={`absolute ${getPositionClasses(position)} bg-sage-500 text-white p-4 rounded-2xl shadow-medium`}>
+                    <div className="text-center">
+                      <div className="text-2xl font-bold">{rating}</div>
+                      {text && <div className="text-xs opacity-90">{text}</div>}
+                      <div className="flex gap-1 mt-1 justify-center">
+                        {[...Array(5)].map((_, i) => (
+                          <svg key={i} className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                          </svg>
+                        ))}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              
-              <div className="absolute -top-6 -right-6 bg-sage-500 text-white p-4 rounded-2xl shadow-medium">
-                <div className="text-center">
-                  <div className="text-2xl font-bold">4.9</div>
-                  <div className="text-xs opacity-90">Google Reviews</div>
-                  <div className="flex gap-1 mt-1">
-                    {[...Array(5)].map((_, i) => (
-                      <svg key={i} className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                      </svg>
-                    ))}
-                  </div>
-                </div>
-              </div>
+                )
+              })()}
 
               {/* Decorative Elements */}
               <div className="absolute -z-10 top-20 -left-20 w-40 h-40 bg-sage-200 rounded-full opacity-20 animate-float" />
