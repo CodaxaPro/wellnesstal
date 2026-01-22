@@ -385,7 +385,7 @@ const ServicesSection = () => {
             </h2>
           </div>
           <p
-            className="text-xl text-gray-custom max-w-3xl mx-auto leading-relaxed text-center"
+            className="text-xl text-gray-custom max-w-3xl mx-auto leading-relaxed text-left"
             style={{ color: sectionContent.styles?.description?.color }}
           >
             {sectionContent.description}
