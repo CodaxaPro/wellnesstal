@@ -403,17 +403,17 @@ export async function PUT(request: NextRequest) {
       }
     }
     
-    // Store button config as JSON
+    // Store button config as JSON - try metadata first (most likely to exist)
     if (Object.keys(buttonConfig).length > 0) {
-      // Try to use button_config column, fallback to metadata or create JSONB column
-      updateObj['button_config'] = buttonConfig
+      // Try metadata column first (more likely to exist)
+      updateObj['metadata'] = { button_config: buttonConfig }
     }
 
-    // Try to update, but if button fields cause errors, retry without them
+    // Try to update
     let updated: any
     let error: any
 
-    // First attempt: try with all fields including button fields
+    // First attempt: try with metadata
     const firstAttempt = await supabaseAdmin
       .from('services')
       .update(updateObj)
@@ -424,53 +424,35 @@ export async function PUT(request: NextRequest) {
     updated = firstAttempt.data
     error = firstAttempt.error
 
-    // If error and it's related to button_config column, try using metadata instead
+    // If error and it's related to metadata column, remove it and continue
     if (error && error.message && (
-      error.message.includes('button_config') ||
+      error.message.includes('metadata') ||
       error.message.includes('column') ||
       error.code === '42703' // PostgreSQL undefined column error
     )) {
-      console.warn('button_config column may not exist, trying metadata:', error.message)
+      console.warn('metadata column may not exist, removing button config and continuing:', error.message)
       
-      // Try using metadata column if it exists
-      if (updateObj['button_config']) {
-        const updateObjWithMetadata = { ...updateObj }
-        delete updateObjWithMetadata['button_config']
-        updateObjWithMetadata['metadata'] = { button_config: updateObj['button_config'] }
-        
-        const retryAttempt = await supabaseAdmin
-          .from('services')
-          .update(updateObjWithMetadata)
-          .eq('id', id)
-          .select()
-          .single()
-        
-        updated = retryAttempt.data
-        error = retryAttempt.error
-        
-        // If still error, remove button config and continue
-        if (error) {
-          console.warn('metadata column also doesn\'t exist, removing button config:', error.message)
-          const updateObjWithoutButtons = { ...updateObj }
-          delete updateObjWithoutButtons['button_config']
-          delete updateObjWithoutButtons['metadata']
-          
-          const finalAttempt = await supabaseAdmin
-            .from('services')
-            .update(updateObjWithoutButtons)
-            .eq('id', id)
-            .select()
-            .single()
-          
-          updated = finalAttempt.data
-          error = finalAttempt.error
-        } else {
-          // Update button_config from metadata in response
-          if (updated.metadata?.button_config) {
-            updated.button_config = updated.metadata.button_config
-          }
-        }
+      // Remove metadata and retry without button config
+      const updateObjWithoutMetadata = { ...updateObj }
+      delete updateObjWithoutMetadata['metadata']
+      
+      const retryAttempt = await supabaseAdmin
+        .from('services')
+        .update(updateObjWithoutMetadata)
+        .eq('id', id)
+        .select()
+        .single()
+      
+      updated = retryAttempt.data
+      error = retryAttempt.error
+      
+      // Manually add button config to response so frontend can use it
+      if (updated && !error) {
+        updated.button_config = buttonConfig
       }
+    } else if (updated && !error && updated.metadata?.button_config) {
+      // Extract button_config from metadata for easier access
+      updated.button_config = updated.metadata.button_config
     }
 
     if (error) {
