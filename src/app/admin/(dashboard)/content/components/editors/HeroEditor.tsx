@@ -194,16 +194,67 @@ export function HeroEditor({
       </div>
 
       {/* Trust Indicator */}
-      <div className="p-4 bg-white rounded-xl border border-gray-200">
-        <label className="block text-sm font-semibold text-charcoal mb-2">Güven Göstergesi</label>
-        <input
-          type="text"
-          value={content.trustIndicator || ''}
-          onChange={(e) => updateField('trustIndicator', e.target.value)}
-          disabled={!isEditing}
-          className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
-        />
-        {isEditing && renderStyleEditor('trustIndicator', 'Güven Göstergesi')}
+      <div className="p-4 bg-white rounded-xl border border-gray-200 space-y-4">
+        <div>
+          <label className="block text-sm font-semibold text-charcoal mb-2">Güven Göstergesi (Ana Metin)</label>
+          <input
+            type="text"
+            value={content.trustIndicator || ''}
+            onChange={(e) => updateField('trustIndicator', e.target.value)}
+            disabled={!isEditing}
+            placeholder="🙋🏻‍♀️ 🙋🏻‍♂️ 🙋🏼‍♀️ 🙋🏽‍♂️ 500+ zufriedene Kunden"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+          />
+          <p className="text-xs text-gray-500 mt-1">Ana güven göstergesi metni</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-charcoal mb-2">Güven Göstergesi (Alt Metin)</label>
+          <input
+            type="text"
+            value={content.trustIndicatorSubtext || ''}
+            onChange={(e) => updateField('trustIndicatorSubtext', e.target.value)}
+            disabled={!isEditing}
+            placeholder="⭐ 4.9/5 Bewertungen"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+          />
+          <p className="text-xs text-gray-500 mt-1">Ana güven göstergesinin altında görünecek metin</p>
+        </div>
+
+        <div className="h-px bg-gray-200" />
+
+        <div>
+          <label className="block text-sm font-semibold text-charcoal mb-2">İkinci Güven Göstergesi</label>
+          <input
+            type="text"
+            value={content.trustIndicatorSecondary || ''}
+            onChange={(e) => updateField('trustIndicatorSecondary', e.target.value)}
+            disabled={!isEditing}
+            placeholder="Kostenlose Beratung"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+          />
+          <p className="text-xs text-gray-500 mt-1">İkinci güven göstergesi metni</p>
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-charcoal mb-2">İkinci Güven Göstergesi (Alt Metin)</label>
+          <input
+            type="text"
+            value={content.trustIndicatorSecondarySubtext || ''}
+            onChange={(e) => updateField('trustIndicatorSecondarySubtext', e.target.value)}
+            disabled={!isEditing}
+            placeholder="Unverbindlich & persönlich"
+            className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sage-500 focus:border-transparent disabled:bg-gray-50"
+          />
+          <p className="text-xs text-gray-500 mt-1">İkinci güven göstergesinin altında görünecek metin</p>
+        </div>
+
+        {isEditing && (
+          <>
+            <div className="h-px bg-gray-200" />
+            {renderStyleEditor('trustIndicator', 'Güven Göstergesi Stili')}
+          </>
+        )}
       </div>
 
       {/* Enterprise Hero Image Section */}
