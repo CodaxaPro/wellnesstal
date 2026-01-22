@@ -94,6 +94,22 @@ const ServicesSection = () => {
     rightButton: {text: string, type: string, value: string}
   } | null>(null)
 
+  // Format duration for German display
+  const formatDuration = (duration: string | number | null | undefined): string => {
+    if (!duration) return ''
+    const durationNum = typeof duration === 'string' ? parseInt(duration) : duration
+    if (isNaN(durationNum)) return String(duration)
+    return `${durationNum} Min`
+  }
+
+  // Format price for German display
+  const formatPrice = (price: string | number | null | undefined): string => {
+    if (!price) return ''
+    const priceNum = typeof price === 'string' ? parseFloat(price.replace(/[^0-9.,]/g, '').replace(',', '.')) : price
+    if (isNaN(priceNum)) return String(price)
+    return `ab ${Math.round(priceNum)}€`
+  }
+
   // Generate button href based on type and value
   const generateButtonHref = (type: string, value: string, message?: string, serviceName?: string) => {
     switch (type) {
@@ -526,9 +542,15 @@ const ServicesSection = () => {
                       {service.title}
                     </h3>
                     <div className="flex items-center gap-2 mt-1">
-                      <span className="text-sm text-gray-custom">{service.duration}</span>
-                      <span className="w-1 h-1 bg-gray-300 rounded-full" />
-                      <span className="text-sm font-semibold text-sage-600">{service.price}</span>
+                      {service.duration && (
+                        <>
+                          <span className="text-sm text-gray-custom">{formatDuration(service.duration)}</span>
+                          {service.price && <span className="w-1 h-1 bg-gray-300 rounded-full" />}
+                        </>
+                      )}
+                      {service.price && (
+                        <span className="text-sm font-semibold text-sage-600">{formatPrice(service.price)}</span>
+                      )}
                     </div>
                   </div>
                 </div>
