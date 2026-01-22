@@ -1550,7 +1550,28 @@ return null
                         )}
                       </div>
                     </>
-                  ) : null}
+                  ) : (
+                    <div className="p-6 bg-yellow-50 border border-yellow-200 rounded-xl">
+                      <h3 className="text-lg font-semibold text-yellow-800 mb-2">İçerik Bulunamadı</h3>
+                      <p className="text-yellow-700 mb-4">
+                        "{contentTabs.find(t => t.id === activeTab)?.label || activeTab}" bölümü için içerik bulunamadı.
+                      </p>
+                      <p className="text-yellow-600 text-sm mb-4">
+                        Bu bölüm için içerik oluşturmak için API'den veri gelmesi gerekiyor. Veritabanında bu section için kayıt olup olmadığını kontrol edin.
+                      </p>
+                      <button
+                        onClick={() => {
+                          void fetchContent()
+                        }}
+                        className="flex items-center gap-2 bg-yellow-500 hover:bg-yellow-600 text-white px-6 py-3 rounded-xl font-medium transition-all"
+                      >
+                        <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        Yeniden Yükle
+                      </button>
+                    </div>
+                  )}
                 </>
               )}
             </div>
