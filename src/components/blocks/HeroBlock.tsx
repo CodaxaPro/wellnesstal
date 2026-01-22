@@ -198,9 +198,9 @@ return value.toString()
 
               return (
                 <h1
-                  className="leading-tight mb-6"
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl leading-normal sm:leading-tight mb-6 break-words"
                   style={{
-                    fontSize: styles.mainTitle?.fontSize || defaultStyles.mainTitle.fontSize,
+                    fontSize: styles.mainTitle?.fontSize ? `clamp(1.875rem, 4vw, ${styles.mainTitle.fontSize})` : 'clamp(1.875rem, 4vw, 4.5rem)',
                   }}
                 >
                   {words.map((word, index) => {
@@ -254,10 +254,10 @@ return value.toString()
             {/* Subtitle */}
             {subtitle && (
               <p
-                className="leading-relaxed mb-8 max-w-lg"
+                className="text-lg sm:text-xl lg:text-2xl leading-relaxed mb-8 max-w-lg break-words"
                 style={{
                   fontFamily: styles.subtitle?.fontFamily || defaultStyles.subtitle.fontFamily,
-                  fontSize: styles.subtitle?.fontSize || defaultStyles.subtitle.fontSize,
+                  fontSize: styles.subtitle?.fontSize ? `clamp(1.125rem, 2.5vw, ${styles.subtitle.fontSize})` : 'clamp(1.125rem, 2.5vw, 1.5rem)',
                   fontWeight: styles.subtitle?.fontWeight || defaultStyles.subtitle.fontWeight,
                   color: styles.subtitle?.color || defaultStyles.subtitle.color,
                 }}
@@ -269,10 +269,10 @@ return value.toString()
             {/* Description */}
             {description && (
               <div
-                className="leading-relaxed mb-8 max-w-2xl prose prose-lg"
+                className="text-base sm:text-lg leading-relaxed mb-8 max-w-2xl prose prose-sm sm:prose-lg break-words"
                 style={{
                   fontFamily: styles.description?.fontFamily || defaultStyles.description.fontFamily,
-                  fontSize: styles.description?.fontSize || defaultStyles.description.fontSize,
+                  fontSize: styles.description?.fontSize ? `clamp(1rem, 2vw, ${styles.description.fontSize})` : 'clamp(1rem, 2vw, 1.125rem)',
                   fontWeight: styles.description?.fontWeight || defaultStyles.description.fontWeight,
                   color: styles.description?.color || defaultStyles.description.color,
                 }}
