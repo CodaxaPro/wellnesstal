@@ -326,9 +326,9 @@ export function ServicesSectionEditor({
               // Handle both string and object formats
               const imageUrl = typeof image === 'string' ? image : (image?.url || '')
               const imageAlt = typeof image === 'string' ? `Resim ${index + 1}` : (image?.alt || `Resim ${index + 1}`)
-              
+
               if (!imageUrl) return null
-              
+
               return (
                 <div key={index} className="relative group aspect-square rounded-xl overflow-hidden border-2 border-gray-200 hover:border-sage-500 transition-all bg-white">
                   <img
