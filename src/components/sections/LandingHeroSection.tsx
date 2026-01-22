@@ -159,11 +159,12 @@ export default function LandingHeroSection() {
             </div>
 
             {/* Main Title with dynamic styles */}
-            <h1 className="mb-8 leading-tight">
+            <h1 className="mb-8 leading-normal sm:leading-tight break-words">
               <span
+                className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mb-2 sm:mb-0"
                 style={{
                   fontFamily: landingHeroContent.styles?.mainTitle?.fontFamily || defaultLandingHeroStyles.mainTitle?.fontFamily,
-                  fontSize: landingHeroContent.styles?.mainTitle?.fontSize || defaultLandingHeroStyles.mainTitle?.fontSize,
+                  fontSize: landingHeroContent.styles?.mainTitle?.fontSize ? `clamp(1.875rem, 4vw, ${landingHeroContent.styles.mainTitle.fontSize})` : 'clamp(1.875rem, 4vw, 4.5rem)',
                   fontWeight: landingHeroContent.styles?.mainTitle?.fontWeight || defaultLandingHeroStyles.mainTitle?.fontWeight,
                   color: landingHeroContent.styles?.mainTitle?.color || defaultLandingHeroStyles.mainTitle?.color,
                 }}
@@ -171,10 +172,10 @@ export default function LandingHeroSection() {
                 {landingHeroContent.mainTitle}
               </span>
               <span
-                className="block"
+                className="block text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl mt-2 sm:mt-0"
                 style={{
                   fontFamily: landingHeroContent.styles?.highlightedText?.fontFamily || defaultLandingHeroStyles.highlightedText?.fontFamily,
-                  fontSize: landingHeroContent.styles?.highlightedText?.fontSize || defaultLandingHeroStyles.highlightedText?.fontSize,
+                  fontSize: landingHeroContent.styles?.highlightedText?.fontSize ? `clamp(1.875rem, 4vw, ${landingHeroContent.styles.highlightedText.fontSize})` : 'clamp(1.875rem, 4vw, 4.5rem)',
                   fontWeight: landingHeroContent.styles?.highlightedText?.fontWeight || defaultLandingHeroStyles.highlightedText?.fontWeight,
                   color: landingHeroContent.styles?.highlightedText?.color || defaultLandingHeroStyles.highlightedText?.color,
                 }}
