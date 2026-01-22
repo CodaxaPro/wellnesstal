@@ -397,6 +397,12 @@ const ServicesSection = () => {
               {sectionContent.images.map((image, index) => {
                 const imageUrl = typeof image === 'string' ? image : image.url
                 const imageAlt = typeof image === 'string' ? `Resim ${index + 1}` : (image.alt || `Resim ${index + 1}`)
+                
+                // Skip rendering if URL is empty or invalid
+                if (!imageUrl || imageUrl.trim() === '') {
+                  return null
+                }
+                
                 return (
                   <div
                     key={index}
@@ -407,7 +413,7 @@ const ServicesSection = () => {
                       alt={imageAlt}
                       className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).src = 'https://via.placeholder.com/400?text=Görsel+Yüklenemedi'
+                        (e.target as HTMLImageElement).src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="400"%3E%3Crect fill="%23ddd" width="400" height="400"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="16" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3EGörsel Yüklenemedi%3C/text%3E%3C/svg%3E'
                       }}
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
