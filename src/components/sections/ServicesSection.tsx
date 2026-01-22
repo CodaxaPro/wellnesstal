@@ -323,33 +323,45 @@ const ServicesSection = () => {
       <section id="services" className="py-20 lg:py-32 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <div
-              className="inline-block bg-sage-100 text-sage-700 px-4 py-2 rounded-full text-sm font-medium mb-4"
-              style={{
-                color: sectionContent.styles?.badge?.color,
-                backgroundColor: sectionContent.styles?.badge?.backgroundColor
-              }}
-            >
-              {sectionContent.badge}
-            </div>
-            <h2
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal mb-6"
-              style={{ color: sectionContent.styles?.sectionTitle?.color }}
-            >
-              {sectionContent.sectionTitle}{' '}
-              <span
-                className="text-sage-500"
-                style={{ color: sectionContent.styles?.highlightedText?.color }}
+            {sectionContent.badge && sectionContent.badge.trim() !== '' && (
+              <div
+                className="inline-block bg-sage-100 text-sage-700 px-4 py-2 rounded-full text-sm font-medium mb-4"
+                style={{
+                  color: sectionContent.styles?.badge?.color,
+                  backgroundColor: sectionContent.styles?.badge?.backgroundColor
+                }}
               >
-                {sectionContent.highlightedText}
-              </span>
-            </h2>
-            <p
-              className="text-xl text-gray-custom max-w-3xl mx-auto leading-relaxed"
-              style={{ color: sectionContent.styles?.description?.color }}
-            >
-              Unsere Hizmetler werden gerade aktualisiert. Bitte kontaktieren Sie uns für weitere Informationen.
-            </p>
+                {sectionContent.badge}
+              </div>
+            )}
+            {(sectionContent.sectionTitle || sectionContent.highlightedText) && (
+              <h2
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal mb-6"
+                style={{ color: sectionContent.styles?.sectionTitle?.color }}
+              >
+                {sectionContent.sectionTitle && sectionContent.sectionTitle.trim() !== '' && (
+                  <>
+                    {sectionContent.sectionTitle}{' '}
+                  </>
+                )}
+                {sectionContent.highlightedText && sectionContent.highlightedText.trim() !== '' && (
+                  <span
+                    className="text-sage-500"
+                    style={{ color: sectionContent.styles?.highlightedText?.color }}
+                  >
+                    {sectionContent.highlightedText}
+                  </span>
+                )}
+              </h2>
+            )}
+            {sectionContent.description && sectionContent.description.trim() !== '' && (
+              <p
+                className="text-xl text-gray-custom max-w-3xl mx-auto leading-relaxed"
+                style={{ color: sectionContent.styles?.description?.color }}
+              >
+                Unsere Hizmetler werden gerade aktualisiert. Bitte kontaktieren Sie uns für weitere Informationen.
+              </p>
+            )}
           </div>
         </div>
       </section>
@@ -362,34 +374,46 @@ const ServicesSection = () => {
         {/* Section Header */}
         <div className="mb-16">
           <div className="text-center mb-6">
-            <div
-              className="inline-block bg-sage-100 text-sage-700 px-4 py-2 rounded-full text-sm font-medium mb-4"
-              style={{
-                color: sectionContent.styles?.badge?.color,
-                backgroundColor: sectionContent.styles?.badge?.backgroundColor
-              }}
-            >
-              {sectionContent.badge}
-            </div>
-            <h2
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal mb-6"
-              style={{ color: sectionContent.styles?.sectionTitle?.color }}
-            >
-              {sectionContent.sectionTitle}{' '}
-              <span
-                className="text-sage-500"
-                style={{ color: sectionContent.styles?.highlightedText?.color }}
+            {sectionContent.badge && sectionContent.badge.trim() !== '' && (
+              <div
+                className="inline-block bg-sage-100 text-sage-700 px-4 py-2 rounded-full text-sm font-medium mb-4"
+                style={{
+                  color: sectionContent.styles?.badge?.color,
+                  backgroundColor: sectionContent.styles?.badge?.backgroundColor
+                }}
               >
-                {sectionContent.highlightedText}
-              </span>
-            </h2>
+                {sectionContent.badge}
+              </div>
+            )}
+            {(sectionContent.sectionTitle || sectionContent.highlightedText) && (
+              <h2
+                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-charcoal mb-6"
+                style={{ color: sectionContent.styles?.sectionTitle?.color }}
+              >
+                {sectionContent.sectionTitle && sectionContent.sectionTitle.trim() !== '' && (
+                  <>
+                    {sectionContent.sectionTitle}{' '}
+                  </>
+                )}
+                {sectionContent.highlightedText && sectionContent.highlightedText.trim() !== '' && (
+                  <span
+                    className="text-sage-500"
+                    style={{ color: sectionContent.styles?.highlightedText?.color }}
+                  >
+                    {sectionContent.highlightedText}
+                  </span>
+                )}
+              </h2>
+            )}
           </div>
-          <p
-            className="text-xl text-gray-custom max-w-3xl mx-auto leading-relaxed text-left"
-            style={{ color: sectionContent.styles?.description?.color }}
-          >
-            {sectionContent.description}
-          </p>
+          {sectionContent.description && sectionContent.description.trim() !== '' && (
+            <p
+              className="text-xl text-gray-custom max-w-3xl mx-auto leading-relaxed text-left"
+              style={{ color: sectionContent.styles?.description?.color }}
+            >
+              {sectionContent.description}
+            </p>
+          )}
         </div>
 
         {/* Image Gallery */}
