@@ -164,8 +164,8 @@ return
   }
 
   return (
-    <section className="py-20 lg:py-32" style={{ backgroundColor: sectionBgColor }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="py-20 lg:py-32 min-w-0 overflow-x-hidden" style={{ backgroundColor: sectionBgColor }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
         {/* Section Header - Ana sayfadaki gibi */}
         <div className="text-center mb-16">
           {/* Badge */}
@@ -183,11 +183,13 @@ return
           </div>
 
           {/* Section Title */}
-          <h2 className="mb-6">
+          <h2 className="mb-6 break-words hyphens-auto px-1">
             <span
               style={{
                 fontFamily: styles.sectionTitle?.fontFamily,
-                fontSize: styles.sectionTitle?.fontSize,
+                fontSize: styles.sectionTitle?.fontSize
+                  ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.sectionTitle.fontSize})`
+                  : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
                 fontWeight: styles.sectionTitle?.fontWeight as any,
                 color: styles.sectionTitle?.color
               }}
@@ -197,7 +199,9 @@ return
             <span
               style={{
                 fontFamily: styles.highlightedText?.fontFamily,
-                fontSize: styles.highlightedText?.fontSize,
+                fontSize: styles.highlightedText?.fontSize
+                  ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.highlightedText.fontSize})`
+                  : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
                 fontWeight: styles.highlightedText?.fontWeight as any,
                 color: styles.highlightedText?.color
               }}
@@ -208,10 +212,12 @@ return
 
           {/* Description */}
           <p
-            className="max-w-3xl mx-auto"
+            className="max-w-3xl mx-auto break-words px-1"
             style={{
               fontFamily: styles.description?.fontFamily,
-              fontSize: styles.description?.fontSize,
+              fontSize: styles.description?.fontSize
+                ? `clamp(1rem, 2.5vw + 0.25rem, ${styles.description.fontSize})`
+                : 'clamp(1rem, 2.5vw + 0.25rem, 1.25rem)',
               fontWeight: styles.description?.fontWeight as any,
               color: styles.description?.color
             }}
@@ -221,8 +227,8 @@ return
         </div>
 
         {/* Main Testimonial Display - Ana sayfadaki gibi */}
-        <div className="relative max-w-4xl mx-auto mb-12">
-          <div className="bg-white rounded-3xl p-4 sm:p-8 lg:p-12 shadow-large relative overflow-visible">
+        <div className="relative max-w-4xl mx-auto mb-12 min-w-0 px-1">
+          <div className="bg-white rounded-2xl sm:rounded-3xl p-4 sm:p-8 lg:p-12 shadow-large relative overflow-hidden sm:overflow-visible">
             {/* Background Decoration */}
             <div className="absolute top-0 right-0 w-32 h-32 bg-sage-100 rounded-full -translate-y-16 translate-x-16 opacity-50" />
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-earth-100 rounded-full translate-y-12 -translate-x-12 opacity-50" />
@@ -232,7 +238,7 @@ return
 
             <div className="relative z-10">
               {/* Header */}
-              <div className="flex items-start justify-between mb-8">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-8 min-w-0">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-sage-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-medium">
                     {testimonials[currentTestimonial]?.avatar ? (
@@ -272,7 +278,7 @@ return
 
                 {/* Rating */}
                 {testimonials[currentTestimonial]?.rating && (
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 sm:ml-auto flex-shrink-0">
                     <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
                         <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
@@ -285,7 +291,7 @@ return
               </div>
 
               {/* Testimonial Text */}
-              <blockquote className="text-lg lg:text-xl text-gray-700 leading-relaxed italic mb-8 font-light">
+              <blockquote className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed italic mb-8 font-light break-words hyphens-auto">
                 "{testimonials[currentTestimonial]?.content || 'Kein Text verfügbar'}"
               </blockquote>
 

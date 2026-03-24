@@ -471,7 +471,7 @@ return value.toString()
 
             {/* Trust Indicator */}
             {trustIndicator && (
-              <div className="flex items-center gap-8">
+              <div className="flex flex-wrap items-center gap-4 sm:gap-6 lg:gap-8">
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
                     {['🙋🏻‍♀️', '🙋🏻‍♂️', '🙋🏼‍♀️', '🙋🏽‍♂️'].map((emoji, index) => (
@@ -590,7 +590,7 @@ return null
                     const positionClass = position ? getPositionClasses(position, false) : 'top-6 left-6'
 
                     return (
-                      <div className={`absolute ${positionClass} bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full shadow-medium`}>
+                      <div className={`absolute ${positionClass} bg-white/90 backdrop-blur-sm px-3 py-1.5 sm:px-4 sm:py-2 rounded-full shadow-medium max-sm:max-w-[calc(100%-1.5rem)] max-sm:truncate`}>
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
                           <span className="text-sm font-medium text-charcoal">{text}</span>
@@ -618,7 +618,7 @@ return null
                   const positionClass = position ? getPositionClasses(position, true) : '-bottom-6 -left-6'
 
                   return (
-                    <div className={`absolute ${positionClass} bg-white p-4 rounded-2xl shadow-medium max-w-xs`}>
+                    <div className={`absolute ${positionClass} bg-white p-3 sm:p-4 rounded-2xl shadow-medium max-w-[min(100%,18rem)] max-sm:left-2 max-sm:right-2 max-sm:bottom-2 max-sm:top-auto`}>
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-wellness-gradient rounded-full flex items-center justify-center">
                           <span className="text-white text-xl">{emoji}</span>
@@ -649,7 +649,7 @@ return null
                   const positionClass = position ? getPositionClasses(position, true) : '-top-6 -right-6'
 
                   return (
-                    <div className={`absolute ${positionClass} bg-sage-500 text-white p-4 rounded-2xl shadow-medium`}>
+                    <div className={`absolute ${positionClass} bg-sage-500 text-white p-3 sm:p-4 rounded-2xl shadow-medium max-sm:top-3 max-sm:right-3 max-sm:left-auto`}>
                       <div className="text-center">
                         <div className="text-2xl font-bold">{rating}</div>
                         {text && <div className="text-xs opacity-90">{text}</div>}

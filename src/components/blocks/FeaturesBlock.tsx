@@ -4,7 +4,8 @@ import { useState, useEffect, useRef } from 'react'
 
 import Image from 'next/image'
 
-import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
+import { normalizeImageUrl } from '@/lib/image-utils'
+import { gridColsThreeBreakpoints } from '@/lib/responsive-grid-classes'
 
 import { PRESET_ICONS } from './editors/features/defaults'
 import { BlockProps, FeaturesContent, FeatureItem } from './types'
@@ -177,7 +178,7 @@ return 'translate(0, 0) scale(1) rotateX(0deg)'
 
   return (
     <div
-      className={`group relative feature-card ${shadowClasses[cardStyles.shadow || 'sm']} hover:${shadowClasses[cardStyles.shadowHover || 'md']} ${hoverEffectClass} transition-all duration-300`}
+      className={`group relative feature-card min-w-0 ${shadowClasses[cardStyles.shadow || 'sm']} hover:${shadowClasses[cardStyles.shadowHover || 'md']} ${hoverEffectClass} transition-all duration-300`}
       style={{
         ...cardStyle,
         transitionDelay: animationDelay,
@@ -350,10 +351,12 @@ return 'translate(0, 0) scale(1) rotateX(0deg)'
 // Carousel Component
 function FeaturesCarousel({
   features,
-  content
+  content,
+  blockId
 }: {
   features: FeatureItem[]
   content: FeaturesContent
+  blockId: string
 }) {
   const [currentSlide, setCurrentSlide] = useState(0)
   const carousel = content.carousel || {
@@ -366,7 +369,9 @@ function FeaturesCarousel({
   }
 
   const visibleFeatures = features.filter(f => f.visible !== false)
-  const totalSlides = Math.ceil(visibleFeatures.length / carousel.slidesPerView)
+  const slidesPerView = Math.min(6, Math.max(1, carousel.slidesPerView || 1))
+  const totalSlides = Math.ceil(visibleFeatures.length / slidesPerView)
+  const tabletCols = Math.min(2, slidesPerView)
 
   // Auto play
   useEffect(() => {
@@ -385,6 +390,8 @@ return
 
     return () => clearInterval(interval)
   }, [carousel.autoPlay, carousel.autoPlayInterval, carousel.loop, totalSlides])
+
+  const carouselScope = `features-carousel-${blockId.replace(/[^a-zA-Z0-9_-]/g, '')}`
 
   const goToSlide = (index: number) => setCurrentSlide(index)
 
@@ -406,7 +413,22 @@ return
 
   return (
     <div className="relative">
-      <div className="overflow-hidden">
+      <style dangerouslySetInnerHTML={{ __html: `
+        .${carouselScope}-slide {
+          grid-template-columns: repeat(1, minmax(0, 1fr));
+        }
+        @media (min-width: 768px) {
+          .${carouselScope}-slide {
+            grid-template-columns: repeat(${tabletCols}, minmax(0, 1fr));
+          }
+        }
+        @media (min-width: 1024px) {
+          .${carouselScope}-slide {
+            grid-template-columns: repeat(${slidesPerView}, minmax(0, 1fr));
+          }
+        }
+      `}} />
+      <div className="overflow-hidden min-w-0">
         <div
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
@@ -414,14 +436,11 @@ return
           {Array.from({ length: totalSlides }).map((_, slideIndex) => (
             <div
               key={slideIndex}
-              className="w-full flex-shrink-0 grid gap-6"
-              style={{
-                gridTemplateColumns: `repeat(${carousel.slidesPerView}, 1fr)`,
-                padding: '0 1rem',
-              }}
+              className={`w-full flex-shrink-0 grid gap-4 sm:gap-6 ${carouselScope}-slide`}
+              style={{ padding: '0 0.75rem' }}
             >
               {visibleFeatures
-                .slice(slideIndex * carousel.slidesPerView, (slideIndex + 1) * carousel.slidesPerView)
+                .slice(slideIndex * slidesPerView, (slideIndex + 1) * slidesPerView)
                 .map((feature, index) => (
                   <FeatureCard
                     key={feature.id || index}
@@ -441,7 +460,7 @@ return
         <>
           <button
             onClick={goPrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors z-10"
+            className="absolute left-0 top-1/2 -translate-y-1/2 translate-x-1 sm:-translate-x-2 w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors z-10"
           >
             <svg className="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -449,7 +468,7 @@ return
           </button>
           <button
             onClick={goNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors z-10"
+            className="absolute right-0 top-1/2 -translate-y-1/2 -translate-x-1 sm:translate-x-2 w-9 h-9 sm:w-10 sm:h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-slate-50 transition-colors z-10"
           >
             <svg className="w-5 h-5 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -511,7 +530,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
     return () => observer.disconnect()
   }, [animations.enabled, animations.triggerOnScroll])
 
-  // Get grid columns class based on layout
+  // Get grid columns class based on layout (full class strings — Tailwind JIT safe)
   const getGridClass = () => {
     if (content.layout === 'list' || content.layout === 'centered-stack') {
       return 'grid-cols-1'
@@ -521,7 +540,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
     const tablet = content.responsive?.tablet || 2
     const mobile = content.responsive?.mobile || 1
 
-    return `grid-cols-${mobile} md:grid-cols-${tablet} lg:grid-cols-${desktop}`
+    return gridColsThreeBreakpoints(mobile, tablet, desktop)
   }
 
   // Build background style
@@ -603,14 +622,13 @@ export default function FeaturesBlock({ block }: BlockProps) {
           return (
           <div
             key={feature.id || index}
-            className="flex flex-col lg:flex-row items-center gap-8"
-            style={{
-              flexDirection: imagePosition === 'right' ? 'row-reverse' : 'row'
-            }}
+            className={`flex flex-col items-stretch gap-6 sm:gap-8 lg:flex-row lg:items-center min-w-0 ${
+              imagePosition === 'right' ? 'lg:flex-row-reverse' : ''
+            }`}
           >
             {/* Image */}
             {feature.image?.url && (
-              <div className="flex-1">
+              <div className="flex-1 min-w-0 w-full">
                 <div
                   className="relative w-full rounded-xl overflow-hidden"
                   style={{
@@ -638,7 +656,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
             )}
 
             {/* Content */}
-            <div className="flex-1">
+            <div className="flex-1 min-w-0 w-full">
               <FeatureCard
                 feature={feature}
                 content={{ ...content, cardStyles: { ...content.cardStyles, shadow: 'none' as const } }}
@@ -675,7 +693,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
   return (
     <section
       ref={sectionRef}
-      className={`relative ${content.customClass || ''}`}
+      className={`relative min-w-0 overflow-x-hidden ${content.customClass || ''}`}
       style={{
         ...getBackgroundStyle(),
         paddingTop: content.padding?.top || '5rem',
@@ -693,7 +711,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
       )}
 
       <div
-        className={`relative mx-auto ${maxWidthClasses[content.maxWidth || 'xl']}`}
+        className={`relative mx-auto min-w-0 max-w-full ${maxWidthClasses[content.maxWidth || 'xl']}`}
         style={content.maxWidth === 'custom' && content.customMaxWidth ? { maxWidth: content.customMaxWidth } : {}}
       >
         {/* Section Header */}
@@ -701,8 +719,11 @@ export default function FeaturesBlock({ block }: BlockProps) {
           <div className={`mb-12 ${headerAlignClass}`}>
             {content.showTitle !== false && content.title && (
               <h2
+                className="break-words hyphens-auto"
                 style={{
-                  fontSize: typography.sectionTitle?.fontSize || '2.5rem',
+                  fontSize: typography.sectionTitle?.fontSize
+                    ? `clamp(1.375rem, 4vw + 0.5rem, ${typography.sectionTitle.fontSize})`
+                    : 'clamp(1.375rem, 4vw + 0.5rem, 2.5rem)',
                   fontWeight: typography.sectionTitle?.fontWeight || '700',
                   color: typography.sectionTitle?.color || '#1e293b',
                   marginBottom: typography.sectionTitle?.marginBottom || '1rem',
@@ -714,9 +735,11 @@ export default function FeaturesBlock({ block }: BlockProps) {
 
             {content.showSubtitle !== false && content.subtitle && (
               <p
-                className={`${content.headerAlignment === 'center' ? 'mx-auto' : ''}`}
+                className={`break-words ${content.headerAlignment === 'center' ? 'mx-auto' : ''}`}
                 style={{
-                  fontSize: typography.sectionSubtitle?.fontSize || '1.125rem',
+                  fontSize: typography.sectionSubtitle?.fontSize
+                    ? `clamp(0.9375rem, 2.5vw + 0.25rem, ${typography.sectionSubtitle.fontSize})`
+                    : 'clamp(0.9375rem, 2.5vw + 0.25rem, 1.125rem)',
                   fontWeight: typography.sectionSubtitle?.fontWeight || '400',
                   color: typography.sectionSubtitle?.color || '#64748b',
                   maxWidth: typography.sectionSubtitle?.maxWidth || '600px',
@@ -737,7 +760,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
 
         {/* Features - Different layouts */}
         {content.layout === 'carousel' ? (
-          <FeaturesCarousel features={features} content={content} />
+          <FeaturesCarousel features={features} content={content} blockId={block.id} />
         ) : content.layout === 'zigzag' ? (
           renderZigzag()
         ) : content.layout === 'masonry' ? (

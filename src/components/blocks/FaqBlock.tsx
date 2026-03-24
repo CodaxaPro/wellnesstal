@@ -4,6 +4,8 @@ import { useState, useMemo } from 'react'
 
 import { ChevronDown, ChevronRight, Plus, Minus, Search, ThumbsUp, ThumbsDown, MessageCircle, HelpCircle, X } from 'lucide-react'
 
+import { gridColsFaqTabletDesktop } from '@/lib/responsive-grid-classes'
+
 import {
   BlockProps,
   FAQContent,
@@ -627,9 +629,12 @@ return 1
   const getGridCols = () => {
     const responsive = content.responsive
     if (!responsive) {
-return 'grid-cols-1 md:grid-cols-2'
-}
-    return `grid-cols-1 md:grid-cols-${responsive.tablet?.columns || 2} lg:grid-cols-${responsive.desktop?.columns || 2}`
+      return gridColsFaqTabletDesktop(2, 2)
+    }
+    return gridColsFaqTabletDesktop(
+      responsive.tablet?.columns || 2,
+      responsive.desktop?.columns || 2
+    )
   }
 
   // Header Component

@@ -132,7 +132,15 @@ export default function GallerySection() {
 
         {/* Image Grid */}
         {!loading && (
-          <div className={`grid grid-cols-2 md:grid-cols-3 lg:grid-cols-${content.columns} gap-4`}>
+          <div
+            className={`grid grid-cols-2 md:grid-cols-3 gap-4 ${
+              content.columns === 2
+                ? 'lg:grid-cols-2'
+                : content.columns === 4
+                  ? 'lg:grid-cols-4'
+                  : 'lg:grid-cols-3'
+            }`}
+          >
             {filteredImages.map((image, index) => (
               <div
                 key={image.id}

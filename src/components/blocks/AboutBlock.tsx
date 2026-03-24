@@ -105,8 +105,8 @@ export default function AboutBlock({ block }: BlockProps) {
   const sectionBgColor = content.background?.color || '#FFFFFF'
 
   return (
-    <section id="about" className="py-20 lg:py-32" style={{ backgroundColor: sectionBgColor }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" className="py-20 lg:py-32 min-w-0 overflow-x-hidden" style={{ backgroundColor: sectionBgColor }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-w-0">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left Column - Content */}
           <div>
@@ -125,13 +125,15 @@ export default function AboutBlock({ block }: BlockProps) {
             </div>
 
             {/* Title - Ana sayfadaki gibi */}
-            <h2 className="mb-6 leading-tight">
+            <h2 className="mb-6 leading-tight break-words hyphens-auto">
               {title ? (
                 <>
                   <span
                     style={{
                       fontFamily: styles.title?.fontFamily,
-                      fontSize: styles.title?.fontSize,
+                      fontSize: styles.title?.fontSize
+                        ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.title.fontSize})`
+                        : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
                       fontWeight: styles.title?.fontWeight as any,
                       color: styles.title?.color
                     }}
@@ -141,7 +143,9 @@ export default function AboutBlock({ block }: BlockProps) {
                   <span
                     style={{
                       fontFamily: styles.highlightedText?.fontFamily,
-                      fontSize: styles.highlightedText?.fontSize,
+                      fontSize: styles.highlightedText?.fontSize
+                        ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.highlightedText.fontSize})`
+                        : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
                       fontWeight: styles.highlightedText?.fontWeight as any,
                       color: styles.highlightedText?.color
                     }}
@@ -153,7 +157,9 @@ export default function AboutBlock({ block }: BlockProps) {
                 <span
                   style={{
                     fontFamily: styles.title?.fontFamily,
-                    fontSize: styles.title?.fontSize,
+                    fontSize: styles.title?.fontSize
+                      ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.title.fontSize})`
+                      : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
                     fontWeight: styles.title?.fontWeight as any,
                     color: styles.title?.color
                   }}
@@ -165,10 +171,12 @@ export default function AboutBlock({ block }: BlockProps) {
 
             {/* Description */}
             <p
-              className="leading-relaxed mb-8"
+              className="leading-relaxed mb-8 break-words"
               style={{
                 fontFamily: styles.description?.fontFamily,
-                fontSize: styles.description?.fontSize,
+                fontSize: styles.description?.fontSize
+                  ? `clamp(1rem, 2.5vw + 0.25rem, ${styles.description.fontSize})`
+                  : 'clamp(1rem, 2.5vw + 0.25rem, 1.25rem)',
                 fontWeight: styles.description?.fontWeight as any,
                 color: styles.description?.color
               }}

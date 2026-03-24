@@ -242,7 +242,7 @@ return validImages
 
     return (
       <div
-        className="flex"
+        className="flex flex-col md:flex-row min-w-0"
         style={{ gap: `${layout.gap}px` }}
       >
         {columns.map((column, colIndex) => (
@@ -374,12 +374,12 @@ return validImages
       {filteredImages.map((image, index) => (
         <div
           key={image.id || index}
-          className={`relative overflow-hidden cursor-pointer group ${getShadowClass()} flex-grow`}
+          className={`relative overflow-hidden cursor-pointer group ${getShadowClass()} flex-grow min-w-0 w-full sm:w-auto`}
           style={{
             borderRadius: `${style.borderRadius}px`,
-            height: '250px',
-            minWidth: '200px',
-            maxWidth: '400px'
+            height: 'clamp(200px, 55vw, 250px)',
+            minWidth: 0,
+            maxWidth: 'min(100%, 400px)'
           }}
           onClick={() => openLightbox(index)}
         >

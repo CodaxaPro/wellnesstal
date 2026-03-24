@@ -60,7 +60,7 @@ export default function BlockRenderer({ blocks, isEditing, onBlockUpdate }: Bloc
   const sortedBlocks = [...blocks].sort((a, b) => a.position - b.position)
 
   return (
-    <div className="block-renderer">
+    <div className="block-renderer w-full min-w-0 overflow-x-hidden">
       {sortedBlocks.map((block) => {
         if (!block.visible && !isEditing) {
 return null

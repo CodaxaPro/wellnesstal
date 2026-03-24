@@ -1,5 +1,7 @@
 'use client'
 
+import { gridColsStatsItemCount } from '@/lib/responsive-grid-classes'
+
 import { BlockProps, StatsContent } from './types'
 
 export default function StatsBlock({ block }: BlockProps) {
@@ -15,7 +17,7 @@ export default function StatsBlock({ block }: BlockProps) {
           </h2>
         )}
 
-        <div className={`grid grid-cols-2 md:grid-cols-${Math.min(stats.length, 4)} gap-8`}>
+        <div className={`grid ${gridColsStatsItemCount(stats.length || 1)} gap-4 sm:gap-8`}>
           {stats.map((stat, index) => (
             <div key={index} className="text-center">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">

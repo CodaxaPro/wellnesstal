@@ -4,6 +4,34 @@ import { useState, useMemo, useRef, useEffect } from 'react'
 
 import { BlockProps, EmbedContent } from './types'
 
+/** Treuepay Terminbuchung — used when booking embed has no URL/code (sectionId: booking). */
+const TREUEPAY_BOOKING_IFRAME_SRC =
+  'https://treuepay.de/booking?orgSlug=wellnesstal'
+
+function resolveEmbedSrc(content: EmbedContent, computedUrl: string): string {
+  const trimmed = computedUrl?.trim() ?? ''
+  if (trimmed) {
+    return trimmed
+  }
+  if (content.sectionId === 'booking') {
+    return TREUEPAY_BOOKING_IFRAME_SRC
+  }
+  return trimmed
+}
+
+/** Treuepay Buchungsflow: tall scrollable UI — size iframe for mobile dvh + full width. */
+function isTreuepayBookingSrc(src: string): boolean {
+  if (!src?.trim()) {
+    return false
+  }
+  try {
+    const u = new URL(src)
+    return u.hostname.replace(/^www\./, '') === 'treuepay.de' && u.pathname.includes('/booking')
+  } catch {
+    return false
+  }
+}
+
 // Default content for new embed blocks
 export const getDefaultEmbedContent = (): EmbedContent => ({
   provider: 'custom',
@@ -62,7 +90,6 @@ return
 }
 
     const iframe = iframeRef.current
-    const container = containerRef.current
 
     // Listen for postMessage from iframe (if supported)
     const handleMessage = (event: MessageEvent) => {
@@ -135,7 +162,7 @@ return
     return () => {
       window.removeEventListener('message', handleMessage)
     }
-  }, [content.provider, content.embedUrl])
+  }, [content.provider, content.embedUrl, content.sectionId, content.embedCode])
 
   // Get max width class
   const getMaxWidthClass = () => {
@@ -310,6 +337,14 @@ params.set('rel', '0')
     }
   }, [content.provider, content.embedUrl, content.providerSettings])
 
+  const resolvedEmbedSrc = useMemo(
+    () => resolveEmbedSrc(content, getEmbedUrl),
+    [content.sectionId, content.embedUrl, content.embedCode, content.provider, getEmbedUrl]
+  )
+
+  const treuepayBookingAutoFrame =
+    isTreuepayBookingSrc(resolvedEmbedSrc) && content.frame?.aspectRatio === 'auto'
+
   // Render frame border style
   const getFrameStyle = (): React.CSSProperties => {
     const style: React.CSSProperties = {
@@ -478,7 +513,7 @@ params.set('rel', '0')
     }
 
     // URL-based embed (iframe)
-    const embedSrc = getEmbedUrl
+    const embedSrc = resolveEmbedSrc(content, getEmbedUrl)
     if (!embedSrc) {
       return (
         <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
@@ -542,7 +577,15 @@ params.set('rel', '0')
       style={getBackgroundStyle()}
     >
       <div
-        className={`${getMaxWidthClass()} ${getAlignmentClass()} w-full ${!hasCustomPadding ? 'px-4 sm:px-6 lg:px-8' : ''}`}
+        className={`${
+          treuepayBookingAutoFrame ? 'max-w-full' : getMaxWidthClass()
+        } ${getAlignmentClass()} w-full ${
+          !hasCustomPadding
+            ? treuepayBookingAutoFrame
+              ? 'px-2 sm:px-4 lg:px-8'
+              : 'px-4 sm:px-6 lg:px-8'
+            : ''
+        }`}
         style={containerStyle}
       >
         {/* Section Header */}
@@ -598,16 +641,29 @@ params.set('rel', '0')
         {/* Embed Frame */}
         <div
           ref={containerRef}
-          className={`relative ${getShadowClass()} bg-gray-900 w-full overflow-hidden`}
+          className={`relative ${getShadowClass()} ${
+            treuepayBookingAutoFrame ? 'bg-gray-50' : 'bg-gray-900'
+          } w-full overflow-hidden ${
+            treuepayBookingAutoFrame
+              ? // dvh: mobile browser chrome; cap height so desktop forms still fit
+                'min-h-[min(76dvh,780px)] h-[min(92dvh,1900px)] sm:min-h-[min(80dvh,880px)] lg:min-h-[min(72dvh,920px)]'
+              : ''
+          }`}
           style={{
             ...getFrameStyle(),
             paddingBottom: content.frame?.aspectRatio === 'auto'
               ? undefined
               : getAspectRatioStyle(),
-            height: content.frame?.aspectRatio === 'auto'
-              ? (iframeHeight || content.frame?.height || '1900px')
-              : undefined,
-            minHeight: content.frame?.minHeight || (content.frame?.aspectRatio === 'auto' ? '600px' : undefined),
+            height:
+              content.frame?.aspectRatio === 'auto'
+                ? iframeHeight ||
+                  content.frame?.height ||
+                  (treuepayBookingAutoFrame ? undefined : '1900px')
+                : undefined,
+            minHeight: treuepayBookingAutoFrame
+              ? content.frame?.minHeight
+              : content.frame?.minHeight ||
+                (content.frame?.aspectRatio === 'auto' ? '600px' : undefined),
             maxHeight: content.frame?.maxHeight,
             width: '100%',
             position: 'relative',
