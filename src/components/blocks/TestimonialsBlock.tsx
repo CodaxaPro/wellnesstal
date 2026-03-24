@@ -1,5 +1,6 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import { useState, useEffect } from 'react'
 
 import Image from 'next/image'
@@ -98,7 +99,7 @@ return
     }, content.autoSlideDelay || 5000)
 
     return () => clearInterval(interval)
-  }, [isAutoPlaying, testimonials.length, content.autoSlideDelay])
+  }, [isAutoPlaying, testimonials.length, content.autoSlideDelay, content.autoPlay])
 
   const nextTestimonial = () => {
     setCurrentTestimonial((prev) => (prev + 1) % testimonials.length)
@@ -150,6 +151,7 @@ return
   const stats = content.stats && content.stats.length > 0 ? content.stats : defaultStats
 
   const sectionBgColor = content.background?.color || '#F7F5F3'
+  const activeTestimonial = testimonials[currentTestimonial]
 
   if (testimonials.length === 0) {
     return (
@@ -174,7 +176,7 @@ return
             style={{
               fontFamily: styles.badge?.fontFamily,
               fontSize: styles.badge?.fontSize,
-              fontWeight: styles.badge?.fontWeight as any,
+              fontWeight: styles.badge?.fontWeight as CSSProperties['fontWeight'],
               color: styles.badge?.color,
               backgroundColor: styles.badge?.backgroundColor
             }}
@@ -190,7 +192,7 @@ return
                 fontSize: styles.sectionTitle?.fontSize
                   ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.sectionTitle.fontSize})`
                   : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
-                fontWeight: styles.sectionTitle?.fontWeight as any,
+                fontWeight: styles.sectionTitle?.fontWeight as CSSProperties['fontWeight'],
                 color: styles.sectionTitle?.color
               }}
             >
@@ -202,7 +204,7 @@ return
                 fontSize: styles.highlightedText?.fontSize
                   ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.highlightedText.fontSize})`
                   : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
-                fontWeight: styles.highlightedText?.fontWeight as any,
+                fontWeight: styles.highlightedText?.fontWeight as CSSProperties['fontWeight'],
                 color: styles.highlightedText?.color
               }}
             >
@@ -218,7 +220,7 @@ return
               fontSize: styles.description?.fontSize
                 ? `clamp(1rem, 2.5vw + 0.25rem, ${styles.description.fontSize})`
                 : 'clamp(1rem, 2.5vw + 0.25rem, 1.25rem)',
-              fontWeight: styles.description?.fontWeight as any,
+              fontWeight: styles.description?.fontWeight as CSSProperties['fontWeight'],
               color: styles.description?.color
             }}
           >
@@ -234,40 +236,42 @@ return
             <div className="absolute bottom-0 left-0 w-24 h-24 bg-earth-100 rounded-full translate-y-12 -translate-x-12 opacity-50" />
 
             {/* Quote Icon */}
-            <div className="absolute top-8 left-8 text-6xl text-sage-200 font-serif">"</div>
+            <div className="absolute top-8 left-8 text-6xl text-sage-200 font-serif" aria-hidden>
+              {'\u201C'}
+            </div>
 
             <div className="relative z-10">
               {/* Header */}
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between mb-8 min-w-0">
                 <div className="flex items-center gap-4">
                   <div className="w-16 h-16 bg-sage-500 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-medium">
-                    {testimonials[currentTestimonial]?.avatar ? (
+                    {activeTestimonial?.avatar ? (
                       <div className="relative w-full h-full rounded-full overflow-hidden">
                         <Image
-                          src={testimonials[currentTestimonial].avatar!}
-                          alt={testimonials[currentTestimonial]?.name || 'Testimonial'}
+                          src={activeTestimonial.avatar}
+                          alt={activeTestimonial?.name || 'Testimonial'}
                           fill
                           className="object-cover"
                         />
                       </div>
                     ) : (
-                      getAvatarInitials(testimonials[currentTestimonial]?.name || '')
-            )}
+                      getAvatarInitials(activeTestimonial?.name || '')
+                    )}
           </div>
                   <div>
                     <div className="flex items-center gap-2 mb-1">
                       <h3 className="text-xl font-bold text-charcoal">
-                        {testimonials[currentTestimonial]?.name || 'Anonym'}
+                        {activeTestimonial?.name || 'Anonym'}
                       </h3>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-gray-custom">
-                      {testimonials[currentTestimonial]?.role && (
+                      {activeTestimonial?.role && (
                         <>
-                          <span>📍 {testimonials[currentTestimonial].role}</span>
-                          {testimonials[currentTestimonial]?.company && (
+                          <span>📍 {activeTestimonial.role}</span>
+                          {activeTestimonial?.company && (
                             <>
                               <span>•</span>
-                              <span className="text-sage-600 font-medium">{testimonials[currentTestimonial].company}</span>
+                              <span className="text-sage-600 font-medium">{activeTestimonial.company}</span>
                             </>
                           )}
                         </>
@@ -277,11 +281,11 @@ return
                 </div>
 
                 {/* Rating */}
-                {testimonials[currentTestimonial]?.rating && (
+                {activeTestimonial?.rating && (
                   <div className="flex items-center gap-2 sm:ml-auto flex-shrink-0">
                     <div className="flex gap-1">
-                    {[...Array(5)].map((_, i) => (
-                        <svg key={i} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                    {[1, 2, 3, 4, 5].map((starSlot) => (
+                        <svg key={`main-rating-star-${starSlot}`} className="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                         <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                       </svg>
                     ))}
@@ -292,12 +296,18 @@ return
 
               {/* Testimonial Text */}
               <blockquote className="text-base sm:text-lg lg:text-xl text-gray-700 leading-relaxed italic mb-8 font-light break-words hyphens-auto">
-                "{testimonials[currentTestimonial]?.content || 'Kein Text verfügbar'}"
+                <span aria-hidden className="not-italic">
+                  {'\u201C'}
+                </span>
+                {activeTestimonial?.content || 'Kein Text verfügbar'}
+                <span aria-hidden className="not-italic">
+                  {'\u201D'}
+                </span>
               </blockquote>
 
               {/* Read More Link - Google Review */}
-              {testimonials[currentTestimonial]?.readMoreLink?.enabled && testimonials[currentTestimonial]?.readMoreLink?.url && (() => {
-                const url = testimonials[currentTestimonial].readMoreLink?.url || ''
+              {activeTestimonial?.readMoreLink?.enabled && activeTestimonial?.readMoreLink?.url && (() => {
+                const url = activeTestimonial.readMoreLink?.url || ''
                 // Normalize URL: eğer https:// veya http:// ile başlamıyorsa ekle
                 let normalizedUrl = url.trim()
                 if (normalizedUrl && !normalizedUrl.match(/^https?:\/\//i)) {
@@ -326,7 +336,7 @@ return
                         window.open(normalizedUrl, '_blank', 'noopener,noreferrer')
                       }}
                     >
-                      <span>{testimonials[currentTestimonial].readMoreLink?.text || 'Weiter lesen'}</span>
+                      <span>{activeTestimonial.readMoreLink?.text || 'Weiter lesen'}</span>
                       <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                       </svg>
@@ -366,9 +376,10 @@ return
         {/* Testimonial Dots */}
         {testimonials.length > 1 && (
           <div className="flex justify-center gap-3 mb-12">
-            {testimonials.map((_, index) => (
+            {testimonials.map((t, index) => (
               <button
-                key={index}
+                key={`testimonial-dot-${t.id}`}
+                type="button"
                 onClick={() => goToTestimonial(index)}
                 className={`w-3 h-3 rounded-full transition-all duration-300 ${
                   index === currentTestimonial
@@ -387,7 +398,7 @@ return
             {testimonials
               .filter((_, index) => index !== currentTestimonial)
               .slice(0, 3)
-              .map((testimonial, index) => {
+              .map((testimonial) => {
                 const originalIndex = testimonials.findIndex(t => t.id === testimonial.id)
                 return (
                   <div
@@ -420,8 +431,8 @@ return
 
                     {testimonial.rating && (
                       <div className="flex mb-3">
-                        {[...Array(5)].map((_, i) => (
-                          <svg key={i} className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        {[1, 2, 3, 4, 5].map((starSlot) => (
+                          <svg key={`${testimonial.id}-card-star-${starSlot}`} className="h-4 w-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                           </svg>
                         ))}
@@ -490,14 +501,14 @@ return
         {content.showStats === true && stats.length > 0 && (
           <div className="mt-16 bg-white rounded-3xl p-8 lg:p-12 shadow-large">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => (
-                <div key={index} className="text-center">
+              {stats.map((stat) => (
+                <div key={`${stat.label}-${stat.value}`} className="text-center">
                   <div
                     className="text-3xl lg:text-4xl font-bold text-sage-600 mb-2"
                     style={{
                       fontFamily: styles.statsValue?.fontFamily || defaultStyles.statsValue?.fontFamily,
                       fontSize: styles.statsValue?.fontSize || defaultStyles.statsValue?.fontSize,
-                      fontWeight: (styles.statsValue?.fontWeight as any) || defaultStyles.statsValue?.fontWeight,
+                      fontWeight: (styles.statsValue?.fontWeight || defaultStyles.statsValue?.fontWeight) as CSSProperties['fontWeight'],
                       color: styles.statsValue?.color || defaultStyles.statsValue?.color
                     }}
                   >
@@ -508,7 +519,7 @@ return
                     style={{
                       fontFamily: styles.statsLabel?.fontFamily || defaultStyles.statsLabel?.fontFamily,
                       fontSize: styles.statsLabel?.fontSize || defaultStyles.statsLabel?.fontSize,
-                      fontWeight: (styles.statsLabel?.fontWeight as any) || defaultStyles.statsLabel?.fontWeight,
+                      fontWeight: (styles.statsLabel?.fontWeight || defaultStyles.statsLabel?.fontWeight) as CSSProperties['fontWeight'],
                       color: styles.statsLabel?.color || defaultStyles.statsLabel?.color
                     }}
                   >

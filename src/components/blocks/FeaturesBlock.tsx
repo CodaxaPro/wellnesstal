@@ -21,9 +21,11 @@ const shadowClasses: Record<string, string> = {
 }
 
 // Icon size mapping
+const defaultIconDims = { container: 'w-12 h-12', icon: 20 }
+
 const iconSizes: Record<string, { container: string; icon: number }> = {
   sm: { container: 'w-10 h-10', icon: 16 },
-  md: { container: 'w-12 h-12', icon: 20 },
+  md: defaultIconDims,
   lg: { container: 'w-14 h-14', icon: 24 },
   xl: { container: 'w-16 h-16', icon: 28 },
 }
@@ -94,6 +96,7 @@ return null
   const iconBg = feature.iconConfig?.backgroundColor || iconStyles.backgroundColor || '#10b981'
   const iconColor = feature.iconConfig?.iconColor || iconStyles.iconColor || '#ffffff'
   const iconSize = iconStyles.size || 'md'
+  const iconDims = iconSizes[iconSize] ?? defaultIconDims
 
   // Get animation transform based on type
   const getAnimationTransform = () => {
@@ -204,12 +207,12 @@ return 'translate(0, 0) scale(1) rotateX(0deg)'
       {content.showIcons !== false && iconStyles.position === 'top' && iconStyles.showIcons !== false && (
         <div className="flex justify-center feature-icon-wrapper" style={{ marginBottom: contentGap }}>
           <div
-            className={`feature-icon flex items-center justify-center ${iconSizes[iconSize].container} ${iconShapeClass} ${iconHoverClass} ${iconShadowClass} transition-transform`}
+            className={`feature-icon flex items-center justify-center ${iconDims.container} ${iconShapeClass} ${iconHoverClass} ${iconShadowClass} transition-transform`}
             style={iconContainerStyle}
           >
             <FeatureIcon
               name={iconName}
-              size={iconSizes[iconSize].icon}
+              size={iconDims.icon}
               color={iconColor}
             />
           </div>
@@ -227,12 +230,12 @@ return 'translate(0, 0) scale(1) rotateX(0deg)'
         {/* Icon - Left/Right Position */}
         {content.showIcons !== false && (iconStyles.position === 'left' || iconStyles.position === 'right') && iconStyles.showIcons !== false && (
           <div
-            className={`feature-icon flex-shrink-0 flex items-center justify-center ${iconSizes[iconSize].container} ${iconShapeClass} ${iconHoverClass} ${iconShadowClass} transition-transform`}
+            className={`feature-icon flex-shrink-0 flex items-center justify-center ${iconDims.container} ${iconShapeClass} ${iconHoverClass} ${iconShadowClass} transition-transform`}
             style={iconContainerStyle}
           >
             <FeatureIcon
               name={iconName}
-              size={iconSizes[iconSize].icon}
+              size={iconDims.icon}
               color={iconColor}
             />
           </div>
@@ -243,12 +246,12 @@ return 'translate(0, 0) scale(1) rotateX(0deg)'
           <div className={`flex items-center gap-2 ${iconStyles.position === 'top' ? 'justify-center' : ''}`}>
             {content.showIcons !== false && iconStyles.position === 'inline-title' && iconStyles.showIcons !== false && (
               <div
-                className={`feature-icon flex-shrink-0 flex items-center justify-center ${iconSizes[iconSize].container} ${iconShapeClass} ${iconShadowClass}`}
+                className={`feature-icon flex-shrink-0 flex items-center justify-center ${iconDims.container} ${iconShapeClass} ${iconShadowClass}`}
                 style={iconContainerStyle}
               >
                 <FeatureIcon
                   name={iconName}
-                  size={iconSizes[iconSize].icon}
+                  size={iconDims.icon}
                   color={iconColor}
                 />
               </div>
@@ -411,8 +414,18 @@ return
     }
   }
 
+  const slideKeys = Array.from({ length: totalSlides }, (_, slideIndex) => {
+    const slideFeatures = visibleFeatures.slice(
+      slideIndex * slidesPerView,
+      (slideIndex + 1) * slidesPerView
+    )
+    const label = slideFeatures.map((f) => f.id ?? f.title).join('¦')
+    return `${label}@${slideIndex * slidesPerView}`
+  })
+
   return (
     <div className="relative">
+      {/* eslint-disable-next-line react/no-danger -- scoped carousel grid columns from CMS layout numbers */}
       <style dangerouslySetInnerHTML={{ __html: `
         .${carouselScope}-slide {
           grid-template-columns: repeat(1, minmax(0, 1fr));
@@ -433,9 +446,9 @@ return
           className="flex transition-transform duration-500 ease-in-out"
           style={{ transform: `translateX(-${currentSlide * 100}%)` }}
         >
-          {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+          {slideKeys.map((slideKey, slideIndex) => (
             <div
-              key={slideIndex}
+              key={slideKey}
               className={`w-full flex-shrink-0 grid gap-4 sm:gap-6 ${carouselScope}-slide`}
               style={{ padding: '0 0.75rem' }}
             >
@@ -480,9 +493,10 @@ return
       {/* Dots */}
       {carousel.showDots && totalSlides > 1 && (
         <div className="flex justify-center gap-2 mt-6">
-          {Array.from({ length: totalSlides }).map((_, index) => (
+          {slideKeys.map((slideKey, index) => (
             <button
-              key={index}
+              key={slideKey}
+              type="button"
               onClick={() => goToSlide(index)}
               className={`w-3 h-3 rounded-full transition-all ${
                 currentSlide === index ? 'bg-sage-500 w-8' : 'bg-slate-300 hover:bg-slate-400'
@@ -516,7 +530,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) {
+        if (entry?.isIntersecting) {
           setIsVisible(true)
         }
       },
@@ -618,6 +632,7 @@ export default function FeaturesBlock({ block }: BlockProps) {
             imagePosition = index % 2 === 1 ? 'right' : 'left'
           }
 
+          const featureImage = feature.image
 
           return (
           <div
@@ -627,28 +642,28 @@ export default function FeaturesBlock({ block }: BlockProps) {
             }`}
           >
             {/* Image */}
-            {feature.image?.url && (
+            {featureImage?.url && (
               <div className="flex-1 min-w-0 w-full">
                 <div
                   className="relative w-full rounded-xl overflow-hidden"
                   style={{
-                    aspectRatio: feature.image.aspectRatio === '16:9' ? '16/9' :
-                                 feature.image.aspectRatio === '4:3' ? '4/3' :
-                                 feature.image.aspectRatio === '1:1' ? '1/1' :
-                                 feature.image.aspectRatio === '3:2' ? '3/2' : 'auto',
-                    borderRadius: feature.image.borderRadius || '1rem'
+                    aspectRatio: featureImage.aspectRatio === '16:9' ? '16/9' :
+                                 featureImage.aspectRatio === '4:3' ? '4/3' :
+                                 featureImage.aspectRatio === '1:1' ? '1/1' :
+                                 featureImage.aspectRatio === '3:2' ? '3/2' : 'auto',
+                    borderRadius: featureImage.borderRadius || '1rem'
                   }}
                 >
                   <Image
-                    src={normalizeImageUrl(feature.image.url)}
-                    alt={feature.image.alt || feature.title}
+                    src={normalizeImageUrl(featureImage.url)}
+                    alt={featureImage.alt || feature.title}
                     fill
-                    className={`object-${feature.image.objectFit || 'cover'}`}
+                    className={`object-${featureImage.objectFit || 'cover'}`}
                     sizes="(max-width: 768px) 100vw, 50vw"
                     onError={(e) => {
-                      console.error('Image load error:', normalizeImageUrl(feature.image.url))
+                      console.error('Image load error:', normalizeImageUrl(featureImage.url))
                       const target = e.target as HTMLImageElement
-                      target.src = `https://via.placeholder.com/800x450/9CAF88/FFFFFF?text=${encodeURIComponent(feature.image.alt || feature.title || 'Image')}`
+                      target.src = `https://via.placeholder.com/800x450/9CAF88/FFFFFF?text=${encodeURIComponent(featureImage.alt || feature.title || 'Image')}`
                     }}
                   />
                 </div>

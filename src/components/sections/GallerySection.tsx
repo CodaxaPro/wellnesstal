@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react'
 
+import Image from 'next/image'
+
 interface MediaFile {
   id: string
   file_name: string
@@ -48,7 +50,7 @@ export default function GallerySection() {
         console.error('Failed to fetch gallery content:', error)
       }
     }
-    fetchContent()
+    void fetchContent()
   }, [])
 
   useEffect(() => {
@@ -70,7 +72,7 @@ export default function GallerySection() {
         setLoading(false)
       }
     }
-    fetchImages()
+    void fetchImages()
   }, [content.maxImages, activeCategory])
 
   const filteredImages = activeCategory === 'all'
@@ -150,10 +152,12 @@ export default function GallerySection() {
                   animationDelay: `${index * 100}ms`
                 }}
               >
-                <img
+                <Image
                   src={image.thumbnail_path || image.file_path}
                   alt={image.alt_text || image.original_name}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                  fill
+                  sizes="(max-width: 768px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-700 group-hover:scale-110"
                 />
 
                 {/* Overlay */}
@@ -193,12 +197,19 @@ export default function GallerySection() {
               </svg>
             </button>
 
-            <img
-              src={selectedImage.file_path}
-              alt={selectedImage.alt_text || selectedImage.original_name}
-              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            <div
+              className="relative h-[min(90vh,900px)] w-full max-w-6xl"
               onClick={(e) => e.stopPropagation()}
-            />
+            >
+              <Image
+                src={selectedImage.file_path}
+                alt={selectedImage.alt_text || selectedImage.original_name}
+                fill
+                sizes="100vw"
+                className="object-contain rounded-lg shadow-2xl"
+                priority
+              />
+            </div>
 
             <div className="absolute bottom-4 left-0 right-0 text-center text-white">
               <p className="text-lg font-medium">

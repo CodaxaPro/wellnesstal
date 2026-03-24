@@ -99,7 +99,7 @@ return
         if (event.origin !== iframeUrl.origin) {
 return
 }
-      } catch (e) {
+      } catch {
         // If URL parsing fails, skip
         return
       }
@@ -139,7 +139,7 @@ return
             }
           }
         }
-      } catch (e) {
+      } catch {
         // Cross-origin: can't access iframe content
         // Will rely on postMessage or manual height setting
       }
@@ -339,7 +339,7 @@ params.set('rel', '0')
 
   const resolvedEmbedSrc = useMemo(
     () => resolveEmbedSrc(content, getEmbedUrl),
-    [content.sectionId, content.embedUrl, content.embedCode, content.provider, getEmbedUrl]
+    [content, getEmbedUrl]
   )
 
   const treuepayBookingAutoFrame =
@@ -448,7 +448,7 @@ params.set('rel', '0')
       .replace(/marginwidth\s*=\s*["'][^"']*["']/gi, '')
       .replace(/marginheight\s*=\s*["'][^"']*["']/gi, '')
       // Remove width/height from inline styles (including invalid values like "100%px")
-      .replace(/style\s*=\s*["']([^"']*)["']/gi, (match, styles) => {
+      .replace(/style\s*=\s*["']([^"']*)["']/gi, (_match, styles) => {
         let cleanStyles = styles
           .replace(/width\s*:\s*[^;]+;?/gi, '')
           .replace(/height\s*:\s*[^;]+;?/gi, '')
@@ -465,7 +465,7 @@ params.set('rel', '0')
         return `style="${cleanStyles}"`
       })
       // Clean up iframe tag
-      .replace(/<iframe\s+([^>]*)>/gi, (match, attrs) => {
+      .replace(/<iframe\s+([^>]*)>/gi, (_match, attrs) => {
         // Remove width/height attributes again (in case they weren't caught)
         let cleanAttrs = attrs
           .replace(/width\s*=\s*["'][^"']*["']/gi, '')
@@ -507,6 +507,7 @@ params.set('rel', '0')
             right: 0,
             bottom: 0
           }}
+          // eslint-disable-next-line react/no-danger -- admin-provided embed HTML (iframes/scripts per block settings)
           dangerouslySetInnerHTML={{ __html: processedCode }}
         />
       )

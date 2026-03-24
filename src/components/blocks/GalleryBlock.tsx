@@ -233,11 +233,17 @@ return validImages
 
   // Render masonry layout
   const renderMasonryLayout = () => {
-    const columnCount = layout.columns
-    const columns: GalleryImage[][] = Array.from({ length: columnCount }, () => [])
+    const columnCount = Math.max(1, layout.columns ?? defaultLayout.columns)
+    const columnBuckets = Array.from({ length: columnCount }, (_, slot) => ({
+      slot,
+      items: [] as GalleryImage[],
+    }))
 
     filteredImages.forEach((image, index) => {
-      columns[index % columnCount].push(image)
+      const bucket = columnBuckets[index % columnCount]
+      if (bucket) {
+        bucket.items.push(image)
+      }
     })
 
     return (
@@ -245,9 +251,9 @@ return validImages
         className="flex flex-col md:flex-row min-w-0"
         style={{ gap: `${layout.gap}px` }}
       >
-        {columns.map((column, colIndex) => (
+        {columnBuckets.map(({ slot, items: column }) => (
           <div
-            key={colIndex}
+            key={`masonry-slot-${slot}`}
             className="flex-1 flex flex-col"
             style={{ gap: `${layout.gap}px` }}
           >
@@ -255,7 +261,7 @@ return validImages
               const globalIndex = filteredImages.findIndex(img => img.id === image.id)
               return (
                 <div
-                  key={image.id || index}
+                  key={image.id}
                   className={`relative overflow-hidden cursor-pointer group ${getShadowClass()}`}
                   style={{ borderRadius: `${style.borderRadius}px` }}
                   onClick={() => openLightbox(globalIndex)}
@@ -349,9 +355,10 @@ return validImages
 
             {/* Dots */}
             <div className="flex justify-center gap-2 mt-4">
-              {filteredImages.map((_, index) => (
+              {filteredImages.map((image, index) => (
                 <button
-                  key={index}
+                  key={`slider-dot-${image.id}`}
+                  type="button"
                   onClick={() => setCurrentSlide(index)}
                   className={`w-2 h-2 rounded-full transition-all ${
                     currentSlide === index ? 'bg-sage-500 w-6' : 'bg-slate-300'

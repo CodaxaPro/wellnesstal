@@ -1,12 +1,116 @@
 'use client'
 
+import type { CSSProperties } from 'react'
 import { useEffect, useState } from 'react'
 
+import Image from 'next/image'
 import Link from 'next/link'
 
-import { normalizeImageUrl, getImageProps } from '@/lib/image-utils'
+import { getImageProps } from '@/lib/image-utils'
 
-import { BlockProps, HeroContent, HeroTextStyle } from './types'
+import { BlockProps, HeroContent } from './types'
+
+/** Scoped hero description rules — injected as text child of <style> (no dangerouslySetInnerHTML). */
+const HERO_DESCRIPTION_CSS = `
+  .hero-description p {
+    margin: 0.75rem 0;
+  }
+  .hero-description p[data-spacing="compact"] {
+    margin: 0.25rem 0;
+  }
+  .hero-description p[data-spacing="normal"] {
+    margin: 0.75rem 0;
+  }
+  .hero-description p[data-spacing="relaxed"] {
+    margin: 1.25rem 0;
+  }
+  .hero-description ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero-description ul[data-marker="check"],
+  .hero-description ul[data-marker="arrow"],
+  .hero-description ul[data-marker="arrow-right"],
+  .hero-description ul[data-marker="star"],
+  .hero-description ul[data-marker="diamond"],
+  .hero-description ul[data-marker="dash"],
+  .hero-description ul[data-marker="dot"] {
+    list-style: none;
+    padding-left: 0;
+  }
+  .hero-description ul[data-marker="check"] li::before { content: "✓"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="check-circle"] li::before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2em;
+    height: 1.2em;
+    border-radius: 50%;
+    background-color: #9CAF88;
+    color: white;
+    font-size: 0.8em;
+    font-weight: bold;
+  }
+  .hero-description ul[data-marker="arrow"] li::before { content: "→"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="arrow-right"] li::before { content: "▶"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="star"] li::before { content: "★"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="diamond"] li::before { content: "◆"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="dash"] li::before { content: "—"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="dot"] li::before { content: "•"; position: absolute; left: 0; color: #637554; font-weight: bold; }
+  .hero-description ul[data-marker="check"] li,
+  .hero-description ul[data-marker="check-circle"] li,
+  .hero-description ul[data-marker="arrow"] li,
+  .hero-description ul[data-marker="arrow-right"] li,
+  .hero-description ul[data-marker="star"] li,
+  .hero-description ul[data-marker="diamond"] li,
+  .hero-description ul[data-marker="dash"] li,
+  .hero-description ul[data-marker="dot"] li {
+    position: relative;
+    padding-left: 1.5rem;
+    margin-left: 0;
+  }
+  .hero-description ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .hero-description li {
+    margin-top: 0.25rem;
+    margin-bottom: 0.25rem;
+  }
+  .hero-description a {
+    color: #637554;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  .hero-description a:hover {
+    color: #9CAF88;
+  }
+`
+
+function HeroRichText({ className, html }: { className?: string; html: string }) {
+  /* eslint-disable-next-line react/no-danger -- rich HTML from trusted CMS/admin */
+  return <div className={className} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: html }} />
+}
+
+function HeroCmsButtonIcon({
+  html,
+  className,
+  style,
+}: {
+  html: string
+  className?: string
+  style?: CSSProperties
+}) {
+  /* eslint-disable-next-line react/no-danger -- inline SVG from trusted admin editor */
+  return <div className={className} style={style} suppressHydrationWarning dangerouslySetInnerHTML={{ __html: html }} />
+}
 
 // Default styles
 const defaultStyles = {
@@ -75,6 +179,23 @@ const defaultImageStyles = {
   overlayColor: '#2C2C2C'
 }
 
+function parseImageStyleInt(value: string | number | undefined, fallback: string): number {
+  return parseInt(String(value ?? fallback), 10)
+}
+
+function resolveHeroSectionId(raw: unknown): string {
+  if (typeof raw === 'string' && raw.trim()) {
+    return raw
+  }
+  if (raw && typeof raw === 'object' && 'text' in raw) {
+    const t = (raw as { text?: unknown }).text
+    if (typeof t === 'string' && t.trim()) {
+      return t
+    }
+  }
+  return 'home'
+}
+
 export default function HeroBlock({ block }: BlockProps) {
   const content = block.content as HeroContent
   const [isVisible, setIsVisible] = useState(false)
@@ -93,16 +214,17 @@ export default function HeroBlock({ block }: BlockProps) {
   const imageStyles = content.imageStyles || defaultImageStyles
 
   // Helper function to safely get string value (handle both string and object)
-  const getStringValue = (value: any): string => {
+  const getStringValue = (value: unknown): string => {
     if (typeof value === 'string') {
-return value
-}
-    if (typeof value === 'object' && value !== null && 'text' in value) {
-return value.text || ''
-}
-    if (typeof value === 'object' && value !== null && typeof value.toString === 'function') {
-return value.toString()
-}
+      return value
+    }
+    if (value && typeof value === 'object' && 'text' in value) {
+      const t = (value as { text?: unknown }).text
+      return typeof t === 'string' ? t : ''
+    }
+    if (value && typeof value === 'object' && typeof (value as { toString?: () => string }).toString === 'function') {
+      return String(value)
+    }
     return ''
   }
 
@@ -147,14 +269,7 @@ return value.toString()
     return `${verticalClass} ${horizontalClass} ${transformClass}`.trim()
   }
 
-  // Ensure sectionId is set for hash scrolling
-  // If sectionId is not set, try to use a default based on common patterns
-  // This helps with hash scrolling when sectionId is missing
-  // Handle both string and object formats
-  const sectionId = typeof content.sectionId === 'string'
-    ? content.sectionId
-    : (content.sectionId?.text || content.sectionId || 'home')
-
+  const sectionId = resolveHeroSectionId(content.sectionId as unknown)
 
   return (
     <section id={sectionId} data-section={sectionId} className="relative bg-cream-gradient py-12 sm:py-16 lg:py-20 xl:py-32 min-h-screen flex items-center">
@@ -205,6 +320,7 @@ return value.toString()
                     hyphens: 'auto',
                   }}
                 >
+                  {/* eslint-disable react/no-array-index-key -- keys are token indices; order fixed by mainTitle */}
                   {words.map((word, index) => {
                     const isHighlighted = highlightedIndices.includes(index) || (defaultHighlightIndex !== null && index === defaultHighlightIndex)
 
@@ -249,6 +365,7 @@ return value.toString()
                       )
                     }
                   })}
+                  {/* eslint-enable react/no-array-index-key */}
                 </h1>
               )
             })()}
@@ -279,89 +396,8 @@ return value.toString()
                   color: styles.description?.color || defaultStyles.description.color,
                 }}
               >
-                <style dangerouslySetInnerHTML={{ __html: `
-                  .hero-description p {
-                    margin: 0.75rem 0;
-                  }
-                  .hero-description p[data-spacing="compact"] {
-                    margin: 0.25rem 0;
-                  }
-                  .hero-description p[data-spacing="normal"] {
-                    margin: 0.75rem 0;
-                  }
-                  .hero-description p[data-spacing="relaxed"] {
-                    margin: 1.25rem 0;
-                  }
-                  .hero-description ul {
-                    list-style-type: disc;
-                    padding-left: 1.5rem;
-                    margin-top: 0.5rem;
-                    margin-bottom: 0.5rem;
-                  }
-                  .hero-description ul[data-marker="check"],
-                  .hero-description ul[data-marker="arrow"],
-                  .hero-description ul[data-marker="arrow-right"],
-                  .hero-description ul[data-marker="star"],
-                  .hero-description ul[data-marker="diamond"],
-                  .hero-description ul[data-marker="dash"],
-                  .hero-description ul[data-marker="dot"] {
-                    list-style: none;
-                    padding-left: 0;
-                  }
-                  .hero-description ul[data-marker="check"] li::before { content: "✓"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="check-circle"] li::before {
-                    content: "✓";
-                    position: absolute;
-                    left: 0;
-                    display: inline-flex;
-                    align-items: center;
-                    justify-content: center;
-                    width: 1.2em;
-                    height: 1.2em;
-                    border-radius: 50%;
-                    background-color: #9CAF88;
-                    color: white;
-                    font-size: 0.8em;
-                    font-weight: bold;
-                  }
-                  .hero-description ul[data-marker="arrow"] li::before { content: "→"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="arrow-right"] li::before { content: "▶"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="star"] li::before { content: "★"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="diamond"] li::before { content: "◆"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="dash"] li::before { content: "—"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="dot"] li::before { content: "•"; position: absolute; left: 0; color: #637554; font-weight: bold; }
-                  .hero-description ul[data-marker="check"] li,
-                  .hero-description ul[data-marker="check-circle"] li,
-                  .hero-description ul[data-marker="arrow"] li,
-                  .hero-description ul[data-marker="arrow-right"] li,
-                  .hero-description ul[data-marker="star"] li,
-                  .hero-description ul[data-marker="diamond"] li,
-                  .hero-description ul[data-marker="dash"] li,
-                  .hero-description ul[data-marker="dot"] li {
-                    position: relative;
-                    padding-left: 1.5rem;
-                    margin-left: 0;
-                  }
-                  .hero-description ol {
-                    list-style-type: decimal;
-                    padding-left: 1.5rem;
-                    margin-top: 0.5rem;
-                    margin-bottom: 0.5rem;
-                  }
-                  .hero-description li {
-                    margin-top: 0.25rem;
-                    margin-bottom: 0.25rem;
-                  }
-                  .hero-description a {
-                    color: #637554;
-                    text-decoration: underline;
-                    transition: color 0.2s;
-                  }
-                  .hero-description a:hover {
-                    color: #9CAF88;
-                  }
-                `}} />
-                <div className="hero-description" dangerouslySetInnerHTML={{ __html: description }} />
+                <style>{HERO_DESCRIPTION_CSS}</style>
+                <HeroRichText className="hero-description" html={description} />
               </div>
             )}
 
@@ -388,17 +424,17 @@ return value.toString()
                       {content.primaryButtonIconPosition === 'right' ? (
                         <>
                           {primaryButton}
-                          <div
+                          <HeroCmsButtonIcon
+                            html={content.primaryButtonIcon}
                             className={`h-5 w-5 transition-transform ${primaryBtnHover ? 'scale-110' : ''}`}
-                            dangerouslySetInnerHTML={{ __html: content.primaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           />
                         </>
                       ) : (
                         <>
-                          <div
+                          <HeroCmsButtonIcon
+                            html={content.primaryButtonIcon}
                             className={`h-5 w-5 transition-transform ${primaryBtnHover ? 'scale-110' : ''}`}
-                            dangerouslySetInnerHTML={{ __html: content.primaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           />
                           {primaryButton}
@@ -440,17 +476,17 @@ return value.toString()
                       {content.secondaryButtonIconPosition === 'right' ? (
                         <>
                           {secondaryButton}
-                          <div
+                          <HeroCmsButtonIcon
+                            html={content.secondaryButtonIcon}
                             className={`h-5 w-5 transition-transform ${secondaryBtnHover ? 'scale-110' : ''}`}
-                            dangerouslySetInnerHTML={{ __html: content.secondaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           />
                         </>
                       ) : (
                         <>
-                          <div
+                          <HeroCmsButtonIcon
+                            html={content.secondaryButtonIcon}
                             className={`h-5 w-5 transition-transform ${secondaryBtnHover ? 'scale-110' : ''}`}
-                            dangerouslySetInnerHTML={{ __html: content.secondaryButtonIcon }}
                             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
                           />
                           {secondaryButton}
@@ -474,9 +510,9 @@ return value.toString()
               <div className="flex flex-wrap items-center gap-4 sm:gap-6 lg:gap-8">
                 <div className="flex items-center gap-2">
                   <div className="flex -space-x-2">
-                    {['🙋🏻‍♀️', '🙋🏻‍♂️', '🙋🏼‍♀️', '🙋🏽‍♂️'].map((emoji, index) => (
+                    {['🙋🏻‍♀️', '🙋🏻‍♂️', '🙋🏼‍♀️', '🙋🏽‍♂️'].map((emoji) => (
                       <div
-                        key={index}
+                        key={emoji}
                         className="w-8 h-8 rounded-full flex items-center justify-center border-2 border-white"
                         style={{ backgroundColor: styles.badge?.backgroundColor || defaultStyles.badge.backgroundColor }}
                       >
@@ -551,25 +587,36 @@ return value.toString()
                   onMouseEnter={() => setImageHover(true)}
                   onMouseLeave={() => setImageHover(false)}
                 >
-                  {/* Use normalized img tag for reliable proxy support */}
-                  <img
-                    {...getImageProps(content.image.url, content.image.alt || 'Hero görsel')}
-                    className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
-                    style={{
-                      opacity: parseInt(imageStyles.opacity || defaultImageStyles.opacity) / 100,
-                      transform: imageHover
-                        ? `scale(${parseInt(imageStyles.hoverScale || defaultImageStyles.hoverScale) / 100})`
-                        : 'scale(1)',
-                      filter: `brightness(${imageStyles.brightness || defaultImageStyles.brightness}%) contrast(${imageStyles.contrast || defaultImageStyles.contrast}%) saturate(${imageStyles.saturation || defaultImageStyles.saturation}%)`,
-                    }}
-                    loading="eager"
-                  />
+                  {(() => {
+                    const { src, alt, onError } = getImageProps(
+                      String(content.image.url ?? ''),
+                      content.image.alt || 'Hero görsel'
+                    )
+                    return (
+                      <Image
+                        src={src}
+                        alt={alt}
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        onError={onError}
+                        className="absolute inset-0 w-full h-full object-cover transition-all duration-700"
+                        style={{
+                          opacity: parseImageStyleInt(imageStyles.opacity, defaultImageStyles.opacity) / 100,
+                          transform: imageHover
+                            ? `scale(${parseImageStyleInt(imageStyles.hoverScale, defaultImageStyles.hoverScale) / 100})`
+                            : 'scale(1)',
+                          filter: `brightness(${imageStyles.brightness || defaultImageStyles.brightness}%) contrast(${imageStyles.contrast || defaultImageStyles.contrast}%) saturate(${imageStyles.saturation || defaultImageStyles.saturation}%)`,
+                        }}
+                      />
+                    )
+                  })()}
 
                   {/* Gradient Overlay */}
                   <div
                     className="absolute inset-0 bg-gradient-to-t to-transparent transition-opacity duration-300"
                     style={{
-                      background: `linear-gradient(to top, ${imageStyles.overlayColor || defaultImageStyles.overlayColor}${Math.round((parseInt(imageStyles.overlayOpacity || defaultImageStyles.overlayOpacity) / 100) * 255).toString(16).padStart(2, '0')}, transparent)`,
+                      background: `linear-gradient(to top, ${imageStyles.overlayColor || defaultImageStyles.overlayColor}${Math.round((parseImageStyleInt(imageStyles.overlayOpacity, defaultImageStyles.overlayOpacity) / 100) * 255).toString(16).padStart(2, '0')}, transparent)`,
                     }}
                    />
 
@@ -654,8 +701,8 @@ return null
                         <div className="text-2xl font-bold">{rating}</div>
                         {text && <div className="text-xs opacity-90">{text}</div>}
                         <div className="flex gap-1 mt-1 justify-center">
-                          {[...Array(5)].map((_, i) => (
-                            <svg key={i} className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                          {[1, 2, 3, 4, 5].map((starSlot) => (
+                            <svg key={`reviews-${rating}-star-${starSlot}`} className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                               <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                             </svg>
                           ))}

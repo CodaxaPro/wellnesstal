@@ -18,8 +18,8 @@ export default function StatsBlock({ block }: BlockProps) {
         )}
 
         <div className={`grid ${gridColsStatsItemCount(stats.length || 1)} gap-4 sm:gap-8`}>
-          {stats.map((stat, index) => (
-            <div key={index} className="text-center">
+          {stats.map((stat) => (
+            <div key={`${stat.label}-${stat.value}`} className="text-center">
               <div className="text-4xl lg:text-5xl font-bold text-white mb-2">
                 {stat.value}
               </div>

@@ -1,8 +1,12 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, type CSSProperties } from 'react'
+
+import Image from 'next/image'
 
 import { BlockProps, AboutContent } from './types'
+
+type FontWeight = CSSProperties['fontWeight']
 
 // Default styles - Ana sayfadaki ile aynı
 const defaultStyles = {
@@ -116,7 +120,7 @@ export default function AboutBlock({ block }: BlockProps) {
               style={{
                 fontFamily: styles.badge?.fontFamily,
                 fontSize: styles.badge?.fontSize,
-                fontWeight: styles.badge?.fontWeight as any,
+                fontWeight: styles.badge?.fontWeight as FontWeight,
                 color: styles.badge?.color,
                 backgroundColor: styles.badge?.backgroundColor
               }}
@@ -134,7 +138,7 @@ export default function AboutBlock({ block }: BlockProps) {
                       fontSize: styles.title?.fontSize
                         ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.title.fontSize})`
                         : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
-                      fontWeight: styles.title?.fontWeight as any,
+                      fontWeight: styles.title?.fontWeight as FontWeight,
                       color: styles.title?.color
                     }}
                   >
@@ -146,7 +150,7 @@ export default function AboutBlock({ block }: BlockProps) {
                       fontSize: styles.highlightedText?.fontSize
                         ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.highlightedText.fontSize})`
                         : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
-                      fontWeight: styles.highlightedText?.fontWeight as any,
+                      fontWeight: styles.highlightedText?.fontWeight as FontWeight,
                       color: styles.highlightedText?.color
                     }}
                   >
@@ -160,7 +164,7 @@ export default function AboutBlock({ block }: BlockProps) {
                     fontSize: styles.title?.fontSize
                       ? `clamp(1.375rem, 4vw + 0.25rem, ${styles.title.fontSize})`
                       : 'clamp(1.375rem, 4vw + 0.25rem, 3rem)',
-                    fontWeight: styles.title?.fontWeight as any,
+                    fontWeight: styles.title?.fontWeight as FontWeight,
                     color: styles.title?.color
                   }}
                 >
@@ -177,7 +181,7 @@ export default function AboutBlock({ block }: BlockProps) {
                 fontSize: styles.description?.fontSize
                   ? `clamp(1rem, 2.5vw + 0.25rem, ${styles.description.fontSize})`
                   : 'clamp(1rem, 2.5vw + 0.25rem, 1.25rem)',
-                fontWeight: styles.description?.fontWeight as any,
+                fontWeight: styles.description?.fontWeight as FontWeight,
                 color: styles.description?.color
               }}
             >
@@ -187,9 +191,9 @@ export default function AboutBlock({ block }: BlockProps) {
             {/* Stats */}
             {stats.length > 0 && (
               <div className="grid grid-cols-2 gap-6 mb-8">
-                {stats.map((stat, index) => (
+                {stats.map((stat) => (
                   <div
-                    key={index}
+                    key={`${stat.label}-${stat.value}`}
                     className="text-center p-6 rounded-2xl"
                     style={{ backgroundColor: `${styles.statsValue?.color || '#9CAF88'}10` }}
                   >
@@ -198,7 +202,7 @@ export default function AboutBlock({ block }: BlockProps) {
                       style={{
                         fontFamily: styles.statsValue?.fontFamily,
                         fontSize: styles.statsValue?.fontSize,
-                        fontWeight: styles.statsValue?.fontWeight as any,
+                        fontWeight: styles.statsValue?.fontWeight as FontWeight,
                         color: styles.statsValue?.color
                       }}
                     >
@@ -208,7 +212,7 @@ export default function AboutBlock({ block }: BlockProps) {
                       style={{
                         fontFamily: styles.statsLabel?.fontFamily,
                         fontSize: styles.statsLabel?.fontSize,
-                        fontWeight: styles.statsLabel?.fontWeight as any,
+                        fontWeight: styles.statsLabel?.fontWeight as FontWeight,
                         color: styles.statsLabel?.color
                       }}
                     >
@@ -230,7 +234,7 @@ export default function AboutBlock({ block }: BlockProps) {
                   style={{
                     fontFamily: styles.primaryButton?.fontFamily,
                     fontSize: styles.primaryButton?.fontSize,
-                    fontWeight: styles.primaryButton?.fontWeight as any,
+                    fontWeight: styles.primaryButton?.fontWeight as FontWeight,
                     color: styles.primaryButton?.color,
                     backgroundColor: primaryBtnHover
                       ? '#6B8A3A'
@@ -249,7 +253,7 @@ export default function AboutBlock({ block }: BlockProps) {
                   style={{
                     fontFamily: styles.secondaryButton?.fontFamily,
                     fontSize: styles.secondaryButton?.fontSize,
-                    fontWeight: styles.secondaryButton?.fontWeight as any,
+                    fontWeight: styles.secondaryButton?.fontWeight as FontWeight,
                     color: secondaryBtnHover
                       ? '#FFFFFF'
                       : (styles.secondaryButton?.color || '#9CAF88'),
@@ -270,14 +274,20 @@ export default function AboutBlock({ block }: BlockProps) {
             <div className="relative">
               <div className="grid grid-cols-2 gap-4">
                 {images.slice(0, 4).map((image, index) => (
-                  <img
-                    key={index}
-                    src={image.url}
-                    alt={image.alt || `About image ${index + 1}`}
-                    className={`rounded-2xl shadow-medium h-48 w-full object-cover ${
+                  <div
+                    key={`${image.url}-${image.alt ?? ''}`}
+                    className={`relative h-48 w-full overflow-hidden rounded-2xl shadow-medium ${
                       index === 1 ? 'mt-8' : index === 2 ? '-mt-8' : ''
                     }`}
-                  />
+                  >
+                    <Image
+                      src={image.url}
+                      alt={image.alt || `About image ${index + 1}`}
+                      fill
+                      sizes="(max-width: 1024px) 50vw, 25vw"
+                      className="object-cover"
+                    />
+                  </div>
                 ))}
               </div>
 
