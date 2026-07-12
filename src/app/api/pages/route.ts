@@ -5,6 +5,7 @@ import jwt from 'jsonwebtoken'
 
 import { logger } from '@/lib/logger'
 import { apiRateLimiter, rateLimit } from '@/lib/rate-limit'
+import { getStaticPageBySlug } from '@/lib/static-content'
 
 const supabaseUrl = process.env['NEXT_PUBLIC_SUPABASE_URL']
 const supabaseKey = process.env['SUPABASE_SERVICE_ROLE_KEY']
@@ -63,6 +64,18 @@ export async function GET(request: NextRequest) {
 
     // Single page by slug (for frontend)
     if (slug) {
+      const staticPage = getStaticPageBySlug(slug)
+      if (staticPage) {
+        return NextResponse.json({
+          success: true,
+          data: {
+            ...staticPage,
+            id: staticPage.slug,
+            page_id: staticPage.slug,
+          },
+        })
+      }
+
       const { data: page, error } = await supabase
         .from('pages')
         .select('*')

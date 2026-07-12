@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { verifyAdmin } from '@/lib/auth'
+import { getStaticServices } from '@/lib/static-content'
 import { supabaseAdmin } from '@/lib/supabase-server'
 
 // Helper function to generate slug
@@ -78,6 +79,35 @@ export async function GET(request: NextRequest) {
     const slug = searchParams.get('slug')
     const sortBy = searchParams.get('sortBy') || 'order_num'
     const sortOrder = searchParams.get('sortOrder') || 'asc'
+
+    const staticServices = getStaticServices()
+    if (staticServices.length > 0) {
+      let filtered = [...staticServices]
+      if (active === 'true') {
+        filtered = filtered.filter((s) => s.active !== false)
+      }
+      if (slug) {
+        filtered = filtered.filter((s) => s.slug === slug)
+      }
+      if (search) {
+        const q = search.toLowerCase()
+        filtered = filtered.filter(
+          (s) =>
+            String(s.title ?? '').toLowerCase().includes(q) ||
+            String(s.description ?? '').toLowerCase().includes(q)
+        )
+      }
+      const sortKey = sortBy === 'order' ? 'order_num' : sortBy
+      filtered.sort((a, b) => {
+        const av = a[sortKey] ?? 0
+        const bv = b[sortKey] ?? 0
+        if (av < bv) return sortOrder === 'asc' ? -1 : 1
+        if (av > bv) return sortOrder === 'asc' ? 1 : -1
+        return 0
+      })
+      const transformedData = filtered.map((s) => transformServiceForResponse(s))
+      return NextResponse.json({ success: true, data: transformedData })
+    }
 
     // Build query
     let query = supabaseAdmin.from('services').select('*')

@@ -1,0 +1,203 @@
+{
+  "slug": "impressum",
+  "title": "Impressum",
+  "status": "published",
+  "active": true,
+  "meta_title": "Impressum | Wellnesstal",
+  "meta_description": "Impressum und Anbieterkennzeichnung von Wellnesstal.",
+  "blocks": [
+    {
+      "id": "impressum-header",
+      "block_type": "header",
+      "content": {
+        "logoText": "Wellnesstal",
+        "logoEmoji": "🌿",
+        "navItems": [
+          {
+            "href": "/",
+            "label": "Start"
+          },
+          {
+            "href": "/headspa",
+            "label": "Headspa"
+          },
+          {
+            "href": "/gutschein",
+            "label": "Gutschein"
+          },
+          {
+            "href": "#contact",
+            "label": "Kontakt"
+          }
+        ],
+        "ctaButtonText": "Termin vereinbaren",
+        "ctaButtonType": "phone",
+        "ctaButtonLink": "+49 1733828581",
+        "ctaButtonVisible": true
+      },
+      "position": 0,
+      "visible": true
+    },
+    {
+      "id": "impressum-hero",
+      "block_type": "hero",
+      "content": {
+        "sectionId": "impressum",
+        "mainTitle": "Impressum",
+        "subtitle": "Impressum und Anbieterkennzeichnung von Wellnesstal.",
+        "badgeEnabled": false
+      },
+      "position": 1,
+      "visible": true
+    },
+    {
+      "id": "impressum-text-0",
+      "block_type": "text",
+      "content": {
+        "title": "Angaben gemäß § 5 TMG",
+        "content": "<p><strong>Wellnesstal</strong><br>Reyplatz 10<br>52499 Baesweiler<br>Deutschland</p>",
+        "showTitle": true,
+        "maxWidth": "xl",
+        "padding": {
+          "top": "2rem",
+          "bottom": "2rem",
+          "left": "1.5rem",
+          "right": "1.5rem"
+        },
+        "typography": {
+          "title": {
+            "fontSize": "1.5rem",
+            "fontWeight": "700",
+            "color": "#2C2C2C",
+            "marginBottom": "1rem"
+          },
+          "body": {
+            "fontSize": "1rem",
+            "lineHeight": "1.75",
+            "color": "#666666"
+          }
+        },
+        "background": {
+          "type": "solid",
+          "color": "#ffffff"
+        }
+      },
+      "position": 2,
+      "visible": true
+    },
+    {
+      "id": "impressum-text-1",
+      "block_type": "text",
+      "content": {
+        "title": "Kontakt",
+        "content": "<p>Telefon: <a href=\"tel:+491733828581\">+49 173 3828581</a><br>E-Mail: <a href=\"mailto:info@wellnesstal.de\">info@wellnesstal.de</a></p>",
+        "showTitle": true,
+        "maxWidth": "xl",
+        "padding": {
+          "top": "2rem",
+          "bottom": "2rem",
+          "left": "1.5rem",
+          "right": "1.5rem"
+        },
+        "typography": {
+          "title": {
+            "fontSize": "1.5rem",
+            "fontWeight": "700",
+            "color": "#2C2C2C",
+            "marginBottom": "1rem"
+          },
+          "body": {
+            "fontSize": "1rem",
+            "lineHeight": "1.75",
+            "color": "#666666"
+          }
+        },
+        "background": {
+          "type": "solid",
+          "color": "#ffffff"
+        }
+      },
+      "position": 3,
+      "visible": true
+    },
+    {
+      "id": "impressum-text-2",
+      "block_type": "text",
+      "content": {
+        "title": "Verantwortlich für den Inhalt nach § 55 Abs. 2 RStV",
+        "content": "<p>Wellnesstal<br>Reyplatz 10<br>52499 Baesweiler</p>",
+        "showTitle": true,
+        "maxWidth": "xl",
+        "padding": {
+          "top": "2rem",
+          "bottom": "2rem",
+          "left": "1.5rem",
+          "right": "1.5rem"
+        },
+        "typography": {
+          "title": {
+            "fontSize": "1.5rem",
+            "fontWeight": "700",
+            "color": "#2C2C2C",
+            "marginBottom": "1rem"
+          },
+          "body": {
+            "fontSize": "1rem",
+            "lineHeight": "1.75",
+            "color": "#666666"
+          }
+        },
+        "background": {
+          "type": "solid",
+          "color": "#ffffff"
+        }
+      },
+      "position": 4,
+      "visible": true
+    },
+    {
+      "id": "impressum-text-3",
+      "block_type": "text",
+      "content": {
+        "title": "Haftungsausschluss",
+        "content": "<p>Die Inhalte unserer Seiten wurden mit größter Sorgfalt erstellt. Für die Richtigkeit, Vollständigkeit und Aktualität der Inhalte können wir jedoch keine Gewähr übernehmen.</p>",
+        "showTitle": true,
+        "maxWidth": "xl",
+        "padding": {
+          "top": "2rem",
+          "bottom": "2rem",
+          "left": "1.5rem",
+          "right": "1.5rem"
+        },
+        "typography": {
+          "title": {
+            "fontSize": "1.5rem",
+            "fontWeight": "700",
+            "color": "#2C2C2C",
+            "marginBottom": "1rem"
+          },
+          "body": {
+            "fontSize": "1rem",
+            "lineHeight": "1.75",
+            "color": "#666666"
+          }
+        },
+        "background": {
+          "type": "solid",
+          "color": "#ffffff"
+        }
+      },
+      "position": 5,
+      "visible": true
+    },
+    {
+      "id": "impressum-footer",
+      "block_type": "footer",
+      "content": {
+        "useGlobalFooter": true
+      },
+      "position": 6,
+      "visible": true
+    }
+  ]
+}

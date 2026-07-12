@@ -38,7 +38,23 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const section = searchParams.get('section')
 
-    // Try Supabase first
+    // Static file first (no Supabase required for production)
+    const fileContent = readContentFromFile()
+    if (fileContent.length > 0) {
+      if (section) {
+        const item = fileContent.find((c: FileContentItem) => c.section === section)
+        if (!item) {
+          return NextResponse.json(
+            { success: false, error: 'Section not found' },
+            { status: 404 }
+          )
+        }
+        return NextResponse.json({ success: true, data: item })
+      }
+      return NextResponse.json({ success: true, data: fileContent })
+    }
+
+    // Fallback: Supabase (admin / legacy)
     let query = supabaseAdmin.from('content').select('*')
 
     if (section) {
@@ -91,22 +107,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ success: true, data: transformedData })
     }
 
-    // Fallback to file-based content
-    console.warn('Falling back to file-based content')
-    const fileContent = readContentFromFile()
-
-    if (section) {
-      const content = fileContent.find((c: FileContentItem) => c.section === section)
-      if (!content) {
-        return NextResponse.json(
-          { success: false, error: 'Section not found' },
-          { status: 404 }
-        )
-      }
-      return NextResponse.json({ success: true, data: content })
-    }
-
-    return NextResponse.json({ success: true, data: fileContent })
+    return NextResponse.json(
+      { success: false, error: 'Section not found' },
+      { status: section ? 404 : 200 }
+    )
 
   } catch (error) {
     console.error('GET /api/content error:', error)

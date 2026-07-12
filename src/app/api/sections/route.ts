@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 import { verifyAdmin } from '@/lib/auth'
+import { getStaticHomepageSections } from '@/lib/static-content'
 import { supabaseAdmin } from '@/lib/supabase-server'
 
 // Types
@@ -24,6 +25,11 @@ interface SectionResponse {
 // GET - Fetch all sections ordered by position
 export async function GET() {
   try {
+    const staticSections = getStaticHomepageSections()
+    if (staticSections.length > 0) {
+      return NextResponse.json({ success: true, data: staticSections })
+    }
+
     const { data: sections, error } = await supabaseAdmin
       .from('homepage_sections')
       .select('*')

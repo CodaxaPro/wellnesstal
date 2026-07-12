@@ -1,14 +1,12 @@
 import { notFound } from 'next/navigation'
 
-import { createClient } from '@supabase/supabase-js'
 import { Metadata } from 'next'
 
 import BlockRenderer from '@/components/blocks/BlockRenderer'
 import HashScrollHandler from '@/components/HashScrollHandler'
+import { getStaticContentSection, getStaticPageBySlug, getStaticPageSlugs } from '@/lib/static-content'
 
-// Force dynamic rendering - pages should always be fresh
-export const dynamic = 'force-dynamic'
-export const revalidate = 0
+export const dynamic = 'force-static'
 
 interface PageProps {
   params: Promise<{
@@ -16,44 +14,8 @@ interface PageProps {
   }>
 }
 
-// Create Supabase client
-const supabase = createClient(
-  process.env['NEXT_PUBLIC_SUPABASE_URL']!,
-  process.env['SUPABASE_SERVICE_ROLE_KEY']!
-)
-
-// Fetch page by slug from database
 async function getPageBySlug(slug: string) {
-  try {
-    // First try to get from database
-    const { data: page, error } = await supabase
-      .from('pages')
-      .select('*')
-      .eq('slug', slug)
-      .eq('status', 'published')
-      .eq('active', true) // Only show active pages
-      .single()
-
-    if (error || !page) {
-      return null
-    }
-
-    // Get blocks for this page
-    const { data: blocks } = await supabase
-      .from('page_blocks')
-      .select('*')
-      .eq('page_id', page.id)
-      .eq('visible', true)
-      .order('position', { ascending: true })
-
-    return {
-      ...page,
-      blocks: blocks || []
-    }
-  } catch (error) {
-    console.error('Error fetching page:', error)
-    return null
-  }
+  return getStaticPageBySlug(slug)
 }
 
 // Generate metadata for SEO
@@ -69,182 +31,72 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  // Check if page has an SEO block
-  const { data: seoBlock } = await supabase
-    .from('page_blocks')
-    .select('content')
-    .eq('page_id', page.id)
-    .eq('block_type', 'seo')
-    .single()
+  // SEO from page blocks or meta fields
+  const seoBlock = page.blocks?.find((b) => b.block_type === 'seo')
+  let seoContent: Record<string, unknown> | null = seoBlock?.content ?? null
 
-  let seoContent = null
-
-  if (seoBlock?.content) {
-    // Check if using global SEO or custom SEO
-    if (seoBlock.content.useGlobalSEO) {
-      // Fetch global SEO settings from content table
-      const { data: globalSeo } = await supabase
-        .from('content')
-        .select('content')
-        .eq('section', 'seo-settings')
-        .single()
-
-      seoContent = globalSeo?.content
-    } else {
-      // Use page-specific SEO block content
-      seoContent = seoBlock.content
-    }
+  if (seoContent?.useGlobalSEO) {
+    seoContent = getStaticContentSection('seo-settings')?.content ?? null
   }
 
-  // Build metadata using SEO block if available, otherwise fallback to page table
-  // Enterprise SEO: Optimized for Google, Bing, Yandex, and AI crawlers
+  const siteUrl = process.env['NEXT_PUBLIC_SITE_URL'] || 'https://wellnesstal.de'
+  const canonicalUrl =
+    (seoContent?.canonicalUrl as string | undefined) ||
+    `${siteUrl}/${page.slug}`
+
   if (seoContent && !seoContent.useGlobalSEO) {
-    const canonicalUrl = seoContent.canonicalUrl || page.canonical_url || `${process.env['NEXT_PUBLIC_SITE_URL'] || 'https://wellnesstal.de'}/${page.slug}`
-    
-    const metadata: Metadata = {
-      title: seoContent.title || page.meta_title || page.title,
-      description: seoContent.description || page.meta_description,
-      keywords: seoContent.keywords?.join(', ') || page.meta_keywords?.join(', '),
-      authors: seoContent.author ? [{ name: seoContent.author }] : undefined,
+    const keywords = seoContent.keywords as string[] | undefined
+    const robots = seoContent.robots as Record<string, boolean> | undefined
+    const openGraph = seoContent.openGraph as Record<string, unknown> | undefined
+    const twitter = seoContent.twitter as Record<string, unknown> | undefined
+    const ogImage = openGraph?.image as { url?: string; alt?: string } | undefined
+
+    return {
+      title: (seoContent.title as string) || page.meta_title || page.title,
+      description: (seoContent.description as string) || page.meta_description,
+      keywords: keywords?.join(', ') || page.meta_keywords?.join(', '),
+      metadataBase: new URL(siteUrl),
+      alternates: { canonical: canonicalUrl },
+      openGraph: openGraph?.enabled
+        ? {
+            title: (openGraph.title as string) || page.meta_title || page.title,
+            description: (openGraph.description as string) || page.meta_description,
+            url: canonicalUrl,
+            images: ogImage?.url ? [{ url: ogImage.url, alt: ogImage.alt || page.title }] : undefined,
+          }
+        : undefined,
+      twitter: twitter?.enabled
+        ? {
+            card: (twitter.cardType as 'summary_large_image') || 'summary_large_image',
+            title: (twitter.title as string) || page.meta_title || page.title,
+            description: (twitter.description as string) || page.meta_description,
+          }
+        : undefined,
       robots: {
-        index: seoContent.robots?.index ?? !page.no_index,
-        follow: seoContent.robots?.follow ?? !page.no_follow,
-        noarchive: seoContent.robots?.noarchive,
-        nosnippet: seoContent.robots?.nosnippet,
-        noimageindex: seoContent.robots?.noimageindex,
-        'max-snippet': seoContent.robots?.maxSnippet,
-        'max-image-preview': seoContent.robots?.maxImagePreview,
-        'max-video-preview': seoContent.robots?.maxVideoPreview,
-        // Enterprise: Google, Bing, Yandex specific directives
-        googleBot: {
-          index: seoContent.robots?.index ?? !page.no_index,
-          follow: seoContent.robots?.follow ?? !page.no_follow,
-          'max-video-preview': seoContent.robots?.maxVideoPreview,
-          'max-image-preview': seoContent.robots?.maxImagePreview,
-          'max-snippet': seoContent.robots?.maxSnippet,
-        },
-      },
-      alternates: {
-        canonical: canonicalUrl,
-      },
-      // Enterprise: Additional metadata for AI crawlers and search engines
-      metadataBase: new URL(process.env['NEXT_PUBLIC_SITE_URL'] || 'https://wellnesstal.de'),
-      applicationName: seoContent.openGraph?.siteName || 'Wellnesstal',
-      referrer: 'origin-when-cross-origin',
-      formatDetection: {
-        email: false,
-        address: false,
-        telephone: false,
+        index: robots?.index ?? true,
+        follow: robots?.follow ?? true,
       },
     }
-
-    // Add OpenGraph if enabled (Critical for Facebook, LinkedIn, AI crawlers)
-    if (seoContent.openGraph?.enabled) {
-      metadata.openGraph = {
-        type: seoContent.openGraph.type || 'website',
-        title: seoContent.openGraph.title || seoContent.title || page.meta_title || page.title,
-        description: seoContent.openGraph.description || seoContent.description || page.meta_description,
-        siteName: seoContent.openGraph.siteName || 'Wellnesstal',
-        locale: seoContent.openGraph.locale || 'de_DE',
-        url: canonicalUrl,
-        images: seoContent.openGraph.image?.url ? [{
-          url: seoContent.openGraph.image.url,
-          width: seoContent.openGraph.image.width || 1200,
-          height: seoContent.openGraph.image.height || 630,
-          alt: seoContent.openGraph.image.alt || seoContent.title || page.title,
-          // Enterprise: Additional OG image properties for better AI understanding
-          type: 'image/jpeg',
-        }] : (page.og_image ? [{
-          url: page.og_image,
-          alt: seoContent.title || page.title,
-        }] : undefined),
-        // Enterprise: Additional OG properties for AI crawlers
-        ...(seoContent.openGraph.type === 'article' && {
-          publishedTime: seoContent.openGraph.publishedTime,
-          modifiedTime: seoContent.openGraph.modifiedTime,
-          authors: seoContent.openGraph.authors,
-          section: seoContent.openGraph.section,
-          tags: seoContent.keywords,
-        }),
-      }
-    }
-
-    // Add Twitter Card if enabled (Critical for Twitter/X and AI crawlers)
-    if (seoContent.twitter?.enabled) {
-      metadata.twitter = {
-        card: seoContent.twitter.cardType || 'summary_large_image',
-        title: seoContent.twitter.title || seoContent.title || page.meta_title || page.title,
-        description: seoContent.twitter.description || seoContent.description || page.meta_description,
-        site: seoContent.twitter.site,
-        creator: seoContent.twitter.creator,
-        images: seoContent.twitter.image?.url ? [seoContent.twitter.image.url] :
-                (seoContent.openGraph?.image?.url ? [seoContent.openGraph.image.url] :
-                 (page.og_image ? [page.og_image] : undefined)),
-        // Enterprise: Additional Twitter properties
-        ...(seoContent.twitter.cardType === 'summary_large_image' && {
-          'image:alt': seoContent.openGraph?.image?.alt || seoContent.title || page.title,
-        }),
-      }
-    }
-
-    // Enterprise: Additional metadata for AI crawlers and search engines
-    metadata.other = {
-      // AI crawler hints
-      'ai:description': seoContent.description || page.meta_description || '',
-      'ai:keywords': seoContent.keywords?.join(', ') || page.meta_keywords?.join(', ') || '',
-      // Bing specific
-      'msapplication-TileColor': '#9CAF88',
-      'theme-color': '#9CAF88',
-      // Apple specific
-      'apple-mobile-web-app-title': seoContent.title || page.title,
-      // Additional search engine hints
-      'geo.region': 'DE-NW',
-      'geo.placename': 'Baesweiler',
-      'geo.position': '50.9375;6.9603',
-      'ICBM': '50.9375, 6.9603',
-    }
-
-    return metadata
   }
 
-  // Fallback to original page table metadata if no SEO block or using global SEO
   return {
     title: page.meta_title || page.title,
     description: page.meta_description,
     keywords: page.meta_keywords?.join(', '),
+    metadataBase: new URL(siteUrl),
     openGraph: {
       title: page.meta_title || page.title,
       description: page.meta_description,
       images: page.og_image ? [page.og_image] : undefined,
     },
-    robots: {
-      index: !page.no_index,
-      follow: !page.no_follow,
-    },
-    alternates: {
-      canonical: page.canonical_url,
-    },
+    alternates: { canonical: canonicalUrl },
   }
 }
 
-// Generate static params for known pages
 export async function generateStaticParams() {
-  try {
-    const { data: pages } = await supabase
-      .from('pages')
-      .select('slug')
-      .eq('status', 'published')
-
-    if (pages) {
-      return pages.map(page => ({
-        slug: page.slug.split('/')
-      }))
-    }
-  } catch (error) {
-    console.error('Error generating static params:', error)
-  }
-
-  return []
+  return getStaticPageSlugs().map((slug) => ({
+    slug: slug.split('/'),
+  }))
 }
 
 export default async function DynamicPage({ params }: PageProps) {
