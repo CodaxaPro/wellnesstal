@@ -1,0 +1,79 @@
+{
+  "slug": "geschenk-tipps",
+  "path": "/ratgeber/geschenk-tipps",
+  "seo": {
+    "title": "Wellness Geschenk Tipps | Head Spa Gutschein richtig wählen — Wellnesstal",
+    "description": "Wellness Geschenk Tipps: Welches Head Spa Paket schenken? Basic, Beauty oder Deluxe — für Mama, Freundin, Partner. Ehrliche Empfehlungen aus Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Geschenk",
+    "headline": "Das richtige Geschenk ist kein Produkt — es ist ein Gefühl.",
+    "subline": "Head Spa Gutschein schenken, aber welches Paket? Für wen? Welcher Anlass? Hier findest du ehrliche Tipps — ohne Marketing-Blabla."
+  },
+  "sections": [
+    {
+      "title": "Warum Head Spa als Geschenk funktioniert",
+      "paragraphs": [
+        "Die meisten Geschenke landen im Schrank. Head Spa landet im Nervensystem — als Leichtigkeit, Wärme und das Gefühl, wirklich gesehen zu werden.",
+        "Du schenkst keine Behandlung. Du schenkst Stille: 45 bis 90 Minuten, in denen der Kopf leise wird. Berührung, Wasser, Dampf — ohne Erwartung."
+      ]
+    },
+    {
+      "title": "Welches Paket für wen?",
+      "paragraphs": [],
+      "bullets": [
+        "Basic (89€, 45 Min.) — ideal zum Kennenlernen, für Kolleginnen, Nachbarinnen, kleines Danke",
+        "Beauty (119€, 60 Min.) — am beliebtesten, ausgewogene Tiefe, Geburtstag, Freundin, Muttertag",
+        "Deluxe (149€, 90 Min.) — volles Ritual mit Kérastase & Babor, für besondere Anlässe oder echte Verwöhnung",
+        "Partner (178€ / 238€ / 298€) — zu zweit, nebeneinander entspannen — Hochzeit, Jubiläum, Valentinstag"
+      ]
+    },
+    {
+      "title": "Anlass wählen — gleiches Ritual, andere Bedeutung",
+      "paragraphs": [
+        "Unser Gutschein-Hub bietet Anlässe: Muttertag, Geburtstag, Valentinstag, Weihnachten, Danke, Last Minute und mehr. Gleiches Ritual — die Geschichte passt sich an.",
+        "Tipp: Wähle den Anlass, der zur Beziehung passt. Die Beschenkte spürt die Absicht — nicht nur den Betrag."
+      ]
+    },
+    {
+      "title": "Last Minute & digital verschenken",
+      "paragraphs": [
+        "Gutschein sofort per E-Mail — Print@Home oder digital weiterleiten. Ideal wenn der Anlass morgen ist und du heute noch schenken willst.",
+        "Kein Versandstress, kein Warten. In Minuten bestellt — lange erinnert."
+      ]
+    },
+    {
+      "title": "Region Aachen & Baesweiler",
+      "paragraphs": [
+        "Wellnesstal liegt in Baesweiler — 15 Min. von Aachen, gut erreichbar aus Würselen, Eschweiler, Stolberg und der gesamten Region.",
+        "Beschenkte bucht selbst den Wunschtermin — du schenkst nur das Ritual. Flexibel, persönlich, ohne Termindruck für dich."
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Geschenk-Tipps — Kurz",
+    "items": [
+      "Beauty (119€) = sicherer Allrounder für die meisten Anlässe",
+      "Deluxe (149€) = besondere Verwöhnung mit Markenpflege",
+      "Partner-Pakete = zu zweit, ab 178€",
+      "Sofort per E-Mail — auch last minute",
+      "Anlässe unter /gutschein — Muttertag, Geburtstag, Danke & mehr"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/gutschein", "label": "Gutschein Hub", "hint": "Alle Anlässe" },
+    { "href": "/geschenk-aachen", "label": "Geschenk Aachen", "hint": "Regional" },
+    { "href": "/gutschein/wellness-geschenk", "label": "Wellness Geschenk", "hint": "Das Original" }
+  ],
+  "faq": [
+    { "q": "Welches Paket am beliebtesten?", "a": "Beauty (119€, 60 Min.) — ausgewogene Tiefe, passt für die meisten Anlässe." },
+    { "q": "Für Mama?", "a": "Beauty oder Deluxe — siehe auch /gutschein/muttertag." },
+    { "q": "Zu zweit schenken?", "a": "Ja — Partner-Pakete ab 178€. Siehe /gutschein/paar." },
+    { "q": "Sofort verfügbar?", "a": "Ja — online bestellen, sofort per E-Mail." }
+  ],
+  "closing": {
+    "headline": "Schenke Stille — nicht Dinge.",
+    "text": "Head Spa Gutschein für Berührung, Ruhe und echte Wertschätzung. Jetzt bestellen.",
+    "cta": "Gutschein bestellen"
+  }
+}

@@ -1,0 +1,275 @@
+{
+  "seo": {
+    "title": "Head Spa Baesweiler & Aachen | Wellnesstal — Entspannung für Kopf & Seele",
+    "description": "Japanisches Head Spa in Baesweiler: Kopfmassage, Bedampfung, Trockenföhnen inklusive. Basic ab 89€, Beauty 119€, Deluxe 149€ mit Kérastase & Babor. 4,6★ bei Google."
+  },
+  "hero": {
+    "eyebrow": "Head Spa · Baesweiler · Reyplatz 10",
+    "title": "Mehr als Entspannung. Finde zurück zu dir.",
+    "subtitle": "Japanisches Kopfhaut-Ritual: Wasserstrahl, Massage, Bedampfung — in Ruhe, ohne Zeitdruck.",
+    "ctaPrimary": "Wunschtermin finden",
+    "ctaSecondary": "So läuft dein Ritual ab",
+    "trust": "4,6★ bei Google · Wunschtermin online"
+  },
+  "pain": {
+    "eyebrow": "Kennst du das?",
+    "headline": "Kopf voller Gedanken, gestresst und erschöpft?",
+    "paragraphs": [
+      "Manchmal braucht dein Kopf keinen Ausweg — nur einen Moment, in dem alles still wird.",
+      "In der Hektik des Alltags verlieren wir oft die Verbindung zu uns selbst. Unser Kopf ist ständig aktiv, unser Geist selten zur Ruhe. Verspannungen sammeln sich — besonders durch Bildschirmarbeit und Termindruck.",
+      "Klassische Wellness berührt oft nur die Oberfläche. Head Spa geht tiefer: Massage, Reinigung und Bedampfung wirken auf Kopfhaut, Körper und Nervensystem. Viele Gäste spüren schon früh spürbar mehr Leichtigkeit."
+    ],
+    "closing": "Du musst nichts leisten. Du darfst ankommen."
+  },
+  "promise": {
+    "eyebrow": "Deine Auszeit",
+    "headline": "Mehr als nur Entspannung — wahre Erholung für Kopf und Geist.",
+    "text": "Unsere Headspa-Behandlung geht über oberflächliche Entspannung hinaus. Mit speziell entwickelten Techniken regenerieren wir nicht nur deine Kopfhaut, sondern bringen auch deinen Geist in Balance. Erlebe, wie Stress und Anspannung nachlassen und dein Kopf wieder frei wird."
+  },
+  "stats": [
+    { "value": "4,6", "label": "Sterne bei Google" },
+    { "value": "45–90", "label": "Minuten pure Entspannung" },
+    { "value": "100%", "label": "Fokus auf dich — ohne Hektik" }
+  ],
+  "personalization": {
+    "eyebrow": "Individuell für dich",
+    "headline": "Dein Ritual beginnt mit deiner Kopfhaut — nicht mit einer Checkliste.",
+    "text": "Wie in den besten Head Spa Studios starten wir mit einer persönlichen Einschätzung deiner Kopfhaut und Spannungszonen — bevor das Ritual beginnt. Kein Standardprogramm von der Liste.",
+    "points": [
+      "Einschätzung von Kopfhaut, Haar und Spannungszonen",
+      "Im Deluxe-Paket: Kérastase & Babor passend zu deinem Bedarf",
+      "Tempo und Intensität nach deinem Wohlbefinden — in Ruhe, ohne Eile"
+    ]
+  },
+  "firstVisit": {
+    "eyebrow": "Dein erster Besuch",
+    "headline": "So läuft es ab — ohne Überraschungen.",
+    "steps": [
+      "Du wirst in Ruhe empfangen — kein Stress, kein Warten unter Druck.",
+      "Kurze Einschätzung: Kopfhaut, Haar, wo du Spannung trägst.",
+      "Das Ritual beginnt — Massage, Reinigung, Bedampfung, Pflege. Du darfst loslassen.",
+      "Du stehst auf leichter, frischer und verwöhnt — oft schon spürbar entspannter."
+    ]
+  },
+  "phases": {
+    "eyebrow": "Dein Ritual",
+    "headline": "Vier Phasen. Eine tiefe Wirkung.",
+    "intro": "Jeder Schritt baut auf dem vorherigen auf — langsam, bewusst, ohne Unterbrechung. So erleben es unsere Gäste als rundum sorglos Paket: Waschen, Peeling, Massage, Bedampfung und Pflege.",
+    "items": [
+      {
+        "num": "01",
+        "title": "Sanfte Kopf-, Nacken- und Schultermassage",
+        "text": "Zu Beginn genießt du eine entspannende Massage für Kopf, Nacken und Schultern. Verspannungen lösen sich, die Durchblutung wird gefördert — stressbedingte Kopfschmerzen können spürbar nachlassen.",
+        "benefits": ["Löst Verspannungen und lindert Beschwerden", "Fördert die Durchblutung für mehr Klarheit", "Reduziert stressbedingte Kopfschmerzen"]
+      },
+      {
+        "num": "02",
+        "title": "Tiefenreinigung der Kopfhaut",
+        "text": "Mit warmem Wasser und speziellen Pflegeprodukten wird deine Kopfhaut gründlich gereinigt. Der sanfte Wasserstrahl aus der halbrunden Düse schafft eine beruhigende Atmosphäre — abgestorbene Hautzellen und überschüssiges Fett werden entfernt.",
+        "benefits": ["Entfernt abgestorbene Hautzellen und überschüssiges Fett", "Fördert die Sauerstoffzufuhr zur Kopfhaut", "Hinterlässt ein frisches und sauberes Gefühl"]
+      },
+      {
+        "num": "03",
+        "title": "Bedampfung für intensive Pflege",
+        "text": "Warmer Dampf wirkt sanft auf deine Kopfhaut. Die Poren öffnen sich, Nährstoffe dringen tiefer ein — der ideale Moment, in dem du mental loslässt und abschaltest.",
+        "benefits": ["Öffnet die Poren für bessere Nährstoffaufnahme", "Beruhigt und revitalisiert die Kopfhaut", "Verbessert die Durchblutung für gesünderes Haar"]
+      },
+      {
+        "num": "04",
+        "title": "Tiefenwirksame Pflege für Gesicht und Dekolleté",
+        "text": "Babor Maske, Wirkstoff-Ampulle und Tagespflege spenden intensive Feuchtigkeit. Gesicht und Dekolleté werden beruhigt, regeneriert — du stehst auf leichter, klarer und verwöhnt.",
+        "benefits": ["Spendet tiefenwirksame Feuchtigkeit", "Beruhigt irritierte Haut und fördert Regeneration", "Verleiht einen frischen, strahlenden Teint"]
+      }
+    ]
+  },
+  "outcomes": {
+    "eyebrow": "Was du mitnimmst",
+    "headline": "Nicht nur schöner — leichter und mental freier.",
+    "items": [
+      { "title": "Tiefenentspannung", "text": "Du kannst zu 100% abschalten — oft tiefer als bei einer klassischen Massage. Viele Gäste beschreiben einen Zustand tiefer Entspannung." },
+      { "title": "Beruhigte Kopfhaut", "text": "Spannungsgefühl, Trockenheit oder Stress auf der Kopfhaut werden spürbar gemildert. Deine Kopfhaut fühlt sich frisch und sauber an." },
+      { "title": "Gesünderes Haar", "text": "Durchblutung und Pflege stärken die Haarwurzeln — sichtbar und fühlbar. Pflegestoffe dringen spürbar tiefer ein." },
+      { "title": "Mentaler Reset", "text": "45 bis 90 Minuten ohne Pflichten. Nur Stille, Dampf und achtsame Berührung — vom Alltag abschalten und dich komplett frei fühlen." },
+      { "title": "Individuell abgestimmt", "text": "Kein Standard-Wellness: Intensität und Pflege werden auf deine Kopfhaut und dein Stresslevel abgestimmt." },
+      { "title": "Ein Geschenk an dich", "text": "Man wird empfangen, nicht abgefertigt. Ein Moment, den du dir wirklich verdienst — auch perfekt zum Verschenken." }
+    ]
+  },
+  "packages": {
+    "eyebrow": "Dein Erlebnis",
+    "headline": "Für jeden das passende Headspa-Erlebnis.",
+    "intro": "Egal ob du dir eine kleine Auszeit gönnst oder das volle Verwöhnprogramm suchst — unsere transparenten Preise bieten für jedes Bedürfnis die passende Option.",
+    "items": [
+      {
+        "id": "basic",
+        "name": "Headspa Basic",
+        "price": 89,
+        "duration": "45 Minuten pure Entspannung",
+        "tagline": "Pure Entspannung — dein Einstieg ins Ritual.",
+        "featured": false,
+        "includes": [
+          "Kopf-, Nacken- und Dekolleté-Massage",
+          "Gründliche Haarreinigung und Pflege, verstärkt durch Bedampfung",
+          "Trockenföhnen inklusive",
+          "Optionales Styling (Föhnen) kann extra gebucht werden"
+        ]
+      },
+      {
+        "id": "beauty",
+        "name": "Headspa Beauty",
+        "price": 119,
+        "duration": "60 Minuten pure Entspannung",
+        "tagline": "Mehr Tiefe — mit Gesichtsmassage und Peeling.",
+        "featured": true,
+        "includes": [
+          "Kopf-, Nacken-, Gesicht- und Dekolleté-Massage",
+          "Gründliche Haarreinigung und Pflege, gefolgt von Peeling und Bedampfung",
+          "Trockenföhnen inklusive",
+          "Optionales Styling (Föhnen) kann extra gebucht werden"
+        ]
+      },
+      {
+        "id": "deluxe",
+        "name": "Headspa Deluxe",
+        "price": 149,
+        "duration": "90 Minuten pure Entspannung",
+        "tagline": "90 Minuten pure Verwöhnung — das rundum sorglos Paket.",
+        "featured": false,
+        "includes": [
+          "Umfassende Kopf-, Gesicht-, Nacken- und Dekolleté-Massage",
+          "Kérastase Premiere Haaraufbau und Bedampfung",
+          "Babor Gesichtspflege: Peeling, Maske, Wirkstoff-Ampulle und Tagespflege",
+          "Trockenföhnen inklusive",
+          "Optionales Styling (Föhnen) kann extra gebucht werden"
+        ]
+      }
+    ],
+    "partner": {
+      "eyebrow": "Zu zweit",
+      "headline": "Headspa Partner-Termine",
+      "text": "Erlebt das Ritual gemeinsam — ideal als Geschenk, Date oder Auszeit zu zweit.",
+      "note": "Headspa Partner-Buchungen gerne unter WhatsApp kontaktieren.",
+      "whatsapp": "https://wa.me/491733828581",
+      "items": [
+        { "name": "2× Headspa Basic", "price": 178, "duration": "45 Min. pro Person" },
+        { "name": "2× Headspa Beauty", "price": 238, "duration": "60 Min. pro Person" },
+        { "name": "2× Headspa Deluxe", "price": 298, "duration": "90 Min. pro Person" }
+      ]
+    }
+  },
+  "experience": {
+    "eyebrow": "Erlebe das Headspa-Gefühl hautnah",
+    "headline": "Sieh, wie sanfte Massagen und Rituale Kopf und Seele verwöhnen.",
+    "text": "Tauche ein in das beruhigende Erlebnis unserer Headspa-Behandlung — hochwertige Pflegeprodukte, wohltuende Rituale und eine Atmosphäre, in der du wirklich abschalten kannst."
+  },
+  "expertise": {
+    "eyebrow": "Handwerk & Haltung",
+    "headline": "Expertise, die du spürst — nicht nur liest.",
+    "name": "",
+    "teamLabel": "Das Wellnesstal Team",
+    "role": "Head Spa · Kopfhaut & Entspannung · Baesweiler",
+    "image": "/images/experience.jpg",
+    "text": "Wellnesstal verbindet japanische Head Spa Technik mit professioneller Markenpflege. Kein Add-on im Friseurstuhl — ein dediziertes Ritual-Studio in Baesweiler, in dem jede Berührung bewusst, langsam und präzise ist. Du wirst empfangen, nicht abgefertigt.",
+    "points": [
+      "Spezialisiert auf Head Spa, Kopfhaut & tiefe Entspannung",
+      "Im Deluxe-Paket: Kérastase Premiere & Babor auf höchstem Niveau",
+      "Ruhige Atmosphäre — Behandlung in Ruhe, ohne Hektik, mit Zeit für dich"
+    ]
+  },
+  "testimonials": {
+    "eyebrow": "Stimmen, die begeistern",
+    "headline": "Echte Erlebnisse. Wahre Begeisterung.",
+    "rating": "4,6 von 5 Sternen bei Google",
+    "items": [
+      {
+        "name": "Joanna Koscielna",
+        "text": "Die Behandlung begann mit einer gründlichen Haarwäsche, kombiniert mit einer entspannenden Kopfmassage. Der sanfte Wasserstrahl, der aus einer halbrunden Düse floss, schuf eine äußerst beruhigende Atmosphäre — die Massage von Nacken und Kopf versetzte mich in einen Zustand tiefer Entspannung.",
+        "rating": 5
+      },
+      {
+        "name": "Lea Wiegand",
+        "text": "Bei der Behandlung konnte ich zu 100% entspannen und in vollen Zügen genießen. Eine sehr liebe und kompetente Dame hat sich viel Zeit für mich genommen und die Behandlung in Ruhe durchgeführt. Ich freu mich auf die nächste Behandlung und kann es jedem weiter empfehlen.",
+        "rating": 5
+      },
+      {
+        "name": "Jacqueline G.",
+        "text": "Es waren 90 Minuten pure Verwöhnung. Das Personal ist super nett und freundlich — man wird direkt mit offenen Armen empfangen. Waschen, Peeling, Massage, Bedampfung — das rundum sorglos Paket. Jeder, der sich etwas Gutes tun möchte, sollte das unbedingt ausprobieren.",
+        "rating": 5
+      }
+    ]
+  },
+  "gift": {
+    "eyebrow": "Verschenken",
+    "headline": "Stille verschenken — das schönste Geschenk.",
+    "text": "Überrasche jemanden mit einem Head Spa Ritual. Ein Gutschein für Ruhe, Regeneration und echte Auszeit — online bestellbar.",
+    "cta": "Gutschein bestellen"
+  },
+  "faq": {
+    "eyebrow": "Häufig gestellte Fragen",
+    "headline": "Antworten auf einen Blick",
+    "items": [
+      {
+        "q": "Wie lange dauert eine Headspa-Behandlung?",
+        "a": "Je nach Paket 45, 60 oder 90 Minuten. Du hast genügend Zeit, dich zu entspannen und die Pflege in vollen Zügen zu genießen — ohne Zeitdruck."
+      },
+      {
+        "q": "Hilft die Behandlung bei stressbedingten Kopfschmerzen?",
+        "a": "Ja. Die Kombination aus Massage, Bedampfung und Kopfhautpflege kann effektiv dabei helfen, stressbedingte Kopfschmerzen zu lindern, Verspannungen zu lösen und die Durchblutung zu fördern."
+      },
+      {
+        "q": "Ist die Headspa-Behandlung auch für empfindliche Kopfhaut geeignet?",
+        "a": "Absolut. Unsere Produkte und Techniken sind speziell darauf abgestimmt, auch empfindliche Kopfhaut zu beruhigen und zu pflegen. Sprich uns einfach vorher an — wir passen alles an dich an."
+      },
+      {
+        "q": "Wie oft sollte ich eine Headspa-Behandlung machen lassen?",
+        "a": "Wir empfehlen alle 4–6 Wochen für optimale Ergebnisse. Bei starkem Stress oder Verspannungen können auch häufigere Behandlungen sinnvoll sein."
+      },
+      {
+        "q": "Was sind die langfristigen Vorteile?",
+        "a": "Regelmäßige Headspa-Behandlungen fördern die Gesundheit deiner Kopfhaut, stärken dein Haar und helfen, Stress nachhaltig abzubauen."
+      },
+      {
+        "q": "Welche Produkte werden bei der Behandlung verwendet?",
+        "a": "Je nach Paket: professionelle Pflegeprodukte passend zu deinem Haar- und Hauttyp. Im Deluxe-Paket Kérastase Premiere und Babor — sanft und frei von schädlichen Inhaltsstoffen."
+      },
+      {
+        "q": "Muss ich meine Haare vorher waschen?",
+        "a": "Nein. Die Haare werden während der Behandlung professionell gereinigt — du kannst entspannt kommen."
+      },
+      {
+        "q": "Ist Head Spa auch für Männer geeignet?",
+        "a": "Ja, selbstverständlich. Kopfhautpflege und tiefe Entspannung profitieren alle — unabhängig vom Geschlecht."
+      },
+      {
+        "q": "Kann ich Head Spa während der Schwangerschaft machen?",
+        "a": "Grundsätzlich ja. Bitte informiere uns vor der Behandlung, damit wir Position und Intensität anpassen können."
+      },
+      {
+        "q": "Kann ich Head Spa verschenken?",
+        "a": "Ja — über unseren Online-Gutschein. Das perfekte Geschenk für jemanden, der Ruhe braucht."
+      },
+      {
+        "q": "Kann ich mit gefärbten Haaren kommen?",
+        "a": "Ja. Unsere Behandlungen sind auch für coloriertes Haar geeignet — die Produkte werden auf deinen Haartyp abgestimmt."
+      },
+      {
+        "q": "Wo findet die Behandlung statt?",
+        "a": "Reyplatz 10, 52499 Baesweiler — in unserem Wellnesstal Studio. Head Spa Baesweiler, Aachen und Region."
+      }
+    ]
+  },
+  "closing": {
+    "eyebrow": "Dein Moment",
+    "headline": "Gönn dir die Erholung, die du verdienst.",
+    "text": "Lass Stress und Anspannung hinter dir. Wähle deinen Wunschtermin — und spüre den Unterschied schon beim ersten Besuch.",
+    "cta": "Wunschtermin finden"
+  },
+  "booking": {
+    "eyebrow": "Terminplaner",
+    "headline": "Wähle deinen Wunschtermin",
+    "microcopy": "Verfügbarkeit wird sofort angezeigt. Partner-Termine gerne per WhatsApp anfragen."
+  },
+  "localSeo": {
+    "headline": "Head Spa in der Region",
+    "cities": ["Baesweiler", "Aachen", "Köln", "Düsseldorf", "Heinsberg", "Geilenkirchen", "Übach-Palenberg", "Eschweiler", "Herzogenrath", "Alsdorf"]
+  }
+}

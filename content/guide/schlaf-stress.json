@@ -1,0 +1,82 @@
+{
+  "slug": "schlaf-stress",
+  "path": "/ratgeber/schlaf-stress",
+  "seo": {
+    "title": "Schlaf & Stress | Head Spa als Abend-Ritual — Wellnesstal Baesweiler",
+    "description": "Schlecht schlafen wegen Stress? Wie Head Spa mit Massage, Wasser und Dampf vor dem Schlaf hilft. Ehrliche Antworten — 45–90 Min. Abschalten in Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Schlaf & Stress",
+    "headline": "Der Kopf schaltet nicht ab. Das Ritual schon.",
+    "subline": "Gedankenkarussell, verspannte Schläfen, müde aber nicht entspannt. Head Spa ist kein Schlafmittel — aber viele Gäste buchen gezielt abends, um runterzufahren."
+  },
+  "sections": [
+    {
+      "title": "Warum Stress den Schlaf stiehlt",
+      "paragraphs": [
+        "Der Körper ist müde — der Kopf arbeitet weiter. Nacken und Kiefer sind angespannt, das Nervensystem bleibt im Alarmmodus.",
+        "Schlaf braucht Ruhe im Kopf, nicht nur im Bett. Verspannungen an Schläfen, Hinterkopf und Nacken halten viele wach — auch wenn sie es nicht bewusst spüren."
+      ]
+    },
+    {
+      "title": "Was Head Spa vor dem Schlaf bewirken kann",
+      "paragraphs": [],
+      "bullets": [
+        "Kopf- und Nackenmassage — körperliche Spannung löst sich, der Kopf wird leiser",
+        "Wasserstrahl und Wärme — beruhigen das Nervensystem, ähnlich wie bewusste Entspannung",
+        "Bedampfung — tiefe Atmung, Wärme, Loslassen",
+        "Stille — kein Bildschirm, kein Termin danach — nur Ritual",
+        "Mentaler Übergang — vom Alltag zur Ruhe, bevor du nach Hause fährst"
+      ]
+    },
+    {
+      "title": "Abends buchen — der Rhythmus",
+      "paragraphs": [
+        "Viele Gäste buchen freitags oder samstags nach Feierabend — Mo–Fr bis 19:00, Sa bis 16:00. Der Weg nach Hause fühlt sich leichter an.",
+        "Empfehlung: Keine Termine direkt danach. Gib der Entspannung Raum — nicht sofort wieder in den Alltag."
+      ]
+    },
+    {
+      "title": "Head Spa ersetzt keinen Arzt",
+      "paragraphs": [
+        "Bei chronischen Schlafstörungen: Arzt oder Schlafmedizin. Head Spa ist Entspannungsritual — kein medizinisches Heilversprechen.",
+        "Was wir hören: Gäste schlafen nach dem Besuch besser, fühlen sich leichter, der Kopf ist ruhiger. Individuell unterschiedlich — aber häufig genug, dass viele regelmäßig kommen."
+      ]
+    },
+    {
+      "title": "Welches Paket für Abend-Entspannung?",
+      "paragraphs": [],
+      "bullets": [
+        "Basic (89€, 45 Min.) — gut zum Kennenlernen, auch nach Feierabend machbar",
+        "Beauty (119€, 60 Min.) — beliebt, ausgewogene Tiefe",
+        "Deluxe (149€, 90 Min.) — volles Ritual mit Kérastase & Babor, wenn du wirklich abschalten willst"
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Schlaf & Stress — Kurz",
+    "items": [
+      "Head Spa = physischer + mentaler Runterfahren vor dem Schlaf",
+      "Abends buchbar — Mo–Fr bis 19:00",
+      "Kein Ersatz für medizinische Schlaftherapie",
+      "Regelmäßigkeit hilft: alle 4–6 Wochen als Rhythmus",
+      "Wellnesstal Baesweiler — Wunschtermin online"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/stress-kopf", "label": "Stress & Kopf", "hint": "Kopfschmerzen, Verspannung" },
+    { "href": "/ratgeber/bildschirm-stress", "label": "Bildschirm-Stress", "hint": "Homeoffice & Nacken" },
+    { "href": "/entspannung-aachen", "label": "Entspannung Aachen", "hint": "Lokal bei uns" }
+  ],
+  "faq": [
+    { "q": "Hilft Head Spa beim Einschlafen?", "a": "Viele Gäste berichten besseren Schlaf nach dem Besuch — individuell unterschiedlich, kein Heilversprechen." },
+    { "q": "Abends buchbar?", "a": "Ja — Mo–Fr bis 19:00, Sa bis 16:00." },
+    { "q": "Nach Feierabend aus Aachen?", "a": "15 Min. Anfahrt — ideal als Wochenabschluss." },
+    { "q": "Wie oft?", "a": "Empfehlung alle 4–6 Wochen — als fester Rhythmus der Erholung." }
+  ],
+  "closing": {
+    "headline": "Leg den Tag ab — nimm dir den Kopf zurück.",
+    "text": "45 Minuten Stille vor dem Schlaf. Berührung, Wasser, Dampf. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

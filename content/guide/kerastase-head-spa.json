@@ -1,0 +1,81 @@
+{
+  "slug": "kerastase-head-spa",
+  "path": "/ratgeber/kerastase-head-spa",
+  "seo": {
+    "title": "Kérastase Head Spa & Babor | Deluxe Ritual erklärt — Wellnesstal",
+    "description": "Kérastase Premiere & Babor im Head Spa Deluxe: Haaraufbau, Gesichtspflege, 90 Min. Ritual. Was du bekommst — und warum Gäste es lieben. 149€ · Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Deluxe & Marken",
+    "headline": "Kérastase & Babor — nicht auf dem Regal, im Ritual.",
+    "subline": "Im Deluxe-Paket verbinden wir japanisches Head Spa mit professioneller Markenpflege: Kérastase Premiere für den Haaraufbau, Babor für Gesicht und Dekolleté. 90 Minuten — nichts davon ist Zufall."
+  },
+  "sections": [
+    {
+      "title": "Was ist Kérastase Premiere im Head Spa?",
+      "paragraphs": [
+        "Kérastase ist professionelle Haarpflege auf Salon-Niveau — im Deluxe-Ritual als Premiere Haaraufbau integriert. Nicht ein Produkt von der Flasche, sondern abgestimmt auf dein Haar und deine Kopfhaut.",
+        "Nach Massage und Tiefenreinigung öffnet die Bedampfung Poren und Haarfasern — Kérastase dringt tiefer ein. Ergebnis: Gäste beschreiben weicheres Haar, stärkere Basis, spürbar gepflegte Kopfhaut."
+      ]
+    },
+    {
+      "title": "Babor Gesichtspflege — der zweite Teil des Deluxe",
+      "paragraphs": [
+        "Head Spa endet nicht am Haaransatz. Im Deluxe-Paket: Babor Gesichtspflege mit Peeling, Maske, Wirkstoff-Ampulle und Tagespflege — für Gesicht und Dekolleté.",
+        "Das Ritual wird ganzheitlich: Kopf entspannt, Kopfhaut frisch, Haut beruhigt und regeneriert. Viele Gäste nennen es „90 Minuten pure Verwöhnung“ — Waschen, Peeling, Massage, Bedampfung, Pflege."
+      ]
+    },
+    {
+      "title": "Deluxe Ablauf — 90 Minuten im Überblick",
+      "paragraphs": [],
+      "bullets": [
+        "Empfang und Einschätzung — Kopfhaut, Haar, Haut, Spannungszonen",
+        "Umfassende Massage: Kopf, Gesicht, Nacken, Dekolleté",
+        "Tiefenreinigung und sanfter Wasserstrahl",
+        "Kérastase Premiere Haaraufbau mit Bedampfung",
+        "Babor: Peeling, Maske, Ampulle, Tagespflege",
+        "Trockenföhnen — du gehst strahlend und leicht"
+      ]
+    },
+    {
+      "title": "Für wen ist Deluxe?",
+      "paragraphs": [
+        "Deluxe ist für dich, wenn du dir endlich das Maximum gönnst — oder jemandem schenkst, der wirklich gesehen werden soll.",
+        "Besonders beliebt: Geburtstag, Jubiläum, Muttertag, oder nach langen Phasen von Stress und Erschöpfung. Nicht „mehr Produkte“ — mehr Ankommen."
+      ]
+    },
+    {
+      "title": "Kérastase Head Spa vs. Friseur-Kérastase",
+      "paragraphs": [
+        "Beim Friseur: oft kurze Produktanwendung im Waschbecken. Bei uns: 90 Minuten Ritual — Massage, Dampf, Zeit. Kérastase ist eingebettet in Entspannung, nicht in Eile.",
+        "Du bekommst nicht nur schöneres Haar — du bekommst Stille, Berührung und ein Gefühl, das Tage nachwirkt."
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Deluxe auf einen Blick",
+    "items": [
+      "149€ · 90 Minuten · Trockenföhnen inklusive",
+      "Kérastase Premiere — Haaraufbau mit Bedampfung",
+      "Babor — Peeling, Maske, Ampulle, Tagespflege",
+      "Umfassende Kopf-, Gesicht-, Nacken-Massage",
+      "Wellnesstal Baesweiler — Wunschtermin online"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/headspa/deluxe", "label": "Head Spa Deluxe", "hint": "90 Min. — 149€" },
+    { "href": "/ratgeber/kopfhaut-pflege", "label": "Kopfhaut pflegen", "hint": "Reinheit & Pflege" },
+    { "href": "/gutschein/wellness-geschenk", "label": "Wellness Geschenk", "hint": "Deluxe verschenken" }
+  ],
+  "faq": [
+    { "q": "Ist Kérastase im Preis inklusive?", "a": "Ja — im Deluxe-Paket (149€) ohne Aufpreis." },
+    { "q": "Für coloriertes Haar?", "a": "Ja — Produkte werden auf deinen Haartyp abgestimmt." },
+    { "q": "Deluxe als Gutschein?", "a": "Ja — unter /gutschein oder direkt im Shop." },
+    { "q": "Unterschied zu Beauty?", "a": "Beauty (119€, 60 Min.): Gesichtsmassage und Peeling. Deluxe: + Kérastase, + Babor, 90 Min." }
+  ],
+  "closing": {
+    "headline": "90 Minuten Kérastase & Babor — dein Deluxe wartet.",
+    "text": "Markenpflege im Ritual, nicht auf der Eile. Wunschtermin online.",
+    "cta": "Deluxe buchen"
+  }
+}

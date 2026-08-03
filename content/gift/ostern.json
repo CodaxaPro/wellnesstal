@@ -1,0 +1,66 @@
+{
+  "slug": "ostern",
+  "path": "/gutschein/ostern",
+  "seo": {
+    "title": "Ostergeschenk Wellness & Head Spa Gutschein | Wellnesstal Baesweiler",
+    "description": "Ostergeschenk, das bleibt: Head Spa Gutschein für Ruhe und Erholung statt Schokolade allein. Berührung, Stille, Entspannung — ab 89€, sofort online."
+  },
+  "hero": {
+    "eyebrow": "Ostern · Frühling schenken",
+    "headline": "Schokolade schmilzt. Stille bleibt.",
+    "subline": "Ostern bedeutet Neuanfang — schenke kein weiteres Ding, sondern einen Moment, in dem der Kopf leise wird: Head Spa mit Berührung, Wasser, Dampf und echter Ruhe.",
+    "trust": "4,6★ · Sofort per E-Mail · Print@Home"
+  },
+  "essence": {
+    "eyebrow": "Ostern neu gedacht",
+    "headline": "Frühling im Kopf — nicht nur im Korb.",
+    "paragraphs": [
+      "Osterkörbe sind schön — aber vergessen. Was bleibt, ist ein Gefühl: Leichtigkeit, Wärme, das Gefühl endlich ankommen zu dürfen.",
+      "Head Spa passt zu Ostern: Reinheit, Erneuerung, frische Kopfhaut — und ein mentaler Neuanfang. Nicht laut, sondern leise. Nicht hastig, sondern bewusst.",
+      "Ob für Mama, Partner, Freundin oder dich selbst: Du schenkst Frühling, der von innen kommt."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte zum Fest",
+    "headline": "Frohe Ostern — auf eine leise Art",
+    "items": [
+      { "word": "Erneuerung", "headline": "Frisch. Leicht. Neu.", "text": "Kopfhautpflege und Dampf — wie Frühling für den Kopf." },
+      { "word": "Berührung", "headline": "Sanft und tief.", "text": "Massage, die Verspannungen löst — nach dem langen Winter." },
+      { "word": "Ruhe", "headline": "Kein Fest-Stress.", "text": "45–90 Min. nur für sie — oder für ihn." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Abschalten zwischen Familienbesuchen und Terminen." },
+      { "word": "Wertschätzung", "headline": "Du siehst sie.", "text": "Kein Pflicht-Osterei — ein echtes Geschenk." },
+      { "word": "Leichtigkeit", "headline": "Leichter in den Frühling.", "text": "Entspannung, die nachhallt — nicht nur ein Tag." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Ostern — für jeden, der Ruhe braucht",
+    "items": [
+      { "title": "Mama", "text": "Sie kocht, plant, trägt — schenke ihr Stille statt Schokolade." },
+      { "title": "Die Familie", "text": "Gutschein für jeden — individuell einlösbar." },
+      { "title": "Dich selbst", "text": "Ostern ohne schlechtes Gewissen — Selbstfürsorge." },
+      { "title": "Zu zweit", "text": "Partner-Termin — gemeinsam in den Frühling starten." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Ostern verschenken",
+    "headline": "Vom Gutschein zum Oster-Moment",
+    "steps": [
+      { "num": "01", "title": "Bestellen", "text": "Online — sofort per E-Mail, in den Osterkorb legen." },
+      { "num": "02", "title": "Überreichen", "text": "Neben Schokolade — das Geschenk, das bleibt." },
+      { "num": "03", "title": "Einlösen", "text": "Nach dem Fest — oder als Ruhepol vor dem Trubel." },
+      { "num": "04", "title": "Genießen", "text": "Berührung, Stille, Reinheit — Frühling im Kopf." }
+    ]
+  },
+  "faq": [
+    { "q": "Ostergeschenk last minute?", "a": "Ja — Gutschein sofort digital, ausdrucken und verschenken." },
+    { "q": "Statt Schokolade?", "a": "Perfekt als Ergänzung oder Alternative — Geschenk, das nicht vergessen wird." },
+    { "q": "Welches Paket?", "a": "Beauty (119€) ist der Beliebteste — Basic (89€) zum Einstieg." },
+    { "q": "Wo einlösen?", "a": "Wellnesstal Baesweiler — Region Aachen." }
+  ],
+  "closing": {
+    "headline": "Ostern schenken — Stille statt Staub.",
+    "text": "Head Spa Gutschein für Berührung, Ruhe und Erneuerung. Jetzt bestellen.",
+    "cta": "Oster-Gutschein bestellen"
+  }
+}

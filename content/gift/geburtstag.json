@@ -1,0 +1,66 @@
+{
+  "slug": "geburtstag",
+  "path": "/gutschein/geburtstag",
+  "seo": {
+    "title": "Geburtstagsgeschenk Wellness & Head Spa Gutschein | Wellnesstal",
+    "description": "Geburtstagsgeschenk, das bleibt: Head Spa Gutschein für Ruhe, Berührung und Stille. Kein Ding fürs Regal — echte Entspannung. Ab 89€, sofort online · Baesweiler & Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Geburtstag · Stille schenken",
+    "headline": "Noch ein Geschenk? Oder endlich eins, das ankommt.",
+    "subline": "Parfum, Schokolade, Dinge — schön, aber vergessen. Schenke einen Moment, in dem der Kopf leise wird: Head Spa — Berührung, Wasser, Dampf und echte Ruhe.",
+    "trust": "4,6★ · Sofort per E-Mail · Print@Home"
+  },
+  "essence": {
+    "eyebrow": "Was wirklich zählt",
+    "headline": "Ein Geburtstag verdient mehr als Lärm — er verdient Stille.",
+    "paragraphs": [
+      "Die besten Geburtstagsgeschenke landen nicht im Schrank. Sie landen im Nervensystem — als Leichtigkeit, Wärme und das Gefühl: Jemand sieht mich wirklich.",
+      "Head Spa ist der Rahmen. Was du schenkst: Zeit ohne Pflicht. Berührung ohne Erwartung. Ein Raum, in dem niemand etwas leisten muss.",
+      "Ob 30, 40, 50 oder 70 — Ruhe kennt kein Alter. Jeder verdient einen Moment, in dem der Kopf endlich loslässt."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Dein Geschenk in sechs Worten",
+    "headline": "Happy Birthday — auf eine leise Art",
+    "items": [
+      { "word": "Wertschätzung", "headline": "Du siehst sie. Wirklich.", "text": "Nicht Pflichtgeschenk — ein Gefühl, das bleibt." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Kopf- und Nackenmassage — Verspannungen weichen." },
+      { "word": "Ruhe", "headline": "Endlich nichts leisten.", "text": "45–90 Min. nur für sie — oder für ihn." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "100% abschalten — Gäste beschreiben tiefe Entspannung." },
+      { "word": "Reinheit", "headline": "Frisch. Leicht. Neu.", "text": "Kopfhautpflege und Dampf — ein Neuanfang fürs Gefühl." },
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "Nicht wie Parfum — sondern wie der Tag danach." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Jeder Geburtstag — eine andere Geschichte",
+    "items": [
+      { "title": "Die beste Freundin", "text": "Sie trägt alles — schenke ihr, was sie sich nie selbst gönnen würde." },
+      { "title": "Mama oder Papa", "text": "Danke sagen — mit Berührung statt Worten." },
+      { "title": "Der Partner", "text": "Zeit schenken, nicht Dinge — gemeinsam oder solo." },
+      { "title": "Dich selbst", "text": "Geburtstag ohne schlechtes Gewissen — Selbstfürsorge ist kein Luxus." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Vom Geschenk zum Moment",
+    "headline": "So wird der Gutschein zur besten Überraschung",
+    "steps": [
+      { "num": "01", "title": "Bestellen", "text": "Online — sofort per E-Mail. Ausdrucken, in Karte legen." },
+      { "num": "02", "title": "Überraschen", "text": "Ihre Augen beim Auspacken — wissen, dass es kein gewöhnliches Geschenk ist." },
+      { "num": "03", "title": "Erleben", "text": "Head Spa Ritual — Berührung, Stille, Reinheit." },
+      { "num": "04", "title": "Erinnern", "text": "Monate später: „Das war das beste Geschenk.“" }
+    ]
+  },
+  "faq": [
+    { "q": "Last-Minute Geburtstagsgeschenk?", "a": "Ja — Gutschein sofort digital. Ausdrucken und mitbringen." },
+    { "q": "Welches Paket schenken?", "a": "Beauty (119€) ist der Klassiker — Basic (89€) zum Einstieg, Deluxe (149€) für pure Verwöhnung." },
+    { "q": "Für Männer geeignet?", "a": "Ja — Head Spa ist geschlechtsneutral. Entspannung für alle." },
+    { "q": "Wo einlösen?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+  ],
+  "closing": {
+    "headline": "Schenke Stille — nicht Staub.",
+    "text": "Das Geburtstagsgeschenk für Berührung, Ruhe und echte Entspannung. Jetzt bestellen.",
+    "cta": "Geburtstags-Gutschein bestellen"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "slug": "ubach-palenberg",
+  "path": "/head-spa-ubach-palenberg",
+  "seo": {
+    "title": "Head Spa Übach-Palenberg | Ruhe & Berührung — Wellnesstal Baesweiler",
+    "description": "Head Spa nahe Übach-Palenberg: Japanisches Kopfhaut-Ritual mit Massage und Bedampfung. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · Region Aachen."
+  },
+  "city": "Übach-Palenberg",
+  "region": "Kreis Heinsberg · Städteregion Aachen",
+  "distance": "ca. 18 Minuten von Übach-Palenberg",
+  "nearby": ["Baesweiler", "Geilenkirchen", "Herzogenrath", "Aachen", "Alsdorf", "Heinsberg"],
+  "hero": {
+    "eyebrow": "Head Spa · Übach-Palenberg",
+    "headline": "Die kurze Fahrt. Die lange Wirkung.",
+    "subline": "Von Übach-Palenberg zu uns — ein dediziertes Head Spa Studio: Berührung, Wasser, Dampf und ein Kopf, der endlich leise wird.",
+    "trust": "4,6★ bei Google · Reyplatz 10, Baesweiler"
+  },
+  "essence": {
+    "eyebrow": "Head Spa für Übach-Palenberg",
+    "headline": "Ein Ritual, das sich lohnt — nicht nur ein Ausflug.",
+    "paragraphs": [
+      "Übach-Palenberg liegt zwischen Heinsberg und Aachen — viele pendeln, wenige finden echte Ruhe vor der Haustür.",
+      "Wellnesstal in Baesweiler ist das spezialisierte Head Spa Studio der Region: japanische Ritual-Technik, achtsame Berührung, Bedampfung — kein Massenbetrieb.",
+      "Gäste aus Übach, Palenberg und Boscheln fahren zu uns — weil Head Spa hier etwas bietet, das näher und tiefer ist als jedes generische Spa-Angebot."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du bei uns findest",
+    "headline": "Sechs Gründe zu kommen",
+    "items": [
+      { "word": "Ruhe", "headline": "Weg vom Trubel.", "text": "Ein Studio, das nur Stille kennt — kein Friseur, kein Hasten." },
+      { "word": "Berührung", "headline": "Head Spa, nicht Quick-Fix.", "text": "45–90 Min. bewusst — Massage, Wasserstrahl, Dampf." },
+      { "word": "Reinheit", "headline": "Kopfhaut atmet.", "text": "Tiefenreinigung — frisch, sauber, leicht." },
+      { "word": "Entspannung", "headline": "Tiefer als erwartet.", "text": "Viele Gäste: abschalten wie seit Monaten nicht." },
+      { "word": "Geborgenheit", "headline": "Empfangen werden.", "text": "Mit offenen Armen — so beschreiben es unsere Gäste." },
+      { "word": "Leichtigkeit", "headline": "Leichter heim.", "text": "Die Fahrt nach Hause fühlt sich anders an — leiser im Kopf." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen aus der Region",
+    "headline": "Was Gäste berichten",
+    "quotes": [
+      { "text": "Es waren 90 Minuten pure Verwöhnung — man wird direkt mit offenen Armen empfangen.", "name": "Jacqueline G.", "location": "Baesweiler" },
+      { "text": "Bei der Behandlung konnte ich zu 100% entspannen.", "name": "Lea W.", "location": "Region Aachen" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Besuch",
+    "headline": "Von Übach-Palenberg zu Stille",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 18 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Ankommen", "text": "Empfangen werden. Kaffee. Ruhe." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Reinigung, Bedampfung." },
+      { "num": "04", "title": "Rückfahrt", "text": "Leichter — mit einem Gefühl, das bleibt." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit von Übach-Palenberg?", "a": "Ca. 18 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Lohnt sich die Fahrt?", "a": "Viele Gäste aus dem Kreis Heinsberg kommen regelmäßig — weil dediziertes Head Spa in der Nähe selten ist." },
+    { "q": "Termin online?", "a": "Ja — Verfügbarkeit sofort sichtbar." },
+    { "q": "Gutschein?", "a": "Ja — /gutschein. Das Geschenk der Ruhe für die Region." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Übach-Palenberg.",
+    "text": "Berührung, Reinheit, Entspannung. Wunschtermin online — du wirst es spüren.",
+    "cta": "Wunschtermin finden"
+  }
+}

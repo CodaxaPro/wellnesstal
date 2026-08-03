@@ -1,0 +1,68 @@
+{
+  "slug": "eschweiler",
+  "path": "/head-spa-eschweiler",
+  "seo": {
+    "title": "Head Spa Eschweiler | Stress loslassen & entspannen — Wellnesstal",
+    "description": "Head Spa nahe Eschweiler: Berührung, Stille und tiefe Entspannung nach dem Alltag. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · Japanisches Ritual in Baesweiler."
+  },
+  "city": "Eschweiler",
+  "region": "Städteregion Aachen",
+  "distance": "ca. 12 Minuten von Eschweiler",
+  "nearby": ["Baesweiler", "Aachen", "Stolberg", "Würselen", "Alsdorf", "Herzogenrath"],
+  "hero": {
+    "eyebrow": "Head Spa · Eschweiler",
+    "headline": "Schicht vorbei. Kopf aus. Endlich du.",
+    "subline": "Eschweiler arbeitet hart — du auch. Bei uns darfst du aufhören: 45–90 Minuten Berührung, Wasser, Dampf und Stille. Kein Leisten. Nur Ankommen.",
+    "trust": "4,6★ bei Google · ca. 12 Min. von Eschweiler"
+  },
+  "essence": {
+    "eyebrow": "Head Spa für Eschweiler",
+    "headline": "Wenn der Körper funktioniert, aber der Kopf nicht mehr.",
+    "paragraphs": [
+      "Eschweiler kennt Rhythmus — Arbeit, Familie, Termine. Was oft fehlt: ein Moment, in dem der Kopf wirklich ausgeschaltet wird.",
+      "Head Spa wirkt anders als klassische Massage: Wasserstrahl, Kopfhautpflege, Bedampfung — der Nervensystem runterfahren, spürbar und tief.",
+      "Gäste aus Eschweiler und Stolberg kommen nach Feierabend oder am Wochenende — und sagen: endlich wieder durchatmen."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du brauchst",
+    "headline": "Sechs Gründe, aus Eschweiler zu fahren",
+    "items": [
+      { "word": "Abschalten", "headline": "100% präsent.", "text": "Kein Bildschirm, kein Termin danach — nur Ritual und Stille." },
+      { "word": "Berührung", "headline": "Verspannungen lösen.", "text": "Kopf- und Nackenmassage — oft spürbar in den ersten Minuten." },
+      { "word": "Reinheit", "headline": "Kopfhaut regenerieren.", "text": "Tiefenreinigung und Dampf — frisch nach langen Tagen." },
+      { "word": "Entspannung", "headline": "Tiefer als erwartet.", "text": "Gäste beschreiben Zustände tiefer Entspannung ab Minute eins." },
+      { "word": "Geborgenheit", "headline": "Du darfst.", "text": "Empfangen werden — nicht abgefertigt. Kaffee, Wärme, Ruhe." },
+      { "word": "Leichtigkeit", "headline": "Leichter in den Alltag.", "text": "Ein Reset, der Tage nachwirkt — nicht nur eine Stunde." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen",
+    "headline": "Was Gäste berichten",
+    "quotes": [
+      { "text": "Bei der Behandlung konnte ich zu 100% entspannen und in vollen Zügen genießen.", "name": "Lea W.", "location": "Region Aachen" },
+      { "text": "Man kann vom Alltag abschalten und sich wirklich komplett frei fühlen.", "name": "Jacqueline G.", "location": "Baesweiler" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Reset",
+    "headline": "Von Eschweiler zur Stille",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 12 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Ankommen", "text": "Kaffee, Stille — der Feierabend beginnt richtig." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Wasser, Dampf — Kopf wird leise." },
+      { "num": "04", "title": "Heimweg", "text": "Leichter nach Hause — bereit für morgen, aber entspannter." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit von Eschweiler?", "a": "Ca. 12 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Nach Feierabend buchbar?", "a": "Ja — Mo–Fr bis 19:00, Sa bis 16:00. Online Termin wählen." },
+    { "q": "Hilft bei stressbedingten Kopfschmerzen?", "a": "Viele Gäste berichten spürbare Linderung durch Massage und Bedampfung — individuell unterschiedlich." },
+    { "q": "Gutschein für Kolleginnen?", "a": "Ja — /gutschein. Ruhe schenken für jemanden aus Eschweiler." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Eschweiler — dein Reset.",
+    "text": "Berührung, Reinheit, Entspannung. 12 Min. von dir. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

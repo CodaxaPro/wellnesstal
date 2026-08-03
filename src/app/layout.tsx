@@ -1,57 +1,53 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import type { Metadata } from 'next'
 
-import type { Metadata, Viewport } from "next";
+import FloatingBook from '@/components/luxury/FloatingBook'
+import LuxuryFooter from '@/components/luxury/Footer'
+import LuxuryHeader from '@/components/luxury/Header'
+import MobileBookBar from '@/components/luxury/MobileBookBar'
+import { getSite } from '@/lib/content'
+import { localBusinessSchema } from '@/lib/schema'
 
-import "./globals.css";
-import { ErrorBoundaryWrapper } from "@/components/ErrorBoundaryWrapper";
-import { AuthProvider } from "@/contexts/AuthContext";
+import './globals.css'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const site = getSite()
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env['NEXT_PUBLIC_SITE_URL'] || 'http://localhost:3001'),
-  title: "Wellnesstal - Premium Wellness & Headspa in Baesweiler | Massage & Entspannung",
-  description: "Professionelle Wellness & Headspa-Behandlungen in Baesweiler. Japanische Kopfmassage, Entspannung & Massage für Ihr Wohlbefinden. Jetzt Termin vereinbaren!",
-  keywords: "wellness baesweiler, headspa baesweiler, massage baesweiler, japanische kopfmassage, entspannung baesweiler, wellness studio, spa baesweiler",
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.wellnesstal.de'),
+  title: site.seo.title,
+  description: site.seo.description,
   openGraph: {
-    title: "Wellnesstal - Premium Wellness & Headspa in Baesweiler | Massage & Entspannung",
-    description: "Professionelle Wellness & Headspa-Behandlungen in Baesweiler. Japanische Kopfmassage, Entspannung & Massage für Ihr Wohlbefinden.",
-    images: ["/images/og-wellnesstal.jpg"],
+    title: site.seo.title,
+    description: site.seo.description,
+    locale: 'de_DE',
+    type: 'website',
+    images: [{ url: '/images/hero.jpeg', width: 1200, height: 630, alt: 'Wellnesstal Premium Head Spa' }],
   },
-};
+  twitter: { card: 'summary_large_image', title: site.seo.title, description: site.seo.description },
+  robots: { index: true, follow: true },
+  verification: {
+    google: 'J7xXJRHklUwd6zqfezVUw8xGLBJitgKPEubhB58fcFg',
+  },
+}
 
-export const viewport: Viewport = {
-  width: 'device-width',
-  initialScale: 1,
-  maximumScale: 5,
-  userScalable: true,
-  viewportFit: 'cover',
-};
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const schema = localBusinessSchema(site)
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
   return (
-    <html lang="en" data-scroll-behavior="smooth">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <ErrorBoundaryWrapper>
-          <AuthProvider>
-            {children}
-          </AuthProvider>
-        </ErrorBoundaryWrapper>
+    <html lang="de">
+      <head>
+        <meta name="google-site-verification" content="J7xXJRHklUwd6zqfezVUw8xGLBJitgKPEubhB58fcFg" />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      </head>
+      <body className="pb-20 md:pb-0">
+        <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-ink focus:text-ivory focus:px-4 focus:py-2">
+          Zum Inhalt springen
+        </a>
+        <LuxuryHeader site={site} />
+        {children}
+        <LuxuryFooter site={site} />
+        <FloatingBook />
+        <MobileBookBar />
       </body>
     </html>
-  );
+  )
 }

@@ -1,0 +1,79 @@
+{
+  "slug": "deluxe",
+  "path": "/headspa/deluxe",
+  "serviceId": "deluxe",
+  "price": 149,
+  "duration": "90 Minuten",
+  "seo": {
+    "title": "Head Spa Deluxe 149€ | Kérastase & Babor · 90 Min. Verwöhnung",
+    "description": "Head Spa Deluxe: 90 Minuten mit Kérastase Premiere & Babor Gesichtspflege. Das volle japanische Ritual — Berührung, Reinheit, pure Verwöhnung. 149€ · Wellnesstal Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Head Spa Deluxe · 90 Min.",
+    "headline": "90 Minuten, in denen nichts mehr zählt — außer dir.",
+    "subline": "Das volle Ritual: Kérastase Premiere, Babor Peeling, Maske, Ampulle — plus Kopfmassage, Bedampfung und Stille. Kein Kompromiss. Pure Verwöhnung.",
+    "trust": "4,6★ · Kérastase & Babor · 90 Min. rundum sorglos"
+  },
+  "essence": {
+    "eyebrow": "Deluxe bedeutet",
+    "headline": "Nicht mehr Leistung — mehr Ankommen.",
+    "paragraphs": [
+      "Deluxe ist kein Upgrade auf dem Papier. Es ist 90 Minuten, in denen du vergisst, dass es morgen weitergeht. Gäste beschreiben es: „90 Minuten pure Verwöhnung“ — Waschen, Peeling, Massage, Bedampfung, Pflege.",
+      "Kérastase Premiere für den Haaraufbau. Babor für Gesicht und Dekolleté: Peeling, Maske, Wirkstoff-Ampulle, Tagespflege. Markenpflege auf höchstem Niveau — im Rahmen eines Rituals, nicht einer Produktliste.",
+      "Deluxe ist für dich, wenn du dir endlich gönnst, was du verdienst. Oder für jemanden, den du wirklich sehen willst."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Das Deluxe-Erlebnis",
+    "headline": "Sechs Momente der Vollendung",
+    "items": [
+      { "word": "Verwöhnung", "headline": "90 Minuten nur für dich.", "text": "Kein Termin danach. Kein schlechtes Gewissen. Pure Selbstfürsorge." },
+      { "word": "Berührung", "headline": "Ganzkörper-Oberkörper.", "text": "Kopf, Gesicht, Nacken, Dekolleté — jede Zone erreicht, nichts überstürzt." },
+      { "word": "Reinheit", "headline": "Kérastase & Babor.", "text": "Professionelle Markenpflege — Haaraufbau und Hautpflege in einem Ritual." },
+      { "word": "Stille", "headline": "Tiefer als je zuvor.", "text": "90 Minuten abschalten — Gäste nennen es „Skala 1–10, es war eine 12“." },
+      { "word": "Regeneration", "headline": "Kopfhaut und Haut.", "text": "Bedampfung, Maske, Ampulle — Nährstoffe dringen tief ein." },
+      { "word": "Leichtigkeit", "headline": "Anders gehen.", "text": "Frisch, strahlend, leichter — ein Gefühl, das Tage nachwirkt." }
+    ]
+  },
+  "includes": {
+    "eyebrow": "Im Deluxe enthalten",
+    "headline": "Das rundum sorglos Paket",
+    "items": [
+      "Umfassende Kopf-, Gesicht-, Nacken- und Dekolleté-Massage",
+      "Kérastase Premiere Haaraufbau und Bedampfung",
+      "Babor Gesichtspflege: Peeling, Maske, Wirkstoff-Ampulle und Tagespflege",
+      "Trockenföhnen inklusive"
+    ]
+  },
+  "forWhom": {
+    "eyebrow": "Für wen?",
+    "headline": "Deluxe passt, wenn du …",
+    "items": [
+      { "title": "… dir endlich etwas gönnst", "text": "90 Minuten ohne Kompromiss — du verdienst dieses Ritual." },
+      { "title": "… Markenpflege schätzt", "text": "Kérastase und Babor — nicht irgendwelche Produkte, sondern Kuratierung." },
+      { "title": "… das ultimative Geschenk suchst", "text": "Geburtstag, Jubiläum, Danke — Deluxe sagt: Du bist es wert." },
+      { "title": "… nach langem Stress kommst", "text": "Burnout-Nähe, Erschöpfung — 90 Minuten, in denen der Nervensystem runterfährt." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Deluxe-Ritual",
+    "headline": "90 Minuten — jede Phase bewusst",
+    "steps": [
+      { "num": "01", "title": "Empfang & Einschätzung", "text": "Kopfhaut, Haar, Haut, Spannung — individuell, nicht von der Liste." },
+      { "num": "02", "title": "Massage & Reinigung", "text": "Kopf, Nacken, Gesicht — Wasserstrahl, Tiefenreinigung." },
+      { "num": "03", "title": "Kérastase & Bedampfung", "text": "Haaraufbau, Dampf — Nährstoffe dringen ein, du lässt los." },
+      { "num": "04", "title": "Babor & Abschluss", "text": "Peeling, Maske, Ampulle — strahlend, leicht, verwöhnt nach Hause." }
+    ]
+  },
+  "faq": [
+    { "q": "Was macht Deluxe besonders?", "a": "90 Minuten plus Kérastase Premiere und Babor Gesichtspflege — das volle Ritual ohne Abstriche. Gäste nennen es „rundum sorglos Paket“." },
+    { "q": "Lohnt sich Deluxe gegenüber Beauty?", "a": "Wenn du 90 Minuten und Markenpflege willst — ja. Beauty (119€) ist ideal für 60 Min. Deluxe ist die Vollendung." },
+    { "q": "Sind Kérastase und Babor inklusive?", "a": "Ja — im Deluxe-Paket ohne Aufpreis. Produkte werden auf deinen Haar- und Hauttyp abgestimmt." },
+    { "q": "Deluxe verschenken?", "a": "Ja — /gutschein oder /gutschein/wellness-geschenk. Das Geschenk der puren Verwöhnung." }
+  ],
+  "closing": {
+    "headline": "90 Minuten pure Verwöhnung — 149€.",
+    "text": "Kérastase, Babor, Berührung, Stille. Das Deluxe-Ritual wartet auf dich.",
+    "cta": "Wunschtermin finden"
+  }
+}

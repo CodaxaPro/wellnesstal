@@ -1,0 +1,84 @@
+{
+  "slug": "head-spa-haltbarkeit",
+  "path": "/ratgeber/head-spa-haltbarkeit",
+  "seo": {
+    "title": "Head Spa Wirkung & Haltbarkeit | Wie oft? Wie lange? — Wellnesstal",
+    "description": "Wie lange hält Head Spa? Wie oft zum Friseur? Ehrliche Antworten zu Wirkung, Rhythmus und Haltbarkeit — 45–90 Min. Ritual in Baesweiler · 4,6★."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Wirkung",
+    "headline": "Ein Ritual. Ein Gefühl. Wie lange bleibt es?",
+    "subline": "Head Spa ist kein One-Day-Wonder — aber auch kein Dauerzustand. Hier erklären wir ehrlich, was du erwarten kannst und wie oft ein Besuch Sinn macht."
+  },
+  "sections": [
+    {
+      "title": "Was du direkt nach dem Besuch spürst",
+      "paragraphs": [
+        "Die meisten Gäste beschreiben unmittelbar danach: leichter Kopf, weicher Nacken, ruhigere Gedanken, frische Kopfhaut. Das ist real — physisch und mental.",
+        "Verspannungen können spürbar nachlassen, der Alltag fühlt sich weiter weg an. Wie stark und wie lange, ist individuell — aber das Gefühl der Stille bleibt oft Tage."
+      ]
+    },
+    {
+      "title": "Wie lange hält die Wirkung?",
+      "paragraphs": [
+        "Kein festes Datum — dein Alltag, Stress und Schlaf spielen mit. Was wir hören: Entspannung hält oft 3–7 Tage nach, manche spüren es länger.",
+        "Kopfhaut-Reinheit und Leichtigkeit: oft bis zum nächsten Waschtag deutlich spürbar — manchmal länger bei regelmäßigen Besuchen.",
+        "Head Spa ersetzt keine medizinische Behandlung. Es ist Entspannungsritual — kein Heilversprechen."
+      ]
+    },
+    {
+      "title": "Wie oft Head Spa — der Rhythmus",
+      "paragraphs": [],
+      "bullets": [
+        "Erstbesuch → einmal reicht zum Kennenlernen",
+        "Bei Stress, Bildschirmarbeit, Verspannungen → alle 4–6 Wochen empfohlen",
+        "Als feste Self-Care-Routine → alle 4 Wochen, viele Gäste buchen freitags nach Feierabend",
+        "Vor besonderen Anlässen → Deluxe (90 Min.) als volles Ritual",
+        "Als Geschenk → ein Besuch reicht — Wirkung oft überraschend tief"
+      ]
+    },
+    {
+      "title": "Head Spa vs. Friseur — wie oft was?",
+      "paragraphs": [
+        "Friseur: alle 4–8 Wochen — Schnitt, Farbe, Pflege. Head Spa: Entspannung und Kopfhaut-Ritual — kein Ersatz für den Friseur, sondern Ergänzung.",
+        "Manche kombinieren: Head Spa alle 4–6 Wochen, Friseur separat. Kein Konflikt — unterschiedliche Zwecke."
+      ]
+    },
+    {
+      "title": "Was die Wirkung verlängert",
+      "paragraphs": [],
+      "bullets": [
+        "Regelmäßigkeit — der Körper lernt runterzufahren",
+        "Keine Termine direkt danach — der Übergang braucht Raum",
+        "Handy lautlos — Stille mitnehmen, nicht sofort zurück in den Trubel",
+        "Schlaf und Wasser — Basics, die Head Spa verstärken"
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Haltbarkeit — Kurz",
+    "items": [
+      "Wirkung oft 3–7 Tage spürbar — individuell",
+      "Empfehlung: alle 4–6 Wochen bei Stress",
+      "Kein Ersatz für Friseur — Ergänzung",
+      "Regelmäßigkeit verlängert das Gefühl",
+      "Wellnesstal Baesweiler — Wunschtermin online"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/erster-besuch", "label": "Erster Besuch", "hint": "Was dich erwartet" },
+    { "href": "/ratgeber/stress-kopf", "label": "Stress & Kopf", "hint": "Verspannungen" },
+    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "60 Min. · Beliebt" }
+  ],
+  "faq": [
+    { "q": "Reicht ein Besuch?", "a": "Ja — zum Kennenlernen und als Geschenk. Bei chronischem Stress empfehlen wir Rhythmus alle 4–6 Wochen." },
+    { "q": "Wie lange hält die Entspannung?", "a": "Individuell — viele Gäste spüren es 3–7 Tage, manche länger." },
+    { "q": "Statt Friseur?", "a": "Nein — Head Spa ergänzt, ersetzt nicht Schnitt und Farbe." },
+    { "q": "Welches Paket für regelmäßige Besuche?", "a": "Beauty (119€, 60 Min.) — bestes Gleichgewicht aus Tiefe und Dauer." }
+  ],
+  "closing": {
+    "headline": "Ein Ritual, das nachhallt — nicht nur eine Stunde.",
+    "text": "45–90 Minuten Stille. Berührung, Wasser, Dampf. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

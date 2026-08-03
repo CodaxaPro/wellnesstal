@@ -1,0 +1,130 @@
+{
+  "slug": "weihnachten",
+  "path": "/gutschein/weihnachten",
+  "seo": {
+    "title": "Weihnachtsgeschenk Wellness & Head Spa Gutschein | Wellnesstal",
+    "description": "Weihnachten Geschenk mit Bedeutung: Schenke Stille, Berührung und Entspannung statt Dinge. Head Spa Gutschein ab 89€ — sofort online, Print@Home, Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Weihnachten · Stille schenken",
+    "headline": "Unter dem Baum: etwas, das nicht verstaubt — sondern nachwirkt.",
+    "subline": "Kein weiteres Ding. Ein Gutschein für Ruhe, Berührung und einen Kopf, der endlich leise wird — mitten in der lautesten Zeit des Jahres.",
+    "trust": "Last-Minute · Sofort per E-Mail · Print@Home"
+  },
+  "essence": {
+    "eyebrow": "Weihnachten anders",
+    "headline": "In der Hektik der Feiertage: das Geschenk der Stille.",
+    "paragraphs": [
+      "Dezember ist laut — Termine, Erwartungen, Einkaufsstress. Was wirklich fehlt, ist nicht noch ein Gegenstand, sondern ein Moment ohne Pflicht.",
+      "Ein Head Spa Gutschein unter dem Baum bedeutet: Ich sehe dich. Ich schenke dir Ruhe — nicht irgendwann, sondern wenn du sie brauchst.",
+      "Januar und Februar sind die Monate, in denen Neujahrsvorsätze und Erschöpfung zusammentreffen. Dein Geschenk kommt genau dann, wenn Entspannung am wertvollsten ist."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Weihnachtliche Bedeutung",
+    "headline": "Sechs Gefühle, die unter den Baum passen",
+    "items": [
+      {
+        "word": "Stille",
+        "headline": "Gegen die Weihnachtshektik.",
+        "text": "Ein Ritual ohne Lärm — der Kopf wird leise, wenn alles andere laut ist."
+      },
+      {
+        "word": "Wärme",
+        "headline": "Berührung, die tröstet.",
+        "text": "Massage, Dampf, warmes Wasser — Wärme, die von innen kommt."
+      },
+      {
+        "word": "Geborgenheit",
+        "headline": "Empfangen werden.",
+        "text": "Wie nach Hause kommen — Kaffee, Stille, offene Arme."
+      },
+      {
+        "word": "Entspannung",
+        "headline": "Nach den Feiertagen.",
+        "text": "Wenn alles vorbei ist und der Körper erst merkt, wie müde er ist — hier ist die Antwort."
+      },
+      {
+        "word": "Reinheit",
+        "headline": "Neu beginnen.",
+        "text": "Frische Kopfhaut, klares Gefühl — wie ein Neuanfang, sanft und spürbar."
+      },
+      {
+        "word": "Liebe",
+        "headline": "Ohne Worte.",
+        "text": "Du schenkst nicht Head Spa. Du schenkst: Du verdienst Ruhe."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen unter dem Baum?",
+    "headline": "Weihnachtsgeschenke mit Tiefe",
+    "items": [
+      {
+        "title": "Mama & Papa",
+        "text": "Die Eltern, die alles organisieren — endlich ein Geschenk nur für sie."
+      },
+      {
+        "title": "Partner",
+        "text": "Statt Parfum: ein Erlebnis, das Berührung und Nähe bedeutet."
+      },
+      {
+        "title": "Beste Freundin",
+        "text": "Sie kennt dich — und verdient eine Auszeit, die wirklich tief geht."
+      },
+      {
+        "title": "Dich selbst",
+        "text": "Self-Care unter dem Baum. Du darfst dir selbst Stille schenken."
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Vom Baum zum Ritual",
+    "headline": "So wird Weihnachten nachhaltig schön",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Einpacken",
+        "text": "Gutschein ausdrucken — persönlich, warm, bereit unter den Baum."
+      },
+      {
+        "num": "02",
+        "title": "Freude",
+        "text": "Ihre Reaktion, wenn sie versteht: Das ist für meine Ruhe."
+      },
+      {
+        "num": "03",
+        "title": "Einlösen",
+        "text": "Im neuen Jahr — oder zwischen den Jahren: Termin buchen, ankommen."
+      },
+      {
+        "num": "04",
+        "title": "Erinnerung",
+        "text": "Länger als jedes Material — das Gefühl von Leichtigkeit bleibt."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "Rechtzeitig zu Weihnachten?",
+      "a": "Ja. Gutschein sofort nach Kauf per E-Mail — auch am 24. Dezember noch ausdruckbar."
+    },
+    {
+      "q": "Warum Head Spa zu Weihnachten?",
+      "a": "Weil Entspannung in der Adventszeit das Seltenste ist. Ein Geschenk, das genau das Gegenteil von Hektik bedeutet."
+    },
+    {
+      "q": "Kann der Beschenkte im Januar buchen?",
+      "a": "Ja. Flexible Terminwahl — wenn die Feiertage vorbei sind und Ruhe am nötigsten ist."
+    },
+    {
+      "q": "Gutschein für Paare?",
+      "a": "Ja — Partner-Termine für zwei. Gemeinsam entspannen nach Weihnachten."
+    }
+  ],
+  "closing": {
+    "headline": "Das Weihnachtsgeschenk, das bleibt.",
+    "text": "Stille, Berührung, Reinheit — unter den Baum und ins Herz. Jetzt bestellen.",
+    "cta": "Weihnachts-Gutschein bestellen"
+  }
+}

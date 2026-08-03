@@ -1,0 +1,79 @@
+{
+  "slug": "beauty",
+  "path": "/headspa/beauty",
+  "serviceId": "beauty",
+  "price": 119,
+  "duration": "60 Minuten",
+  "seo": {
+    "title": "Head Spa Beauty 119€ | Kopf, Gesicht & Entspannung — Wellnesstal",
+    "description": "Head Spa Beauty: 60 Minuten Ritual mit Kopfmassage, Gesichtsmassage, Peeling und Bedampfung. Unser Beliebtestes — Berührung, Reinheit, Stille. 119€ · 4,6★."
+  },
+  "hero": {
+    "eyebrow": "Head Spa Beauty · 60 Min. · Beliebt",
+    "headline": "Kopf leise. Haut strahlend. Du ganz da.",
+    "subline": "60 Minuten, in denen Berührung Körper und Gesicht erreicht: Massage, Peeling, Bedampfung — ein Ritual, das tiefer geht als Basic und leichter wirkt als du denkst.",
+    "trust": "4,6★ · Unser Beliebtestes · 119€"
+  },
+  "essence": {
+    "eyebrow": "Warum Beauty?",
+    "headline": "Mehr als Kopf — ein Ganzkörper-Gefühl der Ruhe.",
+    "paragraphs": [
+      "Beauty ist unser meistgebuchtes Paket — nicht weil es das teuerste ist, sondern weil es die Balance trifft: 60 Minuten, genug Tiefe, spürbar mehr als Basic.",
+      "Gesichtsmassage und Peeling ergänzen das Kopf-Ritual — du spürst Entspannung im ganzen Oberkörper. Kopfhaut, Gesicht, Nacken: alles in einem Fluss, ohne Unterbrechung.",
+      "Gäste sagen: abschalten wie seit Monaten nicht. Beauty ist der Sweet Spot zwischen Einstieg und Vollverwöhnung."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was Beauty freischaltet",
+    "headline": "Sechs Ebenen der Entspannung",
+    "items": [
+      { "word": "Berührung", "headline": "Kopf bis Dekolleté.", "text": "Umfassende Massage — Verspannungen lösen sich über den ganzen Oberkörper." },
+      { "word": "Reinheit", "headline": "Kopfhaut und Gesicht.", "text": "Peeling und Bedampfung — frisch, sauber, strahlend." },
+      { "word": "Stille", "headline": "60 Minuten ohne Pflicht.", "text": "Kein Termin danach im Kopf — nur du und das Ritual." },
+      { "word": "Verwöhnung", "headline": "Mehr als Basic.", "text": "Gesichtsmassage und Peeling — spürbar luxuriöser, ohne Deluxe-Preis." },
+      { "word": "Geborgenheit", "headline": "Empfangen werden.", "text": "In Ruhe behandelt — Gäste nennen uns „mit offenen Armen empfangen“." },
+      { "word": "Leichtigkeit", "headline": "Leichter, klarer, freier.", "text": "Nach 60 Minuten: ein Kopf, der weniger trägt — und Haut, die atmet." }
+    ]
+  },
+  "includes": {
+    "eyebrow": "Im Beauty enthalten",
+    "headline": "Das rundum sorglos Ritual — 60 Min.",
+    "items": [
+      "Kopf-, Nacken-, Gesicht- und Dekolleté-Massage",
+      "Gründliche Haarreinigung und Pflege, gefolgt von Peeling und Bedampfung",
+      "Trockenföhnen inklusive",
+      "Individuelle Einschätzung — kein Standardprogramm"
+    ]
+  },
+  "forWhom": {
+    "eyebrow": "Für wen?",
+    "headline": "Beauty passt, wenn du …",
+    "items": [
+      { "title": "… das Beste aus 60 Minuten willst", "text": "Unser Beliebtestes — die Balance aus Tiefe und Zeit." },
+      { "title": "… Gesicht und Kopf verwöhnen willst", "text": "Peeling und Gesichtsmassage — nicht nur Kopfhaut, sondern ganzheitliche Ruhe." },
+      { "title": "… jemandem etwas Besonderes schenkst", "text": "Der Gutschein-Klassiker — Muttertag, Geburtstag, Danke sagen." },
+      { "title": "… regelmäßig kommst", "text": "Viele Stammgäste wählen Beauty alle 4–6 Wochen — der Rhythmus der Erholung." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Beauty-Ritual",
+    "headline": "60 Minuten — der volle Bogen",
+    "steps": [
+      { "num": "01", "title": "Ankommen", "text": "Empfang, Einschätzung — Kopfhaut, Gesicht, Spannungszonen." },
+      { "num": "02", "title": "Massage", "text": "Kopf, Nacken, Gesicht, Dekolleté — alles in einem Fluss." },
+      { "num": "03", "title": "Reinigung & Peeling", "text": "Haarwäsche, Peeling, Bedampfung — Reinheit von Kopf bis Haut." },
+      { "num": "04", "title": "Abschluss", "text": "Trockenföhnen — strahlend, leicht, entspannt nach Hause." }
+    ]
+  },
+  "faq": [
+    { "q": "Warum ist Beauty am beliebtesten?", "a": "60 Minuten bieten genug Tiefe für Gesicht und Kopf — ohne den Zeitaufwand von Deluxe. Die meisten Gäste finden hier ihre ideale Balance." },
+    { "q": "Ist Gesichtsmassage für empfindliche Haut geeignet?", "a": "Ja. Wir passen Produkte und Intensität an — sprich uns vorher an." },
+    { "q": "Basic oder Beauty — was empfiehlt ihr?", "a": "Erstbesuch und wenig Zeit: Basic. Wer Gesicht und Peeling möchte: Beauty. Wer das Maximum will: Deluxe." },
+    { "q": "Beauty als Gutschein?", "a": "Ja — unter /gutschein oder /gutschein/muttertag. Das Geschenk, das Berührung und Ruhe bedeutet." }
+  ],
+  "closing": {
+    "headline": "60 Minuten pure Entspannung — 119€.",
+    "text": "Unser Beliebtestes. Berührung, Reinheit, Stille — für Kopf, Gesicht und Seele.",
+    "cta": "Wunschtermin finden"
+  }
+}

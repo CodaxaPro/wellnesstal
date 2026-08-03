@@ -1,0 +1,68 @@
+{
+  "slug": "stolberg",
+  "path": "/head-spa-stolberg",
+  "seo": {
+    "title": "Head Spa Stolberg | Entspannung & Kopfhaut-Ritual — Wellnesstal Baesweiler",
+    "description": "Head Spa nahe Stolberg: Japanisches Ritual mit Massage, Wasserstrahl und Bedampfung. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · ca. 15 Min. erreichbar."
+  },
+  "city": "Stolberg",
+  "region": "Städteregion Aachen",
+  "distance": "ca. 15 Minuten von Stolberg",
+  "nearby": ["Baesweiler", "Eschweiler", "Aachen", "Alsdorf", "Würselen", "Herzogenrath"],
+  "hero": {
+    "eyebrow": "Head Spa · Stolberg",
+    "headline": "Stahlstadt-Stress? Hier wird es weich.",
+    "subline": "Von Stolberg zu uns — ein Ritual-Studio für Berührung, Reinheit und Stille. 45–90 Minuten, in denen der Kopf endlich loslässt.",
+    "trust": "4,6★ bei Google · Reyplatz 10, Baesweiler"
+  },
+  "essence": {
+    "eyebrow": "Warum aus Stolberg?",
+    "headline": "Tiefe Entspannung — nicht nur oberflächliche Ruhe.",
+    "paragraphs": [
+      "Stolberg kennt Arbeit, Alltag und Verpflichtung. Was viele vermissen: ein Raum, in dem nichts von dir erwartet wird — außer anzukommen.",
+      "Head Spa bei Wellnesstal wirkt anders als klassische Wellness: Wasserstrahl, Kopfhautpflege, Bedampfung und achtsame Berührung — auf Kopf und Nervensystem.",
+      "Gäste aus Stolberg, Breinig und Zweifall fahren nach Baesweiler — für 45 bis 90 Minuten, die sie wortwörtlich leichter machen."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du spürst",
+    "headline": "Sechs Momente deines Rituals",
+    "items": [
+      { "word": "Abschalten", "headline": "100% präsent.", "text": "Kein Termin danach im Kopf — nur Ritual und Stille." },
+      { "word": "Berührung", "headline": "Verspannungen weichen.", "text": "Kopf- und Nackenmassage — oft spürbar in den ersten Minuten." },
+      { "word": "Reinheit", "headline": "Kopfhaut regeneriert.", "text": "Tiefenreinigung und Dampf — frisch nach langen Tagen." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Sanfter Wasserstrahl — beruhigend ab Minute eins." },
+      { "word": "Geborgenheit", "headline": "Du darfst.", "text": "Empfangen werden — mit Kaffee, Wärme und Zeit." },
+      { "word": "Leichtigkeit", "headline": "Leichter gehen.", "text": "Zurück nach Stolberg — entspannter, klarer, freier." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen",
+    "headline": "Was Gäste sagen",
+    "quotes": [
+      { "text": "Der sanfte Wasserstrahl und die Kopfmassage — tiefe Entspannung von der ersten Minute.", "name": "Joanna K.", "location": "Baesweiler" },
+      { "text": "Man kann vom Alltag abschalten und sich wirklich komplett frei fühlen.", "name": "Jacqueline G.", "location": "Baesweiler" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Ritual",
+    "headline": "Von Stolberg zu uns",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 15 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Empfang", "text": "Kaffee, Stille — der Alltag bleibt draußen." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Reinigung, Bedampfung." },
+      { "num": "04", "title": "Rückfahrt", "text": "Leichter nach Hause — ein Reset für die Woche." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit von Stolberg?", "a": "Ca. 15 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Nach Feierabend buchbar?", "a": "Ja — Mo–Fr bis 19:00, Sa bis 16:00." },
+    { "q": "Erstbesuch — was empfiehlt ihr?", "a": "Basic (89€, 45 Min.) zum Kennenlernen — oder Beauty (119€), unser Beliebtestes." },
+    { "q": "Gutschein?", "a": "Ja — /gutschein. Ruhe schenken für jemanden aus Stolberg." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Stolberg — Stille, die wirkt.",
+    "text": "Berührung, Reinheit, Entspannung. 15 Min. von dir. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

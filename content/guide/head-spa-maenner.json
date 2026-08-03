@@ -1,0 +1,83 @@
+{
+  "slug": "head-spa-maenner",
+  "path": "/ratgeber/head-spa-maenner",
+  "seo": {
+    "title": "Head Spa für Männer | Entspannung ohne Tabu — Wellnesstal Baesweiler",
+    "description": "Head Spa für Männer: Kopfmassage, Stress abbauen, abschalten — kein Beauty-Trend, sondern echte Entspannung. 45–90 Min. Ritual · Basic ab 89€ · Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Männer",
+    "headline": "Kein Beauty-Trend. Einfach: Kopf leise, Nacken weich.",
+    "subline": "Head Spa ist für alle — auch für Männer, die Verspannungen, Bildschirm-Stress und einen lauten Kopf kennen. Kein Schnickschnack. Nur Ritual, Berührung und Stille."
+  },
+  "sections": [
+    {
+      "title": "Warum immer mehr Männer Head Spa buchen",
+      "paragraphs": [
+        "Verspannungen am Nacken, stressiger Job, wenig Raum zum Abschalten — Head Spa adressiert genau das: Kopf, Nacken, Schultern, Nervensystem.",
+        "Kein „Wellness für Sie“ — ein Raum, in dem niemand etwas erklären muss. 45 bis 90 Minuten, in denen der Kopf endlich leise wird."
+      ]
+    },
+    {
+      "title": "Was Männer konkret spüren",
+      "paragraphs": [],
+      "bullets": [
+        "Nacken- und Kopfverspannungen lösen sich — oft spürbar in den ersten Minuten",
+        "Abschalten ohne schlechtes Gewissen — kein „Luxus“, sondern Notwendigkeit",
+        "Frische Kopfhaut — auch bei kurzem Haar spürbar",
+        "Mentaler Reset — Gäste: tiefer als erwartet, auch ohne Vorerfahrung",
+        "Kein Gender-Marketing — professionell, ruhig, respektvoll"
+      ]
+    },
+    {
+      "title": "Ist Head Spa „was für Frauen“?",
+      "paragraphs": [
+        "Nein. Head Spa kommt aus japanischer Ritual-Kultur — Berührung, Wasser, Dampf. Geschlecht spielt keine Rolle.",
+        "Viele unserer Gäste sind Männer — allein, mit Partner, als Geschenk vom Team oder von der Partnerin. Basic (89€) reicht oft zum Einstieg."
+      ]
+    },
+    {
+      "title": "Welches Paket für Männer?",
+      "paragraphs": [],
+      "bullets": [
+        "Basic (89€, 45 Min.) — ideal zum Kennenlernen, auch nach Feierabend",
+        "Beauty (119€, 60 Min.) — beliebt bei regelmäßigen Gästen",
+        "Deluxe (149€, 90 Min.) — volles Ritual, wenn du wirklich abschalten willst",
+        "Partner-Pakete — zu zweit, ab 178€"
+      ]
+    },
+    {
+      "title": "Als Geschenk für ihn",
+      "paragraphs": [
+        "Vatertag, Geburtstag, Danke — Head Spa Gutschein ist geschlechtsneutral und kommt an. Siehe /gutschein/vatertag oder /gutschein/geburtstag.",
+        "Viele Partnerinnen schenken Basic oder Beauty — er muss nichts „verdienen“, er darf ankommen."
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Head Spa Männer — Kurz",
+    "items": [
+      "Head Spa = Entspannung, nicht Beauty-Pflicht",
+      "Nacken, Kopf, Stress — genau das adressiert das Ritual",
+      "Basic (89€) reicht zum Einstieg",
+      "Geschlechtsneutral — professionell und ruhig",
+      "Wellnesstal Baesweiler — Mo–Fr bis 19:00"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/bildschirm-stress", "label": "Bildschirm-Stress", "hint": "Homeoffice & Nacken" },
+    { "href": "/gutschein/vatertag", "label": "Vatertag Gutschein", "hint": "Für Papa" },
+    { "href": "/headspa/basic", "label": "Head Spa Basic", "hint": "89€ · Einstieg" }
+  ],
+  "faq": [
+    { "q": "Ist Head Spa für Männer geeignet?", "a": "Ja — sehr. Verspannungen, Stress, Abschalten — das Ritual ist geschlechtsneutral." },
+    { "q": "Peinlich?", "a": "Nein — professioneller, ruhiger Raum. Viele Männer sind Stammgäste." },
+    { "q": "Kurzes Haar?", "a": "Kein Problem — Kopfhaut, Massage und Entspannung wirken unabhängig von der Haarlänge." },
+    { "q": "Als Geschenk?", "a": "Ja — Gutschein online, sofort per E-Mail. Siehe /gutschein." }
+  ],
+  "closing": {
+    "headline": "Du darfst abschalten — ohne Erklärung.",
+    "text": "45 Minuten Stille. Berührung, Wasser, Dampf. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

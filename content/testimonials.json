@@ -1,0 +1,147 @@
+{
+  "eyebrow": "Stimmen, die begeistern",
+  "headline": "Echte Erlebnisse. Wahre Begeisterung.",
+  "rating": "4,6 von 5 Sternen bei Google",
+  "items": [
+    {
+      "id": "joanna-k",
+      "name": "Joanna Koscielna",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Die Behandlung begann mit einer gründlichen Haarwäsche, kombiniert mit einer entspannenden Kopfmassage. Der sanfte Wasserstrahl, der aus einer halbrunden Düse floss, schuf eine äußerst beruhigende Atmosphäre — die Massage von Nacken und Kopf versetzte mich in einen Zustand tiefer Entspannung."
+    },
+    {
+      "id": "lea-w",
+      "name": "Lea Wiegand",
+      "location": "Region Aachen",
+      "rating": 5,
+      "text": "Bei der Behandlung konnte ich zu 100% entspannen und in vollen Zügen genießen. Eine sehr liebe und kompetente Dame hat sich viel Zeit für mich genommen und die Behandlung in Ruhe durchgeführt. Ich freu mich auf die nächste Behandlung und kann es jedem weiter empfehlen."
+    },
+    {
+      "id": "jacqueline-g",
+      "name": "Jacqueline G.",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Ich war das erste Mal zum Head Spa und es war unglaublich. Es waren 90 Minuten pure Verwöhnung. Das Personal ist super nett und freundlich, man wird direkt mit offenen Armen empfangen. Es gab leckeren Kaffee. Die Behandlung dauerte etwa 90 Min mit Waschen, Peeling, Massage, Bedampfung etc. — also das rundum sorglos Paket. Man kann vom Alltag abschalten und sich wirklich komplett frei fühlen. Jeder, der sich etwas Gutes tun möchte, sollte das auf jeden Fall ausprobieren!"
+    },
+    {
+      "id": "sia-p",
+      "name": "Sia Perousakis",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Am Sonntag durfte ich ein Head Spa genießen und wurde von Zeynep behandelt. Sie hat sich unglaublich viel Mühe gegeben, mir die einzelnen Schritte erklärt und mir auch wertvolle Infos zu den verwendeten Produkten weitergegeben. Besonders gefallen hat mir, dass sie sich wirklich Zeit genommen hat und ich mich die ganze Behandlung über sehr gut aufgehoben gefühlt habe. Die Produkte von Babor und Kérastase haben das Erlebnis perfekt abgerundet — man spürt sofort die hochwertige Qualität. Insgesamt eine super Behandlung, die ich absolut weiterempfehlen kann. Vielen Dank an Zeynep für die tolle Betreuung — ich komme definitiv wieder!"
+    },
+    {
+      "id": "vanessa-h",
+      "name": "Vanessa",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Wenn man nach Entspannung pur sucht, wird man hier fündig. Ich hatte das 90-Minuten-Paket gebucht und bin restlos begeistert. Die Behandlung selbst war sehr professionell und tiefenentspannend. Besonders die Kombination aus Pflege, sanften Düften und der intensiven Kopfmassage hat dazu geführt, dass ich komplett abschalten konnte. Es war wie ein kleiner Kurzurlaub für die Sinne. Vielen Dank für dieses tolle Erlebnis und die freundliche Betreuung!"
+    },
+    {
+      "id": "janina-p",
+      "name": "Janina Pandorf",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Ich hatte heute mein Head Spa Erlebnis und was soll ich sagen — es war perfekt! Der Empfang war sehr herzlich, alles super. Ich habe mich gefühlt, als wäre ich schon ein paar Mal dort gewesen, obwohl es mein erster Besuch war. Die Behandlung war sooo entspannend, es hat einfach alles gestimmt. Ich komme auf jeden Fall wieder!"
+    },
+    {
+      "id": "katja-o",
+      "name": "Katja Ophoven",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Ich war heute zum ersten Mal im Wellness Tal und ich bin wirklich begeistert! Schon beim Ankommen habe ich mich sofort wohlgefühlt. Die Atmosphäre ist total entspannend und das gesamte Team unglaublich freundlich und herzlich. Ein besonderes Dankeschön geht an Zeynep — die Massage war einfach mega angenehm und hat mir richtig gutgetan. Ich konnte komplett abschalten und den Moment genießen. Ich bin rundum zufrieden und werde auf jeden Fall wiederkommen. Kann ich wirklich jedem nur ans Herz legen, das mal auszuprobieren!"
+    },
+    {
+      "id": "jessica-c",
+      "name": "Jessica Celenk",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Wir sind absolut begeistert — meine Mutter, ich und auch meine beiden kleinen Töchter. Wer noch kein Headspa hatte, hat definitiv was verpasst: Entspannung pur und ein Gefühl absoluter Leichtigkeit! Alle Mitarbeiterinnen sind ausgesprochen nett und zuvorkommend, man fühlt sich direkt wohl und willkommen — 100%ige Empfehlung!"
+    },
+    {
+      "id": "jenny-t",
+      "name": "Jenny Thevis",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Meine Mutter und ich waren heute das erste Mal dort zum Headspa. Zum Empfang gab es was zu trinken und einen kleinen Snack. So entspannt war ich schon lange nicht mehr. Alle waren dort sehr nett. Wir kommen bestimmt wieder. Auf einer Skala von 1–10 war es eine 12."
+    },
+    {
+      "id": "melia-l",
+      "name": "Melia Lang",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Absolute Empfehlung! Die Headspa-Behandlung war pure Entspannung. Meine Kopfhaut fühlt sich sauber und erfrischt an, Verspannungen wurden gelöst, und selbst meine Haare sehen gesünder aus. Sehr professionell und angenehm — ich komme gerne wieder!"
+    },
+    {
+      "id": "nastjenka-b",
+      "name": "Nastjenka Busch",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Wir hatten heute eine wundervolle Auszeit bei einer Head-Spa-Behandlung. Wir wurden überaus freundlich und herzlich empfangen und haben wundervolle Massagen und Treatments genießen dürfen. Dank der schönen Klänge und Düfte und der professionellen Massage war man ganz schnell in einer anderen Welt und herrlich entspannt! Vielen herzlichen Dank für die wunderschöne Auszeit."
+    },
+    {
+      "id": "marita",
+      "name": "Marita",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Ich habe das Headspa mit meiner Tochter zusammen gebucht. 60 Minuten Erholung pur. Die Behandlung war mega gut. Die Massage unglaublich gut. Wir haben uns sehr wohl gefühlt."
+    },
+    {
+      "id": "nicole",
+      "name": "Nicole",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Die Headspa-Behandlung war einfach richtig toll! Ich hab mich von der ersten Minute an wohlgefühlt. Die Massage war super entspannend. Genau das, was ich gebraucht habe — ich komme auf jeden Fall wieder!"
+    },
+    {
+      "id": "brigitte-k",
+      "name": "Brigitte Kuttig",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Pure Entspannung! Man spürt, dass Zeynep ihre Arbeit gerne macht und es ihr wichtig ist, dass es einem rundum gut gehen soll. Terminvereinbarung ist sehr unkompliziert. Ich freue mich auf meine nächste Erholung und Entspannung im Headspa."
+    },
+    {
+      "id": "g-k",
+      "name": "G K",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Sehr entspannende Wellness-Kopfmassage! Angenehme Atmosphäre, professionelle Behandlung und genau der richtige Druck. Danach fühlt man sich erfrischt und stressfrei — absolut empfehlenswert!"
+    },
+    {
+      "id": "n-r",
+      "name": "N. R.",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Ich habe mich komplett überraschen lassen, da ein Headspa für mich etwas ganz Neues war. Wenn man sich etwas gönnen möchte, das der reinen Erholung und Entspannung dient, ist man hier genau richtig. Ich konnte ab der ersten Minute der Behandlung komplett abschalten und entspannen. Ein kleiner Vorschlag wäre vielleicht, Duftproben der verwendeten Produkte anzubieten oder eine kleine Auswahl zwischen neutralen und verschiedenen Düften zu ermöglichen. Ich habe im Nachhinein festgestellt, dass ich den Geruch von Shampoo oder Spülung leider nicht so gut vertragen habe und meine Haare zuhause nochmal waschen musste. Das fand ich etwas schade, weil meine Haare nach der Behandlung wirklich super weich waren. Das ist aber kein Kritikpunkt für mich — ich würde definitiv wiederkommen und kann den Besuch absolut weiterempfehlen."
+    },
+    {
+      "id": "nina-h",
+      "name": "Nina Hollunder",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Bin super zufrieden mit meiner Haarbehandlung, Gesichts- und Dekolleté-Pflege. Die 1,5-stündige Anwendung ging leider viel zu schnell vorbei. Es war alles sehr entspannt und angenehm und ich würde es weiterempfehlen."
+    },
+    {
+      "id": "s-b",
+      "name": "S B",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Ich stieß auf Head Spa durch eine Anzeige über Facebook und dachte mir, das klingt interessant und entspannend. Ich wurde in dem Salon sehr freundlich empfangen und durfte erstmal einen Kaffee genießen. Dann ging es in den Raum. Die Mitarbeiterin ist angenehm ruhig und sympathisch. Es war ein schönes Erlebnis zum Entspannen, Abschalten und sich Verwöhnen lassen. Auch schön als Geschenkidee. Des Weiteren finde ich gut, dass man Termine direkt online buchen kann. Macht weiter so!"
+    },
+    {
+      "id": "brinchen-p",
+      "name": "Brinchen P.",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Es war ein toller Vormittag mit meiner Tochter. Alle waren sehr nett."
+    },
+    {
+      "id": "maga-w",
+      "name": "Maga Winter",
+      "location": "Baesweiler",
+      "rating": 5,
+      "text": "Es hat mir sehr gefallen. Es war klasse und jede Zeit komme ich wieder."
+    }
+  ]
+}

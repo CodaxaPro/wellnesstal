@@ -1,0 +1,68 @@
+{
+  "slug": "wurselen",
+  "path": "/head-spa-wurselen",
+  "seo": {
+    "title": "Head Spa Würselen | Japanisches Ritual — 10 Min. von Wellnesstal",
+    "description": "Head Spa nahe Würselen: Berührung, Stille und Entspannung in wenigen Minuten erreichbar. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · Reyplatz 10, Baesweiler."
+  },
+  "city": "Würselen",
+  "region": "Städteregion Aachen",
+  "distance": "ca. 10 Minuten von Würselen",
+  "nearby": ["Baesweiler", "Aachen", "Herzogenrath", "Alsdorf", "Eschweiler", "Stolberg"],
+  "hero": {
+    "eyebrow": "Head Spa · Würselen",
+    "headline": "Nah genug für spontan. Ruhig genug zum Ankommen.",
+    "subline": "Von Würselen in wenigen Minuten zu uns — ein dediziertes Head Spa Studio: Berührung, Wasser, Dampf, Reinheit. Kein Friseur-Add-on. Ein Ritual.",
+    "trust": "4,6★ bei Google · ca. 10 Min. von Würselen"
+  },
+  "essence": {
+    "eyebrow": "Head Spa nahe Würselen",
+    "headline": "Dein Nachbar-Studio für echte Stille.",
+    "paragraphs": [
+      "Würselen und Baesweiler liegen nah beieinander — aber was du bei uns findest, gibt es vor Ort nicht: ein Studio, das nur Head Spa kennt.",
+      "Keine Warteschlange im Friseurstuhl. Keine 15-Minuten-Kopfmassage. 45 bis 90 Minuten bewusste Berührung, Bedampfung und Stille — japanisches Ritual in Ruhe.",
+      "Gäste aus Würselen, Broichweiden und der gesamten Region kommen wieder — weil sie hier endlich abschalten können, wie seit Monaten nicht."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was dich erwartet",
+    "headline": "Sechs Gründe aus Würselen zu uns",
+    "items": [
+      { "word": "Nähe", "headline": "10 Minuten.", "text": "Spontan buchen, schnell ankommen — ohne Aachen-Innenstadt-Stress." },
+      { "word": "Berührung", "headline": "Bewusst. Langsam.", "text": "Kopf-, Nacken- und Dekolleté-Massage — nicht hastig, sondern heilend." },
+      { "word": "Reinheit", "headline": "Kopfhaut atmet.", "text": "Tiefenreinigung und Bedampfung — frisch und leicht." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "100% abschalten — in einem Raum ohne Hektik." },
+      { "word": "Geborgenheit", "headline": "Empfangen werden.", "text": "Kaffee, Wärme, herzlicher Empfang — du fühlst dich willkommen." },
+      { "word": "Leichtigkeit", "headline": "Zurück nach Würselen — leichter.", "text": "Entspannung, die nachhallt — nicht nur eine Stunde." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen aus der Region",
+    "headline": "Was Gäste berichten",
+    "quotes": [
+      { "text": "Bei der Behandlung konnte ich zu 100% entspannen — in Ruhe, ohne Hektik.", "name": "Lea W.", "location": "Region Aachen" },
+      { "text": "Der sanfte Wasserstrahl und die Kopfmassage — tiefe Entspannung von der ersten Minute.", "name": "Joanna K.", "location": "Baesweiler" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Besuch",
+    "headline": "Von Würselen zu uns — und zurück in Ruhe",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 10 Min. — Reyplatz 10, Baesweiler. Parkplatz in der Nähe." },
+      { "num": "02", "title": "Ankommen", "text": "Empfangen werden. Kaffee. Der erste Atemzug der Stille." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Wasser, Dampf — je nach Paket 45–90 Min." },
+      { "num": "04", "title": "Heimfahrt", "text": "Leichter nach Hause — mit einem Gefühl, das bleibt." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit ist Wellnesstal von Würselen?", "a": "Ca. 10 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler — direkt nebenan." },
+    { "q": "Gibt es Head Spa in Würselen selbst?", "a": "Wellnesstal in Baesweiler ist das nächste dedizierte Head Spa Studio — spezialisiert, nicht als Add-on." },
+    { "q": "Online buchen?", "a": "Ja — Wunschtermin sofort sichtbar." },
+    { "q": "Gutschein für jemanden aus Würselen?", "a": "Ja — unter /gutschein. Stille verschenken, nur 10 Min. entfernt." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Würselen — Stille, die nah ist.",
+    "text": "Berührung, Reinheit, Entspannung. 10 Minuten von dir. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

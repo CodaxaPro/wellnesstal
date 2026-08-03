@@ -1,6 +1,0 @@
-export { BasicTab } from './BasicTab'
-export { AppearanceTab } from './AppearanceTab'
-export { MessageTab } from './MessageTab'
-export { DisplayTab } from './DisplayTab'
-export { AvailabilityTab } from './AvailabilityTab'
-export { CtaTab } from './CtaTab'

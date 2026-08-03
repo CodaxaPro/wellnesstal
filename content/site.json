@@ -1,0 +1,215 @@
+{
+  "brand": {
+    "name": "Wellnesstal",
+    "tagline": "Japanisches Head Spa · Baesweiler",
+    "phone": "+49 173 3828581",
+    "phoneHref": "tel:+491733828581",
+    "email": "info@wellnesstal.de",
+    "instagram": "https://instagram.com/wellnesstal",
+    "address": {
+      "street": "Reyplatz 10",
+      "city": "Baesweiler",
+      "postalCode": "52499",
+      "country": "Deutschland"
+    },
+    "hours": {
+      "weekdays": "Mo–Fr 09:00–19:00",
+      "saturday": "Sa 10:00–16:00",
+      "sunday": "So geschlossen"
+    },
+    "bookingUrl": "https://treuepay.de/booking?orgSlug=wellnesstal",
+    "gutscheinUrl": "https://treuepay.de/wellnesstal/gutschein",
+    "mapsUrl": "https://maps.google.com/?q=Reyplatz+10+52499+Baesweiler"
+  },
+  "reviews": {
+    "rating": "4,6",
+    "label": "4,6 von 5 Sternen bei Google",
+    "url": "https://www.google.com/maps/search/?api=1&query=Wellnesstal+Reyplatz+10+52499+Baesweiler",
+    "cta": "Alle Google-Bewertungen ansehen"
+  },
+  "media": {
+    "heroVideo": "/videos/hero.m4v",
+    "heroPoster": "/images/hero.jpeg",
+    "ritualVideo": "/videos/ritual.m4v",
+    "ritualPoster": "/images/ritual-poster.jpg",
+    "experience": "/images/experience.jpg",
+    "location": "/images/location.jpg",
+    "team": "/images/experience.jpg",
+    "instagram": [
+      "/images/instagram/01.jpg",
+      "/images/instagram/02.jpg",
+      "/images/instagram/03.jpg",
+      "/images/instagram/04.jpg"
+    ],
+    "_guide": {
+      "heroVideo": "Ersetzen: /public/videos/hero.m4v",
+      "ritualVideo": "Ersetzen: /public/videos/ritual.m4v",
+      "team": "Team-Foto: /public/images/team.jpg — dann media.team setzen"
+    }
+  },
+  "hero": {
+    "eyebrow": "Head Spa · Baesweiler",
+    "title": "Mehr als Entspannung. Finde zurück zu dir.",
+    "subtitle": "Japanisches Kopfhaut-Ritual: Wasserstrahl, Massage, Bedampfung — in Ruhe, ohne Zeitdruck.",
+    "trust": "4,6★ bei Google · Wunschtermin online",
+    "ctaPrimary": "Wunschtermin finden",
+    "ctaPrimaryHref": "https://treuepay.de/booking?orgSlug=wellnesstal",
+    "ctaSecondary": "Head Spa entdecken",
+    "ctaSecondaryHref": "/headspa"
+  },
+  "pain": {
+    "eyebrow": "Kennst du das?",
+    "headline": "Kopf voller Gedanken, gestresst und erschöpft?",
+    "paragraphs": [
+      "Manchmal braucht dein Kopf keinen Ausweg — nur einen Moment, in dem alles still wird.",
+      "Zwischen Terminen, Bildschirm und Alltag bleibt dein Kopf selten still. Verspannungen sammeln sich — du funktionierst, aber regenerierst kaum.",
+      "Klassische Wellness berührt oft nur die Oberfläche. Head Spa spricht dein Nervensystem an — spürbar, tief, ohne Hektik. Viele Gäste spüren schon früh spürbar mehr Leichtigkeit."
+    ],
+    "closing": "Du musst nichts leisten. Du darfst ankommen.",
+    "cta": "So hilft dir Head Spa",
+    "ctaHref": "/headspa"
+  },
+  "experience": {
+    "title": "Die Philosophie",
+    "headline": "Mehr als nur Entspannung — wahre Erholung für Kopf und Geist.",
+    "paragraphs": [
+      "Head Spa ist keine Behandlung von der Stange. Es ist ein Ritual — entwickelt, um deinen Geist zu beruhigen, bevor der Körper folgt.",
+      "In unserem Studio in Baesweiler verbinden wir japanische Kopfhaut-Pflege mit professioneller Behandlung — im Deluxe-Paket mit Kérastase und Babor. Jeder Moment ist bewusst: Licht, Dampf, Berührung, Stille.",
+      "Du wirst empfangen, nicht abgefertigt. Du darfst ankommen — ohne Hektik, ohne Zeitdruck."
+    ]
+  },
+  "benefits": [
+    { "title": "Nervensystem", "text": "Du kannst zu 100% abschalten — Verspannungen lösen sich oft schon in den ersten Minuten spürbar." },
+    { "title": "Kopfhaut", "text": "Tiefenreinigung, Bedampfung und Regeneration — deine Kopfhaut fühlt sich frisch und sauber an." },
+    { "title": "Geist", "text": "Ein Raum ohne Ablenkung. Nur du, das Ritual und absolute Ruhe." },
+    { "title": "Haut", "text": "Ab Beauty: Gesichtsmassage · Deluxe: Babor Gesichtspflege mit Maske, Ampulle und Tagespflege." }
+  ],
+  "services": [
+    {
+      "id": "basic",
+      "name": "Headspa Basic",
+      "price": 89,
+      "duration": "45 Min. pure Entspannung",
+      "description": "Kopf-, Nacken- und Dekolleté-Massage, Haarreinigung, Bedampfung — Trockenföhnen inklusive.",
+      "image": "/images/services/basic.jpg"
+    },
+    {
+      "id": "beauty",
+      "name": "Headspa Beauty",
+      "price": 119,
+      "duration": "60 Min. pure Entspannung",
+      "description": "Mit Gesichtsmassage, Peeling und Bedampfung — Trockenföhnen inklusive.",
+      "image": "/images/services/beauty.jpg",
+      "featured": true
+    },
+    {
+      "id": "deluxe",
+      "name": "Headspa Deluxe",
+      "price": 149,
+      "duration": "90 Min. pure Entspannung",
+      "description": "Kérastase Premiere & Babor — das volle Verwöhnprogramm, 90 Minuten.",
+      "image": "/images/services/deluxe.jpg"
+    }
+  ],
+  "ritual": {
+    "title": "Dein Ritual",
+    "steps": [
+      { "num": "01", "title": "Ankommen", "text": "Stille. Warmes Kompress. Du lässt die Welt draußen." },
+      { "num": "02", "title": "Berührung", "text": "Kopf-, Nacken- und Dekolleté-Massage — präzise, langsam, bewusst." },
+      { "num": "03", "title": "Reinigung", "text": "Sanfter Wasserstrahl und Tiefenreinigung — die Kopfhaut kann wieder atmen." },
+      { "num": "04", "title": "Dampf", "text": "Bedampfung öffnet Poren — Pflegestoffe dringen tiefer ein." },
+      { "num": "05", "title": "Abschluss", "text": "Deluxe: Kérastase & Babor — Haaraufbau, Peeling, Maske, Ampulle. Trockenföhnen inklusive." }
+    ]
+  },
+  "products": {
+    "title": "Kuratierte Produkte",
+    "brands": [
+      { "name": "Kérastase", "text": "Professionelle Haarpflege — im Deluxe-Paket, abgestimmt auf dein Haar." },
+      { "name": "Babor", "text": "Premium Hautpflege — im Deluxe-Paket: Peeling, Maske, Ampulle und Tagespflege." }
+    ]
+  },
+  "expert": {
+    "eyebrow": "Handwerk & Haltung",
+    "headline": "Expertise, die du spürst — nicht nur liest.",
+    "name": "",
+    "teamLabel": "Das Wellnesstal Team",
+    "role": "Head Spa · Kopfhaut & Entspannung · Baesweiler",
+    "text": "Wellnesstal verbindet japanische Head Spa Technik mit professioneller Markenpflege. Früher kannten uns Gäste auch als Deluxe Beauty bzw. Deluxe Hair Beauty — heute sind wir ein dediziertes Ritual-Studio für Head Spa, nicht für Haarschnitt oder klassische Salon-Leistungen.",
+    "points": [
+      "Spezialisiert auf Head Spa, Kopfhaut & tiefe Entspannung",
+      "Im Deluxe-Paket: Kérastase Premiere & Babor auf höchstem Niveau",
+      "Ruhige Atmosphäre — Behandlung in Ruhe, ohne Hektik",
+      "Ehemals Deluxe Beauty / Deluxe Hair Beauty — heute klar fokussiert"
+    ]
+  },
+  "testimonials": [
+    {
+      "name": "Joanna Koscielna",
+      "location": "Baesweiler",
+      "text": "Der sanfte Wasserstrahl aus der halbrunden Düse und die Kopfmassage versetzten mich in einen Zustand tiefer Entspannung.",
+      "rating": 5
+    },
+    {
+      "name": "Lea Wiegand",
+      "location": "Region Aachen",
+      "text": "Bei der Behandlung konnte ich zu 100% entspannen. Eine sehr liebe, kompetente Behandlung — in Ruhe, ohne Hektik.",
+      "rating": 5
+    },
+    {
+      "name": "Jacqueline G.",
+      "location": "Baesweiler",
+      "text": "90 Minuten pure Verwöhnung — man wird mit offenen Armen empfangen. Waschen, Peeling, Massage, Bedampfung. Unbedingt ausprobieren.",
+      "rating": 5
+    }
+  ],
+  "faq": [
+    {
+      "q": "Was unterscheidet Wellnesstal von anderen Head Spas?",
+      "a": "Wir kombinieren japanische Ritual-Technik in einem dedizierten Studio — nicht als Add-on im Friseurstuhl. Drei Pakete: Basic, Beauty und Deluxe mit Kérastase & Babor."
+    },
+    {
+      "q": "Hilft Head Spa bei stressbedingten Kopfschmerzen?",
+      "a": "Ja. Massage, Bedampfung und Kopfhautpflege können Verspannungen lösen und stressbedingte Beschwerden spürbar lindern."
+    },
+    {
+      "q": "Ist die Behandlung für empfindliche Kopfhaut geeignet?",
+      "a": "Absolut. Unsere Produkte und Techniken sind darauf ausgelegt, auch empfindliche Kopfhaut sanft zu beruhigen."
+    },
+    {
+      "q": "Wie lange dauert eine Behandlung?",
+      "a": "Je nach Paket 45, 60 oder 90 Minuten — ohne Zeitdruck, in Ruhe."
+    },
+    {
+      "q": "Muss ich meine Haare vorher waschen?",
+      "a": "Nein. Die Haare werden während der Behandlung professionell gereinigt."
+    },
+    {
+      "q": "Ist Head Spa auch für Männer geeignet?",
+      "a": "Ja, selbstverständlich. Kopfhautpflege und tiefe Entspannung profitieren alle."
+    },
+    {
+      "q": "Wie buche ich?",
+      "a": "Online über Wunschtermin finden — Verfügbarkeit wird sofort angezeigt. Oder telefonisch unter +49 173 3828581."
+    },
+    {
+      "q": "Wo befindet sich das Studio?",
+      "a": "Reyplatz 10, 52499 Baesweiler — Head Spa für Baesweiler, Aachen und die Region."
+    }
+  ],
+  "faqMore": {
+    "text": "Weitere Antworten auf der Head Spa Seite.",
+    "href": "/headspa#faq"
+  },
+  "instagram": {
+    "handle": "@wellnesstal",
+    "url": "https://instagram.com/wellnesstal"
+  },
+  "seo": {
+    "title": "Wellnesstal — Premium Japanese Head Spa | Baesweiler & Aachen",
+    "description": "Japanisches Head Spa in Baesweiler (ehemals Deluxe Beauty): Kopfmassage, Bedampfung, Trockenföhnen inklusive. Basic ab 89€, Beauty 119€, Deluxe 149€ mit Kérastase & Babor. 4,6★ bei Google."
+  },
+  "localSeo": {
+    "headline": "Head Spa in der Region",
+    "cities": ["Baesweiler", "Aachen", "Köln", "Düsseldorf", "Heinsberg", "Geilenkirchen", "Übach-Palenberg", "Eschweiler", "Herzogenrath", "Alsdorf"]
+  }
+}

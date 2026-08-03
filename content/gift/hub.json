@@ -1,0 +1,317 @@
+{
+  "slug": "hub",
+  "path": "/gutschein",
+  "seo": {
+    "title": "Wellness Gutschein & Head Spa Geschenk | Wellnesstal Baesweiler",
+    "description": "Verschenke Ruhe, Berührung und Stille — kein Produkt, sondern echte Entspannung. Head Spa Gutschein online: Basic ab 89€, Beauty 119€, Deluxe 149€. 4,6★ bei Google."
+  },
+  "hero": {
+    "eyebrow": "Geschenk · Ruhe · Berührung",
+    "headline": "Du schenkst keine Behandlung. Du schenkst Stille.",
+    "subline": "Ein Moment, in dem alles langsamer wird — warmes Wasser, achtsame Berührung, reine Kopfhaut und ein Kopf, der endlich loslässt.",
+    "trust": "4,6★ bei Google · Sofort online bestellbar · Print@Home"
+  },
+  "essence": {
+    "eyebrow": "Was wirklich ankommt",
+    "headline": "Hinter dem Gutschein steckt ein Gefühl — nicht eine Leistung.",
+    "paragraphs": [
+      "Die meisten Geschenke landen im Schrank. Dieses hier landet im Nervensystem — als Leichtigkeit, Wärme und das Gefühl, endlich ankommen zu dürfen.",
+      "Head Spa ist der Rahmen. Was du wirklich schenkst: Berührung ohne Erwartung. Ruhe ohne schlechtes Gewissen. Ein Raum, in dem niemand etwas leisten muss.",
+      "Ob für deine Mutter, deinen Partner, deine beste Freundin — oder für dich selbst: Du schenkst Zeit, in der der Kopf wieder leise wird."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte, die alles sagen",
+    "headline": "Das Geschenk in seiner reinsten Form",
+    "items": [
+      {
+        "word": "Berührung",
+        "headline": "Sanft. Langsam. Bewusst.",
+        "text": "Keine hastige Massage — achtsame Hände, die Verspannungen lösen, bevor du es selbst merkst."
+      },
+      {
+        "word": "Stille",
+        "headline": "Kein Lärm. Kein Druck.",
+        "text": "Ein Raum, in dem du nichts erklären musst. Nur atmen, loslassen, da sein."
+      },
+      {
+        "word": "Reinheit",
+        "headline": "Kopfhaut, die wieder atmet.",
+        "text": "Tiefenreinigung, Dampf, Pflege — das Gefühl von frisch und neu, von innen heraus."
+      },
+      {
+        "word": "Entspannung",
+        "headline": "Tiefer als oberflächlich.",
+        "text": "Viele Gäste sagen: abschalten wie seit Monaten nicht. 100% präsent — 0% Pflicht."
+      },
+      {
+        "word": "Leichtigkeit",
+        "headline": "Nachher anders gehen.",
+        "text": "Nicht nur entspannt — leichter. Als hätte der Kopf zehn Kilo weniger getragen."
+      },
+      {
+        "word": "Wertschätzung",
+        "headline": "Du siehst sie. Wirklich.",
+        "text": "Ein Geschenk, das sagt: Du verdienst Ruhe. Nicht irgendwann — jetzt."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Jede Person trägt etwas anderes — das Geschenk passt sich an.",
+    "items": [
+      {
+        "title": "Für Mama",
+        "text": "Sie gibt immer. Diesmal bekommt sie — Stille, Berührung, ein Moment nur für sie."
+      },
+      {
+        "title": "Für dich",
+        "text": "Selbstfürsorge ist kein Luxus. Es ist der Moment, in dem du wieder zu dir findest."
+      },
+      {
+        "title": "Für euch zwei",
+        "text": "Gemeinsam abschalten. Partner-Termine — nebeneinander entspannen, nebeneinander ankommen."
+      },
+      {
+        "title": "Für sie",
+        "text": "Die Freundin, die alles trägt. Schenke ihr, was sie sich nie selbst gönnen würde."
+      }
+    ]
+  },
+  "occasions": {
+    "eyebrow": "Jeder Anlass",
+    "headline": "Finde das Geschenk, das zur Geschichte passt",
+    "intro": "Gleiches Ritual — andere Bedeutung. Wähle den Anlass, der zu eurer Beziehung passt.",
+    "items": [
+      {
+        "slug": "head-spa",
+        "label": "Head Spa Gutschein",
+        "hint": "Das Original — japanisches Kopfhaut-Ritual"
+      },
+      {
+        "slug": "wellness-geschenk",
+        "label": "Wellness Geschenk",
+        "hint": "Ruhe schenken — ohne Therme, ohne Hektik"
+      },
+      {
+        "slug": "muttertag",
+        "label": "Muttertag",
+        "hint": "Danke sagen — mit Berührung statt Worten"
+      },
+      {
+        "slug": "weihnachten",
+        "label": "Weihnachten",
+        "hint": "Stille unter dem Baum — das bleibt"
+      },
+      {
+        "slug": "valentinstag",
+        "label": "Valentinstag",
+        "hint": "Zeit zu zweit — oder pure Selbstliebe"
+      },
+      {
+        "slug": "paar",
+        "label": "Zu zweit",
+        "hint": "Partner-Ritual — gemeinsam ankommen"
+      },
+      {
+        "slug": "geburtstag",
+        "label": "Geburtstag",
+        "hint": "Stille statt Staub — das Geschenk, das bleibt"
+      },
+      {
+        "slug": "freundin",
+        "label": "Für die Freundin",
+        "hint": "Sie trägt alles — schenke ihr Ruhe"
+      },
+      {
+        "slug": "vatertag",
+        "label": "Vatertag",
+        "hint": "Ruhe statt Krawatte — für Papa"
+      },
+      {
+        "slug": "ostern",
+        "label": "Ostern",
+        "hint": "Schokolade schmilzt — Stille bleibt"
+      },
+      {
+        "slug": "last-minute",
+        "label": "Last Minute",
+        "hint": "Sofort per E-Mail — in Minuten geschenkt"
+      },
+      {
+        "slug": "danke",
+        "label": "Danke sagen",
+        "hint": "Wertschätzung, die man spürt"
+      },
+      {
+        "slug": "hochzeit",
+        "label": "Hochzeit",
+        "hint": "Stille zu zweit — nach dem Ja"
+      },
+      {
+        "slug": "jubilaeum",
+        "label": "Jubiläum",
+        "hint": "Zeit zu zweit — ihr seid es wert"
+      },
+      {
+        "slug": "abschied",
+        "label": "Abschied",
+        "hint": "Danke sagen — Kollegin & Team"
+      },
+      {
+        "slug": "firmen-geschenk",
+        "label": "Firmengeschenk",
+        "hint": "Mitarbeiter — Wertschätzung"
+      },
+      {
+        "slug": "ruhestand",
+        "label": "Ruhestand",
+        "hint": "Endlich Zeit für sich"
+      },
+      {
+        "slug": "team-geschenk",
+        "label": "Team-Geschenk",
+        "hint": "Kollegen — Ruhe statt Event"
+      },
+      {
+        "slug": "online",
+        "label": "Gutschein online",
+        "hint": "Sofort per E-Mail — Print@Home"
+      },
+      {
+        "slug": "kopfmassage",
+        "label": "Kopfmassage Gutschein",
+        "hint": "Kopf & Nacken — Verspannungen lösen"
+      },
+      {
+        "slug": "massage",
+        "label": "Massage Geschenk",
+        "hint": "Berührung schenken — achtsam & tief"
+      },
+      {
+        "slug": "entspannung",
+        "label": "Entspannung Gutschein",
+        "hint": "Ruhe statt Hektik — echte Pause"
+      },
+      {
+        "slug": "geschenkidee",
+        "label": "Geschenkidee",
+        "hint": "Originell, persönlich, bleibend"
+      },
+      {
+        "slug": "zeit-schenken",
+        "label": "Zeit schenken",
+        "hint": "Kein Ding — ein Moment nur für sie"
+      },
+      {
+        "slug": "selbstfuersorge",
+        "label": "Selbstfürsorge",
+        "hint": "Für dich — kein schlechtes Gewissen"
+      },
+      {
+        "slug": "luxus",
+        "label": "Luxus Geschenk",
+        "hint": "Premium Ritual — Deluxe ab 149€"
+      },
+      {
+        "slug": "wellness-nrw",
+        "label": "Wellness NRW",
+        "hint": "Region Aachen & Heinsberg — bei uns"
+      },
+      {
+        "slug": "fuer-mama",
+        "label": "Geschenk für Mama",
+        "hint": "Sie gibt immer — diesmal bekommt sie"
+      },
+      {
+        "slug": "fuer-papa",
+        "label": "Geschenk für Papa",
+        "hint": "Ruhe statt Krawatte — Vatertag & mehr"
+      },
+      {
+        "slug": "fuer-oma",
+        "label": "Geschenk für Oma",
+        "hint": "Sanfte Berührung — Wärme & Wertschätzung"
+      },
+      {
+        "slug": "fuer-opa",
+        "label": "Geschenk für Opa",
+        "hint": "Entspannung — ohne Schnickschnack"
+      },
+      {
+        "slug": "fuer-freund",
+        "label": "Geschenk für Freund",
+        "hint": "Ruhe schenken — männlich & neutral"
+      },
+      {
+        "slug": "silberhochzeit",
+        "label": "Silberhochzeit",
+        "hint": "25 Jahre — Stille zu zweit"
+      },
+      {
+        "slug": "nikolaus",
+        "label": "Nikolaus",
+        "hint": "Kleine Überraschung — große Wirkung"
+      },
+      {
+        "slug": "verlobung",
+        "label": "Verlobung",
+        "hint": "Ja sagen — danach abschalten"
+      },
+      {
+        "slug": "ueberraschung",
+        "label": "Überraschung",
+        "hint": "Spontan schenken — sofort per E-Mail"
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "So fühlt es sich an",
+    "headline": "Vom Gutschein bis zum Moment der Stille",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Schenken",
+        "text": "Online bestellen — sofort per E-Mail. Ausdrucken, überreichen, Freude schenken."
+      },
+      {
+        "num": "02",
+        "title": "Ankommen",
+        "text": "Empfangen werden — nicht abgefertigt. Kaffee, Stille, der erste Atemzug der Ruhe."
+      },
+      {
+        "num": "03",
+        "title": "Loslassen",
+        "text": "Wasserstrahl, Massage, Dampf — der Kopf wird leiser, der Körper folgt."
+      },
+      {
+        "num": "04",
+        "title": "Zurückkehren",
+        "text": "Leichter gehen. Frische Kopfhaut. Ein Gefühl, das Tage nachwirkt."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "Was schenke ich genau — eine Behandlung oder einen Betrag?",
+      "a": "Du wählst im Shop das passende Paket (Basic, Beauty oder Deluxe) oder einen Wunschbetrag. Der Beschenkte bucht seinen Termin in Ruhe — ohne Zeitdruck."
+    },
+    {
+      "q": "Ist der Gutschein sofort verfügbar?",
+      "a": "Ja. Nach dem Kauf erhältst du den Gutschein digital — ideal als Last-Minute-Geschenk zum Ausdrucken oder Weiterleiten."
+    },
+    {
+      "q": "Für wen eignet sich ein Head Spa Gutschein?",
+      "a": "Für alle, die Ruhe brauchen — Mütter, Partner, Freundinnen, Kolleginnen oder du selbst. Head Spa ist geschlechtsneutral und für jedes Alter geeignet."
+    },
+    {
+      "q": "Wo wird der Gutschein eingelöst?",
+      "a": "In unserem Studio in Baesweiler, Reyplatz 10 — 15 Minuten von Aachen. Termin online oder telefonisch."
+    }
+  ],
+  "closing": {
+    "headline": "Schenke, was bleibt — nicht was verstaubt.",
+    "text": "Ein Gutschein für Berührung, Stille und echte Entspannung. In Minuten bestellt — in Erinnerung bleibend.",
+    "cta": "Gutschein bestellen"
+  }
+}

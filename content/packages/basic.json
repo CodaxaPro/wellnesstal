@@ -1,0 +1,79 @@
+{
+  "slug": "basic",
+  "path": "/headspa/basic",
+  "serviceId": "basic",
+  "price": 89,
+  "duration": "45 Minuten",
+  "seo": {
+    "title": "Head Spa Basic 89€ | Pure Entspannung & Berührung — Wellnesstal Baesweiler",
+    "description": "Head Spa Basic: 45 Minuten japanisches Kopfhaut-Ritual mit Massage, Bedampfung und Trockenföhnen. Berührung, Stille, Reinheit — ab 89€. 4,6★ · Wunschtermin online."
+  },
+  "hero": {
+    "eyebrow": "Head Spa Basic · 45 Min.",
+    "headline": "Dein Einstieg in die Stille — nicht in eine Behandlung.",
+    "subline": "45 Minuten, in denen der Kopf leiser wird: achtsame Berührung, warmes Wasser, Bedampfung. Kein Schnellprogramm — ein Ritual, das ankommt.",
+    "trust": "4,6★ bei Google · 89€ · Trockenföhnen inklusive"
+  },
+  "essence": {
+    "eyebrow": "Was Basic wirklich ist",
+    "headline": "Weniger Zeit — nicht weniger Tiefe.",
+    "paragraphs": [
+      "Basic klingt nach Minimum. Unsere Gäste beschreiben es anders: tiefe Entspannung ab der ersten Minute, sanfter Wasserstrahl, Kopf voller Stille.",
+      "45 Minuten reichen, um loszulassen — weil jede Berührung bewusst ist. Kopf-, Nacken- und Dekolleté-Massage, Haarreinigung, Bedampfung. Kein Hektik. Kein Standard von der Liste.",
+      "Basic ist der Einstieg ins Ritual — für alle, die Ruhe brauchen, aber noch nicht wissen, ob Head Spa ihr Weg ist. Viele kommen zurück für Beauty oder Deluxe."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du spürst",
+    "headline": "Sechs Momente in 45 Minuten",
+    "items": [
+      { "word": "Ankommen", "headline": "Du darfst. Sofort.", "text": "Empfangen werden — Kaffee, Stille, kein Druck. Der Alltag bleibt draußen." },
+      { "word": "Berührung", "headline": "Hände, die Zeit haben.", "text": "Kopf-, Nacken- und Dekolleté-Massage — langsam, präzise, lösend." },
+      { "word": "Reinheit", "headline": "Kopfhaut atmet auf.", "text": "Gründliche Haarreinigung und Bedampfung — frisch, sauber, leicht." },
+      { "word": "Stille", "headline": "100% abschalten.", "text": "Der sanfte Wasserstrahl schafft Ruhe — Gäste beschreiben tiefe Entspannung." },
+      { "word": "Geborgenheit", "headline": "Nicht abgefertigt.", "text": "In Ruhe behandelt — ohne Eile, ohne Warteschlange." },
+      { "word": "Leichtigkeit", "headline": "Leichter gehen.", "text": "Trockenföhnen inklusive — du verlässt das Studio anders, als du kamst." }
+    ]
+  },
+  "includes": {
+    "eyebrow": "Im Basic enthalten",
+    "headline": "Alles, was dein Ritual braucht",
+    "items": [
+      "Kopf-, Nacken- und Dekolleté-Massage",
+      "Gründliche Haarreinigung und Pflege, verstärkt durch Bedampfung",
+      "Trockenföhnen inklusive",
+      "Individuelle Einschätzung von Kopfhaut und Spannungszonen"
+    ]
+  },
+  "forWhom": {
+    "eyebrow": "Für wen?",
+    "headline": "Basic passt, wenn du …",
+    "items": [
+      { "title": "… zum ersten Mal kommst", "text": "Head Spa kennenlernen — ohne 90 Minuten zu committen. Viele Gäste sind nach Basic überzeugt." },
+      { "title": "… wenig Zeit hast", "text": "45 Minuten pure Entspannung — ideal in der Mittagspause oder nach Feierabend." },
+      { "title": "… Ruhe schenken willst", "text": "Der perfekte Gutschein-Einstieg: Berührung und Stille zum fairen Preis." },
+      { "title": "… Verspannungen lösen willst", "text": "Kopf- und Nackenmassage — stressbedingte Beschwerden können spürbar nachlassen." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Basic-Ritual",
+    "headline": "45 Minuten — Schritt für Schritt",
+    "steps": [
+      { "num": "01", "title": "Empfang", "text": "Ankommen, Kaffee, kurze Einschätzung — Kopfhaut, Haar, Spannung." },
+      { "num": "02", "title": "Massage", "text": "Kopf, Nacken, Dekolleté — Verspannungen weichen, der Körper folgt." },
+      { "num": "03", "title": "Reinigung & Dampf", "text": "Wasserstrahl, Bedampfung — Kopfhaut frisch, Geist leise." },
+      { "num": "04", "title": "Abschluss", "text": "Trockenföhnen — leichter gehen, frischer Kopf." }
+    ]
+  },
+  "faq": [
+    { "q": "Reichen 45 Minuten wirklich?", "a": "Ja. Viele Gäste berichten von tiefer Entspannung schon im Basic — weil jede Minute bewusst genutzt wird, nicht verschwendet." },
+    { "q": "Was ist der Unterschied zu Beauty?", "a": "Beauty (119€, 60 Min.) ergänzt Gesichtsmassage und Peeling. Basic fokussiert auf Kopf, Nacken und Kopfhaut — pure Entspannung." },
+    { "q": "Ist Trockenföhnen wirklich inklusive?", "a": "Ja. Styling (Föhnen) kann optional extra gebucht werden." },
+    { "q": "Kann ich Basic verschenken?", "a": "Ja — Gutschein online unter /gutschein. Der Einstieg in Stille und Berührung." }
+  ],
+  "closing": {
+    "headline": "45 Minuten Stille — ab 89€.",
+    "text": "Berührung, Reinheit, Entspannung. Dein Einstieg ins japanische Head Spa Ritual.",
+    "cta": "Wunschtermin finden"
+  }
+}

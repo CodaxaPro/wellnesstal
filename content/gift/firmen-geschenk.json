@@ -1,0 +1,66 @@
+{
+  "slug": "firmen-geschenk",
+  "path": "/gutschein/firmen-geschenk",
+  "seo": {
+    "title": "Firmengeschenk Wellness & Head Spa Gutschein | Mitarbeiter — Wellnesstal",
+    "description": "Firmengeschenk für Mitarbeiter: Head Spa Gutschein — Ruhe, Wertschätzung und echte Entspannung statt Standard-Prämie. Ab 89€, sofort online · Baesweiler & Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Firmen · Mitarbeiter",
+    "headline": "Keine Tasse mit Logo. Ein Gefühl, das bleibt.",
+    "subline": "Weihnachten, Jubiläum, Projektabschluss — wieder Gutscheine für Ketten oder Werbeartikel? Schenke Stille: Head Spa Gutschein für Mitarbeiter, die wirklich Ruhe brauchen.",
+    "trust": "4,6★ · Ab 89€ · Sofort per E-Mail · Ideal für Teams"
+  },
+  "essence": {
+    "eyebrow": "Mehr als Mitarbeiter-Benefit",
+    "headline": "Du sagst: Danke — und meinst es.",
+    "paragraphs": [
+      "Firmengeschenke landen oft im Schrank. Head Spa landet im Nervensystem — als Leichtigkeit, Wertschätzung und das Gefühl, wirklich gesehen zu werden.",
+      "Ob ein Gutschein für die beste Kollegin, das ganze Team oder die Geschäftsführung — du schenkst 45 bis 90 Minuten, in denen der Kopf leise wird.",
+      "Region Aachen, Baesweiler, Heinsberg — gut erreichbar für Mitarbeiter aus der gesamten Städteregion."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte des Firmengeschenks",
+    "headline": "Wertschätzung — auf eine leise Art",
+    "items": [
+      { "word": "Wertschätzung", "headline": "Du siehst sie.", "text": "Nicht Pflicht — echtes Danke für Einsatz und Loyalität." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die Verspannungen löst — nach langen Projekten." },
+      { "word": "Ruhe", "headline": "Endlich abschalten.", "text": "Kein Meeting, kein Deadline — nur Ritual." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Burnout-Prävention beginnt mit echter Erholung." },
+      { "word": "Reinheit", "headline": "Frisch. Leicht.", "text": "Reset — physisch und mental." },
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Das beste Firmengeschenk ever“ — hören wir oft." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Firmengeschenk — flexibel",
+    "items": [
+      { "title": "Einzelne Mitarbeiter", "text": "Beauty (119€) — sicherer Allrounder für Kolleginnen und Kollegen." },
+      { "title": "Das ganze Team", "text": "Mehrere Gutscheine — jeder wählt selbst den Termin." },
+      { "title": "Projektabschluss", "text": "Danke sagen — nach intensivem Einsatz, vor dem nächsten Sprint." },
+      { "title": "Weihnachten", "text": "Stille statt Wein — siehe auch /gutschein/weihnachten." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Firmengeschenk bestellen",
+    "headline": "In Minuten bestellt — lange erinnert",
+    "steps": [
+      { "num": "01", "title": "Wählen", "text": "Basic, Beauty oder Deluxe — je nach Budget und Tiefe." },
+      { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — einzeln oder mehrfach." },
+      { "num": "03", "title": "Überreichen", "text": "Weihnachtsfeier, Team-Event oder persönlich — das Geschenk wirkt." },
+      { "num": "04", "title": "Wirken", "text": "Mitarbeiter erlebt Stille — und fühlt sich wertgeschätzt." }
+    ]
+  },
+  "faq": [
+    { "q": "Als Firmengeschenk für Mitarbeiter?", "a": "Ja — sehr beliebt. Beauty (119€) oder Basic (89€) — geschlechtsneutral und professionell." },
+    { "q": "Mehrere Gutscheine?", "a": "Ja — einzeln bestellen, sofort per E-Mail. Ideal für Teams." },
+    { "q": "Rechnung für Firma?", "a": "Online bestellen — bei Bedarf Rechnungsdaten angeben (Treuepay Checkout)." },
+    { "q": "Region?", "a": "Wellnesstal Baesweiler — gut erreichbar aus Aachen, Heinsberg, Eschweiler und der gesamten Region." }
+  ],
+  "closing": {
+    "headline": "Firmengeschenk — Stille, die ankommt.",
+    "text": "Head Spa Gutschein für Wertschätzung, Ruhe und echte Entspannung. Jetzt bestellen.",
+    "cta": "Firmen-Gutschein bestellen"
+  }
+}

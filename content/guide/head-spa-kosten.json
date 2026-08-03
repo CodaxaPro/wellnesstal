@@ -1,0 +1,85 @@
+{
+  "slug": "head-spa-kosten",
+  "path": "/ratgeber/head-spa-kosten",
+  "seo": {
+    "title": "Head Spa Kosten & Preise | Basic, Beauty, Deluxe — Wellnesstal",
+    "description": "Head Spa Preise in Baesweiler: Basic 89€, Beauty 119€, Deluxe 149€, Partner ab 178€. Was ist enthalten? Ehrlicher Preisvergleich — 4,6★ bei Google."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Preise",
+    "headline": "Was kostet Head Spa — und was bekommst du dafür?",
+    "subline": "Keine versteckten Kosten, kein Upselling. Drei Pakete, klare Preise — und ein Partner-Angebot. Hier erklären wir ehrlich, was drin ist."
+  },
+  "sections": [
+    {
+      "title": "Die drei Pakete im Überblick",
+      "paragraphs": [],
+      "bullets": [
+        "Basic — 89€ · 45 Min. · Kopfmassage, Tiefenreinigung, Wasserstrahl, Bedampfung, Trockenföhnen",
+        "Beauty — 119€ · 60 Min. · alles aus Basic + intensivere Pflege, längere Massage — am beliebtesten",
+        "Deluxe — 149€ · 90 Min. · volles Ritual mit Kérastase & Babor Markenpflege, maximale Verwöhnung"
+      ]
+    },
+    {
+      "title": "Head Spa vs. Friseur-Kopfmassage",
+      "paragraphs": [
+        "Viele Friseure bieten 5 Minuten Kopfmassage beim Waschen — oft im Paketpreis enthalten. Head Spa ist kein Add-on: 45 bis 90 Minuten dediziertes Ritual.",
+        "Du zahlst für Zeit, Berührung, Wasserstrahl, Bedampfung und Stille — nicht für Schnelligkeit. Gäste beschreiben den Unterschied als „Welten“."
+      ]
+    },
+    {
+      "title": "Partner-Pakete — zu zweit",
+      "paragraphs": [],
+      "bullets": [
+        "Partner Basic — 178€ · 45 Min. · je Person",
+        "Partner Beauty — 238€ · 60 Min. · je Person",
+        "Partner Deluxe — 298€ · 90 Min. · je Person",
+        "Nebeneinander entspannen — ideal als Geschenk für Paare"
+      ]
+    },
+    {
+      "title": "Gutschein — gleiche Preise",
+      "paragraphs": [
+        "Gutschein kostet genauso viel wie das gewählte Paket. Kein Aufpreis, keine Gebühr. Sofort per E-Mail — Print@Home oder digital versenden.",
+        "Beschenkte wählt selbst den Termin — du schenkst nur das Ritual."
+      ]
+    },
+    {
+      "title": "Welches Paket für wen?",
+      "paragraphs": [],
+      "bullets": [
+        "Erstbesuch → Basic (89€) reicht oft zum Kennenlernen",
+        "Regelmäßige Gäste → Beauty (119€) — bestes Preis-Leistungs-Gefühl",
+        "Besondere Anlässe, Markenpflege → Deluxe (149€) mit Kérastase & Babor",
+        "Als Geschenk unsicher → Beauty — der sichere Allrounder"
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Preise — Kurz",
+    "items": [
+      "Basic 89€ · Beauty 119€ · Deluxe 149€",
+      "Partner ab 178€ · zu zweit",
+      "Gutschein = gleicher Preis, sofort online",
+      "Keine versteckten Kosten",
+      "Wunschtermin online buchbar — Wellnesstal Baesweiler"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/headspa/basic", "label": "Head Spa Basic", "hint": "89€ · 45 Min." },
+    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "119€ · Beliebt" },
+    { "href": "/headspa/deluxe", "label": "Head Spa Deluxe", "hint": "149€ · Kérastase" },
+    { "href": "/ratgeber/erster-besuch", "label": "Erster Besuch", "hint": "Was dich erwartet" }
+  ],
+  "faq": [
+    { "q": "Gibt es versteckte Kosten?", "a": "Nein — der Paketpreis ist der Endpreis. Kein Upselling während der Behandlung." },
+    { "q": "Welches Paket am beliebtesten?", "a": "Beauty (119€, 60 Min.) — ausgewogene Tiefe und Dauer." },
+    { "q": "Gutschein gleicher Preis?", "a": "Ja — Gutschein = Paketpreis, sofort per E-Mail." },
+    { "q": "Online buchen?", "a": "Ja — Wunschtermin finden, Verfügbarkeit sofort sichtbar." }
+  ],
+  "closing": {
+    "headline": "Investiere in Stille — nicht in Dinge.",
+    "text": "Basic ab 89€. Beauty ab 119€. Deluxe ab 149€. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

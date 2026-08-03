@@ -1,0 +1,80 @@
+{
+  "slug": "kopfhaut-pflege",
+  "path": "/ratgeber/kopfhaut-pflege",
+  "seo": {
+    "title": "Kopfhaut pflegen & Head Spa | Trockenheit, Spannung, Reinheit — Wellnesstal",
+    "description": "Kopfhaut pflegen mit Head Spa: Tiefenreinigung, Bedampfung, Massage. Bei Trockenheit, Spannungsgefühl oder Stress. Professionell in Baesweiler — ab 89€."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Kopfhaut",
+    "headline": "Kopfhaut, die wieder atmet — nicht nur sauberes Haar.",
+    "subline": "Trockenheit, Spannung, fettiger Ansatz oder Stress auf der Kopfhaut: Head Spa verbindet Reinheit mit Berührung — und lässt dich dabei tief entspannen."
+  },
+  "sections": [
+    {
+      "title": "Warum Kopfhaut mehr braucht als Shampoo",
+      "paragraphs": [
+        "Die Kopfhaut ist empfindliches Gewebe — Durchblutung, Talg, Stress und Umwelt belasten sie täglich. Oberflächliche Reinigung reicht oft nicht.",
+        "Head Spa bedeutet Tiefenreinigung: warmes Wasser, sanfter Wasserstrahl, Bedampfung — abgestorbene Zellen und Ablagerungen werden entfernt, die Kopfhaut kann wieder atmen."
+      ]
+    },
+    {
+      "title": "Typische Anliegen — und was Head Spa bietet",
+      "paragraphs": [],
+      "bullets": [
+        "Trockene Kopfhaut: Bedampfung und Pflege spenden Feuchtigkeit — frisches, nicht spanntes Gefühl",
+        "Spannungsgefühl: Massage löst Verspannungen in Kopf- und Nackenzone",
+        "Fettiger Ansatz: Tiefenreinigung ohne aggressive Produkte — individuell abgestimmt",
+        "Stress auf der Kopfhaut: Stille und Berührung wirken ganzheitlich — nicht nur kosmetisch",
+        "Coloriertes Haar: Ja — Produkte werden auf deinen Haartyp abgestimmt"
+      ]
+    },
+    {
+      "title": "Der Head Spa Ablauf für die Kopfhaut",
+      "paragraphs": [
+        "Zuerst Einschätzung: Wie fühlt sich deine Kopfhaut an? Wo Spannung? Dann Massage — Durchblutung steigt. Dann Reinigung und Wasserstrahl — sanft, gründlich.",
+        "Bedampfung öffnet Poren — Nährstoffe dringen tiefer ein. Im Deluxe-Paket: Kérastase Premiere für Haaraufbau plus Babor für Gesicht und Dekolleté."
+      ]
+    },
+    {
+      "title": "Haar und Kopfhaut — zusammen gedacht",
+      "paragraphs": [
+        "Gesunde Kopfhaut ist die Basis für gesundes Haar. Gäste beschreiben: Haare fühlen sich weicher an, glänzender, leichter — weil die Basis stimmt.",
+        "Regelmäßige Head Spa Besuche (alle 4–6 Wochen) können langfristig Kopfhaut und Haarqualität unterstützen."
+      ]
+    },
+    {
+      "title": "Head Spa vs. Kopfhaut-Produkte zuhause",
+      "paragraphs": [
+        "Produkte zuhause pflegen — Head Spa im Studio regeneriert. Die Kombination aus Wärme, Dampf, Wasserdruck und professioneller Berührung ist zuhause nicht replizierbar.",
+        "Deluxe mit Kérastase: professioneller Haaraufbau, abgestimmt auf dein Haar — kein Standard von der Regal."
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Kopfhaut & Head Spa — Kurz",
+    "items": [
+      "Tiefenreinigung + Bedampfung + Massage — nicht nur Waschen",
+      "Individuelle Einschätzung vor jedem Ritual",
+      "Deluxe: Kérastase Premiere & Babor",
+      "Auch bei empfindlicher oder colorierter Kopfhaut",
+      "Wellnesstal Baesweiler — ab 89€"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/was-ist-head-spa", "label": "Was ist Head Spa?", "hint": "Ritual erklärt" },
+    { "href": "/headspa/deluxe", "label": "Head Spa Deluxe", "hint": "Kérastase & Babor" },
+    { "href": "/wellness-baesweiler", "label": "Wellness Baesweiler", "hint": "Studio entdecken" }
+  ],
+  "faq": [
+    { "q": "Bei empfindlicher Kopfhaut?", "a": "Ja — wir passen Produkte und Intensität an. Sprich uns vorher an." },
+    { "q": "Wie oft Kopfhaut-Head Spa?", "a": "Alle 4–6 Wochen empfohlen — bei starkem Stress oder Trockenheit auch häufiger." },
+    { "q": "Schuppen?", "a": "Tiefenreinigung kann helfen — bei anhaltenden Beschwerden bitte dermatologisch abklären." },
+    { "q": "Muss ich Head Spa kennen?", "a": "Nein — viele Erstbesucher kommen wegen der Kopfhaut und entdecken die Entspannung dabei." }
+  ],
+  "closing": {
+    "headline": "Kopfhaut pflegen — und dabei loslassen.",
+    "text": "Reinheit, Berührung, Stille. Dein Ritual wartet in Baesweiler.",
+    "cta": "Wunschtermin finden"
+  }
+}

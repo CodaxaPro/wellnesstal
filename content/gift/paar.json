@@ -1,0 +1,151 @@
+{
+  "slug": "paar",
+  "path": "/gutschein/paar",
+  "seo": {
+    "title": "Wellness Gutschein für 2 | Head Spa Partner-Termin — Wellnesstal",
+    "description": "Wellness für zwei: Head Spa Partner-Gutschein — gemeinsam entspannen, Berührung und Stille nebeneinander erleben. 2× Basic ab 178€, Beauty ab 238€, Deluxe ab 298€."
+  },
+  "hero": {
+    "eyebrow": "Zu zweit · Gemeinsam ankommen",
+    "headline": "Nicht nebeneinander funktionieren. Nebeneinander loslassen.",
+    "subline": "Partner Head Spa: zwei Rituale, ein Raum der Stille — Berührung, Dampf, Entspannung. Für Paare, Mutter & Tochter, beste Freundinnen.",
+    "trust": "Partner-Termine · WhatsApp-Buchung · 4,6★"
+  },
+  "essence": {
+    "eyebrow": "Gemeinsam statt allein",
+    "headline": "Wellness zu zweit bedeutet: dieselbe Stille teilen.",
+    "paragraphs": [
+      "Paare, Mütter und Töchter, Freundinnen — manche Momente sind zu schön, um sie allein zu erleben. Partner Head Spa ist genau dafür.",
+      "Ihr werdet nicht „zusammen behandelt“ — ihr werdet nebeneinander empfangen. Jeder sein Ritual. Dieselbe Ruhe. Das Gefühl: Wir sind angekommen.",
+      "Viele Gäste kommen zu zweit: „Meine Mutter und ich“, „Wir beide zum ersten Mal“. Das schönste Feedback: gemeinsam leichter gegangen."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was ihr schenkt",
+    "headline": "Sechs Gefühle — für zwei Menschen",
+    "items": [
+      {
+        "word": "Nähe",
+        "headline": "Ohne Worte.",
+        "text": "Nebeneinander entspannen — Verbindung entsteht in der Stille, nicht im Gespräch."
+      },
+      {
+        "word": "Berührung",
+        "headline": "Jeder sein Ritual.",
+        "text": "Achtsame Massage für jeden — Verspannungen lösen sich, Nähe wächst."
+      },
+      {
+        "word": "Stille",
+        "headline": "Gemeinsam leise.",
+        "text": "Kein Lärm, kein Druck — zwei Köpfe, die endlich zur Ruhe kommen."
+      },
+      {
+        "word": "Zeit",
+        "headline": "Füreinander da sein.",
+        "text": "45 bis 90 Minuten — ohne Handy, ohne Ablenkung. Nur ihr."
+      },
+      {
+        "word": "Erinnerung",
+        "headline": "Euer Moment.",
+        "text": "Etwas, das ihr teilt — nicht vergesst."
+      },
+      {
+        "word": "Leichtigkeit",
+        "headline": "Zusammen gehen.",
+        "text": "Hand in Hand aus dem Studio — entspannter, als ihr reinkamt."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für welches Paar?",
+    "headline": "Partner-Ritual — für jede Beziehung",
+    "items": [
+      {
+        "title": "Das Paar",
+        "text": "Date jenseits des Restaurants — Entspannung statt Smalltalk."
+      },
+      {
+        "title": "Mutter & Tochter",
+        "text": "Quality Time — gemeinsam verwöhnt, gemeinsam dankbar."
+      },
+      {
+        "title": "Beste Freundinnen",
+        "text": "Auszeit zu zweit — lachen, loslassen, neu starten."
+      },
+      {
+        "title": "Schwestern",
+        "text": "Ein Ritual, das bindet — Stille, die verbindet."
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Partner-Erlebnis",
+    "headline": "So läuft euer gemeinsames Ritual",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Buchen",
+        "text": "Partner-Termin per WhatsApp — wir finden den passenden Slot für euch beide."
+      },
+      {
+        "num": "02",
+        "title": "Ankommen",
+        "text": "Gemeinsam empfangen — Kaffee, Stille, Vorfreude."
+      },
+      {
+        "num": "03",
+        "title": "Ritual",
+        "text": "Nebeneinander: Massage, Wasser, Dampf — jeder sein Weg zur Ruhe."
+      },
+      {
+        "num": "04",
+        "title": "Verbinden",
+        "text": "Gemeinsam gehen — leichter, näher, entspannter."
+      }
+    ]
+  },
+  "partnerPackages": [
+    {
+      "name": "2× Headspa Basic",
+      "price": 178,
+      "duration": "45 Min. pro Person",
+      "tagline": "Einstieg zu zweit — pure Entspannung."
+    },
+    {
+      "name": "2× Headspa Beauty",
+      "price": 238,
+      "duration": "60 Min. pro Person",
+      "tagline": "Unser Beliebtestes für Paare.",
+      "featured": true
+    },
+    {
+      "name": "2× Headspa Deluxe",
+      "price": 298,
+      "duration": "90 Min. pro Person",
+      "tagline": "90 Minuten pure Verwöhnung — zu zweit."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Wie buche ich einen Partner-Termin?",
+      "a": "Gutschein online kaufen, dann Partner-Termin gerne per WhatsApp anfragen: +49 173 3828581."
+    },
+    {
+      "q": "Sind wir im selben Raum?",
+      "a": "Ihr werdet nacheinander oder parallel empfangen — in derselben ruhigen Atmosphäre. Details besprechen wir bei der Buchung."
+    },
+    {
+      "q": "Gutschein für zwei — wie funktioniert das?",
+      "a": "Wähle im Shop zwei Behandlungen oder den Partner-Betrag. Einlösung gemeinsam — Termin abgestimmt."
+    },
+    {
+      "q": "Auch für Mutter und Tochter?",
+      "a": "Ja — einer unserer schönsten Partner-Anlässe. Gemeinsam ankommen, gemeinsam loslassen."
+    }
+  ],
+  "closing": {
+    "headline": "Gemeinsam Stille schenken.",
+    "text": "Partner-Gutschein: Berührung, Ruhe, Nähe — für zwei. Jetzt bestellen oder WhatsApp.",
+    "cta": "Partner-Gutschein bestellen"
+  }
+}

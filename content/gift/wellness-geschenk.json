@@ -1,0 +1,130 @@
+{
+  "slug": "wellness-geschenk",
+  "path": "/gutschein/wellness-geschenk",
+  "seo": {
+    "title": "Wellness Geschenk & Geschenkidee | Ruhe statt Therme — Wellnesstal",
+    "description": "Wellness Geschenk, das wirklich ankommt: Kein überfülltes Bad — sondern Stille, Berührung und japanisches Head Spa Ritual. Gutschein ab 89€, sofort online, Region Baesweiler & Aachen."
+  },
+  "hero": {
+    "eyebrow": "Wellness Geschenk",
+    "headline": "Wellness heißt nicht immer Therme. Manchmal heißt es: endlich still werden.",
+    "subline": "Schenke echte Entspannung — kein Tageskarte-Chaos, sondern ein privates Ritual: Berührung, Dampf, Reinheit und ein Kopf, der loslässt.",
+    "trust": "4,6★ · Persönlich · Ohne Massenbetrieb"
+  },
+  "essence": {
+    "eyebrow": "Die bessere Geschenkidee",
+    "headline": "Wellness-Gutscheine sind überall. Ruhe ist selten.",
+    "paragraphs": [
+      "Thermen sind laut. Day Spas sind voll. Was bleibt, ist ein Gefühl von „schön, aber hektisch“. Wellnesstal ist das Gegenteil: ein dediziertes Ritual-Studio, in dem Stille geschützt wird.",
+      "Dein Wellness-Geschenk ist kein Eintritt — es ist Berührung ohne Warteschlange. Entspannung ohne fremde Blicke. Ein Moment, der wirklich dir gehört.",
+      "Head Spa ist unsere Form von Wellness: japanische Technik, deutsche Gründlichkeit, und das, was Gäste am meisten nennen — Geborgenheit."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was Wellness hier bedeutet",
+    "headline": "Nicht Eintritt. Erlebnis.",
+    "items": [
+      {
+        "word": "Ruhe",
+        "headline": "Kein Massenbetrieb.",
+        "text": "Ein Studio. Dein Ritual. Keine fremden Stimmen nebenan — nur Stille, die du spürst."
+      },
+      {
+        "word": "Berührung",
+        "headline": "Wellness, die ankommt.",
+        "text": "Nicht oberflächlich — Kopfmassage, die Verspannungen löst und den Geist beruhigt."
+      },
+      {
+        "word": "Reinheit",
+        "headline": "Kopfhaut neu spüren.",
+        "text": "Tiefenreinigung und Dampf — frisch, sauber, leicht. Wellness von der Wurzel."
+      },
+      {
+        "word": "Entspannung",
+        "headline": "Tiefer als Sauna.",
+        "text": "Gäste sagen: abschalten wie bei keiner anderen Behandlung. Der Kopf wird leise."
+      },
+      {
+        "word": "Auszeit",
+        "headline": "45 bis 90 Minuten ohne Pflicht.",
+        "text": "Kein Programm von der Liste — ein Ritual, das sich deinem Tempo anpasst."
+      },
+      {
+        "word": "Wertschätzung",
+        "headline": "Du siehst den Menschen.",
+        "text": "Ein Geschenk, das sagt: Du verdienst mehr als Funktionieren."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Die perfekte Wellness-Geschenkidee für …",
+    "items": [
+      {
+        "title": "Sie, die alles gibt",
+        "text": "Die Mutter, die Freundin, die Kollegin — die nie für sich selbst Zeit hat."
+      },
+      {
+        "title": "Den Gestressten",
+        "text": "Kopf voller Gedanken, Schultern voller Spannung. Hier darf alles fallen."
+      },
+      {
+        "title": "Den Entdecker",
+        "text": "Wer schon alles kennt — aber Head Spa noch nicht. Ein Geschenk, das überrascht."
+      },
+      {
+        "title": "Dich",
+        "text": "Wellness für dich selbst ist kein Luxus. Es ist Notwendigkeit."
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Vom Geschenk zum Gefühl",
+    "headline": "So wird aus einem Gutschein echte Wellness",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Wählen",
+        "text": "Basic, Beauty oder Deluxe — je nachdem, wie tief die Auszeit sein soll."
+      },
+      {
+        "num": "02",
+        "title": "Schenken",
+        "text": "Digital sofort — ausdrucken, überreichen, Freude sehen."
+      },
+      {
+        "num": "03",
+        "title": "Erleben",
+        "text": "Im Studio: Berührung, Wasser, Dampf — Wellness, die man fühlt."
+      },
+      {
+        "num": "04",
+        "title": "Nachwirken",
+        "text": "Leichter gehen. Länger ruhig bleiben. Das ist echtes Wellness."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "Ist das wirklich Wellness — oder nur Kopfmassage?",
+      "a": "Head Spa ist ganzheitliches Wellness: Massage, Reinigung, Bedampfung, Pflege — und vor allem tiefe Entspannung für Nervensystem und Geist."
+    },
+    {
+      "q": "Warum nicht einfach Therme-Gutschein?",
+      "a": "Thermen sind wunderbar — aber laut und unpersönlich. Unser Geschenk ist intim: ein Ritual nur für den Beschenkten, ohne Hektik."
+    },
+    {
+      "q": "Ab welchem Preis?",
+      "a": "Ab 89€ (Basic, 45 Min.). Beauty ab 119€, Deluxe ab 149€ — transparent und online wählbar."
+    },
+    {
+      "q": "Wo in der Region?",
+      "a": "Baesweiler, Reyplatz 10 — gut erreichbar aus Aachen, Heinsberg, Eschweiler und der gesamten Region."
+    }
+  ],
+  "closing": {
+    "headline": "Wellness, das bleibt — nicht nur ein Tag.",
+    "text": "Schenke Ruhe, Berührung und Reinheit. Gutschein jetzt online — sofort per E-Mail.",
+    "cta": "Wellness Geschenk bestellen"
+  }
+}

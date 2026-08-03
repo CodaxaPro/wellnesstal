@@ -1,0 +1,87 @@
+{
+  "slug": "wellness-zuhause",
+  "path": "/ratgeber/wellness-zuhause",
+  "seo": {
+    "title": "Wellness zuhause vs Head Spa | Was hilft wirklich? — Wellnesstal",
+    "description": "Wellness zuhause: Bad, Maske, Meditation — und Head Spa? Ehrlicher Vergleich: was du selbst tun kannst und wann ein Ritual bei uns Sinn macht. Baesweiler · Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Alltag & Ritual",
+    "headline": "Zuhause entspannen — oder tiefer loslassen?",
+    "subline": "Warmes Bad, Kopfmassage-Kamm, Meditation — gut. Head Spa ist etwas anderes: 45 bis 90 Minuten, in denen jemand anderes für deine Ruhe sorgt. Kein Entweder-oder — ein Und."
+  },
+  "sections": [
+    {
+      "title": "Was Wellness zuhause gut kann",
+      "paragraphs": [],
+      "bullets": [
+        "Kurze Pausen — Tee, Atem, fünf Minuten Stille",
+        "Kopfhaut-Massage mit Kamm oder Öl — oberflächliche Entspannung",
+        "Warmes Bad — Wärme beruhigt, aber der Kopf arbeitet oft weiter",
+        "Meditation, Yoga — mental, aber physisch bleibt der Nacken oft steif",
+        "Kostenlos, jederzeit — wertvoll im Alltag"
+      ]
+    },
+    {
+      "title": "Wo zuhause an Grenzen stößt",
+      "paragraphs": [
+        "Du bist noch verantwortlich — Wäsche, Kinder, Handy, Termine. Echte Stille braucht einen Raum, der sie schützt.",
+        "Verspannungen an Nacken und Schläfen löst eine Kamm-Massage selten. Head Spa: 45–90 Min. professionelle Berührung, Wasserstrahl, Bedampfung — physisch und mental."
+      ]
+    },
+    {
+      "title": "Head Spa — der Unterschied",
+      "paragraphs": [],
+      "bullets": [
+        "Du musst nichts tun — nur ankommen und loslassen",
+        "Kopf, Nacken, Dekolleté — gezielt, langsam, 45–90 Min.",
+        "Wasserstrahl und Dampf — sinnesberuhigend, ohne Ablenkung",
+        "Raum ohne Alltag — Stille, die zuhause selten möglich ist",
+        "Gäste: abschalten wie seit Monaten nicht — Tiefe, die zuhause schwer erreichbar ist"
+      ]
+    },
+    {
+      "title": "Die Kombination — Alltag + Ritual",
+      "paragraphs": [
+        "Ideal: zuhause kleine Rituale (Abendtee, Handy weg, kurze Pause) + alle 4–6 Wochen Head Spa als tiefer Reset.",
+        "Viele Gäste aus Aachen und Region buchen freitags — der Übergang von Woche zu Wochenende, ergänzt durch zuhause gelernte Ruhe."
+      ]
+    },
+    {
+      "title": "Wann lohnt sich der Besuch?",
+      "paragraphs": [],
+      "bullets": [
+        "Chronischer Stress, Bildschirm-Nacken, schlechter Schlaf",
+        "Vor oder nach intensiven Projektphasen",
+        "Als Geschenk — jemandem, der sich zuhause nie Zeit nimmt",
+        "Wenn zuhause nicht mehr reicht — und der Kopf laut bleibt"
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Zuhause vs Head Spa — Kurz",
+    "items": [
+      "Zuhause = tägliche Mini-Rituale, kostenlos",
+      "Head Spa = tiefer physischer + mentaler Reset",
+      "Kombination ideal: Alltag + alle 4–6 Wochen Ritual",
+      "45–90 Min. ohne Verantwortung — das ist der Kern",
+      "Wellnesstal Baesweiler — 15 Min. von Aachen"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/schlaf-stress", "label": "Schlaf & Stress", "hint": "Runterfahren" },
+    { "href": "/ratgeber/head-spa-haltbarkeit", "label": "Wirkung & Haltbarkeit", "hint": "Wie oft?" },
+    { "href": "/wellness-baesweiler", "label": "Wellness Baesweiler", "hint": "Lokal bei uns" }
+  ],
+  "faq": [
+    { "q": "Kann ich Head Spa zuhause nachmachen?", "a": "Teilweise — Massage, Wärme. Aber Tiefe, Wasserstrahl, Dampf und Stille im Studio sind schwer zu replizieren." },
+    { "q": "Entweder-oder?", "a": "Nein — beides ergänzt sich. Zuhause für den Alltag, Head Spa für den Reset." },
+    { "q": "Wie oft Head Spa bei Homeoffice?", "a": "Empfehlung alle 4–6 Wochen — als fester Rhythmus." },
+    { "q": "Erstbesuch?", "a": "Basic (89€, 45 Min.) — siehe Ratgeber Erster Besuch." }
+  ],
+  "closing": {
+    "headline": "Zuhause pflegen — bei uns loslassen.",
+    "text": "45 Minuten Stille, die zuhause selten möglich ist. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

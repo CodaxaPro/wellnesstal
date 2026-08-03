@@ -1,0 +1,68 @@
+{
+  "slug": "alsdorf",
+  "path": "/head-spa-alsdorf",
+  "seo": {
+    "title": "Head Spa Alsdorf | Japanisches Ritual nahe Baesweiler — Wellnesstal",
+    "description": "Head Spa nahe Alsdorf: Berührung, Stille und Entspannung in ca. 12 Min. erreichbar. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · Wunschtermin online."
+  },
+  "city": "Alsdorf",
+  "region": "Städteregion Aachen",
+  "distance": "ca. 12 Minuten von Alsdorf",
+  "nearby": ["Baesweiler", "Würselen", "Eschweiler", "Herzogenrath", "Stolberg", "Aachen"],
+  "hero": {
+    "eyebrow": "Head Spa · Alsdorf",
+    "headline": "Zwischen Terminen — ein Ort, der nur Stille kennt.",
+    "subline": "Von Alsdorf in wenigen Minuten zu uns: japanisches Head Spa mit Berührung, Wasser und Dampf. Kein Friseur-Add-on. Ein Ritual, das ankommt.",
+    "trust": "4,6★ bei Google · ca. 12 Min. von Alsdorf"
+  },
+  "essence": {
+    "eyebrow": "Head Spa nahe Alsdorf",
+    "headline": "Ruhe, die du in der Region selten findest.",
+    "paragraphs": [
+      "Alsdorf lebt im Takt der Städteregion — Arbeit, Familie, Pendeln. Was oft fehlt: ein Moment, in dem der Kopf wirklich ausgeschaltet wird.",
+      "Wellnesstal in Baesweiler ist das dedizierte Head Spa Studio: 45 bis 90 Minuten bewusste Berührung, Kopfhautpflege und Bedampfung — ohne Hektik, ohne Warteschlange.",
+      "Gäste aus Alsdorf, Mariadorf und Hoengen kommen zu uns — für etwas, das näher ist als Aachen und spezieller als jede Quick-Massage."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was dich erwartet",
+    "headline": "Sechs Gründe aus Alsdorf zu uns",
+    "items": [
+      { "word": "Nähe", "headline": "12 Minuten.", "text": "Schnell erreichbar — spontan buchen, ohne Innenstadt-Stress." },
+      { "word": "Berührung", "headline": "Langsam. Bewusst.", "text": "Kopf-, Nacken- und Dekolleté-Massage — Verspannungen lösen sich." },
+      { "word": "Reinheit", "headline": "Kopfhaut atmet.", "text": "Tiefenreinigung und Bedampfung — frisch und leicht." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "100% abschalten — Gäste beschreiben tiefe Entspannung." },
+      { "word": "Geborgenheit", "headline": "Empfangen werden.", "text": "Kaffee, Wärme — du darfst ankommen, ohne zu leisten." },
+      { "word": "Leichtigkeit", "headline": "Zurück nach Alsdorf — leichter.", "text": "Ein Gefühl, das den Alltag erträglicher macht." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen aus der Region",
+    "headline": "Was Gäste berichten",
+    "quotes": [
+      { "text": "Bei der Behandlung konnte ich zu 100% entspannen — in Ruhe, ohne Hektik.", "name": "Lea W.", "location": "Region Aachen" },
+      { "text": "So entspannt war ich schon lange nicht mehr.", "name": "Jenny T.", "location": "Baesweiler" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Besuch",
+    "headline": "Von Alsdorf zur Stille",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 12 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Ankommen", "text": "Empfangen werden. Kaffee. Stille." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Wasser, Dampf — 45–90 Min." },
+      { "num": "04", "title": "Heimfahrt", "text": "Leichter nach Hause — mit Ruhe im Nacken." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit ist Wellnesstal von Alsdorf?", "a": "Ca. 12 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Gibt es Head Spa direkt in Alsdorf?", "a": "Wellnesstal ist das spezialisierte Ritual-Studio in Baesweiler — fokussiert auf japanisches Head Spa." },
+    { "q": "Online buchen?", "a": "Ja — Wunschtermin sofort sichtbar." },
+    { "q": "Gutschein für jemanden aus Alsdorf?", "a": "Ja — unter /gutschein. Stille verschenken in der Nachbarschaft." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Alsdorf — dein Ritual wartet.",
+    "text": "Berührung, Reinheit, Entspannung. 12 Min. von dir. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

@@ -1,0 +1,66 @@
+{
+  "slug": "team-geschenk",
+  "path": "/gutschein/team-geschenk",
+  "seo": {
+    "title": "Team Geschenk Wellness & Head Spa Gutschein | Kollegen — Wellnesstal",
+    "description": "Team Geschenk für Kollegen: Head Spa Gutschein — gemeinsam Danke sagen oder einzeln Ruhe schenken. Ab 89€, sofort online · Baesweiler & Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Team · Kollegen",
+    "headline": "Nicht noch ein Team-Event. Echte Ruhe — für jeden einzeln.",
+    "subline": "Bowling, Wein, Standard-Gutschein — schön, aber vergessen. Schenkt dem Team etwas, das ankommt: Head Spa Gutschein — jeder bucht selbst, jeder erlebt Stille.",
+    "trust": "4,6★ · Ab 89€ · Sofort per E-Mail · Ideal für Gruppen"
+  },
+  "essence": {
+    "eyebrow": "Mehr als Teambuilding",
+    "headline": "Ihr sagt: Danke — gemeinsam, aber persönlich.",
+    "paragraphs": [
+      "Team-Geschenke sind oft laut — Events, wo niemand wirklich abschaltet. Head Spa ist das Gegenteil: leise, tief, individuell.",
+      "Jeder bekommt einen Gutschein — jeder wählt seinen Termin. Kein Gruppendruck, keine Smalltalk-Pflicht. Nur Ritual, Berührung und Ruhe.",
+      "Ob Projektabschluss, Weihnachten, Abschied oder einfach Danke — das Team-Geschenk, das wirklich ankommt."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte des Team-Geschenks",
+    "headline": "Danke ans Team — leise gesagt",
+    "items": [
+      { "word": "Wertschätzung", "headline": "Ihr seht euch.", "text": "Nicht Pflicht — echtes Danke für den Einsatz." },
+      { "word": "Individualität", "headline": "Jeder für sich.", "text": "Kein Event — jeder bucht, wann es passt." },
+      { "word": "Ruhe", "headline": "Endlich abschalten.", "text": "45–90 Min. ohne Kollegen, ohne Mail." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Burnout-Prävention — ernst gemeint." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Verspannungen lösen sich — nach langen Projekten." },
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Bestes Team-Geschenk ever“ — hören wir oft." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Team-Geschenk — flexibel",
+    "items": [
+      { "title": "Das ganze Team", "text": "Mehrere Gutscheine — Basic oder Beauty, je nach Budget." },
+      { "title": "Projekt-Team", "text": "Abschluss feiern — mit Ruhe statt Pizza-Party." },
+      { "title": "Abteilung", "text": "Weihnachten — siehe auch /gutschein/weihnachten." },
+      { "title": "Einzelne Heldin", "text": "Die Kollegin, die alles trägt — Beauty (119€) als Solo-Danke." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Team-Geschenk bestellen",
+    "headline": "In Minuten bestellt — lange erinnert",
+    "steps": [
+      { "num": "01", "title": "Wählen", "text": "Basic (89€) oder Beauty (119€) — je nach Teamgröße und Budget." },
+      { "num": "02", "title": "Bestellen", "text": "Mehrfach bestellen — sofort per E-Mail, an alle verteilen." },
+      { "num": "03", "title": "Überreichen", "text": "Team-Meeting, Weihnachtsfeier oder digital — persönliche Karte dazu." },
+      { "num": "04", "title": "Wirken", "text": "Jeder erlebt Stille — und fühlt sich gesehen." }
+    ]
+  },
+  "faq": [
+    { "q": "Mehrere Gutscheine fürs Team?", "a": "Ja — einzeln bestellen, sofort per E-Mail. Basic oder Beauty — je nach Budget." },
+    { "q": "Statt Teamevent?", "a": "Ja — viele Teams bevorzugen individuelle Ruhe statt Gruppenaktivität." },
+    { "q": "Geschlechtsneutral?", "a": "Ja — Head Spa ist für alle. Basic (89€) ist der sichere Allrounder." },
+    { "q": "Weihnachten?", "a": "Ja — siehe auch /gutschein/weihnachten und /gutschein/firmen-geschenk." }
+  ],
+  "closing": {
+    "headline": "Team-Geschenk — Stille, die ankommt.",
+    "text": "Head Spa Gutschein für Wertschätzung, Ruhe und echtes Danke. Jetzt bestellen.",
+    "cta": "Team-Gutschein bestellen"
+  }
+}

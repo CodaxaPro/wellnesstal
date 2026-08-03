@@ -1,0 +1,66 @@
+{
+  "slug": "freundin",
+  "path": "/gutschein/freundin",
+  "seo": {
+    "title": "Geschenk für Freundin | Head Spa Gutschein — Ruhe & Berührung",
+    "description": "Geschenk für die beste Freundin: Head Spa Gutschein für Stille, Entspannung und echte Auszeit. Kein Standard — Berührung, die ankommt. Ab 89€ · Wellnesstal Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Für sie · Deine Freundin",
+    "headline": "Sie trägt alles. Diesmal trägt sie nichts — nur Stille.",
+    "subline": "Die Freundin, die immer für alle da ist — und vergisst, dass auch sie Ruhe braucht. Schenke ihr Head Spa: Berührung, Wasser, Dampf und ein Kopf, der endlich leise wird.",
+    "trust": "4,6★ · „Endlich mal nur für mich“ — Gästefeedback"
+  },
+  "essence": {
+    "eyebrow": "Was sie wirklich braucht",
+    "headline": "Kein weiteres Ding — ein Moment, der sie sieht.",
+    "paragraphs": [
+      "Freundinnen kennen sich. Du weißt, dass sie erschöpft ist — auch wenn sie es nicht sagt. Das richtige Geschenk ist nicht lauter, sondern leiser.",
+      "Head Spa bedeutet: Du darfst. Kein Haushalt. Kein Termin danach. Nur sie, warmes Wasser, achtsame Berührung und Stille.",
+      "Viele Freundinnen kommen zu zweit — oder eine schenkt der anderen und hört Wochen später: „Das war das Beste, was ich je bekommen habe.“"
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte für sie",
+    "headline": "Du kennst sie — das Geschenk passt",
+    "items": [
+      { "word": "Gesehen", "headline": "Du verstehst sie.", "text": "Kein generisches Geschenk — du weißt, was sie braucht." },
+      { "word": "Berührung", "headline": "Sanfte Hände.", "text": "Kopf- und Nackenmassage — Verspannungen lösen sich." },
+      { "word": "Ruhe", "headline": "Nichts leisten.", "text": "45–90 Min. nur für sie — ohne schlechtes Gewissen." },
+      { "word": "Stille", "headline": "Kopf aus.", "text": "Abschalten wie seit Monaten nicht — so sagen Gäste." },
+      { "word": "Reinheit", "headline": "Frisch von innen.", "text": "Kopfhautpflege und Dampf — leicht und neu." },
+      { "word": "Freundschaft", "headline": "Du bist für sie da.", "text": "Auch wenn du nicht mitkommen kannst — du schenkst echte Fürsorge." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Welche Freundin?",
+    "headline": "Jede trägt anders — das Ritual passt sich an",
+    "items": [
+      { "title": "Die Alltagsheldin", "text": "Job, Kinder, Partner — sie gibt alles. Hier bekommt sie." },
+      { "title": "Die Erschöpfte", "text": "Burnout-Nähe, Schlafmangel — der Kopf braucht Stille." },
+      { "title": "Die Unbekannte", "text": "Head Spa noch nie gemacht — umso größer die Überraschung." },
+      { "title": "Ihr beide", "text": "Partner-Termin buchen — nebeneinander entspannen." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "So schenkst du richtig",
+    "headline": "Vom Gutschein zum Dankeslächeln",
+    "steps": [
+      { "num": "01", "title": "Wählen", "text": "Basic, Beauty oder Deluxe — je nachdem, wie tief du schenken willst." },
+      { "num": "02", "title": "Überreichen", "text": "Digital oder ausgedruckt — mit einer Karte, die sagt: Du verdienst das." },
+      { "num": "03", "title": "Sie erlebt", "text": "Empfangen werden, loslassen, ankommen." },
+      { "num": "04", "title": "Sie erzählt", "text": "„Du musst das ausprobieren“ — die beste Werbung der Freundschaft." }
+    ]
+  },
+  "faq": [
+    { "q": "Geschenk für beste Freundin — was passt?", "a": "Beauty (119€, 60 Min.) ist unser Beliebtestes — Balance aus Tiefe und Zeit." },
+    { "q": "Zu zweit buchen?", "a": "Ja — Partner-Termine per WhatsApp: +49 173 3828581." },
+    { "q": "Sofort verfügbar?", "a": "Ja — ideal als Last-Minute-Geschenk zum Ausdrucken." },
+    { "q": "Wo in der Region?", "a": "Baesweiler, Reyplatz 10 — erreichbar aus Aachen, Würselen, Eschweiler." }
+  ],
+  "closing": {
+    "headline": "Für sie — weil du weißt, was sie braucht.",
+    "text": "Head Spa Gutschein: Berührung, Stille, Reinheit. Jetzt bestellen — sie wird es spüren.",
+    "cta": "Gutschein für sie bestellen"
+  }
+}

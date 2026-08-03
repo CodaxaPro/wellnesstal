@@ -1,0 +1,128 @@
+{
+  "slug": "baesweiler",
+  "path": "/head-spa-baesweiler",
+  "seo": {
+    "title": "Head Spa Baesweiler | Japanisches Ritual · Wellnesstal Reyplatz 10",
+    "description": "Head Spa in Baesweiler: Dein Ritual-Studio für Berührung, Stille und Entspannung. Basic 89€, Beauty 119€, Deluxe 149€ mit Kérastase & Babor. 4,6★ · Wunschtermin online."
+  },
+  "city": "Baesweiler",
+  "region": "Kreis Heinsberg · Städteregion Aachen",
+  "distance": "Reyplatz 10 — im Herzen von Baesweiler",
+  "nearby": ["Aachen", "Übach-Palenberg", "Geilenkirchen", "Alsdorf", "Herzogenrath", "Eschweiler"],
+  "hero": {
+    "eyebrow": "Head Spa · Baesweiler",
+    "headline": "Dein Studio. Dein Ritual. Deine Stille.",
+    "subline": "Kein Add-on im Friseurstuhl — ein dediziertes Head Spa Studio in Baesweiler: Berührung, Wasser, Dampf, Reinheit. Du wirst empfangen, nicht abgefertigt.",
+    "trust": "4,6★ bei Google · Reyplatz 10"
+  },
+  "essence": {
+    "eyebrow": "Wellnesstal Baesweiler",
+    "headline": "Japanisches Head Spa — wo du ankommen darfst.",
+    "paragraphs": [
+      "In Baesweiler, Reyplatz 10, findest du kein weiteres Wellness-Angebot — du findest ein Ritual-Studio. Spezialisiert auf Kopfhaut, Entspannung und achtsame Berührung.",
+      "Head Spa bedeutet hier: Wasserstrahl aus der halbrunden Düse, Kopf- und Nackenmassage, Bedampfung — in Ruhe, ohne Zeitdruck. Im Deluxe-Paket Kérastase und Babor.",
+      "Unsere Gäste aus Baesweiler und der Region kommen wieder — weil sie hier etwas spüren, das woanders fehlt: Geborgenheit, Stille und das Gefühl, wirklich anzukommen."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was dich erwartet",
+    "headline": "Sechs Momente deines Rituals",
+    "items": [
+      {
+        "word": "Ankommen",
+        "headline": "Du darfst. Ohne zu leisten.",
+        "text": "Kaffee, Stille, herzlicher Empfang — der Alltag bleibt draußen."
+      },
+      {
+        "word": "Berührung",
+        "headline": "Langsam. Bewusst. Lösend.",
+        "text": "Kopf-, Nacken- und Dekolleté-Massage — Verspannungen weichen."
+      },
+      {
+        "word": "Reinheit",
+        "headline": "Kopfhaut atmet auf.",
+        "text": "Tiefenreinigung, sanfter Wasserstrahl, Bedampfung — frisch und sauber."
+      },
+      {
+        "word": "Stille",
+        "headline": "Kopf leise.",
+        "text": "100% abschalten — Gäste beschreiben tiefe Entspannung ab Minute eins."
+      },
+      {
+        "word": "Verwöhnung",
+        "headline": "Deluxe: Kérastase & Babor.",
+        "text": "90 Minuten — das volle Ritual für Körper, Kopf und Haut."
+      },
+      {
+        "word": "Leichtigkeit",
+        "headline": "Leichter gehen.",
+        "text": "Nach dem Ritual: ein Gefühl, das Tage nachwirkt."
+      }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen aus Baesweiler",
+    "headline": "Was unsere Gäste sagen",
+    "quotes": [
+      {
+        "text": "Man wird mit offenen Armen empfangen — 90 Minuten pure Verwöhnung.",
+        "name": "Jacqueline G.",
+        "location": "Baesweiler"
+      },
+      {
+        "text": "So entspannt war ich schon lange nicht mehr. Auf einer Skala von 1–10 war es eine 12.",
+        "name": "Jenny T.",
+        "location": "Baesweiler"
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Besuch",
+    "headline": "So läuft dein Head Spa in Baesweiler",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Empfang",
+        "text": "Reyplatz 10 — parken, eintreten, ankommen."
+      },
+      {
+        "num": "02",
+        "title": "Einschätzung",
+        "text": "Kopfhaut, Haar, Spannungszonen — individuell, nicht von der Liste."
+      },
+      {
+        "num": "03",
+        "title": "Ritual",
+        "text": "Massage, Reinigung, Bedampfung — je nach Paket 45–90 Min."
+      },
+      {
+        "num": "04",
+        "title": "Abschluss",
+        "text": "Trockenföhnen, Leichtigkeit — du gehst anders, als du kamst."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "Wo genau in Baesweiler?",
+      "a": "Reyplatz 10, 52499 Baesweiler — zentral, gut erreichbar aus der gesamten Region."
+    },
+    {
+      "q": "Welche Pakete gibt es?",
+      "a": "Basic 89€ (45 Min.), Beauty 119€ (60 Min.), Deluxe 149€ (90 Min.) mit Kérastase & Babor."
+    },
+    {
+      "q": "Muss ich Head Spa kennen?",
+      "a": "Nein. Viele Gäste aus Baesweiler kommen zum ersten Mal — wir führen in Ruhe durch jeden Schritt."
+    },
+    {
+      "q": "Gutschein kaufen?",
+      "a": "Ja — online unter /gutschein. Stille verschenken für jemanden aus Baesweiler."
+    }
+  ],
+  "closing": {
+    "headline": "Head Spa Baesweiler — dein Ritual wartet.",
+    "text": "Berührung, Reinheit, Entspannung. Reyplatz 10. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

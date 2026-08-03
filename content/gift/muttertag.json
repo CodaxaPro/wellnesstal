@@ -1,0 +1,130 @@
+{
+  "slug": "muttertag",
+  "path": "/gutschein/muttertag",
+  "seo": {
+    "title": "Muttertagsgeschenk Wellness & Head Spa Gutschein | Wellnesstal",
+    "description": "Muttertag Geschenk, das wirklich berührt: Schenke Mama Ruhe, Berührung und Stille — kein Blumenstrauß, sondern japanisches Head Spa Ritual. Gutschein ab 89€, sofort online."
+  },
+  "hero": {
+    "eyebrow": "Muttertag · Danke sagen",
+    "headline": "Blumen welken. Stille bleibt.",
+    "subline": "Schenke deiner Mama kein Ding — schenk ihr Berührung, Entspannung und einen Moment, in dem sie nichts leisten muss. Head Spa: das Muttertagsgeschenk, das ankommt.",
+    "trust": "4,6★ · Gäste nennen uns „mit offenen Armen empfangen“"
+  },
+  "essence": {
+    "eyebrow": "Was Mama wirklich braucht",
+    "headline": "Sie gibt immer. Diesmal bekommt sie — ohne schlechtes Gewissen.",
+    "paragraphs": [
+      "Mütter tragen unsichtbar viel. Ein Muttertagsgeschenk soll nicht lauter sein — es soll leiser sein. Ein Raum, in dem sie endlich ankommen darf.",
+      "Head Spa ist kein Produkt für Mama. Es ist Berührung, die sagt: Du darfst. Wasser und Dampf, die lösen. Stille, die schützt.",
+      "Viele unserer Gäste kommen mit ihrer Mutter — oder werden von ihren Kindern geschickt. Das schönste Feedback: „Endlich mal nur für mich.“"
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Dein Geschenk in sechs Worten",
+    "headline": "Das, was du Mama sagen willst — ohne Worte",
+    "items": [
+      {
+        "word": "Danke",
+        "headline": "Für alles, was du nie hörst.",
+        "text": "Ein Geschenk, das Wertschätzung spürbar macht — nicht als Pflicht, sondern als echtes Gefühl."
+      },
+      {
+        "word": "Berührung",
+        "headline": "Sanfte Hände. Keine Eile.",
+        "text": "Kopf- und Nackenmassage — Verspannungen lösen sich, die sie seit Jahren trägt."
+      },
+      {
+        "word": "Ruhe",
+        "headline": "Endlich nichts leisten.",
+        "text": "Kein Haushalt. Kein Termin. Nur sie — und ein Moment, der ihr gehört."
+      },
+      {
+        "word": "Stille",
+        "headline": "Kopf leise. Herz offen.",
+        "text": "100% abschalten — so beschreiben es Gäste. Mama verdient genau das."
+      },
+      {
+        "word": "Reinheit",
+        "headline": "Frisch. Leicht. Neu.",
+        "text": "Kopfhautpflege und Dampf — das Gefühl, von innen heraus erfrischt zu werden."
+      },
+      {
+        "word": "Geborgenheit",
+        "headline": "Empfangen wie zu Hause.",
+        "text": "Kaffee, Wärme, herzlicher Empfang — „mit offenen Armen“, sagen unsere Gäste."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für welche Mama?",
+    "headline": "Jede Mutter — eine andere Geschichte",
+    "items": [
+      {
+        "title": "Die Alltagsheldin",
+        "text": "Die jeden Tag für alle da ist — und vergisst, dass auch sie Ruhe braucht."
+      },
+      {
+        "title": "Die Großmutter",
+        "text": "Zeit zu zweit: Mutter-Tochter Head Spa — gemeinsam ankommen, gemeinsam loslassen."
+      },
+      {
+        "title": "Die Erschöpfte",
+        "text": "Stress, Schlafmangel, Sorgen — hier darf der Kopf endlich leiser werden."
+      },
+      {
+        "title": "Die Unbekannte",
+        "text": "Mama, die Head Spa noch nicht kennt — umso größer die Überraschung, umso tiefer die Entspannung."
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Muttertag erleben",
+    "headline": "Vom Geschenk zum Moment, den sie nie vergisst",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Überraschen",
+        "text": "Gutschein online — ausdrucken, in eine Karte legen, ihre Augen sehen."
+      },
+      {
+        "num": "02",
+        "title": "Ankommen",
+        "text": "Im Studio: Kaffee, Stille, Empfang — sie fühlt sich sofort willkommen."
+      },
+      {
+        "num": "03",
+        "title": "Loslassen",
+        "text": "Massage, Wasser, Dampf — der Kopf wird leise, die Schultern sinken."
+      },
+      {
+        "num": "04",
+        "title": "Strahlen",
+        "text": "Leichter gehen. Entspannt lächeln. Das ist dein Muttertagsgeschenk."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "Ist Head Spa ein gutes Muttertagsgeschenk?",
+      "a": "Ja — wenn du Ruhe schenken willst, nicht nur Dinge. Gäste berichten: „Endlich mal für mich.“ Das ist das schönste Muttertags-Feedback."
+    },
+    {
+      "q": "Können Mutter und Tochter zusammen kommen?",
+      "a": "Ja. Partner-Termine sind über WhatsApp buchbar — nebeneinander entspannen, gemeinsam ankommen."
+    },
+    {
+      "q": "Welches Paket für Mama?",
+      "a": "Beauty (119€, 60 Min.) ist unser Beliebtestes — Entspannung plus Gesichtsmassage. Deluxe (149€) für 90 Minuten pure Verwöhnung."
+    },
+    {
+      "q": "Rechtzeitig zum Muttertag?",
+      "a": "Gutschein sofort per E-Mail — auch last minute ausdruckbar und verschenkbar."
+    }
+  ],
+  "closing": {
+    "headline": "Danke sagen — mit Stille statt Worten.",
+    "text": "Das Muttertagsgeschenk, das Berührung, Ruhe und Reinheit bedeutet. Jetzt bestellen — Mama wird es spüren.",
+    "cta": "Muttertags-Gutschein bestellen"
+  }
+}

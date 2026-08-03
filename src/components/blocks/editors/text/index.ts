@@ -1,6 +1,0 @@
-export { default as LayoutTab } from './LayoutTab'
-export { default as ContentTab } from './ContentTab'
-export { default as TypographyTab } from './TypographyTab'
-export { default as BackgroundTab } from './BackgroundTab'
-export { default as AdvancedTab } from './AdvancedTab'
-export * from './defaults'

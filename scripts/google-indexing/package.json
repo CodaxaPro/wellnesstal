@@ -1,0 +1,21 @@
+{
+  "name": "wellnesstal-google-indexing",
+  "private": true,
+  "type": "module",
+  "description": "Google Indexing API + SEO pre-flight checks for Wellnesstal",
+  "scripts": {
+    "generate-urls": "node generate-urls.mjs",
+    "audit": "node audit-seo.mjs",
+    "verify-gcp": "node verify-gcp.mjs",
+    "gsc": "node gsc-inspect.mjs",
+    "gsc:all": "node gsc-inspect.mjs --all",
+    "index": "node index.js",
+    "index:dry": "DRY_RUN=1 node index.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

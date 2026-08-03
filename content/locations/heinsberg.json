@@ -1,0 +1,68 @@
+{
+  "slug": "heinsberg",
+  "path": "/head-spa-heinsberg",
+  "seo": {
+    "title": "Head Spa Kreis Heinsberg | Wellnesstal Baesweiler — Ritual & Ruhe",
+    "description": "Head Spa nahe Heinsberg: Japanisches Kopfhaut-Ritual mit Massage und Bedampfung. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · Berührung, Stille, Entspannung."
+  },
+  "city": "Heinsberg",
+  "region": "Kreis Heinsberg",
+  "distance": "ca. 25 Minuten von Heinsberg",
+  "nearby": ["Baesweiler", "Geilenkirchen", "Übach-Palenberg", "Herzogenrath", "Aachen", "Alsdorf"],
+  "hero": {
+    "eyebrow": "Head Spa · Kreis Heinsberg",
+    "headline": "Heinsberg verdient mehr als oberflächliche Ruhe.",
+    "subline": "Von Heinsberg zu uns in Baesweiler — das dedizierte Head Spa Studio der Region. Berührung, Wasser, Dampf — 45 bis 90 Minuten, die wirklich ankommen.",
+    "trust": "4,6★ bei Google · Reyplatz 10, Baesweiler"
+  },
+  "essence": {
+    "eyebrow": "Head Spa für Heinsberg",
+    "headline": "Ein Ritual, für das man gern fährt.",
+    "paragraphs": [
+      "Im Kreis Heinsberg gibt es Wellness — aber selten ein Studio, das ausschließlich Head Spa lebt. Kein Add-on. Kein Kompromiss.",
+      "Wellnesstal verbindet japanische Kopfhaut-Pflege mit tiefer Entspannung: Massage, Wasserstrahl, Bedampfung — im Deluxe mit Kérastase und Babor.",
+      "Gäste aus Heinsberg, Randerath und Porselen kommen bewusst zu uns — weil sie etwas suchen, das wirkt: Stille, Reinheit und das Gefühl, endlich anzukommen."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du findest",
+    "headline": "Sechs Gründe aus Heinsberg",
+    "items": [
+      { "word": "Spezialisierung", "headline": "Nur Head Spa.", "text": "Kein Friseur, kein Mix — ein Ritual-Studio." },
+      { "word": "Berührung", "headline": "Tief und bewusst.", "text": "45–90 Min. Massage — nicht 15 Min. am Waschbecken." },
+      { "word": "Reinheit", "headline": "Kopfhaut atmet.", "text": "Tiefenreinigung und Dampf — frisch und leicht." },
+      { "word": "Entspannung", "headline": "Mental tiefer.", "text": "Gäste beschreiben abschalten wie seit Monaten nicht." },
+      { "word": "Geborgenheit", "headline": "Empfangen werden.", "text": "Kaffee, Wärme, herzlicher Empfang — du darfst." },
+      { "word": "Leichtigkeit", "headline": "Leichter heim.", "text": "Die Fahrt lohnt sich — spürbar nach dem ersten Besuch." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen aus der Region",
+    "headline": "Was Gäste berichten",
+    "quotes": [
+      { "text": "Man wird empfangen, nicht abgefertigt. Ein Moment, den du dir wirklich verdienst.", "name": "Jacqueline G.", "location": "Baesweiler" },
+      { "text": "Der sanfte Wasserstrahl — tiefe Entspannung von der ersten Minute.", "name": "Joanna K.", "location": "Baesweiler" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Ausflug zur Stille",
+    "headline": "Von Heinsberg zu Wellnesstal",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 25 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Ankommen", "text": "Stille beginnt mit dem ersten Kaffee." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Wasser, Dampf — je nach Paket." },
+      { "num": "04", "title": "Rückfahrt", "text": "Leichter in den Kreis Heinsberg zurück." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit von Heinsberg?", "a": "Ca. 25 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Lohnt sich die Fahrt aus dem Kreis Heinsberg?", "a": "Ja — dediziertes Head Spa ist in der Region selten. Viele Gäste kommen alle 4–6 Wochen." },
+    { "q": "Partner-Termine?", "a": "Ja — gerne per WhatsApp anfragen: +49 173 3828581." },
+    { "q": "Gutschein?", "a": "Ja — /gutschein oder /gutschein/wellness-geschenk." }
+  ],
+  "closing": {
+    "headline": "Head Spa für den Kreis Heinsberg — bei uns.",
+    "text": "Berührung, Reinheit, Entspannung. Wunschtermin online — du wirst den Unterschied spüren.",
+    "cta": "Wunschtermin finden"
+  }
+}

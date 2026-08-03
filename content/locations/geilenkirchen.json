@@ -1,0 +1,68 @@
+{
+  "slug": "geilenkirchen",
+  "path": "/head-spa-geilenkirchen",
+  "seo": {
+    "title": "Head Spa Geilenkirchen | Japanisches Ritual — Wellnesstal Baesweiler",
+    "description": "Head Spa nahe Geilenkirchen: Berührung, Stille und Kopfhautpflege in ca. 20 Min. erreichbar. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ bei Google."
+  },
+  "city": "Geilenkirchen",
+  "region": "Kreis Heinsberg",
+  "distance": "ca. 20 Minuten von Geilenkirchen",
+  "nearby": ["Baesweiler", "Übach-Palenberg", "Heinsberg", "Aachen", "Herzogenrath", "Alsdorf"],
+  "hero": {
+    "eyebrow": "Head Spa · Geilenkirchen",
+    "headline": "20 Minuten Fahrt. 90 Minuten Stille.",
+    "subline": "Von Geilenkirchen zu uns — japanisches Head Spa mit Berührung, Wasser und Dampf. Ein Ritual, das den Kopf leiser macht — und den Alltag weiter weg.",
+    "trust": "4,6★ bei Google · Dediziertes Ritual-Studio"
+  },
+  "essence": {
+    "eyebrow": "Warum aus Geilenkirchen?",
+    "headline": "Weil Ruhe selten vor der Haustür wartet.",
+    "paragraphs": [
+      "Geilenkirchen und der Kreis Heinsberg haben viel zu bieten — aber ein dediziertes Head Spa Studio sucht man vergeblich.",
+      "Wellnesstal in Baesweiler füllt diese Lücke: japanische Kopfhaut-Technik, 45 bis 90 Minuten bewusste Berührung, Bedampfung — ohne Friseurstuhl, ohne Eile.",
+      "Gäste aus Geilenkirchen und Umgebung planen den Besuch bewusst ein — als Auszeit, die sich jede Minute lohnt."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was dich erwartet",
+    "headline": "Sechs Momente der Erholung",
+    "items": [
+      { "word": "Auszeit", "headline": "Bewusst wegfahren.", "text": "20 Minuten — und du bist in einer anderen Welt. Stille." },
+      { "word": "Berührung", "headline": "Sanft und tief.", "text": "Kopf-, Nacken- und Dekolleté-Massage — lösend, langsam." },
+      { "word": "Reinheit", "headline": "Kopfhaut frisch.", "text": "Wasserstrahl und Bedampfung — sauber von innen heraus." },
+      { "word": "Stille", "headline": "Abschalten.", "text": "100% präsent — Gäste nennen es tiefe Entspannung." },
+      { "word": "Verwöhnung", "headline": "Deluxe: Kérastase & Babor.", "text": "90 Minuten — das volle Ritual für Körper und Kopf." },
+      { "word": "Leichtigkeit", "headline": "Leichter zurück.", "text": "Nach dem Ritual trägt der Kopf weniger — spürbar." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen",
+    "headline": "Was Gäste sagen",
+    "quotes": [
+      { "text": "Jeder, der sich etwas Gutes tun möchte, sollte das unbedingt ausprobieren!", "name": "Jacqueline G.", "location": "Baesweiler" },
+      { "text": "Ich freu mich auf die nächste Behandlung und kann es jedem weiter empfehlen.", "name": "Lea W.", "location": "Region Aachen" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Ritual",
+    "headline": "Von Geilenkirchen zu uns",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 20 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Empfang", "text": "Kaffee, Stille — ankommen dürfen." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Wasser, Dampf — Kopf wird leise." },
+      { "num": "04", "title": "Heimweg", "text": "Leichter — mit Ruhe im Gepäck." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit von Geilenkirchen?", "a": "Ca. 20 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Gibt es Head Spa in Geilenkirchen?", "a": "Wellnesstal in Baesweiler ist das nächste dedizierte Ritual-Studio — spezialisiert auf japanisches Head Spa." },
+    { "q": "Welches Paket für den ersten Besuch?", "a": "Beauty (119€, 60 Min.) ist unser Beliebtestes — oder Basic (89€) zum Einstieg." },
+    { "q": "Gutschein verschenken?", "a": "Ja — /gutschein. Stille schenken für jemanden aus Geilenkirchen." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Geilenkirchen — lohnt sich.",
+    "text": "Berührung, Reinheit, Entspannung. 20 Min. Fahrt — 90 Min. Stille. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

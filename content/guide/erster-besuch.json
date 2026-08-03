@@ -1,0 +1,91 @@
+{
+  "slug": "erster-besuch",
+  "path": "/ratgeber/erster-besuch",
+  "seo": {
+    "title": "Head Spa erster Besuch | Was dich erwartet — Wellnesstal Baesweiler",
+    "description": "Head Spa zum ersten Mal? Ablauf, Dauer, Gefühle und Tipps — ehrlich erklärt. 45–90 Min. Ritual in Baesweiler. 4,6★ · Kein Friseur-Add-on, sondern dediziertes Studio."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Erster Besuch",
+    "headline": "Dein erster Head Spa — ohne Unsicherheit.",
+    "subline": "Viele kommen neugierig und etwas unsicher. Das ist normal. Hier erfährst du, was wirklich passiert — und warum Gäste sagen: „Hätte ich früher machen sollen.“"
+  },
+  "sections": [
+    {
+      "title": "Vor dem Besuch: Was du wissen solltest",
+      "paragraphs": [
+        "Head Spa ist kein Schnellprogramm. Basic dauert 45 Minuten, Beauty 60, Deluxe 90 — und jede Minute ist bewusst. Du brauchst keine Vorerfahrung.",
+        "Du musst deine Haare nicht vorher waschen — Reinigung ist Teil des Rituals. Komm wie du bist. Lockere Kleidung hilft beim Ankommen, ist aber kein Muss.",
+        "Wenn du empfindliche Kopfhaut, Verspannungen oder viel Stress mitbringst: Sag es uns vorher. Wir passen Intensität und Produkte an — individuell, nicht von der Liste."
+      ]
+    },
+    {
+      "title": "Minute für Minute: So läuft es ab",
+      "paragraphs": ["Ein typischer erster Besuch bei Wellnesstal folgt diesem Rhythmus — in Ruhe, ohne Hektik:"],
+      "bullets": [
+        "Empfang: Kaffee, kurzes Ankommen — du wirst begrüßt, nicht abgefertigt",
+        "Einschätzung: Kopfhaut, Haar, Spannungszonen — wo trägst du Stress?",
+        "Massage: Kopf, Nacken, Dekolleté — langsam, präzise, lösend",
+        "Reinigung: Haarwäsche mit warmem Wasser, oft sanfter Wasserstrahl",
+        "Bedampfung: Warmer Dampf — Kopfhaut öffnet sich, du lässt los",
+        "Pflege & Abschluss: je nach Paket Gesichtspflege, Kérastase/Babor — Trockenföhnen inklusive"
+      ]
+    },
+    {
+      "title": "Was du körperlich spürst",
+      "paragraphs": [
+        "Warmes Wasser auf der Kopfhaut. Sanfter Druck an Nacken und Schläfen. Dampf, der beruhigt. Viele beschreiben ein Kribbeln der Entspannung — oft schon in den ersten Minuten.",
+        "Manche werden müde — das ist gut. Dein Nervensystem fährt runter. Du darfst abschalten. Niemand erwartet Smalltalk."
+      ]
+    },
+    {
+      "title": "Was du mental spürst",
+      "paragraphs": [
+        "Das ist der Unterschied zu „nur“ Kopfmassage beim Friseur: Head Spa spricht den Kopf an — Gedanken werden leiser, der Alltag weiter weg.",
+        "Gäste sagen: „100% entspannen“, „tiefe Entspannung ab Minute eins“, „Endlich mal nur für mich.“ Das ist kein Marketing — das sind wortwörtliche Rückmeldungen."
+      ]
+    },
+    {
+      "title": "Nach dem Ritual",
+      "paragraphs": [
+        "Du stehst auf — leichter, frischer, oft mit klarerem Kopf. Kopfhaut fühlt sich sauber an, Haare weich. Die Entspannung wirkt oft noch Stunden oder Tage nach.",
+        "Viele Erstbesucher buchen direkt den nächsten Termin — oder wählen beim zweiten Mal Beauty oder Deluxe."
+      ]
+    },
+    {
+      "title": "Welches Paket für den ersten Besuch?",
+      "paragraphs": [],
+      "bullets": [
+        "Basic (89€, 45 Min.): Ideal zum Kennenlernen — pure Entspannung, ohne Overcommit",
+        "Beauty (119€, 60 Min.): Unser Beliebtestes — mehr Tiefe, Gesichtsmassage und Peeling",
+        "Deluxe (149€, 90 Min.): Wenn du dir von Anfang an das Maximum gönnst — Kérastase & Babor"
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Erster Besuch — das Wichtigste",
+    "items": [
+      "Keine Vorerfahrung nötig — wir führen in Ruhe durch",
+      "Haare nicht vorwaschen — Reinigung ist im Ritual",
+      "45–90 Min. bewusste Berührung — kein Quick-Treatment",
+      "Viele spüren tiefe Entspannung schon beim ersten Mal",
+      "Reyplatz 10, Baesweiler — 15 Min. von Aachen"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/was-ist-head-spa", "label": "Was ist Head Spa?", "hint": "Das Ritual erklärt" },
+    { "href": "/headspa/basic", "label": "Head Spa Basic", "hint": "Einstieg ab 89€" },
+    { "href": "/gutschein", "label": "Gutschein verschenken", "hint": "Stille schenken" }
+  ],
+  "faq": [
+    { "q": "Tut Head Spa weh?", "a": "Nein. Die Berührung ist sanft und bewusst. Bei empfindlicher Kopfhaut passen wir Druck und Produkte an." },
+    { "q": "Muss ich etwas mitbringen?", "a": "Nein — nur du. Alles ist im Studio." },
+    { "q": "Ist Head Spa auch für Männer?", "a": "Ja, selbstverständlich. Kopfhaut und Entspannung kennen kein Geschlecht." },
+    { "q": "Wie buche ich?", "a": "Online — Wunschtermin finden, Verfügbarkeit sofort sichtbar." }
+  ],
+  "closing": {
+    "headline": "Der erste Schritt ist der leichteste.",
+    "text": "45 Minuten Basic reichen, um zu verstehen, warum Gäste wiederkommen. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

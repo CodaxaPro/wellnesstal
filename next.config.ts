@@ -1,74 +1,23 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from 'next'
+
+import { getGiftSeoRewrites, getIntentRewrites, getSpaSeoRewrites } from './src/lib/seo-config'
+import { getCustomMoneyRewrites } from './src/lib/custom-money-pages'
+
+const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'images.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'plus.unsplash.com',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.wellnesstal.de',
-        port: '',
-        pathname: '/uploads/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'www.wellnesstal.de',
-        port: '',
-        pathname: '/media/**',
-      },
-      {
-        protocol: 'http',
-        hostname: 'localhost',
-        port: '3001',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: 'rtudfkccbzbblfmeoyop.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'https',
-        hostname: '*.supabase.co',
-        port: '',
-        pathname: '/**',
-      },
-      {
-        protocol: 'http',
-        hostname: '127.0.0.1',
-        port: '3001',
-        pathname: '/**',
-      },
-    ],
+    formats: ['image/avif', 'image/webp'],
   },
-  compress: true,
-  poweredByHeader: false,
-  reactStrictMode: true,
-  eslint: {
-    // Enterprise: Enforce linting in production builds
-    // Temporarily disabled to allow deployment
-    ignoreDuringBuilds: true,
-  },
-  typescript: {
-    // Enterprise: Enforce type checking in production builds
-    // Temporarily disabled to allow deployment
-    ignoreBuildErrors: true,
-  },
-  compiler: {
-    removeConsole: process.env.NODE_ENV === 'production'
-      ? { exclude: ['error', 'warn'] }
-      : false
+  async rewrites() {
+    return [
+      {
+        source: '/head-spa-:slug',
+        destination: '/locations/:slug',
+      },
+      ...getIntentRewrites(),
+      ...getCustomMoneyRewrites(),
+      ...getGiftSeoRewrites(),
+      ...getSpaSeoRewrites(),
+    ]
   },
   async headers() {
     return [
@@ -79,20 +28,14 @@ const nextConfig = {
             key: 'Content-Security-Policy',
             value: [
               "default-src 'self'",
-              "script-src 'self' 'unsafe-eval' 'unsafe-inline' https://vercel.live https://*.timify.com https://*.studiobookr.com https://static.cloudflareinsights.com",
-              "script-src-elem 'self' 'unsafe-inline' https://*.timify.com https://*.studiobookr.com https://static.cloudflareinsights.com",
-              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://*.timify.com https://*.studiobookr.com",
-              "img-src 'self' data: https: blob:",
-              "font-src 'self' data: https://fonts.gstatic.com",
-              "connect-src 'self' https://*.supabase.co https://*.supabase.in https://*.timify.com https://*.studiobookr.com",
-              "child-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com https://www.studiobookr.com https://*.studiobookr.com https://studiobookr.com https://treuepay.de https://*.treuepay.de",
-              "frame-src 'self' https://www.youtube.com https://player.vimeo.com https://book.timify.com https://*.timify.com https://www.studiobookr.com https://*.studiobookr.com https://studiobookr.com https://treuepay.de https://*.treuepay.de",
-              "object-src 'none'",
-              "base-uri 'self'",
-              "form-action 'self' https://*.timify.com https://*.studiobookr.com",
-              "frame-ancestors 'self'",
-              "upgrade-insecure-requests"
-            ].join('; ')
+              "script-src 'self' 'unsafe-inline' 'unsafe-eval'",
+              "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+              "font-src 'self' https://fonts.gstatic.com",
+              "img-src 'self' data: blob: https:",
+              "media-src 'self' https://assets.mixkit.co https:",
+              "frame-src 'self' https://treuepay.de https://*.treuepay.de",
+              "connect-src 'self' https://treuepay.de https://*.treuepay.de",
+            ].join('; '),
           },
         ],
       },

@@ -1,0 +1,71 @@
+{
+  "slug": "hochzeit",
+  "path": "/gutschein/hochzeit",
+  "seo": {
+    "title": "Hochzeitsgeschenk Wellness & Head Spa Gutschein | Wellnesstal",
+    "description": "Hochzeitsgeschenk, das bleibt: Head Spa Gutschein für das Brautpaar — Ruhe, Berührung und Stille zu zweit. Partner ab 178€, sofort online · Baesweiler & Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Hochzeit · Zu zweit",
+    "headline": "Nach dem Ja — endlich Stille zu zweit.",
+    "subline": "Hochzeitsgeschenke sammeln Staub. Schenke dem Brautpaar etwas, das ankommt: Head Spa Partner-Ritual — nebeneinander entspannen, nebeneinander ankommen.",
+    "trust": "4,6★ · Partner ab 178€ · Sofort per E-Mail"
+  },
+  "essence": {
+    "eyebrow": "Mehr als Besteck",
+    "headline": "Das Brautpaar braucht keine Dinge — es braucht Ruhe.",
+    "paragraphs": [
+      "Hochzeitsplanung, Familie, Erwartungen — danach ist der Kopf oft lauter als vorher. Was wirklich hilft: Zeit zu zweit, ohne Programm.",
+      "Head Spa Partner-Gutschein ist der Rahmen: nebeneinander liegen, nebeneinander loslassen. Berührung, Wasser, Dampf — 45 bis 90 Minuten nur für sie.",
+      "Kein lautes Geschenk — ein leises, tiefes: „Ich wünsche euch Ruhe. Nicht irgendwann — jetzt.“"
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte des Hochzeitsgeschenks",
+    "headline": "Glückwunsch — auf eine leise Art",
+    "items": [
+      { "word": "Nähe", "headline": "Nebeneinander.", "text": "Partner-Ritual — ohne Smalltalk, nur Stille." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die entspannt — nicht nur verwöhnt." },
+      { "word": "Ruhe", "headline": "Nach dem Trubel.", "text": "Endlich nichts organisieren — nur da sein." },
+      { "word": "Stille", "headline": "Köpfe leise.", "text": "Abschalten zu zweit — selten, kostbar." },
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Unser schönstes Hochzeitsgeschenk“ — hören wir oft." },
+      { "word": "Wertschätzung", "headline": "Du meinst es.", "text": "Kein Standard — ein Gefühl, das ankommt." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Das Hochzeitsgeschenk, das passt",
+    "items": [
+      { "title": "Das Brautpaar", "text": "Partner-Paket — nebeneinander entspannen, gemeinsam ankommen." },
+      { "title": "Die Braut", "text": "Alleine oder mit Trauzeugin — Beauty oder Deluxe als Solo-Geschenk." },
+      { "title": "Von den Eltern", "text": "Ruhe statt Porzellan — Wertschätzung, die man spürt." },
+      { "title": "Von Freunden", "text": "Gemeinschaftsgeschenk? Partner Deluxe — 298€ für beide." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Hochzeitsgeschenk schenken",
+    "headline": "In Minuten bestellt — lange erinnert",
+    "steps": [
+      { "num": "01", "title": "Wählen", "text": "Partner Basic, Beauty oder Deluxe — je nach Tiefe." },
+      { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — in die Karte oder digital." },
+      { "num": "03", "title": "Überreichen", "text": "Auf der Hochzeit — oder danach, wenn der Trubel vorbei ist." },
+      { "num": "04", "title": "Erleben", "text": "Das Paar bucht selbst — Stille, Berührung, Nähe." }
+    ]
+  },
+  "partnerPackages": [
+    { "name": "Partner Basic", "price": 178, "duration": "45 Min. · je Person", "tagline": "Erstes Ritual zu zweit" },
+    { "name": "Partner Beauty", "price": 238, "duration": "60 Min. · je Person", "tagline": "Beliebt — ausgewogene Tiefe", "featured": true },
+    { "name": "Partner Deluxe", "price": 298, "duration": "90 Min. · je Person", "tagline": "Volles Ritual mit Markenpflege" }
+  ],
+  "faq": [
+    { "q": "Partner-Gutschein für Hochzeit?", "a": "Ja — Partner Basic 178€, Beauty 238€, Deluxe 298€. Nebeneinander entspannen." },
+    { "q": "Nur für eine Person?", "a": "Auch möglich — Beauty (119€) oder Deluxe (149€) als Solo-Geschenk." },
+    { "q": "Sofort verfügbar?", "a": "Ja — ideal auch kurz vor der Hochzeit." },
+    { "q": "Wo?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+  ],
+  "closing": {
+    "headline": "Glückwunsch — mit Stille, die bleibt.",
+    "text": "Head Spa Partner-Gutschein für Ruhe, Nähe und echte Wertschätzung. Jetzt bestellen.",
+    "cta": "Hochzeits-Gutschein bestellen"
+  }
+}

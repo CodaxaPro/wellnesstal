@@ -1,8 +1,0 @@
-[
-  { "section_key": "landing-hero", "section_name": "Landing Hero", "section_icon": "🎯", "position": 1, "enabled": true },
-  { "section_key": "hero", "section_name": "Hero Section", "section_icon": "🏠", "position": 2, "enabled": true },
-  { "section_key": "services", "section_name": "Leistungen", "section_icon": "💆", "position": 3, "enabled": true },
-  { "section_key": "about", "section_name": "Über Uns", "section_icon": "👥", "position": 4, "enabled": true },
-  { "section_key": "homepage-testimonials-block", "section_name": "Müşteri Yorumları", "section_icon": "💬", "position": 5, "enabled": true },
-  { "section_key": "contact", "section_name": "Kontakt", "section_icon": "📞", "position": 6, "enabled": true }
-]

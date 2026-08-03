@@ -1,0 +1,66 @@
+{
+  "slug": "last-minute",
+  "path": "/gutschein/last-minute",
+  "seo": {
+    "title": "Last Minute Geschenk Gutschein | Head Spa sofort online — Wellnesstal",
+    "description": "Last Minute Geschenk? Head Spa Gutschein sofort per E-Mail — ausdrucken, verschenken, fertig. Ruhe, Berührung, Stille ab 89€. Print@Home · Baesweiler & Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Last Minute · Sofort schenken",
+    "headline": "Keine Zeit? Kein Problem. Stille in Minuten.",
+    "subline": "Der Termin ist morgen, der Anlass heute — und du hast noch kein Geschenk. Head Spa Gutschein: online bestellen, sofort per E-Mail, ausdrucken und überreichen. Berührung, die ankommt.",
+    "trust": "4,6★ · Digital sofort · Print@Home"
+  },
+  "essence": {
+    "eyebrow": "Warum Head Spa last minute funktioniert",
+    "headline": "Kein Lieferstress. Kein leeres Gefühl.",
+    "paragraphs": [
+      "Last-Minute-Geschenke wirken oft hastig — weil sie es sind. Ein digitaler Head Spa Gutschein ist in Minuten da und fühlt sich trotzdem durchdacht an.",
+      "Du schenkst nicht einen Betrag — du schenkst Ruhe, Berührung und einen Moment, in dem der Kopf leise wird. Das wirkt persönlicher als jede Express-Lieferung.",
+      "Ausdrucken, in eine Karte legen, überreichen — oder per WhatsApp senden. Der Beschenkte bucht seinen Termin in Ruhe."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du in Minuten schenkst",
+    "headline": "Schnell bestellt — tief ankommend",
+    "items": [
+      { "word": "Sofort", "headline": "In Minuten da.", "text": "Kein Warten auf Pakete — E-Mail, ausdrucken, fertig." },
+      { "word": "Berührung", "headline": "Nicht generisch.", "text": "Kein Amazon-Gutschein — echtes Ritual, echte Entspannung." },
+      { "word": "Ruhe", "headline": "Das Geschenk der Stille.", "text": "45–90 Min., in denen nichts geleistet werden muss." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Was der Beschenkte wirklich spürt — nicht nur liest." },
+      { "word": "Flexibilität", "headline": "Termin in Ruhe wählen.", "text": "Kein Druck — Einlösung, wenn es passt." },
+      { "word": "Wirkung", "headline": "Bleibt.", "text": "Last minute bestellt — lange erinnert." }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Wann last minute?",
+    "headline": "Jeder Anlass — auch ohne Vorlauf",
+    "items": [
+      { "title": "Geburtstag vergessen?", "text": "Gutschein heute — Überraschung morgen." },
+      { "title": "Spontaner Besuch", "text": "Mitbringsel, das beeindruckt — in 5 Minuten bestellt." },
+      { "title": "Danke sagen", "text": "Schnell, aber nicht oberflächlich — Berührung statt Blumen." },
+      { "title": "Dich selbst", "text": "Heute buchen, nächste Woche Ritual — Selbstfürsorge ohne Planung." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "In 3 Schritten",
+    "headline": "Von „Oh nein“ zu „Perfekt“",
+    "steps": [
+      { "num": "01", "title": "Bestellen", "text": "2 Minuten online — Paket wählen, bezahlen, E-Mail erhalten." },
+      { "num": "02", "title": "Ausdrucken", "text": "Print@Home — oder digital weiterleiten." },
+      { "num": "03", "title": "Schenken", "text": "Überreichen — und die Erleichterung spüren." },
+      { "num": "04", "title": "Sie erlebt", "text": "Head Spa Ritual — Berührung, Stille, Reinheit." }
+    ]
+  },
+  "faq": [
+    { "q": "Wirklich sofort?", "a": "Ja — nach dem Kauf erhältst du den Gutschein digital per E-Mail." },
+    { "q": "Ausdrucken nötig?", "a": "Empfohlen zum Überreichen — alternativ digital versenden." },
+    { "q": "Welches Paket schnell schenken?", "a": "Beauty (119€) ist der Beliebteste — Basic (89€) geht auch." },
+    { "q": "Wo einlösen?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Termin online buchbar." }
+  ],
+  "closing": {
+    "headline": "Last minute — aber nicht lieblos.",
+    "text": "Head Spa Gutschein in Minuten. Berührung, Stille, Entspannung — jetzt bestellen.",
+    "cta": "Gutschein sofort bestellen"
+  }
+}

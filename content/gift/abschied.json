@@ -1,0 +1,66 @@
+{
+  "slug": "abschied",
+  "path": "/gutschein/abschied",
+  "seo": {
+    "title": "Abschiedsgeschenk Kollegin & Head Spa Gutschein | Wellnesstal",
+    "description": "Abschiedsgeschenk für Kollegin oder Kollegen: Head Spa Gutschein — Danke sagen mit Ruhe und Berührung statt Standard-Geschenk. Ab 89€, sofort online · Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Abschied · Danke sagen",
+    "headline": "Auf Wiedersehen — aber richtig Danke sagen.",
+    "subline": "Kollegin geht, Team schenkt — wieder Blumen und Schokolade? Schenke Stille: Head Spa Gutschein für Ruhe, Berührung und ein Danke, das ankommt.",
+    "trust": "4,6★ · Ab 89€ · Sofort per E-Mail · Ideal für Teams"
+  },
+  "essence": {
+    "eyebrow": "Mehr als ein Abschied",
+    "headline": "Du sagst: Danke für alles — und du verdienst Ruhe.",
+    "paragraphs": [
+      "Abschiedsgeschenke sind oft Pflicht: Blumen, Pralinen, Karten mit Standardtext. Was wirklich ankommt: Wertschätzung, die man spürt.",
+      "Head Spa ist der Rahmen für dieses Danke. Kein lautes Geschenk — ein leises, tiefes: 45 bis 90 Minuten, in denen der Kopf leise wird.",
+      "Ob Kollegin, Chef, Mentor oder Nachbarin — Abschied bedeutet: Danke. Head Spa sagt es leiser — aber echter."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Sechs Worte des Abschieds",
+    "headline": "Danke — ohne viele Worte",
+    "items": [
+      { "word": "Wertschätzung", "headline": "Du siehst sie.", "text": "Nicht Pflicht — echtes Gefühl, spürbar im Geschenk." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die sagt: Du darfst ankommen." },
+      { "word": "Ruhe", "headline": "Neuer Anfang.", "text": "Abschied ist Stress — Stille ist das Geschenk." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Abschalten — bevor der neue Job beginnt." },
+      { "word": "Reinheit", "headline": "Frisch. Leicht.", "text": "Neuer Abschnitt — leichter starten." },
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Das schönste Abschiedsgeschenk ever.“" }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Abschied — für jede Beziehung",
+    "items": [
+      { "title": "Die Kollegin", "text": "Für den Einsatz, den niemand sieht — Ruhe statt Team-Event." },
+      { "title": "Der Kollege", "text": "Head Spa ist geschlechtsneutral — Ruhe für alle." },
+      { "title": "Vom Team", "text": "Beauty (119€) — professionell und persönlich zugleich." },
+      { "title": "Der Chef", "text": "Deluxe (149€) — Wertschätzung, die man spürt." }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Abschied schenken",
+    "headline": "In Minuten bestellt — lange erinnert",
+    "steps": [
+      { "num": "01", "title": "Wählen", "text": "Basic, Beauty oder Deluxe — je nach Tiefe eures Danke." },
+      { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — in die Abschiedskarte oder digital." },
+      { "num": "03", "title": "Überreichen", "text": "Am letzten Tag — mit wenigen Worten, die ehrlich sind." },
+      { "num": "04", "title": "Wirken", "text": "Sie erlebt Stille — und weiß: Ihr meint es ernst." }
+    ]
+  },
+  "faq": [
+    { "q": "Als Abschiedsgeschenk für Kollegin?", "a": "Ja — sehr beliebt. Beauty (119€) oder Basic (89€) — professionell und persönlich." },
+    { "q": "Vom Team?", "a": "Ja — ein Gutschein, alle unterschreiben die Karte. Beauty ist der sichere Allrounder." },
+    { "q": "Sofort verfügbar?", "a": "Ja — ideal wenn der Abschied morgen ist." },
+    { "q": "Neutral genug?", "a": "Head Spa ist geschlechtsneutral — für alle, die Ruhe brauchen." }
+  ],
+  "closing": {
+    "headline": "Abschied — mit Danke, das bleibt.",
+    "text": "Head Spa Gutschein für Berührung, Stille und echte Wertschätzung. Jetzt bestellen.",
+    "cta": "Abschieds-Gutschein bestellen"
+  }
+}

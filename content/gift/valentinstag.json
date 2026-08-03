@@ -1,0 +1,130 @@
+{
+  "slug": "valentinstag",
+  "path": "/gutschein/valentinstag",
+  "seo": {
+    "title": "Valentinstag Geschenk Wellness & Head Spa | Wellnesstal Baesweiler",
+    "description": "Valentinstag Geschenk mit Tiefe: Schenke Berührung, Nähe und Stille — Head Spa für zwei oder solo. Gutschein ab 89€, sofort online, Region Aachen."
+  },
+  "hero": {
+    "eyebrow": "Valentinstag · Nähe schenken",
+    "headline": "Rosen verblühen. Berührung bleibt.",
+    "subline": "Schenke kein Standardgeschenk — schenke einen Moment der Stille, der Nähe und der achtsamen Berührung. Für euch zwei — oder pure Selbstliebe.",
+    "trust": "Partner-Termine · Solo-Ritual · 4,6★"
+  },
+  "essence": {
+    "eyebrow": "Liebe jenseits der Klischees",
+    "headline": "Valentinstag ist Nähe — nicht nur Romantik.",
+    "paragraphs": [
+      "Blumen und Schokolade sind schön. Was wirklich verbindet, ist gemeinsame Ruhe — oder der Mut, sich selbst Berührung zu schenken.",
+      "Head Spa zu zweit: nebeneinander ankommen, nebeneinander loslassen. Kein lautes Dinner — ein leises Ritual, das Nähe schafft ohne Worte.",
+      "Allein? Noch besser. Selbstliebe ist das romantischste Geschenk — und Head Spa ist der Raum dafür."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du wirklich schenkst",
+    "headline": "Liebe in sechs Formen",
+    "items": [
+      {
+        "word": "Berührung",
+        "headline": "Die intimste Sprache.",
+        "text": "Achtsame Massage — Nähe ohne Erwartung, Verbindung ohne Worte."
+      },
+      {
+        "word": "Nähe",
+        "headline": "Gemeinsam ankommen.",
+        "text": "Partner-Ritual: zwei Menschen, ein Raum, dieselbe Stille."
+      },
+      {
+        "word": "Stille",
+        "headline": "Zusammen leise werden.",
+        "text": "Kein Smalltalk nötig — nur sein, atmen, da sein."
+      },
+      {
+        "word": "Verwöhnung",
+        "headline": "Luxus der Aufmerksamkeit.",
+        "text": "90 Minuten Deluxe — pure Verwöhnung für die Person, die du liebst."
+      },
+      {
+        "word": "Selbstliebe",
+        "headline": "Für dich allein.",
+        "text": "Valentinstag ohne Partner? Du verdienst Berührung und Ruhe — genauso sehr."
+      },
+      {
+        "word": "Erinnerung",
+        "headline": "Mehr als ein Abend.",
+        "text": "Ein Gefühl, das nachhallt — leichter, ruhiger, verbundener."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Valentinstag — individuell",
+    "items": [
+      {
+        "title": "Das Paar",
+        "text": "Partner-Termin — nebeneinander entspannen, gemeinsam neue Energie tanken."
+      },
+      {
+        "title": "Sie",
+        "text": "Die Frau, die zu viel gibt — schenke ihr einen Moment nur für sie."
+      },
+      {
+        "title": "Er",
+        "text": "Head Spa ist geschlechtsneutral. Männer entdecken hier Entspannung neu."
+      },
+      {
+        "title": "Du",
+        "text": "Single am Valentinstag? Das mutigste Geschenk ist an dich selbst."
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Valentinstag erleben",
+    "headline": "Vom Gutschein zum Moment der Nähe",
+    "steps": [
+      {
+        "num": "01",
+        "title": "Schenken",
+        "text": "Gutschein online — persönlich überreichen oder gemeinsam einlösen."
+      },
+      {
+        "num": "02",
+        "title": "Ankommen",
+        "text": "Zu zweit oder allein — empfangen werden, Kaffee, Stille."
+      },
+      {
+        "num": "03",
+        "title": "Berührung",
+        "text": "Massage, Wasser, Dampf — der Körper entspannt, die Nähe wächst."
+      },
+      {
+        "num": "04",
+        "title": "Verbinden",
+        "text": "Leichter gehen — zusammen oder mit dir selbst im Einklang."
+      }
+    ]
+  },
+  "faq": [
+    {
+      "q": "Können wir zu zweit kommen?",
+      "a": "Ja. Partner-Termine (2× Basic, Beauty oder Deluxe) — gerne per WhatsApp anfragen."
+    },
+    {
+      "q": "Ist das romantisch genug?",
+      "a": "Romantik ist Nähe und Aufmerksamkeit — nicht nur Rosen. Viele Paare nennen es ihr besonderstes Erlebnis."
+    },
+    {
+      "q": "Solo-Gutschein zum Valentinstag?",
+      "a": "Absolut. Selbstfürsorge ist Liebe — und Head Spa ist der perfekte Raum dafür."
+    },
+    {
+      "q": "Welches Paket für Paare?",
+      "a": "Beauty oder Deluxe — 60 oder 90 Minuten. Zeit genug, um wirklich anzukommen."
+    }
+  ],
+  "closing": {
+    "headline": "Liebe schenken — in Stille und Berührung.",
+    "text": "Valentinstag Gutschein: Nähe, Ruhe, Reinheit. Jetzt online bestellen.",
+    "cta": "Valentinstag-Gutschein bestellen"
+  }
+}

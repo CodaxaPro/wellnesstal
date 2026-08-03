@@ -1,0 +1,79 @@
+{
+  "slug": "stress-kopf",
+  "path": "/ratgeber/stress-kopf",
+  "seo": {
+    "title": "Stress Kopfschmerzen & Nackenverspannung | Head Spa hilft? — Wellnesstal",
+    "description": "Stressbedingte Kopfschmerzen und Nackenverspannung: Wie Head Spa mit Massage, Wasser und Dampf wirkt. Ehrliche Antworten aus Baesweiler — 4,6★ bei Google."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Stress & Kopf",
+    "headline": "Wenn der Kopf nicht mehr leise ist — was wirklich hilft.",
+    "subline": "Verspannungen, Bildschirm-Stress, schlaflose Nächte. Head Spa ist kein Wundermittel — aber viele Gäste berichten spürbare Linderung. So wirkt es."
+  },
+  "sections": [
+    {
+      "title": "Warum Stress im Kopf sitzt",
+      "paragraphs": [
+        "Der Nacken trägt, was der Alltag anlastet. Bildschirmarbeit, Termindruck, Sorgen — Verspannungen sammeln sich an Schläfen, Hinterkopf und Schultern.",
+        "Klassische Rückenmassage erreicht den Kopf oft nicht. Head Spa adressiert gezielt Kopf, Nacken, Kopfhaut und Nervensystem — in einem zusammenhängenden Ritual."
+      ]
+    },
+    {
+      "title": "Was Head Spa bei Stress anders macht",
+      "paragraphs": [],
+      "bullets": [
+        "Kopf- und Nackenmassage: Verspannungen lösen sich — oft spürbar in den ersten Minuten",
+        "Wasserstrahl und Wärme: beruhigen das Nervensystem — Gäste beschreiben tiefe Entspannung",
+        "Bedampfung: Poren öffnen sich, du atmest tiefer, der Kopf wird leiser",
+        "Kein Zeitdruck: 45–90 Min. — der Körper darf runterfahren, nicht nur „locker werden“"
+      ]
+    },
+    {
+      "title": "Kopfschmerzen durch Stress — was Gäste berichten",
+      "paragraphs": [
+        "Wir machen keine medizinischen Heilversprechen. Was wir hören: stressbedingte Beschwerden können nachlassen, der Nacken wird weicher, der Kopf klarer.",
+        "Die Kombination aus Berührung, Wärme und Stille wirkt auf das autonome Nervensystem — ähnlich wie bewusste Entspannung, aber physisch und professionell geführt."
+      ]
+    },
+    {
+      "title": "Bildschirmarbeit & Homeoffice",
+      "paragraphs": [
+        "Stunden vor dem Monitor — Nacken steif, Augen müde, Gedanken laut. Head Spa ist für viele der bewusste Gegenpol: 45 Minuten ohne Bildschirm, ohne Pflicht.",
+        "Regelmäßige Besuche (alle 4–6 Wochen) können helfen, Verspannungen nicht erst zur chronischen Last werden zu lassen."
+      ]
+    },
+    {
+      "title": "Head Spa oder klassische Massage?",
+      "paragraphs": [
+        "Starke Rückenschmerzen → Massage am Rücken kann sinnvoller sein. Kopf voll, Nacken verspannt, mental erschöpft → Head Spa adressiert genau diese Zone.",
+        "Beides kann sich ergänzen. Viele Gäste aus der Region Aachen kombinieren beides in unterschiedlichen Rhythmen."
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Stress & Kopf — Kurz zusammengefasst",
+    "items": [
+      "Head Spa = Kopf, Nacken, Kopfhaut, Nervensystem — nicht nur Muskeln",
+      "Viele Gäste: spürbare Linderung bei stressbedingten Verspannungen",
+      "45–90 Min. ohne Hektik — Raum zum Runterfahren",
+      "Kein Ersatz für medizinische Behandlung — aber echte Entspannung",
+      "Wellnesstal Baesweiler — Wunschtermin online"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/head-spa-vs-massage", "label": "Head Spa vs Massage", "hint": "Was passt zu dir?" },
+    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "60 Min. Entspannung" },
+    { "href": "/kopfmassage-aachen", "label": "Kopfmassage Region Aachen", "hint": "Lokal bei uns" }
+  ],
+  "faq": [
+    { "q": "Hilft Head Spa bei Migräne?", "a": "Bei Migräne konsultiere bitte einen Arzt. Manche Gäste mit Spannungskopfschmerzen berichten Linderung — individuell unterschiedlich." },
+    { "q": "Wie oft bei Stress?", "a": "Empfehlung: alle 4–6 Wochen. Bei akutem Stress auch häufiger." },
+    { "q": "Nach Feierabend buchbar?", "a": "Ja — Mo–Fr bis 19:00, Sa bis 16:00." },
+    { "q": "Erstbesuch — welches Paket?", "a": "Basic (89€) zum Einstieg — oder Beauty (119€) für mehr Tiefe." }
+  ],
+  "closing": {
+    "headline": "Gib deinem Kopf eine Pause — nicht irgendwann, jetzt.",
+    "text": "Berührung, Stille, Reinheit. 45 Minuten können den Unterschied machen.",
+    "cta": "Wunschtermin finden"
+  }
+}

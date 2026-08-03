@@ -1,0 +1,68 @@
+{
+  "slug": "herzogenrath",
+  "path": "/head-spa-herzogenrath",
+  "seo": {
+    "title": "Head Spa Herzogenrath | Entspannung & Berührung — Wellnesstal Baesweiler",
+    "description": "Head Spa nahe Herzogenrath: Japanisches Kopfhaut-Ritual mit Massage und Bedampfung. Basic 89€, Beauty 119€, Deluxe 149€. 4,6★ · ca. 15 Min. erreichbar."
+  },
+  "city": "Herzogenrath",
+  "region": "Städteregion Aachen · Kreis Heinsberg",
+  "distance": "ca. 15 Minuten von Herzogenrath",
+  "nearby": ["Baesweiler", "Aachen", "Würselen", "Alsdorf", "Übach-Palenberg", "Eschweiler"],
+  "hero": {
+    "eyebrow": "Head Spa · Herzogenrath",
+    "headline": "Grenzstadt-Hektik? Hier hört sie auf.",
+    "subline": "Von Herzogenrath zu uns — ein Ritual-Studio für Berührung, Stille und Reinheit. Kein Massenbetrieb. Nur du, Wasser, Dampf und ein Kopf, der endlich loslässt.",
+    "trust": "4,6★ bei Google · Reyplatz 10, Baesweiler"
+  },
+  "essence": {
+    "eyebrow": "Warum aus Herzogenrath?",
+    "headline": "Ruhe, die du in der Stadt nicht findest.",
+    "paragraphs": [
+      "Herzogenrath lebt im Rhythmus der Grenzregion — Pendeln, Termine, Alltag. Was fehlt, ist ein Ort, an dem der Kopf wirklich leise wird.",
+      "Wellnesstal in Baesweiler ist das dedizierte Head Spa Studio der Region: japanische Technik, achtsame Berührung, Bedampfung — 45 bis 90 Minuten ohne Zeitdruck.",
+      "Gäste aus Herzogenrath, Kohlscheid und Merkstein fahren zu uns — nicht weil es das Nächste ist, sondern weil es das Einzige ist, das wirklich wirkt."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was du bei uns findest",
+    "headline": "Sechs Momente der Erholung",
+    "items": [
+      { "word": "Ruhe", "headline": "Weg von der Hektik.", "text": "Kein Grenzverkehr-Stress — Ankommen, atmen, loslassen." },
+      { "word": "Berührung", "headline": "Head Spa, nicht Quick-Fix.", "text": "45–90 Min. bewusst — Wasserstrahl, Massage, Dampf." },
+      { "word": "Reinheit", "headline": "Kopfhaut, die atmet.", "text": "Tiefenreinigung — frisch, sauber, leicht." },
+      { "word": "Entspannung", "headline": "Tiefer als erwartet.", "text": "Viele Gäste: abschalten wie seit Monaten nicht." },
+      { "word": "Geborgenheit", "headline": "Empfangen, nicht abgefertigt.", "text": "Kaffee, Wärme — du darfst ankommen." },
+      { "word": "Leichtigkeit", "headline": "Zurück nach Herzogenrath — leichter.", "text": "Ein Gefühl, das den Alltag erträglicher macht." }
+    ]
+  },
+  "localProof": {
+    "eyebrow": "Stimmen",
+    "headline": "Was Gäste aus der Region sagen",
+    "quotes": [
+      { "text": "So entspannt war ich schon lange nicht mehr. Auf einer Skala von 1–10 war es eine 12.", "name": "Jenny T.", "location": "Baesweiler" },
+      { "text": "Man wird mit offenen Armen empfangen — pure Verwöhnung von Anfang bis Ende.", "name": "Jacqueline G.", "location": "Baesweiler" }
+    ]
+  },
+  "journey": {
+    "eyebrow": "Dein Ritual",
+    "headline": "Von Herzogenrath zu Stille",
+    "steps": [
+      { "num": "01", "title": "Anfahrt", "text": "ca. 15 Min. — Reyplatz 10, Baesweiler." },
+      { "num": "02", "title": "Empfang", "text": "Kaffee, Stille — der Alltag bleibt draußen." },
+      { "num": "03", "title": "Ritual", "text": "Massage, Reinigung, Bedampfung — Kopf wird leise." },
+      { "num": "04", "title": "Rückfahrt", "text": "Leichter, frischer, entspannter." }
+    ]
+  },
+  "faq": [
+    { "q": "Wie weit von Herzogenrath?", "a": "Ca. 15 Minuten mit dem Auto. Reyplatz 10, 52499 Baesweiler." },
+    { "q": "Head Spa direkt in Herzogenrath?", "a": "Wellnesstal ist das spezialisierte Ritual-Studio in Baesweiler — fokussiert auf japanisches Head Spa." },
+    { "q": "Termin online?", "a": "Ja — Verfügbarkeit sofort sichtbar." },
+    { "q": "Gutschein?", "a": "Ja — /gutschein. Perfekt für jemanden aus Herzogenrath." }
+  ],
+  "closing": {
+    "headline": "Head Spa nahe Herzogenrath — Stille wartet.",
+    "text": "Berührung, Reinheit, Entspannung. 15 Min. von dir. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}

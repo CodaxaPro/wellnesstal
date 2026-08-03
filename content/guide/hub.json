@@ -1,0 +1,95 @@
+{
+  "slug": "hub",
+  "path": "/ratgeber",
+  "seo": {
+    "title": "Head Spa Ratgeber | Wissen über Ritual, Stress & Kopfhaut — Wellnesstal",
+    "description": "Head Spa Ratgeber: Erster Besuch, Stress & Kopfschmerzen, Kopfhaut pflegen, vs Massage. Ehrliches Wissen aus Baesweiler — Berührung, Stille, Entspannung."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Head Spa Wissen",
+    "headline": "Verstehen, bevor du buchst — oder verschenkst.",
+    "subline": "Head Spa ist mehr als eine Trend-Behandlung. Hier findest du ehrliches Wissen über Berührung, Kopfhaut, Entspannung und den Unterschied zu klassischer Massage."
+  },
+  "articles": {
+    "eyebrow": "Artikel",
+    "headline": "Was möchtest du wissen?",
+    "intro": "Kein Marketing-Blabla — praktische Antworten für alle, die Head Spa entdecken oder verschenken wollen.",
+    "items": [
+      {
+        "slug": "was-ist-head-spa",
+        "label": "Was ist Head Spa?",
+        "hint": "Ursprung, Ablauf, Wirkung — das Ritual erklärt"
+      },
+      {
+        "slug": "head-spa-vs-massage",
+        "label": "Head Spa vs Massage",
+        "hint": "Der Unterschied, den Gäste spüren"
+      },
+      {
+        "slug": "erster-besuch",
+        "label": "Erster Besuch",
+        "hint": "Was dich erwartet — ohne Unsicherheit"
+      },
+      {
+        "slug": "stress-kopf",
+        "label": "Stress & Kopf",
+        "hint": "Verspannungen, Kopfschmerzen, Abschalten"
+      },
+      {
+        "slug": "kopfhaut-pflege",
+        "label": "Kopfhaut pflegen",
+        "hint": "Trockenheit, Reinheit, Head Spa"
+      },
+      {
+        "slug": "kerastase-head-spa",
+        "label": "Kérastase & Babor Deluxe",
+        "hint": "90 Min. Markenpflege im Ritual"
+      },
+      {
+        "slug": "bildschirm-stress",
+        "label": "Bildschirm-Stress",
+        "hint": "Kopf, Nacken, Augen — nach langem Arbeiten"
+      },
+      {
+        "slug": "partner-head-spa",
+        "label": "Head Spa zu zweit",
+        "hint": "Paar-Ritual — Nähe ohne Smalltalk"
+      },
+      {
+        "slug": "schlaf-stress",
+        "label": "Schlaf & Stress",
+        "hint": "Runterfahren vor dem Schlaf"
+      },
+      {
+        "slug": "geschenk-tipps",
+        "label": "Geschenk Tipps",
+        "hint": "Paket richtig wählen"
+      },
+      {
+        "slug": "head-spa-kosten",
+        "label": "Head Spa Preise",
+        "hint": "Basic · Beauty · Deluxe"
+      },
+      {
+        "slug": "head-spa-haltbarkeit",
+        "label": "Wirkung & Haltbarkeit",
+        "hint": "Wie oft? Wie lange?"
+      },
+      {
+        "slug": "head-spa-maenner",
+        "label": "Head Spa für Männer",
+        "hint": "Entspannung ohne Tabu"
+      },
+      {
+        "slug": "wellness-zuhause",
+        "label": "Wellness zuhause",
+        "hint": "Alltag vs Ritual"
+      }
+    ]
+  },
+  "closing": {
+    "headline": "Bereit für dein Ritual?",
+    "text": "Theorie ist schön — Berührung ist besser. Wunschtermin online oder Gutschein verschenken.",
+    "cta": "Wunschtermin finden"
+  }
+}

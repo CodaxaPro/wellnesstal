@@ -1,0 +1,82 @@
+{
+  "slug": "bildschirm-stress",
+  "path": "/ratgeber/bildschirm-stress",
+  "seo": {
+    "title": "Bildschirm-Stress & Nackenverspannung | Head Spa als Gegenpol — Wellnesstal",
+    "description": "Homeoffice, Handy, Kopf voll: Wie Head Spa bei Bildschirm-Stress und Nackenverspannung hilft. Massage, Wasser, Dampf — 45–90 Min. Abschalten in Baesweiler."
+  },
+  "hero": {
+    "eyebrow": "Ratgeber · Digital & Kopf",
+    "headline": "8 Stunden Bildschirm. 45 Minuten Stille.",
+    "subline": "Dein Nacken ist steif, dein Kopf laut, deine Augen müde. Head Spa ist der bewusste Gegenpol — kein Handy, kein Termin, nur Berührung, Wasser und ein Raum, der Stille schützt."
+  },
+  "sections": [
+    {
+      "title": "Was Bildschirmarbeit mit dem Kopf macht",
+      "paragraphs": [
+        "Stunden vor Monitor und Handy — der Nacken zieht sich zusammen, die Schläfen werden eng, der Kopf arbeitet weiter, auch wenn der Körper still sitzt.",
+        "Verspannungen sammeln sich an Nacken, Hinterkopf und Schultern. Viele spüren es abends: müde, aber nicht entspannt. Der Kopf schaltet nicht ab."
+      ]
+    },
+    {
+      "title": "Warum klassische Pausen oft nicht reichen",
+      "paragraphs": [
+        "Kurz aufstehen, Kaffee holen, scrollen — der Nacken bleibt steif, der Kopf bleibt aktiv. Echte Regeneration braucht mehr als fünf Minuten.",
+        "Head Spa bietet 45 bis 90 Minuten ohne Bildschirm: Massage wirkt physisch, Wassergeräusche beruhigen das Nervensystem, Dampf lässt dich loslassen."
+      ]
+    },
+    {
+      "title": "Was Head Spa bei Bildschirm-Stress bewirkt",
+      "paragraphs": [],
+      "bullets": [
+        "Kopf- und Nackenmassage — Verspannungen aus der Bildschirm-Haltung lösen sich",
+        "Sanfter Wasserstrahl — beruhigend, meditativ, ohne visuelle Reize",
+        "Bedampfung — Wärme, die den Körper runterfahren lässt",
+        "Stille — kein Notification, kein Multitasking, nur Ritual",
+        "Mentaler Reset — Gäste: abschalten wie seit Monaten nicht"
+      ]
+    },
+    {
+      "title": "Homeoffice-Routine: Wann Head Spa?",
+      "paragraphs": [
+        "Nach intensiven Projektphasen, vor Deadlines oder wenn der Nacken chronisch spannt — alle 4–6 Wochen als Rhythmus, bei akutem Stress auch häufiger.",
+        "Viele Gäste aus Aachen und Region buchen freitags nach Feierabend — der Übergang vom Bildschirm zur Woche-endet-hier."
+      ]
+    },
+    {
+      "title": "Praktische Tipps vor dem Besuch",
+      "paragraphs": [],
+      "bullets": [
+        "Handy lautlos lassen — oder im Auto lassen",
+        "Keine Termine direkt danach — die Entspannung braucht Raum",
+        "Erstbesuch? Basic (89€, 45 Min.) reicht oft — mehr erfahren unter Erster Besuch"
+      ]
+    }
+  ],
+  "keyTakeaways": {
+    "headline": "Bildschirm-Stress — Kurz",
+    "items": [
+      "Head Spa = physischer + mentaler Gegenpol zum Bildschirm",
+      "45–90 Min. ohne Hektik — Nacken, Kopf, Nervensystem",
+      "Regelmäßigkeit hilft: alle 4–6 Wochen empfohlen",
+      "Wellnesstal Baesweiler — Mo–Fr bis 19:00",
+      "Wunschtermin online buchbar"
+    ]
+  },
+  "relatedLinks": [
+    { "href": "/ratgeber/stress-kopf", "label": "Stress & Kopf", "hint": "Kopfschmerzen, Verspannung" },
+    { "href": "/entspannung-aachen", "label": "Entspannung Aachen", "hint": "Lokal bei uns" },
+    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "60 Min. — Beliebt" }
+  ],
+  "faq": [
+    { "q": "Hilft Head Spa bei Tech-Nacken?", "a": "Viele Gäste berichten spürbare Linderung von Nacken- und Kopfverspannungen — individuell unterschiedlich." },
+    { "q": "Nach Feierabend buchbar?", "a": "Ja — Mo–Fr bis 19:00, Sa bis 16:00." },
+    { "q": "Wie oft bei Homeoffice?", "a": "Empfehlung alle 4–6 Wochen — als fester Rhythmus der Erholung." },
+    { "q": "Erstbesuch?", "a": "Basic (89€) zum Kennenlernen — siehe Ratgeber Erster Besuch." }
+  ],
+  "closing": {
+    "headline": "Leg das Handy weg — nimm dir den Kopf zurück.",
+    "text": "45 Minuten ohne Bildschirm. Berührung, Stille, Reinheit. Wunschtermin online.",
+    "cta": "Wunschtermin finden"
+  }
+}
