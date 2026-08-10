@@ -426,6 +426,19 @@ export function getLocationRelatedLinks(slug: LocationSlug): RelatedLink[] {
     { href: '/gutschein', label: 'Gutschein verschenken', hint: 'Stille schenken' },
   ]
 
+  if (slug === 'aachen') {
+    return [
+      {
+        href: '/headspa-aachen',
+        label: 'Head Spa Aachen — Ratgeber',
+        hint: 'Anfahrt, Therme, Friseur-Vergleich',
+      },
+      { href: '/headspa/partner', label: 'Zu zweit', hint: 'Partner-Termin' },
+      ...cityIntents,
+      ...regional,
+    ]
+  }
+
   return [...cityIntents, ...regional]
 }
 
@@ -451,6 +464,14 @@ export function getIntentRelatedLinks(slug: IntentSlug): RelatedLink[] {
       hint: INTENT_TYPE_HINTS[t],
     })),
   ]
+
+  if (citySlug === 'aachen') {
+    sameCity.unshift({
+      href: '/headspa-aachen',
+      label: 'Head Spa Aachen Guide',
+      hint: 'Longform · Anfahrt & Vergleich',
+    })
+  }
 
   const extras: RelatedLink[] =
     type === 'geschenk'

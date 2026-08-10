@@ -2,6 +2,7 @@ import type { LocationPageContent } from './landing-pages'
 
 /** Brand-shield & story money pages — not part of the city×intent matrix */
 export const CUSTOM_MONEY_SLUGS = [
+  'headspa-aachen',
   'deluxe-beauty-baesweiler',
   'deluxe-hair-beauty',
   'geschichte',
@@ -75,7 +76,7 @@ function brandShell(input: {
         },
         {
           word: 'Vertrauen',
-          headline: '4,6★ bei Google.',
+          headline: '4,7★ bei Google.',
           text: 'Echte Stimmen aus Baesweiler und der Region — Termin oder Gutschein online.',
         },
       ],
@@ -103,6 +104,78 @@ function brandShell(input: {
 }
 
 const shells: Record<CustomMoneySlug, LocationPageContent> = {
+  'headspa-aachen': brandShell({
+    slug: 'headspa-aachen',
+    path: '/headspa-aachen',
+    seo: {
+      title: 'Head Spa Aachen | 15 Min. nach Baesweiler · Japanisches Ritual · Wellnesstal',
+      description:
+        'Head Spa für Aachen: 15 Min. Fahrt zu Wellnesstal Baesweiler Reyplatz 10. Kein Friseur, keine Carolus Therme — dediziertes japanisches Ritual. Basic 89€ · Beauty 119€ · Deluxe 149€.',
+    },
+    hero: {
+      eyebrow: 'Head Spa Aachen',
+      headline: 'Head Spa für Aachen — 15 Minuten, dann Stille.',
+      subline:
+        'Du suchst Head Spa in Aachen und findest Friseur-Add-ons oder die Therme? Wellnesstal in Baesweiler ist das dedizierte japanische Ritual der Region — kurz fahren, tief ankommen.',
+      trust: 'ca. 15 Min. · 4,7★ · Reyplatz 10, Baesweiler',
+    },
+    essence: {
+      eyebrow: 'Für Aachener',
+      headline: 'Kein Salon. Kein Badetag. Ein Head Spa Ritual.',
+      paragraphs: [
+        'Aachen-Mitte, Burtscheid, Uni, Klinikum — der Kopf ist voll. Was fehlt, ist ein Ort nur für Kopfhaut, Nacken und Stille.',
+        'Wellnesstal am Reyplatz 10 in Baesweiler ist etwa 15 Minuten entfernt: Basic, Beauty oder Deluxe — klar, ruhig, spezialisiert.',
+        'Unten: Anfahrt, Vergleich zu Therme und Friseur, Pakete und Buchung — ehrlich für die Suche „Head Spa Aachen“.',
+      ],
+    },
+    journey: {
+      eyebrow: 'Dein Weg',
+      headline: 'Von Aachen zum Ritual',
+      steps: [
+        {
+          num: '01',
+          title: 'Fahren',
+          text: 'Ca. 15 Min. nach Baesweiler — Navigation: Reyplatz 10.',
+        },
+        {
+          num: '02',
+          title: 'Wählen',
+          text: 'Basic 89 € · Beauty 119 € · Deluxe 149 € — online buchbar.',
+        },
+        {
+          num: '03',
+          title: 'Ankommen',
+          text: 'Ruhiger Empfang — kein Friseur-Trubel, kein Therme-Lärm.',
+        },
+        {
+          num: '04',
+          title: 'Loslassen',
+          text: '45–90 Minuten Head Spa — danach leichter zurück nach Aachen.',
+        },
+      ],
+    },
+    faq: [
+      {
+        q: 'Gibt es Head Spa direkt in Aachen?',
+        a: 'Kein dediziertes Head Spa Studio in der Aachener Innenstadt. Wellnesstal in Baesweiler ist ca. 15 Minuten entfernt und spezialisiert.',
+      },
+      {
+        q: 'Wie buche ich aus Aachen?',
+        a: 'Online Termin wählen oder +49 173 3828581. Gutschein sofort per E-Mail über /gutschein.',
+      },
+      {
+        q: 'Welches Paket für Erstbesucher aus Aachen?',
+        a: 'Beauty (119 €, 60 Min.) ist der Sweet Spot. Basic zum Testen, Deluxe für besondere Anlässe.',
+      },
+    ],
+    closing: {
+      headline: 'Aus Aachen — 15 Minuten zur Stille.',
+      text: 'Termin online buchen oder Gutschein verschenken. Partner-Termine zu zweit möglich.',
+      cta: 'Wunschtermin finden',
+    },
+    localProofHeadline: 'Was Gäste aus der Region Aachen sagen',
+  }),
+
   'deluxe-beauty-baesweiler': brandShell({
     slug: 'deluxe-beauty-baesweiler',
     path: '/deluxe-beauty-baesweiler',
@@ -116,7 +189,7 @@ const shells: Record<CustomMoneySlug, LocationPageContent> = {
       headline: 'Früher Deluxe Beauty. Heute Wellnesstal Head Spa.',
       subline:
         'Du suchst Deluxe Beauty in Baesweiler? Hier findest du die Fortsetzung am Reyplatz 10 — spezialisiert auf japanisches Head Spa. Klassischen Haarschnitt, Fußpflege und Salon-Kosmetik bieten wir bewusst nicht mehr an.',
-      trust: 'Reyplatz 10 · 4,6★ bei Google · Wunschtermin online',
+      trust: 'Reyplatz 10 · 4,7★ bei Google · Wunschtermin online',
     },
     essence: {
       eyebrow: 'Markenkontinuität',

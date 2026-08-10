@@ -1,14 +1,17 @@
 {
   "seo": {
     "title": "Wellness Aachen | Ohne Therme · Head Spa Ritual in Baesweiler · Wellnesstal",
-    "description": "Wellness in Aachen ohne Massenbetrieb: Head Spa Ritual 45–90 Min. in Baesweiler — kurze Fahrt, tiefe Ruhe. Kein Therme-Trubel. Basic 89€ · Beauty 119€ · 4,6★."
+    "description": "Wellness in Aachen ohne Massenbetrieb: Head Spa Ritual 45–90 Min. in Baesweiler — kurze Fahrt, tiefe Ruhe. Kein Therme-Trubel. Basic 89€ · Beauty 119€ · 4,7★."
   },
   "article": {
     "intro": "Wellness in Aachen — für manche heißt das Carolus Therme, Sauna und Schwimmbad. Für andere ein Hotel-Spa am Wochenende. Und für viele etwas Drittes: die Sehnsucht nach Ruhe, die nicht an Warteschlangen, Badeanzug oder den ganzen Tag gebunden ist. Wenn du Wellness Aachen suchst und dabei weniger Trubel, mehr Tiefe und ein Format willst, das in 45 bis 90 Minuten wirkt — dann ist diese Seite für dich. Wellnesstal in Baesweiler ist kein Wellness-Center in Aachen, sondern ein japanisches Head Spa Ritual etwa eine Viertelstunde von Aachen entfernt: Berührung, Bedampfung, Kopfhaut, Stille. Wellness ohne Therme — fokussiert statt flächig, persönlich statt anonym. Hier erfährst du, was das bedeutet, für wen es passt und wie du von Aachen aus dorthin kommst — mit Blick auf Wellness als Lebensbedürfnis, nicht als Event-Kalender-Eintrag.",
     "sections": [
       {
         "id": "wellness-bedeutung",
-        "heading": { "level": 2, "text": "Was Wellness in Aachen oft bedeutet — und was viele wirklich suchen" },
+        "heading": {
+          "level": 2,
+          "text": "Was Wellness in Aachen oft bedeutet — und was viele wirklich suchen"
+        },
         "paragraphs": [
           "Aachen lebt — Uni, Klinik, Grenze, Tourismus, Termine. Wellness-Angebote in der Stadt spiegeln das: groß, vielfältig, manchmal überfüllt. Carolus Therme, Hotels, Massage-Ketten, Fitness mit Sauna. Alles legitime Wege. Aber die Suche „Wellness Aachen“ verrät manchmal etwas anderes: nicht noch ein Programm, sondern Entlastung. Nicht noch eine Option, sondern eine klare Erfahrung, die man versteht und wiederholen kann.",
           "Wellness ohne Therme bedeutet bei uns: kein Badeanzug, kein Massenbetrieb am Beckenrand, kein Gefühl, den Tag blockieren zu müssen. Du fährst von Aachen nach Baesweiler — kurz raus aus der Dichte — und gönnst dir ein Ritual, das Kopf und Körper zusammen anspricht. Das ist Wellness im Sinne von Wiederherstellung, nicht Unterhaltung.",
@@ -16,14 +19,20 @@
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Wellness jenseits von Schwimmbad und Sauna-Lärm" },
+            "heading": {
+              "level": 3,
+              "text": "Wellness jenseits von Schwimmbad und Sauna-Lärm"
+            },
             "paragraphs": [
               "Sauna kann wunderbar sein — wenn du Lärm und Fremdkörper erträgst. Manche Menschen entspannen darin, andere spannen nach. Wellness ohne Therme ist für Letztere: ein Raum, eine Behandlung, ein Ablauf. Du weißt, was kommt. Du musst nichts „mitnehmen“, weil du schon da bist.",
-              "In Baesweiler am Reyplatz 10 ist Wellnesstal klein genug für persönlichen Empfang und groß genug in der Wirkung — 4,6 Sterne bei Google, Stammgäste aus Aachen, die sagen: „Das ist mein Wellness, nicht der Therme-Besuch.“"
+              "In Baesweiler am Reyplatz 10 ist Wellnesstal klein genug für persönlichen Empfang und groß genug in der Wirkung — 4,7 Sterne bei Google, Stammgäste aus Aachen, die sagen: „Das ist mein Wellness, nicht der Therme-Besuch.“"
             ]
           },
           {
-            "heading": { "level": 3, "text": "Der Unterschied zwischen Wellness-Event und Wellness-Routine" },
+            "heading": {
+              "level": 3,
+              "text": "Der Unterschied zwischen Wellness-Event und Wellness-Routine"
+            },
             "paragraphs": [
               "Ein Thermen-Tag ist Event — schön, selten, oft erschöpfend in der Planung. Head Spa als Wellness-Routine ist wiederholbar: alle zwei bis vier Wochen, freitags Feierabend, samstags vormittags. Regelmäßigkeit schlägt Seltenheit, wenn es um Stressabbau geht. Der Körper lernt: Es gibt einen Ort, an dem ich runterfahren darf.",
               "Von Aachen aus ist Baesweiler nah genug für Routine — nicht nur für den einmaligen Geburtstagsbesuch."
@@ -33,7 +42,10 @@
       },
       {
         "id": "koerper-kopf-wellness",
-        "heading": { "level": 2, "text": "Warum gutes Wellness den Kopf mitdenken muss" },
+        "heading": {
+          "level": 2,
+          "text": "Warum gutes Wellness den Kopf mitdenken muss"
+        },
         "paragraphs": [
           "Klassisches Wellness arbeitet oft am Körper — Rücken, Füße, Haut — und lässt den Kopf weiterlaufen. Du liegst da, denkst an E-Mails, an morgen, an das Gespräch gestern. Stress sitzt zuerst im Kopf: Schläfen, Kiefer, Nacken, shallow breathing. Wenn der Kopf nicht mitentspannt, bleibt Wellness oberflächlich — schön, aber vergänglich.",
           "Head Spa als Wellness-Form startet dort, wo viele Aachener Beschwerden spüren: Kopfhaut unter Spannung, Nacken vom Bildschirm, Kiefer vom Zusammenbeißen in Meetings. Wasserstrahl und Bedampfung beruhigen schon vor der Massage. Dann langsame Berührung — langsam genug zum Umschalten. Gäste sagen nicht „schön“, sondern „leise im Kopf“.",
@@ -41,14 +53,20 @@
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Bildschirm-Alltag in Aachen — Wellness als Gegengewicht" },
+            "heading": {
+              "level": 3,
+              "text": "Bildschirm-Alltag in Aachen — Wellness als Gegengewicht"
+            },
             "paragraphs": [
               "Homeoffice, RWTH-Bibliothek, Klinik-Documentation, Start-up-Screen: Aachen starrt viel auf Gläser. Nacken und Augen zahlen. Wellness, das nur Füße massiert, vergisst oft den Schädel. Head Spa nicht. Beauty inklusive Gesichtsmassage trifft genau die Zone, die den ganzen Tag angespannt war.",
               "Du brauchst keinen ganzen Wellness-Urlaub — du brauchst Konsequenz. Eine Stunde, die den Kopf zurückholt in den Körper."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Schlaf, Stress, Reizbarkeit — was Gäste berichten" },
+            "heading": {
+              "level": 3,
+              "text": "Schlaf, Stress, Reizbarkeit — was Gäste berichten"
+            },
             "paragraphs": [
               "Keine Heilsversprechen — aber klare Muster: nach Head Spa berichten viele Aachener von besserem Schlaf am Abend, weniger Grübeln, weicherem Nacken am nächsten Tag. Wellness, das nachhallt, statt nur eine Stunde „nett“ war.",
               "Bei anhaltenden Beschwerden: Hausarzt in Aachen. Head Spa ist Wellness, nicht Behandlung."
@@ -58,21 +76,30 @@
       },
       {
         "id": "ohne-therme",
-        "heading": { "level": 2, "text": "Wellness ohne Therme — was du stattdessen bekommst" },
+        "heading": {
+          "level": 2,
+          "text": "Wellness ohne Therme — was du stattdessen bekommst"
+        },
         "paragraphs": [
           "Ohne Therme heißt nicht „weniger Wellness“ — es heißt anderer Fokus. Statt Fläche und Vielfalt: Tiefe und Einfachheit. Statt 200 Gäste: persönlicher Raum. Statt halber Tag: 45 bis 90 Minuten, die du nach Feierabend unterbringst.",
           "Wellnesstal ist kein Ersatz für Schwimmen — es ist Ergänzung oder Alternative, wenn Therme dich nicht anspricht oder zeitlich nicht passt. Viele Aachener sagen: „Therme für den Ausflug, Head Spa für mich.“"
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Persönlich statt anonym" },
+            "heading": {
+              "level": 3,
+              "text": "Persönlich statt anonym"
+            },
             "paragraphs": [
               "Wellness in großen Anlagen kann anonym sein — du bist Nummer, Handtuch, Uhrzeit. Bei uns kennst du den Ablauf, oft nach dem zweiten Besuch das Team im Gesicht, immer die Ruhe. Stammgäste aus Aachen schätzen das: nicht jedes Mal neu erklären, warum der Nacken so fest ist.",
               "Empfang mit Tee, Einschätzung der Kopfhaut, Anpassung des Drucks — Wellness als Beziehung, nicht Fließband."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Kein Leistungsdruck — du darfst nur da sein" },
+            "heading": {
+              "level": 3,
+              "text": "Kein Leistungsdruck — du darfst nur da sein"
+            },
             "paragraphs": [
               "Wellness-Kultur kann paradox sein: du „sollst“ entspannen, „sollst“ abschalten — und genau das erzeugt Druck. Head Spa bei uns hat klaren Ablauf: du musst nichts optimieren, nichts mitnehmen, nichts posten. Liegen, atmen, spüren. Für Leistungsmenschen in Aachen oft die größte Erlaubnis."
             ],
@@ -88,14 +115,20 @@
       },
       {
         "id": "fahrt-aachen-baesweiler",
-        "heading": { "level": 2, "text": "Von Aachen nach Baesweiler — Wellness, das nah ist" },
+        "heading": {
+          "level": 2,
+          "text": "Von Aachen nach Baesweiler — Wellness, das nah ist"
+        },
         "paragraphs": [
           "Wellness muss nicht in Aachen-Innenstadt beginnen, um für Aachener zu gelten. Baesweiler liegt etwa 15 Minuten entfernt — kurz genug für Feierabend, nah genug für Routine. Die Fahrt selbst kann Übergang sein: raus aus der Stadt, runter vom Tempo.",
           "Reyplatz 10, 52499 Baesweiler — Navigation eingeben, parken, ankommen. Für viele einfacher als Parkhaus-Stress in Aachen. Öffnungszeiten Mo–Fr 09–19, Sa 10–16. Online buchen, Bestätigung per E-Mail."
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Wellness in den Alltag integrieren — nicht aufschieben" },
+            "heading": {
+              "level": 3,
+              "text": "Wellness in den Alltag integrieren — nicht aufschieben"
+            },
             "paragraphs": [
               "Der Fehler vieler: Wellness wird zum „irgendwann“-Projekt — wenn Urlaub, wenn Kind betreut, wenn Projekt durch. Baesweiler ist nah genug, dass du es einplanst wie Friseur oder Zahnarzt — nur angenehmer. Freitag 17:30, Beauty 60 Min., danach leicht nach Hause nach Aachen-Burtscheid.",
               "Gutscheine per E-Mail machen Wellness verschenkbar — „du darfst“ statt „du solltest mal.“"
@@ -105,25 +138,37 @@
       },
       {
         "id": "pakete-wellness-aachen",
-        "heading": { "level": 2, "text": "Wellness-Pakete — welches passt zu deinem Bedürfnis?" },
+        "heading": {
+          "level": 2,
+          "text": "Wellness-Pakete — welches passt zu deinem Bedürfnis?"
+        },
         "paragraphs": [
           "Drei Pakete, klare Minuten — Wellness ohne Preis-Rätsel."
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Basic — 89 € · 45 Min. · Wellness zum Kennenlernen" },
+            "heading": {
+              "level": 3,
+              "text": "Basic — 89 € · 45 Min. · Wellness zum Kennenlernen"
+            },
             "paragraphs": [
               "Wenn du Wellness in diesem Format testen willst, ohne 90 Minuten zu blockieren: Basic liefert Kern-Ritual — Reinigung, Wasserstrahl, Bedampfung, Massage. Genug, um zu spüren, ob dieser Wellness-Typ zu dir passt. Viele Aachener steigen danach auf Beauty."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Beauty — 119 € · 60 Min. · Wellness-Sweet-Spot" },
+            "heading": {
+              "level": 3,
+              "text": "Beauty — 119 € · 60 Min. · Wellness-Sweet-Spot"
+            },
             "paragraphs": [
               "Unser meistgebuchtes Wellness-Paket: Gesichtsmassage, Peeling, mehr Massage-Zeit. Für Berufstätige der Standard — tiefer als Basic, planbarer als Deluxe. Wenn du nur ein Paket probierst: Beauty."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Deluxe — 149 € · 90 Min. · Maximale Auszeit" },
+            "heading": {
+              "level": 3,
+              "text": "Deluxe — 149 € · 90 Min. · Maximale Auszeit"
+            },
             "paragraphs": [
               "Kérastase, Babor, 90 Minuten — Wellness für seltene Selbstfürsorge oder besondere Anlässe. Nicht nötig für jede Woche — perfekt, wenn du lange nichts für dich getan hast."
             ]
@@ -132,14 +177,20 @@
       },
       {
         "id": "fuer-wen-wellness",
-        "heading": { "level": 2, "text": "Für wen ist Wellness bei Wellnesstal in der Region Aachen?" },
+        "heading": {
+          "level": 2,
+          "text": "Für wen ist Wellness bei Wellnesstal in der Region Aachen?"
+        },
         "paragraphs": [
           "Für Erwachsene, die Ruhe suchen — unabhängig von Geschlecht. Für Menschen, die Therme meiden oder ergänzen wollen. Für Eltern, Studierende, Klinik-Personal, Ingenieure, Grenzgänger — alle mit vollem Kopf.",
           "Nicht für akute medizinische Notfälle — dafür Uniklinikum und Hausarzt. Head Spa ist Wellness: Gegenpol zum Dauerstress, nicht Therapieersatz."
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Paare, Freundinnen, Teams — Wellness teilen" },
+            "heading": {
+              "level": 3,
+              "text": "Paare, Freundinnen, Teams — Wellness teilen"
+            },
             "paragraphs": [
               "Zwei Beauty-Termine nebeneinander: gemeinsame Stille. Firmen-Gutscheine aus Aachener Unternehmen: Wertschätzung, die ankommt. Geburtstag: Deluxe-Gutschein per E-Mail — Last-Minute rettbar."
             ]
@@ -148,7 +199,10 @@
       },
       {
         "id": "aachen-lebensstile",
-        "heading": { "level": 2, "text": "Wellness für verschiedene Aachener Lebensrealitäten" },
+        "heading": {
+          "level": 2,
+          "text": "Wellness für verschiedene Aachener Lebensrealitäten"
+        },
         "paragraphs": [
           "Aachen ist gleichzeitig Studentenstadt, Klinikstandort, Industrie und Grenzmetropole — Wellness-Bedürfnisse sind entsprechend unterschiedlich. Der Mediziner nach Nachtdienst braucht Stille, nicht Sauna-Lärm. Der Ingenieur nach Projektabgabe braucht Nacken-Entlastung. Die Studierende braucht eine Stunde ohne Laptop. Der Grenzgänger braucht Reset nach Pendeln.",
           "Wellness ohne Therme passt zu allen — weil es kurz, tief und wiederholbar ist. Du musst keinen ganzen Tag freinehmen. Du musst nicht mit Badeanzug planen. Du fährst nach Baesweiler und kommst zurück — in denselben Alltag, aber leichter.",
@@ -156,14 +210,20 @@
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Wellness für Eltern aus Aachen" },
+            "heading": {
+              "level": 3,
+              "text": "Wellness für Eltern aus Aachen"
+            },
             "paragraphs": [
               "Kinderbetreuung ist die Hürde — nicht die 15 Minuten Fahrt. Wer einmal pro Monat eine Stunde einplant, ist oft präsenter danach — weniger gereizt, besserer Schlaf. Gutschein vom Partner: „Geh — ich übernehme.“ Das ist Wellness für die ganze Familie, indirekt.",
               "Beauty 60 Min. passt in die Mittagsruhe der Kita oder in Samstag vormittags — planbarer als Therme-Halbtag."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Wellness für Selbstständige und Gründer" },
+            "heading": {
+              "level": 3,
+              "text": "Wellness für Selbstständige und Gründer"
+            },
             "paragraphs": [
               "Wer selbst trägt, vergisst Selbstfürsorge zuerst. Head Spa ist keine Stunde „weg vom Business“ — es ist Investition in Kopfklarheit. Viele Selbstständige aus Aachen buchen Beauty montags oder freitags: Reset vor der Woche oder Abschluss danach.",
               "Steuerlich irrelevant hier — menschlich relevant: du bist dein wichtigstes Werkzeug."
@@ -173,7 +233,10 @@
       },
       {
         "id": "therme-detail",
-        "heading": { "level": 2, "text": "Carolus Therme und Head Spa — ergänzen statt ersetzen" },
+        "heading": {
+          "level": 2,
+          "text": "Carolus Therme und Head Spa — ergänzen statt ersetzen"
+        },
         "paragraphs": [
           "Wir wettern nicht gegen Carolus Therme — sie ist Teil von Aachen. Aber Wellness-Suche zeigt manchmal Müdigkeit mit dem Thermen-Modell: voll, laut, teuer pro Besuch wenn man alles mitnimmt, schwer in wöchentliche Routine zu integrieren.",
           "Head Spa in Baesweiler ist komplementär: Therme für den geselligen Badetag mit Freunden; Head Spa für den Kopf, der danach oder davor Ruhe braucht. Manche machen samstags Therme und mittwochs Beauty — kein Widerspruch.",
@@ -181,14 +244,20 @@
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Kostenvergleich ehrlich gerechnet" },
+            "heading": {
+              "level": 3,
+              "text": "Kostenvergleich ehrlich gerechnet"
+            },
             "paragraphs": [
               "Therme: Tageskarte plus Massage plus Parken plus Zeit — summiert sich. Beauty: 119 €, 60 Min., klar. Deluxe: 149 €, 90 Min. Kein verstecktes „und dann noch Sauna, weil du schon da bist.“ Du zahlst für das Ritual — nicht für Fläche.",
               "Für monatliche Routine ist Head Spa oft planbarer im Budget als wiederholte Thermen-Tage."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Wann Therme trotzdem richtig ist" },
+            "heading": {
+              "level": 3,
+              "text": "Wann Therme trotzdem richtig ist"
+            },
             "paragraphs": [
               "Du willst schwimmen, mit Kindern planschen, den Tag verbringen — Therme. Du willst in einer Stunde spürbar runterfahren — Baesweiler. Ehrlichkeit hilft bei der Wahl — und beides gehört zu Wellness in der Region Aachen."
             ]
@@ -197,7 +266,10 @@
       },
       {
         "id": "wellness-mythen",
-        "heading": { "level": 2, "text": "Wellness-Mythen — und was für Aachener wirklich zählt" },
+        "heading": {
+          "level": 2,
+          "text": "Wellness-Mythen — und was für Aachener wirklich zählt"
+        },
         "paragraphs": [
           "Mythos eins: Wellness muss lang sein. Nein — es muss wirken. 60 Minuten Beauty können tiefer sein als ein ganzer erschöpfender Thermen-Tag. Mythos zwei: Wellness ist Luxus für andere. Nein — es ist Wartung für Menschen, die viel tragen. Mythos drei: Wellness muss in Aachen stattfinden. Nein — es muss erreichbar und wiederholbar sein; Baesweiler ist nah genug.",
           "Mythos vier: Entspannung muss man verdienen. Du darfst eine Stunde nehmen, ohne sie zu rechtfertigen. Head Spa ist keine Belohnung für Überarbeitung — es ist Gegenmittel, damit Überarbeitung nicht der Default bleibt.",
@@ -205,14 +277,20 @@
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "Wellness und Schuldgefühle — Erlaubnis geben" },
+            "heading": {
+              "level": 3,
+              "text": "Wellness und Schuldgefühle — Erlaubnis geben"
+            },
             "paragraphs": [
               "Viele Aachener — besonders Frauen in Pflege und Elternrolle — sagen beim ersten Besuch: „Ich habe mich schlecht gefühlt, eine Stunde zu nehmen.“ Danach: „Ich hätte es früher tun sollen.“ Wellness ohne Therme ist auch Wellness ohne schlechtes Gewissen — weil es kurz und klar ist, nicht weil es extravagant wirkt.",
               "Schenk jemandem, der nie für sich tut, einen Gutschein — du gibst Erlaubnis von außen. Manchmal ist das der Anstoß."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Regelmäßigkeit planen — Kalender statt Vorsatz" },
+            "heading": {
+              "level": 3,
+              "text": "Regelmäßigkeit planen — Kalender statt Vorsatz"
+            },
             "paragraphs": [
               "Vorsätze scheitern — Termine halten. Block Beauty alle vier Wochen freitags. Behandle es wie Zahnarzt, nur angenehmer. Stammgäste aus Aachen berichten: nach drei Monaten Regelmäßigkeit merken sie den Unterschied im Alltag — weniger Nacken, besserer Schlaf, weniger „Kopf voll“.",
               "Starte mit einem Termin. Wenn es passt, buch den nächsten beim Gehen — nicht „irgendwann“.",
@@ -223,7 +301,10 @@
       },
       {
         "id": "entspannung-orte",
-        "heading": { "level": 2, "text": "Wo Aachener Entspannung suchen — und warum manche zu Baesweiler wechseln" },
+        "heading": {
+          "level": 2,
+          "text": "Wo Aachener Entspannung suchen — und warum manche zu Baesweiler wechseln"
+        },
         "paragraphs": [
           "Aachen bietet Parks, Thermalbäder, Massagestudios, Yoga — alles valide. Viele kombinieren mehrere Wege. Head Spa in Baesweiler ist für Menschen, die gezielt Kopf und Kopfhaut brauchen — nicht generische Rückenmassage, nicht Pool-Lärm.",
           "Der Wechsel passiert oft nach Enttäuschung: kurze „Head Spa“ beim Friseur, überfüllte Therme am Sonntag, teure Hotel-Spas mit wenig Terminflexibilität. Dann die 15 Minuten nach Baesweiler — und: „Das ist es.“",
@@ -231,14 +312,20 @@
         ],
         "subsections": [
           {
-            "heading": { "level": 3, "text": "ÖPNV vs. Auto — praktisch für Wellness-Routine" },
+            "heading": {
+              "level": 3,
+              "text": "ÖPNV vs. Auto — praktisch für Wellness-Routine"
+            },
             "paragraphs": [
               "Mit Auto: flexibel, 15 Minuten, Parken am Reyplatz. ÖPNV aus Aachen: je nach Wohnort mit Umsteigen — machbar, aber länger. Die meisten Stammgäste fahren — Feierabend-Termine sind dann einfacher.",
               "Fahrgemeinschaft mit Freundin: zwei Beauty-Termine, geteilte Fahrt — Wellness als Mini-Ausflug ohne Therme-Tag."
             ]
           },
           {
-            "heading": { "level": 3, "text": "Wellness zu Hause ergänzen — nicht ersetzen" },
+            "heading": {
+              "level": 3,
+              "text": "Wellness zu Hause ergänzen — nicht ersetzen"
+            },
             "paragraphs": [
               "Head Spa ersetzt keine Haus-Routine — warme Dusche, kurze Pause, Handy weg. Aber Haus-Routine ersetzt nicht die Tiefe von Bedampfung, Wasserstrahl und 60 Minuten Massage. Beides zusammen: Alltag plus monatlicher Reset in Baesweiler.",
               "Unser Ratgeber „Wellness zuhause“ ergänzt — aber für den Kopf, der wirklich voll ist, reicht Zuhause oft nicht allein."
@@ -248,9 +335,12 @@
       },
       {
         "id": "vertrauen-wellness",
-        "heading": { "level": 2, "text": "Warum Aachener unserem Wellness-Ansatz vertrauen" },
+        "heading": {
+          "level": 2,
+          "text": "Warum Aachener unserem Wellness-Ansatz vertrauen"
+        },
         "paragraphs": [
-          "4,6 Sterne, feste Adresse, Spezialisierung — kein Pop-up, keine leere Wellness-Versprechen-Karte. Wiederkehrende Gäste aus Aachen sind das stärkste Signal: Wellness, das man wiederbucht, wirkt.",
+          "4,7 Sterne, feste Adresse, Spezialisierung — kein Pop-up, keine leere Wellness-Versprechen-Karte. Wiederkehrende Gäste aus Aachen sind das stärkste Signal: Wellness, das man wiederbucht, wirkt.",
           "Transparenz: Ablauf erklärt, Preise klar, keine Heilsversprechen. Du weißt, wofür du von Aachen nach Baesweiler fährst — und kommst oft leichter zurück.",
           "Starte mit Beauty oder schenk dir Basic. Der erste Schritt ist meist der schwerste; danach wird Wellness zur Routine statt zum Event."
         ]
@@ -261,7 +351,7 @@
     "heading": "Wellness Aachen — Expertise ohne Therme-Versprechen",
     "paragraphs": [
       "Wellnesstal in Baesweiler bietet japanisches Head Spa als Wellness-Alternative für Aachener — ca. 15 Min. Fahrt, Reyplatz 10, spezialisiertes Studio. Kein Wellness-Center mit zwanzig Optionen; ein Ritual, das wirkt, weil es Kopf und Körper verbindet.",
-      "4,6 Sterne Google, Treuepay-Gutscheine, Online-Buchung. Team erklärt Erstbesuchern jeden Schritt. Keine medizinischen Claims — bei anhaltenden Beschwerden ärztliche Abklärung in Aachen.",
+      "4,7 Sterne Google, Treuepay-Gutscheine, Online-Buchung. Team erklärt Erstbesuchern jeden Schritt. Keine medizinischen Claims — bei anhaltenden Beschwerden ärztliche Abklärung in Aachen.",
       "E-E-A-T: echte Adresse, echte Bewertungen, wiederkehrende Gäste, transparente Pakete Basic 89 €, Beauty 119 €, Deluxe 149 €.",
       "Wellness ohne Therme ist kein Verzicht — es ist Fokus. Du fährst kurz, liegst lang genug, gehst leichter zurück nach Aachen. Das reicht vielen — und sie kommen wieder.",
       "Ob Uni-Stress, Klinik-Alltag oder Grenzpendeln: der Bedarf ist derselbe — Kopf runter, Körper weich, ohne Massenbetrieb. Head Spa in Baesweiler ist dafür gemacht, nicht für den perfekten Wellness-Instagram-Moment.",
@@ -269,23 +359,76 @@
       "Wellness Aachen beginnt oft mit der ehrlichen Frage: Brauche ich Fläche — oder Tiefe? Head Spa antwortet mit Tiefe."
     ],
     "credentials": [
-      { "label": "Konzept", "text": "Wellness ohne Therme · Head Spa Fokus" },
-      { "label": "Region", "text": "Aachen · ca. 15 Min. nach Baesweiler" },
-      { "label": "Pakete", "text": "45–90 Min. · klare Preise" },
-      { "label": "Bewertungen", "text": "4,6★ Google" },
-      { "label": "Erreichbarkeit", "text": "+49 173 3828581 · Online-Termin" }
+      {
+        "label": "Konzept",
+        "text": "Wellness ohne Therme · Head Spa Fokus"
+      },
+      {
+        "label": "Region",
+        "text": "Aachen · ca. 15 Min. nach Baesweiler"
+      },
+      {
+        "label": "Pakete",
+        "text": "45–90 Min. · klare Preise"
+      },
+      {
+        "label": "Bewertungen",
+        "text": "4,7★ Google"
+      },
+      {
+        "label": "Erreichbarkeit",
+        "text": "+49 173 3828581 · Online-Termin"
+      }
     ]
   },
   "internalLinks": {
     "heading": "Wellness entdecken — weiterführende Seiten",
     "links": [
-      { "href": "/wellness-baesweiler", "label": "Wellness Baesweiler", "hint": "Lokal vor Ort" },
-      { "href": "/headspa", "label": "Head Spa Pakete", "hint": "Basic · Beauty · Deluxe" },
-      { "href": "/gutschein/wellness-geschenk", "label": "Wellness Gutschein", "hint": "Verschenken" },
-      { "href": "/entspannung-aachen", "label": "Entspannung Aachen", "hint": "Runterfahren" },
-      { "href": "/ratgeber/wellness-zuhause", "label": "Wellness zuhause", "hint": "Alltag" },
-      { "href": "/ratgeber/stress-kopf", "label": "Stress & Kopf", "hint": "Ratgeber" },
-      { "href": "/headspa/beauty", "label": "Beauty Paket", "hint": "119 € · Beliebt" }
+      {
+        "href": "/headspa-aachen",
+        "label": "Head Spa Aachen",
+        "hint": "Longform Guide"
+      },
+      {
+        "href": "/wellness-baesweiler",
+        "label": "Wellness Baesweiler",
+        "hint": "Lokal vor Ort"
+      },
+      {
+        "href": "/headspa",
+        "label": "Head Spa Pakete",
+        "hint": "Basic · Beauty · Deluxe"
+      },
+      {
+        "href": "/gutschein/wellness-geschenk",
+        "label": "Wellness Gutschein",
+        "hint": "Verschenken"
+      },
+      {
+        "href": "/entspannung-aachen",
+        "label": "Entspannung Aachen",
+        "hint": "Runterfahren"
+      },
+      {
+        "href": "/ratgeber/wellness-zuhause",
+        "label": "Wellness zuhause",
+        "hint": "Alltag"
+      },
+      {
+        "href": "/ratgeber/stress-kopf",
+        "label": "Stress & Kopf",
+        "hint": "Ratgeber"
+      },
+      {
+        "href": "/headspa/beauty",
+        "label": "Beauty Paket",
+        "hint": "119 € · Beliebt"
+      },
+      {
+        "href": "/headspa/partner",
+        "label": "Partner-Termin",
+        "hint": "Zu zweit"
+      }
     ]
   },
   "faqExtensions": [
