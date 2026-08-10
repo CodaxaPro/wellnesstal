@@ -3,29 +3,25 @@
 import Image from 'next/image'
 import Link from 'next/link'
 
-import type { GiftPageContent } from '@/lib/landing-pages'
+import type { PartnerPageContent } from '@/lib/landing-pages'
 import type { SiteContent } from '@/lib/content'
-import { getGutscheinUrl, getTestimonials } from '@/lib/content'
-import { trackingFromPageSlug } from '@/lib/tracking'
+import { getTestimonials } from '@/lib/content'
 
 import LuxuryButton from './LuxuryButton'
 import { Reveal } from './Reveal'
 
 type Props = {
   site: SiteContent
-  page: GiftPageContent
-  showOccasions?: boolean
+  page: PartnerPageContent
 }
 
-export default function GiftLanding({ site, page, showOccasions = false }: Props) {
-  const tracking = trackingFromPageSlug(page.slug === 'hub' ? 'gift-hub' : page.slug)
-  const gutscheinUrl = getGutscheinUrl({ channel: 'gift', slug: page.slug === 'hub' ? undefined : page.slug })
+export default function PartnerLanding({ site, page }: Props) {
   const testimonials = getTestimonials()
   const featuredReview = testimonials.items[0]
+  const whatsappHref = page.whatsapp
 
   return (
     <>
-      {/* Hero */}
       <section className="relative min-h-[85svh] flex items-end bg-ink overflow-hidden">
         <Image
           src={site.media.experience}
@@ -46,7 +42,7 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
               </p>
               <p className="mt-4 md:mt-5 eyebrow-luxury !text-ivory/50">{page.hero.trust}</p>
               <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4">
-                <LuxuryButton href={gutscheinUrl}>{page.closing.cta}</LuxuryButton>
+                <LuxuryButton href={whatsappHref}>{page.closing.cta}</LuxuryButton>
                 {page.secondaryCta && (
                   <LuxuryButton href={page.secondaryCta.href} variant="outline">
                     {page.secondaryCta.label}
@@ -58,8 +54,7 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </div>
       </section>
 
-      {/* Essence */}
-      <section id="was-du-schenkst" className="section-space bg-ivory">
+      <section id="partner-head-spa" className="section-space bg-ivory">
         <div className="container-luxury grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <Reveal className="lg:col-span-5">
             <p className="eyebrow-luxury mb-4">{page.essence.eyebrow}</p>
@@ -75,7 +70,6 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </div>
       </section>
 
-      {/* Emotions */}
       <section className="section-space bg-beige border-t border-stone/60">
         <div className="container-luxury">
           <Reveal className="max-w-2xl mx-auto text-center mb-16 md:mb-20">
@@ -94,7 +88,6 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </div>
       </section>
 
-      {/* Recipients */}
       {page.recipients && (
         <section className="section-space bg-ivory border-t border-stone/60">
           <div className="container-luxury">
@@ -114,38 +107,33 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </section>
       )}
 
-      {/* Occasions hub grid */}
-      {showOccasions && page.occasions && (
-        <section className="section-space bg-beige border-t border-stone/60">
-          <div className="container-luxury">
-            <Reveal className="max-w-2xl mx-auto text-center mb-6">
-              <p className="eyebrow-luxury mb-4">{page.occasions.eyebrow}</p>
-              <h2 className="headline-lg mb-4">{page.occasions.headline}</h2>
-              <p className="body-luxury">{page.occasions.intro}</p>
-            </Reveal>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-14 max-w-5xl mx-auto">
-              {page.occasions.items.map((item, i) => (
-                <Reveal key={item.slug} delay={i * 0.05}>
-                  <Link
-                    href={`/gutschein/${item.slug}`}
-                    className="group block glass border border-stone/60 p-8 h-full hover:border-gold/40 transition-colors"
-                  >
-                    <h3 className="font-display text-lg text-ink group-hover:text-gold transition-colors mb-2">
-                      {item.label}
-                    </h3>
-                    <p className="body-luxury text-sm">{item.hint}</p>
-                    <span className="inline-block mt-6 eyebrow-luxury !text-charcoal/40 group-hover:!text-gold transition-colors">
-                      Entdecken →
-                    </span>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
+      <section className="section-space bg-beige border-t border-stone/60">
+        <div className="container-luxury">
+          <Reveal className="max-w-2xl mx-auto text-center mb-14">
+            <p className="eyebrow-luxury mb-4">Partner-Pakete</p>
+            <h2 className="headline-lg">Head Spa für 2 — klare Preise</h2>
+          </Reveal>
+          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
+            {page.partnerPackages.map((pkg, i) => (
+              <Reveal
+                key={pkg.name}
+                delay={i * 0.08}
+                className={`glass border p-8 text-center ${pkg.featured ? 'border-gold/60 ring-1 ring-gold/20' : 'border-stone/60'}`}
+              >
+                {pkg.featured && <p className="eyebrow-luxury !text-gold mb-3">Beliebt</p>}
+                <h3 className="font-display text-xl text-ink mb-2">{pkg.name}</h3>
+                <p className="font-display text-4xl text-ink mb-4">{pkg.price}€</p>
+                <p className="body-luxury text-sm mb-2">{pkg.tagline}</p>
+                <p className="body-luxury text-xs opacity-60 mb-6">{pkg.duration}</p>
+                <LuxuryButton href={whatsappHref} className="w-full justify-center">
+                  Termin anfragen
+                </LuxuryButton>
+              </Reveal>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
-      {/* Journey */}
       <section className="section-space bg-ivory border-t border-stone/60">
         <div className="container-luxury max-w-3xl mx-auto">
           <Reveal className="text-center mb-16">
@@ -166,52 +154,6 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </div>
       </section>
 
-      {/* Packages */}
-      <section className="section-space bg-beige border-t border-stone/60">
-        <div className="container-luxury">
-          <Reveal className="max-w-2xl mx-auto text-center mb-14">
-            <p className="eyebrow-luxury mb-4">Pakete</p>
-            <h2 className="headline-lg">Wähle die Tiefe der Entspannung</h2>
-          </Reveal>
-          <div className="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {page.partnerPackages
-              ? page.partnerPackages.map((pkg, i) => (
-                  <Reveal
-                    key={pkg.name}
-                    delay={i * 0.08}
-                    className={`glass border p-8 text-center ${pkg.featured ? 'border-gold/60 ring-1 ring-gold/20' : 'border-stone/60'}`}
-                  >
-                    {pkg.featured && <p className="eyebrow-luxury !text-gold mb-3">Beliebt</p>}
-                    <h3 className="font-display text-xl text-ink mb-2">{pkg.name}</h3>
-                    <p className="font-display text-4xl text-ink mb-4">{pkg.price}€</p>
-                    <p className="body-luxury text-sm mb-2">{pkg.tagline}</p>
-                    <p className="body-luxury text-xs opacity-60 mb-6">{pkg.duration}</p>
-                    <LuxuryButton href={gutscheinUrl} className="w-full justify-center">
-                      Gutschein bestellen
-                    </LuxuryButton>
-                  </Reveal>
-                ))
-              : site.services.map((pkg, i) => (
-                  <Reveal
-                    key={pkg.id}
-                    delay={i * 0.08}
-                    className={`glass border p-8 text-center ${pkg.featured ? 'border-gold/60 ring-1 ring-gold/20' : 'border-stone/60'}`}
-                  >
-                    {pkg.featured && <p className="eyebrow-luxury !text-gold mb-3">Beliebt</p>}
-                    <h3 className="font-display text-xl text-ink mb-2">{pkg.name}</h3>
-                    <p className="font-display text-4xl text-ink mb-4">{pkg.price}€</p>
-                    <p className="body-luxury text-sm mb-2">{pkg.description}</p>
-                    <p className="body-luxury text-xs opacity-60 mb-6">{pkg.duration}</p>
-                    <LuxuryButton href={gutscheinUrl} className="w-full justify-center">
-                      Gutschein bestellen
-                    </LuxuryButton>
-                  </Reveal>
-                ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Review */}
       {featuredReview && (
         <section className="section-space bg-ink text-ivory">
           <div className="container-luxury max-w-3xl mx-auto text-center">
@@ -229,12 +171,11 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </section>
       )}
 
-      {/* FAQ */}
       <section className="section-space bg-ivory border-t border-stone/60">
         <div className="container-luxury max-w-3xl mx-auto">
           <Reveal className="text-center mb-14">
             <p className="eyebrow-luxury mb-4">Fragen</p>
-            <h2 className="headline-lg">Alles Wichtige zum Gutschein</h2>
+            <h2 className="headline-lg">Partner-Termin — klar beantwortet</h2>
           </Reveal>
           <dl className="space-y-8">
             {page.faq.map((item, i) => (
@@ -247,26 +188,48 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </div>
       </section>
 
-      {/* Closing */}
+      {page.relatedLinks && page.relatedLinks.length > 0 && (
+        <section className="section-space bg-beige border-t border-stone/60">
+          <div className="container-luxury max-w-4xl mx-auto">
+            <Reveal className="text-center mb-12">
+              <p className="eyebrow-luxury mb-4">Weiter</p>
+              <h2 className="headline-md">Gutschein, Ratgeber, Standort</h2>
+            </Reveal>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {page.relatedLinks.map((link, i) => (
+                <Reveal key={link.href} delay={i * 0.06}>
+                  <Link
+                    href={link.href}
+                    className="group block border border-stone/60 p-6 hover:border-gold/40 transition-colors h-full"
+                  >
+                    <h3 className="font-display text-lg text-ink group-hover:text-gold transition-colors mb-2">
+                      {link.label}
+                    </h3>
+                    <p className="body-luxury text-sm">{link.hint}</p>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       <section className="section-space bg-beige border-t border-stone/60">
         <div className="container-luxury max-w-2xl mx-auto text-center">
           <Reveal>
             <h2 className="headline-lg mb-6">{page.closing.headline}</h2>
             <p className="body-luxury mb-10">{page.closing.text}</p>
-            <LuxuryButton href={gutscheinUrl}>{page.closing.cta}</LuxuryButton>
-            {page.secondaryCta && (
-              <div className="mt-6">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <LuxuryButton href={whatsappHref}>{page.closing.cta}</LuxuryButton>
+              {page.secondaryCta && (
                 <LuxuryButton href={page.secondaryCta.href} variant="outline">
                   {page.secondaryCta.label}
                 </LuxuryButton>
-                {page.secondaryCta.text && (
-                  <p className="body-luxury text-sm opacity-60 mt-4 max-w-md mx-auto">{page.secondaryCta.text}</p>
-                )}
-              </div>
+              )}
+            </div>
+            {page.secondaryCta?.text && (
+              <p className="body-luxury text-sm opacity-60 mt-8 max-w-md mx-auto">{page.secondaryCta.text}</p>
             )}
-            <p className="body-luxury text-sm opacity-60 mt-8 max-w-md mx-auto">
-              Du wirst zu unserem sicheren Gutschein-Shop auf treuepay.de weitergeleitet.
-            </p>
           </Reveal>
         </div>
       </section>

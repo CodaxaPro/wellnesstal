@@ -2,56 +2,89 @@
   "slug": "partner-head-spa",
   "path": "/ratgeber/partner-head-spa",
   "seo": {
-    "title": "Head Spa zu zweit | Partner-Termin & Paar-Ritual — Wellnesstal",
-    "description": "Head Spa zu zweit in Baesweiler: Partner-Termine, gemeinsam entspannen. 2× Basic 178€, 2× Beauty 238€, 2× Deluxe 298€. Gutschein & Buchung — Wellnesstal."
+    "title": "Head Spa zu zweit | Partner-Termin, Preise & Ablauf — Wellnesstal",
+    "description": "Head Spa für 2 Personen in Baesweiler: Was ist ein Partner-Termin, Preise (178–298€), Unterschied zur Paarmassage, Buchung & Gutschein. Region Aachen."
   },
   "hero": {
     "eyebrow": "Ratgeber · Zu zweit",
-    "headline": "Gemeinsam ankommen — nebeneinander loslassen.",
-    "subline": "Head Spa zu zweit ist kein Date im lauten Spa — es ist zwei Menschen, die nebeneinander Stille finden. Partner-Termine bei Wellnesstal: Berührung, Wasser, Dampf — jeder für sich, im selben Rhythmus der Ruhe."
+    "headline": "Head Spa zu zweit — Gemeinsam ankommen, nebeneinander loslassen.",
+    "subline": "Du suchst Entspannung für zwei Personen, Wellness zu zweit oder einen Partner-Termin ohne Hotel-Wochenende? Hier: Ablauf, Preise, für wen es passt — und wie ihr bucht oder schenkt."
   },
   "sections": [
     {
       "title": "Was ist ein Partner Head Spa?",
       "paragraphs": [
-        "Zwei Personen, zwei Rituale — in derselben ruhigen Atmosphäre. Ihr werdet empfangen, behandelt und lasst los — nacheinander oder parallel, je nach Verfügbarkeit.",
-        "Kein Gruppen-Event, kein Trubel. Zwei individuelle Head Spa Behandlungen, abgestimmt auf euren Termin."
+        "Ein Partner Head Spa ist kein klassisches Paar-Massage-Studio und kein Private-Spa mit Whirlpool. Es sind zwei individuelle Head-Spa-Rituale — Kopf, Nacken, oft Gesicht und Pflege — in derselben ruhigen Atmosphäre.",
+        "Ihr werdet empfangen, behandelt und lasst los: parallel oder nacheinander, je nach Kapazität. Jeder bekommt die volle Aufmerksamkeit. Ihr teilt die Stille, nicht denselben Therapeuten im Vier-Hände-Sinn.",
+        "Viele Gäste beschreiben es so: intimer als ein Restaurantbesuch, weil beide gleichzeitig runterfahren — ohne Smalltalk-Pflicht, ohne Programm."
+      ]
+    },
+    {
+      "title": "Head Spa für 2 Personen vs. Paarmassage vs. Wellnesswochenende",
+      "paragraphs": [
+        "Suchbegriffe wie „Paarmassage“, „Massage für Paare“ oder „Wellness für zwei“ meinen oft ganz unterschiedliche Dinge. Deshalb die klare Abgrenzung:"
+      ],
+      "bullets": [
+        "Paarmassage (klassisch): oft Ganzkörper, Thai oder Öl — Bodywork-Studio",
+        "Wellnesswochenende für zwei: Hotel, Übernachtung, oft Sauna/Therme — Reiseprodukt",
+        "Private Spa / Suite: Whirlpool und Sauna stundenweise — Raum-Miete",
+        "Partner Head Spa bei Wellnesstal: Kopfhaut, Gesicht, Entspannung — Day Ritual in Baesweiler, Region Aachen"
       ]
     },
     {
       "title": "Für wen eignet sich Head Spa zu zweit?",
-      "paragraphs": [],
+      "paragraphs": [
+        "Nicht nur für romantische Paare. Der gemeinsame Nenner ist: zwei Menschen, die dieselbe Auszeit wollen."
+      ],
       "bullets": [
         "Paare — Quality Time jenseits von Restaurant und Netflix",
         "Mutter & Tochter — gemeinsam ankommen, Danke sagen",
         "Beste Freundinnen — Auszeit zu zweit",
         "Kolleginnen — Team-Reward statt After-Work-Drink",
-        "Gutschein-Einlöser — zwei Gutscheine, ein gemeinsamer Termin"
+        "Gutschein-Einlöser — zwei Codes, ein gemeinsamer Termin",
+        "Erstbesucher zu zweit — Nervosität teilen fällt leichter"
       ]
     },
     {
       "title": "Partner-Pakete & Preise",
       "paragraphs": [
-        "Transparent und fair — pro Person das volle Ritual:"
+        "Transparent und fair — der Preis gilt für beide zusammen, jede Person erhält die volle Behandlungsdauer:"
       ],
       "bullets": [
-        "2× Headspa Basic — 178€ (45 Min. pro Person)",
-        "2× Headspa Beauty — 238€ (60 Min. pro Person) · Beliebt",
-        "2× Headspa Deluxe — 298€ (90 Min. pro Person)"
+        "2× Headspa Basic — 178€ (45 Min. pro Person) — Einstieg und Testen",
+        "2× Headspa Beauty — 238€ (60 Min. pro Person) — Beliebt: Kopf, Gesicht, Peeling",
+        "2× Headspa Deluxe — 298€ (90 Min. pro Person) — Volles Ritual mit Markenpflege"
       ]
     },
     {
-      "title": "So bucht ihr",
+      "title": "So bucht ihr einen Partner-Termin",
       "paragraphs": [
-        "Gutschein online kaufen unter /gutschein/paar — dann Partner-Termin gerne per WhatsApp anfragen: +49 173 3828581.",
-        "Wir stimmen Termin und Ablauf ab — damit ihr beide in Ruhe ankommen könnt."
+        "Für die Buchung zu zweit: Seite Partner-Termin öffnen und per WhatsApp anfragen — Paketwunsch und grobe Zeiten genügen. Wir melden freie Slots.",
+        "Direktlink: /headspa/partner — dort Preise, Ablauf und WhatsApp-CTA gebündelt.",
+        "Tipp: Wochenenden und Abende sind begehrt. Wer flexibel Mo–Fr vormittags ist, bekommt oft schneller einen Parallel-Slot."
       ]
     },
     {
-      "title": "Was ihr spürt",
+      "title": "Gutschein für zwei statt selbst kommen",
       "paragraphs": [
-        "Nicht „zusammen massiert werden“ — sondern nebeneinander entspannen. Jeder sein Ritual, dieselbe Stille.",
-        "Gäste sagen: leichter gehen, näher fühlen, entspannter miteinander — ohne viel reden zu müssen."
+        "Wenn du schenkst — Jahrestag, Valentinstag, Hochzeit, „einfach so“ — ist der Partner-Gutschein der richtige Weg: /gutschein/paar.",
+        "Bestellung online, Code sofort per E-Mail. Die Beschenkten buchen den Termin später. Du musst nicht mitkommen — oder doch, wenn der Gutschein für euch beide ist.",
+        "Viele kaufen zwei Beauty-Codes oder den Partner-Betrag. Wichtig: Terminabstimmung trotzdem früh anfragen, besonders vor Feiertagen."
+      ]
+    },
+    {
+      "title": "Was ihr spürt — und was nicht",
+      "paragraphs": [
+        "Nicht „zusammen massiert werden“ im Show-Sinn — sondern nebeneinander entspannen. Jeder sein Ritual, dieselbe Stille.",
+        "Gäste sagen: leichter gehen, näher fühlen, entspannter miteinander — ohne viel reden zu müssen. Manche brauchen danach zehn Minuten Übergang, bevor sie wieder in den Alltag starten.",
+        "Head Spa ist Wellness, kein medizinisches Heilversprechen. Bei akuten Beschwerden bitte vorher absprechen."
+      ]
+    },
+    {
+      "title": "Standort: Baesweiler, Region Aachen",
+      "paragraphs": [
+        "Wellnesstal liegt am Reyplatz 10 in 52499 Baesweiler — gut erreichbar aus Aachen (ca. 15 Minuten), Würselen, Herzogenrath, Alsdorf, Eschweiler und der weiteren Region.",
+        "Parken und Anfahrt: kurz vor dem Termin ankommen lohnt sich — Hetze ist der Gegner von Head Spa. Wer aus Aachen kommt, kombiniert oft den Partner-Termin mit einem ruhigen Abend danach."
       ]
     }
   ],
@@ -59,26 +92,50 @@
     "headline": "Partner Head Spa — Kurz",
     "items": [
       "Zwei individuelle Rituale — eine Atmosphäre der Stille",
-      "Ab 178€ für zwei (Basic)",
-      "Buchung: Gutschein + WhatsApp für Termin",
-      "Ideal als Geschenk — /gutschein/paar",
-      "Wellnesstal, Reyplatz 10, Baesweiler"
+      "Ab 178€ für zwei (Basic) · Beauty 238€ · Deluxe 298€",
+      "Termin buchen: /headspa/partner (WhatsApp)",
+      "Schenken: /gutschein/paar (sofort per E-Mail)",
+      "Kein Hotel, keine Paarmassage-Klassik — Head Spa Day Ritual",
+      "Wellnesstal, Reyplatz 10, Baesweiler · Region Aachen"
     ]
   },
   "relatedLinks": [
+    { "href": "/headspa/partner", "label": "Partner-Termin buchen", "hint": "WhatsApp · Preise · Ablauf" },
     { "href": "/gutschein/paar", "label": "Gutschein zu zweit", "hint": "Partner-Ritual schenken" },
-    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "Beliebt für Paare" },
-    { "href": "/ratgeber/erster-besuch", "label": "Erster Besuch", "hint": "Was euch erwartet" }
+    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "Beliebt auch solo" }
   ],
   "faq": [
-    { "q": "Sind wir im selben Raum?", "a": "Ihr werdet nacheinander oder parallel empfangen — in derselben ruhigen Atmosphäre. Details bei der Buchung." },
-    { "q": "Gutschein für zwei?", "a": "Ja — /gutschein/paar oder zwei Pakete im Shop wählen." },
-    { "q": "Valentinstag oder Jahrestag?", "a": "Perfekt — Beauty oder Deluxe zu zweit. Gutschein sofort online." },
-    { "q": "Wo?", "a": "Wellnesstal Baesweiler — 15 Min. von Aachen." }
+    {
+      "q": "Ist Partner Head Spa eine Paarmassage?",
+      "a": "Es ist Head Spa zu zweit: zwei individuelle Kopf- und Wellness-Rituale — kein klassisches Body-Massage-Studio und kein Hotel-Spa."
+    },
+    {
+      "q": "Sind wir im selben Raum?",
+      "a": "Parallel oder nacheinander — in derselben ruhigen Atmosphäre. Details bei der Buchung unter /headspa/partner."
+    },
+    {
+      "q": "Gutschein für zwei?",
+      "a": "Ja — /gutschein/paar. Sofort per E-Mail. Termin später per WhatsApp abstimmen."
+    },
+    {
+      "q": "Was kostet Entspannung für 2 Personen bei euch?",
+      "a": "Partner Basic 178€, Beauty 238€, Deluxe 298€ — für beide zusammen, volle Dauer je Person."
+    },
+    {
+      "q": "Valentinstag oder Jahrestag?",
+      "a": "Perfekt — Beauty oder Deluxe zu zweit. Gutschein sofort online oder Termin direkt anfragen."
+    },
+    {
+      "q": "Wo?",
+      "a": "Wellnesstal Baesweiler, Reyplatz 10 — ca. 15 Min. von Aachen."
+    }
   ],
   "closing": {
     "headline": "Zu zweit abschalten — stärker als allein.",
     "text": "Partner-Termin anfragen oder Gutschein schenken. Stille, die verbindet.",
-    "cta": "Gutschein zu zweit bestellen"
+    "cta": "Partner-Termin entdecken",
+    "href": "/headspa/partner",
+    "secondaryCta": "Gutschein zu zweit",
+    "secondaryHref": "/gutschein/paar"
   }
 }

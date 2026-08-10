@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Head Spa Baesweiler & Aachen | Wellnesstal — Entspannung für Kopf & Seele",
-    "description": "Japanisches Head Spa in Baesweiler: Kopfmassage, Bedampfung, Trockenföhnen inklusive. Basic ab 89€, Beauty 119€, Deluxe 149€ mit Kérastase & Babor. 4,6★ bei Google."
+    "description": "Japanisches Head Spa in Baesweiler: Kopfmassage, Bedampfung, Trockenföhnen inklusive. Basic ab 89€, Beauty 119€, Deluxe 149€ mit Kérastase & Babor. 4,7★ bei Google."
   },
   "hero": {
     "eyebrow": "Head Spa · Baesweiler · Reyplatz 10",
@@ -9,7 +9,7 @@
     "subtitle": "Japanisches Kopfhaut-Ritual: Wasserstrahl, Massage, Bedampfung — in Ruhe, ohne Zeitdruck.",
     "ctaPrimary": "Wunschtermin finden",
     "ctaSecondary": "So läuft dein Ritual ab",
-    "trust": "4,6★ bei Google · Wunschtermin online"
+    "trust": "4,7★ bei Google · Aachen, Würselen, Alsdorf & Umgebung · Wunschtermin online"
   },
   "pain": {
     "eyebrow": "Kennst du das?",
@@ -27,7 +27,7 @@
     "text": "Unsere Headspa-Behandlung geht über oberflächliche Entspannung hinaus. Mit speziell entwickelten Techniken regenerieren wir nicht nur deine Kopfhaut, sondern bringen auch deinen Geist in Balance. Erlebe, wie Stress und Anspannung nachlassen und dein Kopf wieder frei wird."
   },
   "stats": [
-    { "value": "4,6", "label": "Sterne bei Google" },
+    { "value": "4,7", "label": "Sterne bei Google" },
     { "value": "45–90", "label": "Minuten pure Entspannung" },
     { "value": "100%", "label": "Fokus auf dich — ohne Hektik" }
   ],
@@ -146,9 +146,10 @@
     "partner": {
       "eyebrow": "Zu zweit",
       "headline": "Headspa Partner-Termine",
-      "text": "Erlebt das Ritual gemeinsam — ideal als Geschenk, Date oder Auszeit zu zweit.",
-      "note": "Headspa Partner-Buchungen gerne unter WhatsApp kontaktieren.",
+      "text": "Erlebt das Ritual gemeinsam — ideal als Date, Auszeit zu zweit oder Mutter-Tochter-Moment.",
+      "note": "Partner-Termin buchen oder Gutschein für zwei schenken.",
       "whatsapp": "https://wa.me/491733828581",
+      "href": "/headspa/partner",
       "items": [
         { "name": "2× Headspa Basic", "price": 178, "duration": "45 Min. pro Person" },
         { "name": "2× Headspa Beauty", "price": 238, "duration": "60 Min. pro Person" },
@@ -178,7 +179,7 @@
   "testimonials": {
     "eyebrow": "Stimmen, die begeistern",
     "headline": "Echte Erlebnisse. Wahre Begeisterung.",
-    "rating": "4,6 von 5 Sternen bei Google",
+    "rating": "4,7 von 5 Sternen bei Google",
     "items": [
       {
         "name": "Joanna Koscielna",

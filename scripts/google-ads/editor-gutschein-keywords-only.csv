@@ -1,0 +1,17 @@
+Campaign,Ad group,Keyword,Match type
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,head spa gutschein,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,gutschein head spa,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,headspa gutschein,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,wellness gutschein,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,wellness gutschein aachen,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,gutschein baesweiler,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,head spa geschenk,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,wellnesstal gutschein,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,gutschein entspannung,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,head spa gutschein aachen,Exact
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,head spa gutschein,Phrase
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,gutschein head spa,Phrase
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,wellness gutschein,Phrase
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,head spa geschenk,Phrase
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,gutschein entspannung,Phrase
+WT-GUTSCHEIN-SEARCH,WT-Gutschein-Core,wellness gutschein aachen,Phrase

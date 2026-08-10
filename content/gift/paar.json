@@ -2,22 +2,22 @@
   "slug": "paar",
   "path": "/gutschein/paar",
   "seo": {
-    "title": "Wellness Gutschein für 2 | Head Spa Partner-Termin — Wellnesstal",
-    "description": "Wellness für zwei: Head Spa Partner-Gutschein — gemeinsam entspannen, Berührung und Stille nebeneinander erleben. 2× Basic ab 178€, Beauty ab 238€, Deluxe ab 298€."
+    "title": "Wellness Gutschein für 2 Personen | Partner Head Spa — Wellnesstal",
+    "description": "Gutschein für zwei: Head Spa Partner-Gutschein schenken — 2× Basic ab 178€, Beauty 238€, Deluxe 298€. Sofort per E-Mail · Baesweiler & Region Aachen."
   },
   "hero": {
-    "eyebrow": "Zu zweit · Gemeinsam ankommen",
-    "headline": "Nicht nebeneinander funktionieren. Nebeneinander loslassen.",
-    "subline": "Partner Head Spa: zwei Rituale, ein Raum der Stille — Berührung, Dampf, Entspannung. Für Paare, Mutter & Tochter, beste Freundinnen.",
-    "trust": "Partner-Termine · WhatsApp-Buchung · 4,6★"
+    "eyebrow": "Gutschein · Zu zweit",
+    "headline": "Zeit zu zweit schenken — nicht Dinge.",
+    "subline": "Wellness-Gutschein für 2 Personen: Head Spa Partner-Ritual. Sofort online, per E-Mail. Für Paare, Mutter & Tochter, beste Freundinnen.",
+    "trust": "Partner ab 178€ · Sofort per E-Mail · 4,6★"
   },
   "essence": {
-    "eyebrow": "Gemeinsam statt allein",
-    "headline": "Wellness zu zweit bedeutet: dieselbe Stille teilen.",
+    "eyebrow": "Das Geschenk, das ankommt",
+    "headline": "Ein Gutschein für zwei — Stille, die ihr teilt.",
     "paragraphs": [
-      "Paare, Mütter und Töchter, Freundinnen — manche Momente sind zu schön, um sie allein zu erleben. Partner Head Spa ist genau dafür.",
-      "Ihr werdet nicht „zusammen behandelt“ — ihr werdet nebeneinander empfangen. Jeder sein Ritual. Dieselbe Ruhe. Das Gefühl: Wir sind angekommen.",
-      "Viele Gäste kommen zu zweit: „Meine Mutter und ich“, „Wir beide zum ersten Mal“. Das schönste Feedback: gemeinsam leichter gegangen."
+      "Blumen verwelken. Dinge sammeln Staub. Ein Partner-Gutschein schenkt etwas, das bleibt: zwei Menschen, die nebeneinander loslassen.",
+      "Ihr kauft online. Der Code kommt sofort per E-Mail. Der Beschenkte — oder ihr beide — bucht den Partner-Termin später in Ruhe.",
+      "Viele schenken zu Jahrestag, Valentinstag, Hochzeit oder einfach so: „Ich will, dass wir endlich wieder Zeit füreinander haben.“"
     ]
   },
   "emotions": {
@@ -42,65 +42,65 @@
       {
         "word": "Zeit",
         "headline": "Füreinander da sein.",
-        "text": "45 bis 90 Minuten — ohne Handy, ohne Ablenkung. Nur ihr."
+        "text": "45 bis 90 Minuten — ohne Handy, ohne Ablenkung. Nur sie."
       },
       {
         "word": "Erinnerung",
         "headline": "Euer Moment.",
-        "text": "Etwas, das ihr teilt — nicht vergesst."
+        "text": "Etwas, das sie teilen — nicht vergessen."
       },
       {
         "word": "Leichtigkeit",
         "headline": "Zusammen gehen.",
-        "text": "Hand in Hand aus dem Studio — entspannter, als ihr reinkamt."
+        "text": "Hand in Hand aus dem Studio — entspannter, als sie reinkamen."
       }
     ]
   },
   "recipients": {
-    "eyebrow": "Für welches Paar?",
-    "headline": "Partner-Ritual — für jede Beziehung",
+    "eyebrow": "Für wen schenken?",
+    "headline": "Partner-Gutschein — für jede Beziehung",
     "items": [
       {
         "title": "Das Paar",
-        "text": "Date jenseits des Restaurants — Entspannung statt Smalltalk."
+        "text": "Jahrestag, Valentinstag, „einfach so“ — Date jenseits des Restaurants."
       },
       {
         "title": "Mutter & Tochter",
-        "text": "Quality Time — gemeinsam verwöhnt, gemeinsam dankbar."
+        "text": "Quality Time schenken — gemeinsam verwöhnt, gemeinsam dankbar."
       },
       {
         "title": "Beste Freundinnen",
-        "text": "Auszeit zu zweit — lachen, loslassen, neu starten."
+        "text": "Auszeit zu zweit — das Geschenk, das man wirklich einlöst."
       },
       {
-        "title": "Schwestern",
-        "text": "Ein Ritual, das bindet — Stille, die verbindet."
+        "title": "Hochzeit & Jubiläum",
+        "text": "Statt Porzellan: Stille zu zweit. Partner Deluxe für besondere Anlässe."
       }
     ]
   },
   "journey": {
-    "eyebrow": "Partner-Erlebnis",
-    "headline": "So läuft euer gemeinsames Ritual",
+    "eyebrow": "So schenkst du",
+    "headline": "In Minuten bestellt — lange erinnert",
     "steps": [
       {
         "num": "01",
-        "title": "Buchen",
-        "text": "Partner-Termin per WhatsApp — wir finden den passenden Slot für euch beide."
+        "title": "Wählen",
+        "text": "Partner Basic, Beauty oder Deluxe — je nachdem, wie tief die Auszeit sein soll."
       },
       {
         "num": "02",
-        "title": "Ankommen",
-        "text": "Gemeinsam empfangen — Kaffee, Stille, Vorfreude."
+        "title": "Bestellen",
+        "text": "Online über Treuepay — Gutschein sofort per E-Mail."
       },
       {
         "num": "03",
-        "title": "Ritual",
-        "text": "Nebeneinander: Massage, Wasser, Dampf — jeder sein Weg zur Ruhe."
+        "title": "Überreichen",
+        "text": "Digital oder ausgedruckt — mit einer Zeile: „Für euch beide.“"
       },
       {
         "num": "04",
-        "title": "Verbinden",
-        "text": "Gemeinsam gehen — leichter, näher, entspannter."
+        "title": "Erleben",
+        "text": "Die Beschenkten buchen den Partner-Termin — wir helfen per WhatsApp."
       }
     ]
   },
@@ -127,16 +127,16 @@
   ],
   "faq": [
     {
-      "q": "Wie buche ich einen Partner-Termin?",
-      "a": "Gutschein online kaufen, dann Partner-Termin gerne per WhatsApp anfragen: +49 173 3828581."
+      "q": "Wie funktioniert der Gutschein für zwei?",
+      "a": "Du bestellst online — der Code kommt sofort per E-Mail. Die Beschenkten lösen ihn beim Partner-Termin ein. Terminabstimmung gerne per WhatsApp."
+    },
+    {
+      "q": "Können wir selbst kommen statt zu schenken?",
+      "a": "Ja — Partner-Termin direkt unter /headspa/partner anfragen. Diese Seite ist fürs Schenken; die Buchungsseite fürs gemeinsame Kommen."
     },
     {
       "q": "Sind wir im selben Raum?",
-      "a": "Ihr werdet nacheinander oder parallel empfangen — in derselben ruhigen Atmosphäre. Details besprechen wir bei der Buchung."
-    },
-    {
-      "q": "Gutschein für zwei — wie funktioniert das?",
-      "a": "Wähle im Shop zwei Behandlungen oder den Partner-Betrag. Einlösung gemeinsam — Termin abgestimmt."
+      "a": "Parallel oder nacheinander — in derselben ruhigen Atmosphäre. Details bei der Terminbuchung."
     },
     {
       "q": "Auch für Mutter und Tochter?",
@@ -145,7 +145,12 @@
   ],
   "closing": {
     "headline": "Gemeinsam Stille schenken.",
-    "text": "Partner-Gutschein: Berührung, Ruhe, Nähe — für zwei. Jetzt bestellen oder WhatsApp.",
+    "text": "Partner-Gutschein: Berührung, Ruhe, Nähe — für zwei. Jetzt bestellen.",
     "cta": "Partner-Gutschein bestellen"
+  },
+  "secondaryCta": {
+    "href": "/headspa/partner",
+    "label": "Selbst Termin buchen",
+    "text": "Ihr kommt selbst zu zweit? Partner-Termin per WhatsApp anfragen."
   }
 }

@@ -167,6 +167,13 @@ export default function PackageLanding({ site, page }: Props) {
                 <span className="inline-block mt-6 eyebrow-luxury !text-charcoal/40 group-hover:!text-gold transition-colors">Zur Übersicht →</span>
               </Link>
             </Reveal>
+            <Reveal delay={0.2}>
+              <Link href="/headspa/partner" className="group block glass border border-stone/60 p-8 hover:border-gold/40 transition-colors h-full flex flex-col justify-center">
+                <h3 className="font-display text-xl text-ink group-hover:text-gold transition-colors mb-2">Zu zweit</h3>
+                <p className="body-luxury text-sm">Partner-Termin ab 178€</p>
+                <span className="inline-block mt-6 eyebrow-luxury !text-charcoal/40 group-hover:!text-gold transition-colors">Partner entdecken →</span>
+              </Link>
+            </Reveal>
           </div>
         </div>
       </section>

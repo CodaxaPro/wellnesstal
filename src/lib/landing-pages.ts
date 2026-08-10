@@ -45,6 +45,7 @@ import locationWurselen from '../../content/locations/wurselen.json'
 import packageBasic from '../../content/packages/basic.json'
 import packageBeauty from '../../content/packages/beauty.json'
 import packageDeluxe from '../../content/packages/deluxe.json'
+import partnerPage from '../../content/partner.json'
 
 import { buildGiftPage, BUILT_GIFT_SLUGS } from './gift-builders'
 import { buildIntentPage } from './intent-builders'
@@ -109,6 +110,7 @@ export type GiftPageContent = {
   }[]
   faq: { q: string; a: string }[]
   closing: { headline: string; text: string; cta: string }
+  secondaryCta?: { href: string; label: string; text?: string }
 }
 
 export type LocationPageContent = {
@@ -158,7 +160,37 @@ export type GuidePageContent = {
   keyTakeaways?: { headline: string; items: string[] }
   relatedLinks: { href: string; label: string; hint: string }[]
   faq: { q: string; a: string }[]
+  closing: {
+    headline: string
+    text: string
+    cta: string
+    href?: string
+    secondaryCta?: string
+    secondaryHref?: string
+  }
+}
+
+export type PartnerPageContent = {
+  slug: string
+  path: string
+  seo: { title: string; description: string }
+  hero: { eyebrow: string; headline: string; subline: string; trust: string }
+  essence: { eyebrow: string; headline: string; paragraphs: string[] }
+  emotions: { eyebrow: string; headline: string; items: EmotionItem[] }
+  recipients?: { eyebrow: string; headline: string; items: { title: string; text: string }[] }
+  journey: { eyebrow: string; headline: string; steps: JourneyStep[] }
+  partnerPackages: {
+    name: string
+    price: number
+    duration: string
+    tagline: string
+    featured?: boolean
+  }[]
+  faq: { q: string; a: string }[]
   closing: { headline: string; text: string; cta: string }
+  whatsapp: string
+  secondaryCta?: { href: string; label: string; text?: string }
+  relatedLinks?: { href: string; label: string; hint: string }[]
 }
 
 export type GuideHubContent = {
@@ -302,6 +334,10 @@ export function getPackagePage(slug: string): PackagePageContent | null {
 
 export function getAllPackagePages(): PackagePageContent[] {
   return PACKAGE_SLUGS.map((slug) => packagePages[slug])
+}
+
+export function getPartnerPage(): PartnerPageContent {
+  return partnerPage as PartnerPageContent
 }
 
 export function getLocationPage(slug: string): LocationPageContent | null {

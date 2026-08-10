@@ -1,0 +1,171 @@
+{
+  "slug": "partner",
+  "path": "/headspa/partner",
+  "seo": {
+    "title": "Head Spa für 2 Personen | Partner-Termin zu zweit — Wellnesstal",
+    "description": "Head Spa zu zweit in Baesweiler: Partner-Termine nebeneinander. 2× Basic 178€, Beauty 238€, Deluxe 298€. WhatsApp-Buchung · Region Aachen · 4,6★."
+  },
+  "hero": {
+    "eyebrow": "Partner Head Spa · Zu zweit",
+    "headline": "Zwei Köpfe. Eine Stille.",
+    "subline": "Head Spa für 2 Personen — nebeneinander entspannen, nicht nebeneinander Smalltalk. Partner-Termin in Baesweiler: Berührung, Wasser, Dampf. Jeder sein Ritual. Dieselbe Ruhe.",
+    "trust": "Partner ab 178€ · WhatsApp-Buchung · 4,6★ · Region Aachen"
+  },
+  "essence": {
+    "eyebrow": "Was Partner Head Spa ist",
+    "headline": "Kein Hotel-Wochenende. Kein Private-Spa mit Whirlpool. Ein Ritual — zu zweit.",
+    "paragraphs": [
+      "Ihr sucht Entspannung für zwei Personen — und meint damit kein Wellnesshotel, sondern Zeit, die wirklich ankommt: Kopfmassage, Gesicht, Stille. Head Spa Partner-Termine sind genau das.",
+      "Zwei Liegen. Zwei Behandlungen. Dieselbe Atmosphäre. Ihr werdet empfangen, behandelt und lasst los — parallel oder nacheinander, je nach Kapazität. Kein Gruppen-Event. Kein Lärm.",
+      "Viele kommen als Paar. Manche als Mutter und Tochter. Andere als beste Freundinnen. Der gemeinsame Nenner: nebeneinander ankommen — und gemeinsam leichter gehen."
+    ]
+  },
+  "emotions": {
+    "eyebrow": "Was ihr teilt",
+    "headline": "Sechs Gründe für Head Spa zu zweit",
+    "items": [
+      {
+        "word": "Nähe",
+        "headline": "Ohne Programm.",
+        "text": "Kein Restaurant-Druck. Kein Film. Nur zwei Menschen, die gleichzeitig runterfahren."
+      },
+      {
+        "word": "Stille",
+        "headline": "Köpfe leise.",
+        "text": "Bildschirm, Termine, Alltag — für 45 bis 90 Minuten aus. Für euch beide."
+      },
+      {
+        "word": "Berührung",
+        "headline": "Jeder sein Ritual.",
+        "text": "Kopf, Nacken, Gesicht — individuell abgestimmt. Nicht „eine Massage für zwei“."
+      },
+      {
+        "word": "Zeit",
+        "headline": "Euer Slot.",
+        "text": "Wir finden den Termin, der für beide passt — per WhatsApp, ohne Online-Chaos."
+      },
+      {
+        "word": "Ort",
+        "headline": "Baesweiler · Aachen.",
+        "text": "Reyplatz 10 — gut erreichbar aus Aachen, Würselen, Herzogenrath und der Region."
+      },
+      {
+        "word": "Klarheit",
+        "headline": "Preise transparent.",
+        "text": "2× Basic, Beauty oder Deluxe — was ihr bucht, ist was ihr erlebt. Keine Paket-Fallen."
+      }
+    ]
+  },
+  "recipients": {
+    "eyebrow": "Für wen?",
+    "headline": "Partner-Termin — für jede Verbindung",
+    "items": [
+      {
+        "title": "Paare",
+        "text": "Date ohne Lärm — intimer als Restaurant, weil beide gleichzeitig abschalten."
+      },
+      {
+        "title": "Mutter & Tochter",
+        "text": "Quality Time, die bleibt — gemeinsam empfangen, gemeinsam loslassen."
+      },
+      {
+        "title": "Freundinnen",
+        "text": "Auszeit zu zweit — lachen vorher, Stille währenddessen, Leichtigkeit danach."
+      },
+      {
+        "title": "Erstbesuch zu zweit",
+        "text": "Nervös? Zu zweit leichter. Basic zum Testen, Beauty als Sweet Spot."
+      }
+    ]
+  },
+  "journey": {
+    "eyebrow": "So bucht ihr",
+    "headline": "Vom Wunsch zum Partner-Termin",
+    "steps": [
+      {
+        "num": "01",
+        "title": "WhatsApp",
+        "text": "Schreibt uns: zwei Personen, Wunschpaket (Basic, Beauty oder Deluxe), grobe Zeiten. Wir antworten mit freien Slots."
+      },
+      {
+        "num": "02",
+        "title": "Bestätigen",
+        "text": "Termin festlegen — parallel oder nacheinander. Klar, ruhig, ohne Formular-Marathon."
+      },
+      {
+        "num": "03",
+        "title": "Ankommen",
+        "text": "Reyplatz 10, Baesweiler. Gemeinsam empfangen — kein Hetzen, kein Smalltalk-Zwang."
+      },
+      {
+        "num": "04",
+        "title": "Ritual",
+        "text": "Jeder sein Head Spa. Dieselbe Stille. Danach: leichter gehen — zusammen."
+      }
+    ]
+  },
+  "partnerPackages": [
+    {
+      "name": "Partner Basic",
+      "price": 178,
+      "duration": "45 Min. · je Person",
+      "tagline": "Einstieg zu zweit — pure Kopf-Entspannung."
+    },
+    {
+      "name": "Partner Beauty",
+      "price": 238,
+      "duration": "60 Min. · je Person",
+      "tagline": "Beliebt — Kopf, Gesicht, Peeling. Die Balance.",
+      "featured": true
+    },
+    {
+      "name": "Partner Deluxe",
+      "price": 298,
+      "duration": "90 Min. · je Person",
+      "tagline": "Volles Ritual mit Markenpflege — für besondere Anlässe."
+    }
+  ],
+  "faq": [
+    {
+      "q": "Ist das eine Paarmassage?",
+      "a": "Es ist Head Spa zu zweit: zwei individuelle Kopf- und Wellness-Rituale in derselben ruhigen Atmosphäre — kein klassisches Body-Massage-Studio, kein Hotel-Spa."
+    },
+    {
+      "q": "Wie buche ich einen Partner-Termin?",
+      "a": "Am einfachsten per WhatsApp: +49 173 3828581. Schreibt „Partner-Termin“, Paketwunsch und ungefähre Zeiten — wir finden den Slot für euch beide."
+    },
+    {
+      "q": "Was kostet Head Spa für 2 Personen?",
+      "a": "2× Basic 178€, 2× Beauty 238€, 2× Deluxe 298€ — Preise für beide zusammen, je Person die volle Behandlungsdauer."
+    },
+    {
+      "q": "Sind wir im selben Raum?",
+      "a": "Parallel oder nacheinander — je nach Kapazität. Details klären wir bei der Buchung. Die Atmosphäre bleibt dieselbe: ruhig, ohne Hektik."
+    },
+    {
+      "q": "Können wir einen Gutschein schenken statt selbst kommen?",
+      "a": "Ja — Partner-Gutschein unter /gutschein/paar. Sofort per E-Mail. Der Beschenkte bucht den Termin später."
+    },
+    {
+      "q": "Wo findet der Termin statt?",
+      "a": "Wellnesstal, Reyplatz 10, 52499 Baesweiler — Region Aachen, gut erreichbar aus Würselen, Herzogenrath, Alsdorf und Umgebung."
+    }
+  ],
+  "closing": {
+    "headline": "Bereit für Stille — zu zweit?",
+    "text": "Partner-Termin per WhatsApp anfragen. Oder Gutschein für zwei bestellen, wenn ihr schenkt statt selbst kommt.",
+    "cta": "Partner-Termin per WhatsApp"
+  },
+  "whatsapp": "https://wa.me/491733828581",
+  "secondaryCta": {
+    "href": "/gutschein/paar",
+    "label": "Partner-Gutschein bestellen",
+    "text": "Lieber schenken? Gutschein für zwei — sofort online."
+  },
+  "relatedLinks": [
+    { "href": "/gutschein/paar", "label": "Gutschein zu zweit", "hint": "Schenken statt selbst buchen" },
+    { "href": "/headspa/beauty", "label": "Head Spa Beauty", "hint": "Beliebtestes Solo-Paket" },
+    { "href": "/ratgeber/partner-head-spa", "label": "Ratgeber Partner", "hint": "Ablauf, Preise, Tipps" },
+    { "href": "/head-spa-baesweiler", "label": "Head Spa Baesweiler", "hint": "Standort & Anfahrt" }
+  ]
+}

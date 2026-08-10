@@ -1,6 +1,6 @@
 import type { HeadspaContent, SiteContent } from './content'
 import { getTestimonials } from './content'
-import type { GiftPageContent, GuidePageContent, LocationPageContent, PackagePageContent } from './landing-pages'
+import type { GiftPageContent, GuidePageContent, LocationPageContent, PackagePageContent, PartnerPageContent } from './landing-pages'
 import { INTENT_TYPE_LABELS, parseIntentSlug } from './seo-config'
 import { SITE_URL } from './seo-meta'
 
@@ -63,7 +63,7 @@ export function localBusinessSchema(site: SiteContent) {
     image: `${SITE_URL}/images/hero.jpeg`,
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.6',
+      ratingValue: '4.7',
       bestRating: '5',
       reviewCount: getTestimonials().items.length,
     },
@@ -161,6 +161,15 @@ export function giftFaqSchema(page: GiftPageContent) {
 }
 
 export function giftProductSchema(site: SiteContent, page: GiftPageContent) {
+  const partnerPrices = page.partnerPackages?.map((p) => p.price)
+  const lowPrice = partnerPrices?.length
+    ? Math.min(...partnerPrices)
+    : Math.min(...site.services.map((s) => s.price))
+  const highPrice = partnerPrices?.length
+    ? Math.max(...partnerPrices)
+    : Math.max(...site.services.map((s) => s.price))
+  const offerCount = partnerPrices?.length ?? site.services.length
+
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
@@ -172,15 +181,15 @@ export function giftProductSchema(site: SiteContent, page: GiftPageContent) {
     },
     offers: {
       '@type': 'AggregateOffer',
-      lowPrice: Math.min(...site.services.map((s) => s.price)),
-      highPrice: Math.max(...site.services.map((s) => s.price)),
+      lowPrice,
+      highPrice,
       priceCurrency: 'EUR',
-      offerCount: site.services.length,
+      offerCount,
       url: site.brand.gutscheinUrl,
     },
     aggregateRating: {
       '@type': 'AggregateRating',
-      ratingValue: '4.6',
+      ratingValue: '4.7',
       bestRating: '5',
       reviewCount: getTestimonials().items.length,
     },
@@ -398,5 +407,55 @@ export function packagePageSchemas(site: SiteContent, page: PackagePageContent) 
     localBusinessSchema(site),
     packageFaqSchema(page),
     packageOfferSchema(site, page),
+  ]
+}
+
+export function partnerFaqSchema(page: PartnerPageContent) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: page.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a },
+    })),
+  }
+}
+
+export function partnerServiceSchema(site: SiteContent, page: PartnerPageContent) {
+  const prices = page.partnerPackages.map((p) => p.price)
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'Head Spa Partner-Termin für 2 Personen',
+    description: page.seo.description,
+    provider: PROVIDER(site),
+    areaServed: {
+      '@type': 'City',
+      name: site.brand.address.city,
+    },
+    offers: {
+      '@type': 'AggregateOffer',
+      lowPrice: Math.min(...prices),
+      highPrice: Math.max(...prices),
+      priceCurrency: 'EUR',
+      offerCount: page.partnerPackages.length,
+      url: `${SITE_URL}${page.path}`,
+      availability: 'https://schema.org/InStock',
+    },
+  }
+}
+
+export function partnerPageSchemas(site: SiteContent, page: PartnerPageContent) {
+  return [
+    webPageSchema(page.seo.title, page.seo.description, page.path),
+    breadcrumbSchema([
+      { name: 'Start', path: '/' },
+      { name: 'Head Spa', path: '/headspa' },
+      { name: 'Partner / Zu zweit', path: page.path },
+    ]),
+    localBusinessSchema(site),
+    partnerFaqSchema(page),
+    partnerServiceSchema(site, page),
   ]
 }

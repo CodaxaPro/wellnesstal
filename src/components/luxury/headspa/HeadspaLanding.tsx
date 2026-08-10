@@ -240,8 +240,11 @@ export default function HeadspaLanding({ site, headspa }: Props) {
                 <h3 className="headline-md mb-4">{headspa.packages.partner.headline}</h3>
                 <p className="body-luxury mb-4">{headspa.packages.partner.text}</p>
                 <p className="body-luxury text-sm opacity-70">{headspa.packages.partner.note}</p>
-                <div className="mt-8">
-                  <LuxuryButton href={headspa.packages.partner.whatsapp}>WhatsApp Kontakt</LuxuryButton>
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <LuxuryButton href={headspa.packages.partner.href}>Partner-Termin entdecken</LuxuryButton>
+                  <LuxuryButton href={headspa.packages.partner.whatsapp} variant="outline">
+                    WhatsApp Kontakt
+                  </LuxuryButton>
                 </div>
               </div>
               <div className="space-y-4">

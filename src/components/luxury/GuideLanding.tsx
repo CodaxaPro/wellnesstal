@@ -73,6 +73,10 @@ export function GuideHubLanding({ site, hub }: HubProps) {
 
 export default function GuideLanding({ site, page }: ArticleProps) {
   const bookingUrl = getBookingUrl({ channel: 'guide', slug: page.slug })
+  const gutscheinUrl = getGutscheinUrl({ channel: 'guide', slug: page.slug })
+  const primaryHref = page.closing.href ?? bookingUrl
+  const secondaryHref = page.closing.secondaryHref
+  const secondaryCta = page.closing.secondaryCta
 
   return (
     <>
@@ -161,7 +165,14 @@ export default function GuideLanding({ site, page }: ArticleProps) {
           <Reveal>
             <h2 className="headline-lg text-ivory mb-6">{page.closing.headline}</h2>
             <p className="body-luxury !text-ivory/70 mb-10">{page.closing.text}</p>
-            <LuxuryButton href={bookingUrl}>{page.closing.cta}</LuxuryButton>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <LuxuryButton href={primaryHref}>{page.closing.cta}</LuxuryButton>
+              {secondaryCta && secondaryHref && (
+                <LuxuryButton href={secondaryHref === 'gutschein' ? gutscheinUrl : secondaryHref} variant="outline">
+                  {secondaryCta}
+                </LuxuryButton>
+              )}
+            </div>
           </Reveal>
         </div>
       </section>

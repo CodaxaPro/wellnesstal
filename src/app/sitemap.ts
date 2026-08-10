@@ -55,6 +55,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: baseUrl, lastModified, changeFrequency: 'weekly', priority: 1 },
     { url: `${baseUrl}/headspa`, lastModified, changeFrequency: 'weekly', priority: 0.9 },
     ...packagePages,
+    { url: `${baseUrl}/headspa/partner`, lastModified, changeFrequency: 'weekly', priority: 0.88 },
     { url: `${baseUrl}/gutschein`, lastModified, changeFrequency: 'monthly', priority: 0.85 },
     ...giftSubPages,
     ...locationPages,
