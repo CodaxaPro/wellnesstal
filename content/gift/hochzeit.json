@@ -16,7 +16,7 @@
     "headline": "Das Brautpaar braucht keine Dinge — es braucht Ruhe.",
     "paragraphs": [
       "Hochzeitsplanung, Familie, Erwartungen — danach ist der Kopf oft lauter als vorher. Was wirklich hilft: Zeit zu zweit, ohne Programm.",
-      "Head Spa Partner-Gutschein ist der Rahmen: nebeneinander liegen, nebeneinander loslassen. Berührung, Wasser, Dampf — 45 bis 90 Minuten nur für sie.",
+      "Nach Trauung und Empfang verdient das Brautpaar keinen weiteren Gegenstand — sondern ein Partner-Ritual: zwei Plätze, dieselbe Atmosphäre, Kopf und Nacken, die endlich loslassen dürfen.",
       "Kein lautes Geschenk — ein leises, tiefes: „Ich wünsche euch Ruhe. Nicht irgendwann — jetzt.“"
     ]
   },
@@ -24,11 +24,11 @@
     "eyebrow": "Sechs Worte des Hochzeitsgeschenks",
     "headline": "Glückwunsch — auf eine leise Art",
     "items": [
-      { "word": "Nähe", "headline": "Nebeneinander.", "text": "Partner-Ritual — ohne Smalltalk, nur Stille." },
-      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die entspannt — nicht nur verwöhnt." },
+      { "word": "Nähe", "headline": "Ohne Smalltalk.", "text": "Partner-Ritual — nebeneinander, nur Stille." },
+      { "word": "Berührung", "headline": "Nicht nur verwöhnt.", "text": "Massage, die entspannt — nach dem großen Tag." },
       { "word": "Ruhe", "headline": "Nach dem Trubel.", "text": "Endlich nichts organisieren — nur da sein." },
-      { "word": "Stille", "headline": "Köpfe leise.", "text": "Abschalten zu zweit — selten, kostbar." },
-      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Unser schönstes Hochzeitsgeschenk“ — hören wir oft." },
+      { "word": "Stille", "headline": "Zu zweit abschalten.", "text": "Köpfe leise — selten, kostbar." },
+      { "word": "Erinnerung", "headline": "Nicht vom Geschirr.", "text": "Später erzählen sie vom gemeinsamen Loslassen." },
       { "word": "Wertschätzung", "headline": "Du meinst es.", "text": "Kein Standard — ein Gefühl, das ankommt." }
     ]
   },
@@ -39,33 +39,33 @@
       { "title": "Das Brautpaar", "text": "Partner-Paket — nebeneinander entspannen, gemeinsam ankommen." },
       { "title": "Die Braut", "text": "Alleine oder mit Trauzeugin — Beauty oder Deluxe als Solo-Geschenk." },
       { "title": "Von den Eltern", "text": "Ruhe statt Porzellan — Wertschätzung, die man spürt." },
-      { "title": "Von Freunden", "text": "Gemeinschaftsgeschenk? Partner Deluxe — 298€ für beide." }
+      { "title": "Von Freunden", "text": "Gemeinschaftsgeschenk? 2× Headspa Deluxe — 298€ für beide." }
     ]
   },
   "journey": {
     "eyebrow": "Hochzeitsgeschenk schenken",
     "headline": "In Minuten bestellt — lange erinnert",
     "steps": [
-      { "num": "01", "title": "Wählen", "text": "Partner Basic, Beauty oder Deluxe — je nach Tiefe." },
+      { "num": "01", "title": "Wählen", "text": "2× Headspa Basic, Beauty oder Deluxe — je nach Tiefe." },
       { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — in die Karte oder digital." },
       { "num": "03", "title": "Überreichen", "text": "Auf der Hochzeit — oder danach, wenn der Trubel vorbei ist." },
       { "num": "04", "title": "Erleben", "text": "Das Paar bucht selbst — Stille, Berührung, Nähe." }
     ]
   },
   "partnerPackages": [
-    { "name": "Partner Basic", "price": 178, "duration": "45 Min. · je Person", "tagline": "Erstes Ritual zu zweit" },
-    { "name": "Partner Beauty", "price": 238, "duration": "60 Min. · je Person", "tagline": "Beliebt — ausgewogene Tiefe", "featured": true },
-    { "name": "Partner Deluxe", "price": 298, "duration": "90 Min. · je Person", "tagline": "Volles Ritual mit Markenpflege" }
+    { "name": "2× Headspa Basic", "price": 178, "duration": "45 Min. · je Person", "tagline": "Erstes Ritual zu zweit" },
+    { "name": "2× Headspa Beauty", "price": 238, "duration": "60 Min. · je Person", "tagline": "Beliebt — ausgewogene Tiefe", "featured": true },
+    { "name": "2× Headspa Deluxe", "price": 298, "duration": "90 Min. · je Person", "tagline": "Volles Ritual mit Markenpflege" }
   ],
   "faq": [
-    { "q": "Partner-Gutschein für Hochzeit?", "a": "Ja — Partner Basic 178€, Beauty 238€, Deluxe 298€. Nebeneinander entspannen." },
+    { "q": "Partner-Gutschein für Hochzeit?", "a": "Ja — 2× Headspa Basic 178€, Beauty 238€, Deluxe 298€. Nebeneinander entspannen." },
     { "q": "Nur für eine Person?", "a": "Auch möglich — Beauty (119€) oder Deluxe (149€) als Solo-Geschenk." },
     { "q": "Sofort verfügbar?", "a": "Ja — ideal auch kurz vor der Hochzeit." },
-    { "q": "Wo?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+    { "q": "Wo?", "a": "Das Brautpaar kommt zu uns nach Baesweiler: Reyplatz 10 — gut erreichbar aus der Region Aachen." }
   ],
   "closing": {
     "headline": "Glückwunsch — mit Stille, die bleibt.",
-    "text": "Head Spa Partner-Gutschein für Ruhe, Nähe und echte Wertschätzung. Jetzt bestellen.",
+    "text": "Hochzeitsgeschenk fürs Brautpaar: Partner-Ritual nach dem Ja — statt Porzellan. Jetzt bestellen.",
     "cta": "Hochzeits-Gutschein bestellen"
   },
   "secondaryCta": {

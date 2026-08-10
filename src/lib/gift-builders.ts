@@ -23,6 +23,7 @@ export type BuiltGiftPage = {
   relatedLinks?: { href: string; label: string; hint: string }[]
 }
 
+/** Fallback only — every BUILDERS entry should pass its own emotions. */
 const DEFAULT_EMOTIONS: EmotionItem[] = [
   { word: 'Berührung', headline: 'Sanft. Bewusst.', text: 'Kopf- und Nackenmassage — Verspannungen weichen.' },
   { word: 'Stille', headline: 'Kopf leise.', text: '45–90 Min. abschalten — Gäste beschreiben tiefe Entspannung.' },
@@ -32,11 +33,221 @@ const DEFAULT_EMOTIONS: EmotionItem[] = [
   { word: 'Erinnerung', headline: 'Bleibt.', text: 'Monate später: „Das war das schönste Geschenk.“' },
 ]
 
+/** Fallback only — every BUILDERS entry should pass its own journey. */
 const DEFAULT_JOURNEY: JourneyStep[] = [
   { num: '01', title: 'Wählen', text: 'Basic (89€), Beauty (119€) oder Deluxe (149€) — je nach Tiefe.' },
   { num: '02', title: 'Bestellen', text: 'Sofort per E-Mail — Print@Home oder digital versenden.' },
   { num: '03', title: 'Überreichen', text: 'Mit wenigen Worten — das Geschenk sagt den Rest.' },
   { num: '04', title: 'Erleben', text: 'Termin in Baesweiler — Region Aachen & NRW.' },
+]
+
+const EMOTIONS_DIGITAL: EmotionItem[] = [
+  { word: 'Sofort', headline: 'In Minuten da.', text: 'E-Gutschein per E-Mail — kein Versand, kein Warten.' },
+  { word: 'Flexibilität', headline: 'Du wählst den Weg.', text: 'PDF, Print@Home oder digital weiterleiten — wie es passt.' },
+  { word: 'Stille', headline: 'Digital bestellt. Analog gespürt.', text: 'Online kaufen — vor Ort 45–90 Min. wirklich abschalten.' },
+  { word: 'Klarheit', headline: 'Kein Paket-Stress.', text: 'Bestellen, öffnen, verschenken — fertig.' },
+  { word: 'Wertschätzung', headline: 'Trotz Tempo: echt.', text: 'Last minute, aber kein Standard — ein Ritual statt Ding.' },
+  { word: 'Erinnerung', headline: 'Der Link bleibt.', text: 'Monate später: nicht die Mail — das Gefühl im Studio.' },
+]
+
+const EMOTIONS_KOPF: EmotionItem[] = [
+  { word: 'Fokus', headline: 'Kopf im Zentrum.', text: 'Kein 5-Min.-Add-on — 45–90 Min. echte Kopfmassage.' },
+  { word: 'Nacken', headline: 'Dort, wo Stress sitzt.', text: 'Kopfhaut, Nacken, Dekolleté — gezielt und ruhig.' },
+  { word: 'Wasser', headline: 'Strömung statt Eile.', text: 'Wasserstrahl und Bedampfung tragen die Massage.' },
+  { word: 'Stille', headline: 'Gedanken leise.', text: 'Der Raum hält — du musst nichts leisten.' },
+  { word: 'Unterschied', headline: 'Studio, nicht Friseur.', text: 'Head Spa als Hauptgeschehen — nicht Anhang nach dem Waschen.' },
+  { word: 'Erinnerung', headline: 'Spürbar danach.', text: 'Viele gehen leichter — und erzählen es monatelang.' },
+]
+
+const EMOTIONS_MASSAGE: EmotionItem[] = [
+  { word: 'Berührung', headline: 'Hände mit Zeit.', text: 'Kopf und Nacken — bewusst, nicht hastig.' },
+  { word: 'Tiefe', headline: 'Ritual, nicht Routine.', text: 'Massage plus Wasser und Dampf — mehr als Öl und Liege.' },
+  { word: 'Wärme', headline: 'Körper kommt an.', text: 'Schultern lösen sich — ohne Sportstudio-Feeling.' },
+  { word: 'Ruhe', headline: 'Kein Therapeuten-Jargon.', text: 'Einfach berührt werden — klar und wohltuend.' },
+  { word: 'Überraschung', headline: 'Anders als erwartet.', text: 'Wer „Massage“ kennt, spürt hier eine neue Qualität.' },
+  { word: 'Nachhall', headline: 'Bleibt im Körper.', text: 'Nicht nur „schön war’s“ — spürbar leichter gehen.' },
+]
+
+const EMOTIONS_ENTSPANNUNG: EmotionItem[] = [
+  { word: 'Erlaubnis', headline: 'Nichts leisten.', text: 'Entspannung ohne Programm, ohne Smalltalk-Pflicht.' },
+  { word: 'Nervensystem', headline: 'Runterfahren erlaubt.', text: '45–90 Min. — der Alltag darf draußen bleiben.' },
+  { word: 'Stille', headline: 'Ohne Therme-Lärm.', text: 'Ruhiges Studio statt Massenbetrieb.' },
+  { word: 'Atem', headline: 'Langsamer werden.', text: 'Berührung, Wasser, Dampf — der Körper folgt.' },
+  { word: 'Leichtigkeit', headline: 'Danach anders.', text: 'Viele beschreiben: Kopf klarer, Schultern weicher.' },
+  { word: 'Wertschätzung', headline: 'Ruhe statt Dinge.', text: 'Das Geschenk, das nicht im Regal landet.' },
+]
+
+const EMOTIONS_IDEE: EmotionItem[] = [
+  { word: 'Idee', headline: 'Endlich etwas Neues.', text: 'Nicht Kerze, nicht Schal — ein Erlebnis mit Tiefe.' },
+  { word: 'Überraschung', headline: 'Sie kennt das noch nicht.', text: 'Head Spa trifft genau die, die „alles haben“.' },
+  { word: 'Persönlich', headline: 'Du hast hingeschaut.', text: 'Stille statt Standard — Wertschätzung ohne Protz.' },
+  { word: 'Originalität', headline: 'Außergewöhnlich, klar.', text: 'Japanisches Ritual — 45 bis 90 Minuten.' },
+  { word: 'Sicherheit', headline: 'Beauty trifft meist.', text: '119€ als Allrounder — Deluxe, wenn du beeindrucken willst.' },
+  { word: 'Nachhall', headline: 'Monate später erzählt.', text: '„Das schönste Geschenk“ — oft genau diese Worte.' },
+]
+
+const EMOTIONS_ZEIT: EmotionItem[] = [
+  { word: 'Zeit', headline: 'Geblockt. Geschützt.', text: '45–90 Min., in denen niemand etwas von ihr will.' },
+  { word: 'Me Time', headline: 'Nur für sie.', text: 'Solo ab 89€ — echte Auszeit statt Kalenderlücke.' },
+  { word: 'Zu zweit', headline: 'Gemeinsam ohne Ablenkung.', text: 'Partner ab 178€ — Zeit teilen, nicht teilen müssen.' },
+  { word: 'Stille', headline: 'Kalender voll. Kopf leer.', text: 'Ein Termin gegen den Dauerbetrieb.' },
+  { word: 'Achtsamkeit', headline: 'Ohne Vortrag.', text: 'Raum, Berührung, Atem — Selfcare, die greifbar ist.' },
+  { word: 'Erinnerung', headline: 'Die Stunde, die zählt.', text: 'Nicht die Uhr — das Gefühl danach.' },
+]
+
+const EMOTIONS_SELF: EmotionItem[] = [
+  { word: 'Empfangen', headline: 'Diesmal du.', text: 'Für Menschen, die immer geben — und selten Pause machen.' },
+  { word: 'Self Care', headline: 'Kein Trend. Notwendigkeit.', text: 'Termin statt Vorsatz — der Körper merkt den Unterschied.' },
+  { word: 'Pause', headline: 'Ohne Optimieren.', text: 'Nichts leisten, nichts performen — nur ankommen.' },
+  { word: 'Nacken', headline: 'Last absetzen.', text: 'Kopf und Schultern dürfen weich werden.' },
+  { word: 'Erlaubnis', headline: 'Schuldgefühle aus.', text: 'Self Care ohne Rechtfertigung — 45 bis 90 Minuten.' },
+  { word: 'Nachhaltigkeit', headline: 'Wirkung bleibt.', text: 'Viele kommen leichter zurück in den Alltag.' },
+]
+
+const EMOTIONS_LUXUS: EmotionItem[] = [
+  { word: 'Stille', headline: 'Luxus ohne Lautstärke.', text: '90 Min. Deluxe — keine Show, volle Aufmerksamkeit.' },
+  { word: 'Pflege', headline: 'Kérastase & Babor.', text: 'Markenpflege, die du spürst — nicht nur liest.' },
+  { word: 'Tiefe', headline: 'Maximale Volumenruhe.', text: 'Premium ohne Hotelkomplex und Crowds.' },
+  { word: 'Qualität', headline: 'Billig fühlt sich falsch an.', text: 'Für Menschen, die echte Substanz erkennen.' },
+  { word: 'Exklusivität', headline: 'Ein klarer Moment.', text: 'Solo 149€ — Partner Deluxe 298€ zu zweit.' },
+  { word: 'Erinnerung', headline: 'Bleibt hochwertig.', text: 'Nicht Glitzer — ein Gefühl, das man behält.' },
+]
+
+const EMOTIONS_NRW: EmotionItem[] = [
+  { word: 'Nähe', headline: 'Region statt Anonymität.', text: 'Baesweiler — gut erreichbar aus Aachen & Umgebung.' },
+  { word: 'Lokal', headline: 'NRW, persönlich.', text: 'Kein Therme-Gedränge — ein Studio mit Gesicht.' },
+  { word: 'Reichweite', headline: 'Digital überall.', text: 'Bundesweit verschenkbar — Ritual vor Ort.' },
+  { word: 'Städte', headline: 'Kurz der Weg.', text: 'Würselen, Eschweiler, Heinsberg & mehr — nah genug.' },
+  { word: 'Ruhe', headline: 'Gegen Massen-Wellness.', text: '45–90 Min. Berührung und Stille.' },
+  { word: 'Heimatgefühl', headline: 'Schenken, das passt.', text: 'Regional gedacht — emotional klar.' },
+]
+
+const EMOTIONS_MAMA: EmotionItem[] = [
+  { word: 'Danke', headline: 'Im Alltag gesagt.', text: 'Nicht nur am Feiertag — ein Zeichen zwischen den Tagen.' },
+  { word: 'Pause', headline: 'Ohne „Kannst du kurz …?“', text: 'Zeit ohne Kinderlärm und Einkaufsliste.' },
+  { word: 'Berührung', headline: 'Kopf darf weich werden.', text: 'Nacken, Wasser, Dampf — sie organisiert nichts.' },
+  { word: 'Gesehen', headline: 'Mama ist dran.', text: 'Wertschätzung, die man einlösen kann.' },
+  { word: 'Leichtigkeit', headline: 'Leichter nach Hause.', text: 'Viele Mütter kommen ruhiger zurück.' },
+  { word: 'Erinnerung', headline: 'Sie behält es.', text: 'Nicht der Schal — die Stunde für sich.' },
+]
+
+const EMOTIONS_PAPA: EmotionItem[] = [
+  { word: 'Überraschung', headline: 'Er erwartet es nicht.', text: 'Keine Krawatte — Erlaubnis abzuschalten.' },
+  { word: 'Nacken', headline: 'Dort trägt er viel.', text: 'Kopf und Schultern — klar, ohne Kitsch.' },
+  { word: 'Stille', headline: 'Ohne Smalltalk-Zwang.', text: '45–90 Min. — geschlechtsneutral und wohltuend.' },
+  { word: 'Respekt', headline: 'Nicht peinlich.', text: 'Modernes Ritual — viele Papas kommen skeptisch, gehen ruhig.' },
+  { word: 'Klarheit', headline: 'Geschenk mit Haltung.', text: 'Basic oder Beauty — treffsicher statt Werkzeugkasten.' },
+  { word: 'Nachhall', headline: '„Hätte ich nicht erwartet.“', text: 'Genau dieser Satz macht den Gutschein stark.' },
+]
+
+const EMOTIONS_OMA: EmotionItem[] = [
+  { word: 'Wärme', headline: 'Sanft und klar.', text: 'Herzlicher Empfang — ohne Hektik und Show.' },
+  { word: 'Respekt', headline: 'Jahrzehnte gewürdigt.', text: 'Ein Danke von Kindern und Enkeln — spürbar.' },
+  { word: 'Ruhe', headline: 'Raum zum Ankommen.', text: 'Basic oder Beauty — Tiefe, die passt.' },
+  { word: 'Aufmerksamkeit', headline: 'Ganz bei ihr.', text: 'Viele Omas genießen besonders die Stille.' },
+  { word: 'Leichtigkeit', headline: 'Weicher Abschnitt.', text: 'Geburtstag, Genesung oder einfach so.' },
+  { word: 'Erinnerung', headline: 'Familienmoment.', text: 'Später erzählt man vom Gefühl — nicht vom Ding.' },
+]
+
+const EMOTIONS_OPA: EmotionItem[] = [
+  { word: 'Würde', headline: 'Klar, nicht kitschig.', text: 'Auszeit ohne Wellness-Klischee-Druck.' },
+  { word: 'Nacken', headline: 'Kopf im Fokus.', text: '45 Min. oder länger — echte Aufmerksamkeit.' },
+  { word: 'Überraschung', headline: 'Oft skeptisch. Dann dankbar.', text: 'Massage, Wasser, Ruhe — wirkt stärker als erwartet.' },
+  { word: 'Respekt', headline: 'Gesagt und gespürt.', text: 'Wertschätzung, die ankommt — nicht nur geschrieben.' },
+  { word: 'Einfachheit', headline: 'Basic reicht oft.', text: '89€ Einstieg — Beauty, wenn du mehr Tiefe willst.' },
+  { word: 'Erinnerung', headline: 'Die Enkel haben recht.', text: 'Ein Moment, den Opa behält.' },
+]
+
+const EMOTIONS_FREUND: EmotionItem[] = [
+  { word: 'Freundschaft', headline: 'Du kennst ihn.', text: 'Nicht noch ein Gadget — Erholung für jemanden, der trägt.' },
+  { word: 'Klarheit', headline: 'Modern, ohne Peinlichkeit.', text: 'Nacken, Kopf, Abschalten — geschlechtsneutral.' },
+  { word: 'Danke', headline: 'Rücken freigehalten.', text: 'Für die Phase, in der er da war — jetzt Pause für ihn.' },
+  { word: 'Entdeckung', headline: 'Viele kommen wieder.', text: 'Männer entdecken Head Spa oft erst durch den Gutschein.' },
+  { word: 'Ruhe', headline: 'Endlich nichts müssen.', text: 'Basic oder Beauty — treffsicher und klar.' },
+  { word: 'Bindung', headline: 'Du hast hingesehen.', text: 'Das Geschenk sagt: Ich merke, was du trägst.' },
+]
+
+const EMOTIONS_COUPLE: EmotionItem[] = [
+  { word: 'Nähe', headline: 'Nebeneinander loslassen.', text: 'Zwei Rituale — Stille teilen, ohne Programm.' },
+  { word: 'Zeit', headline: 'Endlich nur ihr.', text: 'Partner ab 178€ — Beauty 238€ als Favorit.' },
+  { word: 'Stille', headline: 'Köpfe gemeinsam leise.', text: 'Keine Restaurant-Lautstärke — echte Pause zu zweit.' },
+  { word: 'Verbindung', headline: 'Ohne Worte stark.', text: 'Erinnerung statt Vitrine — ein Gefühl, das bleibt.' },
+  { word: 'Wertschätzung', headline: 'Jahre oder Ja.', text: 'Silberhochzeit, Verlobung, Jubiläum — Nähe schenken.' },
+  { word: 'Tiefe', headline: 'Deluxe zu zweit.', text: 'Partner Deluxe 298€ — volles Ritual nebeneinander.' },
+]
+
+const EMOTIONS_SEASON: EmotionItem[] = [
+  { word: 'Anders', headline: 'Nicht nur Süßes.', text: 'Nikolaus bringt Stille — statt nur Kalorien.' },
+  { word: 'Sofort', headline: 'Noch am 5. da.', text: 'Last Minute per E-Mail — ausdrucken oder digital.' },
+  { word: 'Advent', headline: 'Gegen den Trubel.', text: 'Für alle, die im Dezember alles geben.' },
+  { word: 'Überraschung', headline: 'Stiefel neu gedacht.', text: 'Mama, Papa, Partner, Freundin — Ruhe statt Routine.' },
+  { word: 'Pause', headline: 'Nach dem Fest einlösen.', text: 'Termin in Baesweiler, wenn der Lärm vorbei ist.' },
+  { word: 'Wärme', headline: 'Dezember braucht Stille.', text: 'Basic 89€ oder Beauty 119€ — klar und herzlich.' },
+]
+
+const EMOTIONS_SURPRISE: EmotionItem[] = [
+  { word: 'Wow', headline: 'Nicht erwartet.', text: 'Head Spa kennen viele noch nicht persönlich — genau deshalb stark.' },
+  { word: 'Treffsicher', headline: 'Leise, aber klar.', text: 'Keine laute Show — ein „Das ist für mich.“' },
+  { word: 'Tempo', headline: 'In zwei Minuten bestellt.', text: 'Digital oder Print — spontan überraschen.' },
+  { word: 'Tiefe', headline: 'Beauty trifft meist.', text: '119€ Favorit — Deluxe für den großen Moment.' },
+  { word: 'Zu zweit', headline: 'Überraschung für zwei.', text: 'Partner ab 178€ — wenn der Wow-Moment geteilt wird.' },
+  { word: 'Nachhall', headline: 'Monate später noch da.', text: 'Nicht der Strauß — das Erlebnis, das nachklingt.' },
+]
+
+const JOURNEY_DIGITAL: JourneyStep[] = [
+  { num: '01', title: 'Paket wählen', text: 'Basic 89€, Beauty 119€ oder Deluxe 149€ — online in Sekunden.' },
+  { num: '02', title: 'Sofort erhalten', text: 'E-Gutschein per E-Mail — PDF & Print@Home inklusive.' },
+  { num: '03', title: 'Digital überreichen', text: 'Weiterleiten, ausdrucken oder am Screen zeigen.' },
+  { num: '04', title: 'Termin selbst wählen', text: 'Beschenkte bucht in Baesweiler — Region Aachen & NRW.' },
+]
+
+const JOURNEY_RITUAL: JourneyStep[] = [
+  { num: '01', title: 'Tiefe wählen', text: '45, 60 oder 90 Min. — Basic, Beauty oder Deluxe.' },
+  { num: '02', title: 'Gutschein sichern', text: 'Sofort online — digital oder zum Ausdrucken.' },
+  { num: '03', title: 'Mit Sinn überreichen', text: 'Wenige Worte reichen — das Ritual spricht.' },
+  { num: '04', title: 'Im Studio erleben', text: 'Reyplatz 10, Baesweiler — Kopf, Wasser, Stille.' },
+]
+
+const JOURNEY_RECIPIENT: JourneyStep[] = [
+  { num: '01', title: 'Für wen entscheiden', text: 'Solo ab 89€ — oder Partner ab 178€, wenn es zu zweit sein soll.' },
+  { num: '02', title: 'In Minuten bestellen', text: 'Per E-Mail da — ideal auch kurz vor dem Anlass.' },
+  { num: '03', title: 'Persönlich übergeben', text: 'Mit einer Zeile Danke — der Rest ist Berührung.' },
+  { num: '04', title: 'Ruhe einlösen', text: 'Termin in Baesweiler — wenn der Alltag es zulässt.' },
+]
+
+const JOURNEY_COUPLE: JourneyStep[] = [
+  { num: '01', title: 'Partner-Paket wählen', text: '2× Basic 178€, Beauty 238€ (Beliebt) oder Deluxe 298€.' },
+  { num: '02', title: 'Gemeinsam bestellen', text: 'Gutschein sofort per E-Mail — für euch oder als Geschenk.' },
+  { num: '03', title: 'Zu zweit überreichen', text: 'Ein Moment vor dem Ritual — Nähe ohne Programm.' },
+  { num: '04', title: 'Nebeneinander erleben', text: 'Zwei Plätze in Baesweiler — Stille teilen.' },
+]
+
+const JOURNEY_SELF: JourneyStep[] = [
+  { num: '01', title: 'Dir (oder ihr) gönnen', text: 'Beauty 119€ als Allrounder — Deluxe 149€ bei tiefer Erschöpfung.' },
+  { num: '02', title: 'Sofort klären', text: 'Gutschein online — Termin muss nicht heute sein.' },
+  { num: '03', title: 'Termin schützen', text: 'Im Kalender blocken — Self Care wird verbindlich.' },
+  { num: '04', title: 'Ankommen lassen', text: 'Reyplatz 10 — empfangen, nicht abgefertigt.' },
+]
+
+const JOURNEY_SEASON: JourneyStep[] = [
+  { num: '01', title: 'Schnell wählen', text: 'Basic 89€ oder Beauty 119€ — klar und last-minute-tauglich.' },
+  { num: '02', title: 'Heute bestellen', text: 'Sofort per E-Mail — auch am Vorabend noch rechtzeitig.' },
+  { num: '03', title: 'Überraschend überreichen', text: 'Stiefel, Chat oder ausgedruckt — Stille statt nur Süßes.' },
+  { num: '04', title: 'Später einlösen', text: 'Nach dem Trubel in Baesweiler — Region Aachen.' },
+]
+
+const JOURNEY_LUXUS: JourneyStep[] = [
+  { num: '01', title: 'Premium wählen', text: 'Deluxe 149€ solo — oder Partner Deluxe 298€.' },
+  { num: '02', title: 'Elegant bestellen', text: 'Sofort digital — wirkt hochwertig, ohne Versanddrama.' },
+  { num: '03', title: 'Still überreichen', text: 'Wenige Worte, klare Haltung — Luxus darf leise sein.' },
+  { num: '04', title: '90 Min. erleben', text: 'Kérastase & Babor — volle Tiefe in Baesweiler.' },
+]
+
+const JOURNEY_REGION: JourneyStep[] = [
+  { num: '01', title: 'Regional schenken', text: 'Paket wählen — bundesweit digital verschenkbar.' },
+  { num: '02', title: 'Online abschließen', text: 'Sofort per E-Mail — Print@Home oder weiterleiten.' },
+  { num: '03', title: 'Lokal überreichen', text: 'Für Aachen, Baesweiler, Würselen & die Region.' },
+  { num: '04', title: 'Vor Ort einlösen', text: 'Wellnesstal, Reyplatz 10 — nah aus ganz NRW West.' },
 ]
 
 const PARTNER_PACKAGES = [
@@ -58,10 +269,14 @@ function page(
   essence: BuiltGiftPage['essence'],
   opts?: {
     emotions?: EmotionItem[]
+    emotionsEyebrow?: string
+    emotionsHeadline?: string
     recipients?: BuiltGiftPage['recipients']
     faq?: BuiltGiftPage['faq']
     closing?: Partial<BuiltGiftPage['closing']>
     journey?: JourneyStep[]
+    journeyEyebrow?: string
+    journeyHeadline?: string
     partnerPackages?: BuiltGiftPage['partnerPackages']
     secondaryCta?: BuiltGiftPage['secondaryCta']
     relatedLinks?: BuiltGiftPage['relatedLinks']
@@ -74,14 +289,14 @@ function page(
     hero,
     essence,
     emotions: {
-      eyebrow: 'Sechs Worte des Geschenks',
-      headline: 'Stille — auf eine leise Art',
+      eyebrow: opts?.emotionsEyebrow ?? 'Sechs Worte des Geschenks',
+      headline: opts?.emotionsHeadline ?? 'Stille — auf eine leise Art',
       items: opts?.emotions ?? DEFAULT_EMOTIONS,
     },
     recipients: opts?.recipients,
     journey: {
-      eyebrow: 'Gutschein schenken',
-      headline: 'In Minuten bestellt — lange erinnert',
+      eyebrow: opts?.journeyEyebrow ?? 'Gutschein schenken',
+      headline: opts?.journeyHeadline ?? 'In Minuten bestellt — lange erinnert',
       steps: opts?.journey ?? DEFAULT_JOURNEY,
     },
     partnerPackages: opts?.partnerPackages,
@@ -138,6 +353,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_DIGITAL,
+        emotionsEyebrow: 'Digital schenken in sechs Worten',
+        emotionsHeadline: 'Online bestellt — spürbar erlebt',
+        journey: JOURNEY_DIGITAL,
+        journeyEyebrow: 'E-Gutschein Weg',
+        journeyHeadline: 'Vom Klick zur Stille',
         faq: [
           { q: 'Gutschein online kaufen — wie schnell?', a: 'Sofort nach Bestellung per E-Mail — ideal auch last minute.' },
           { q: 'PDF oder Print@Home?', a: 'Ja — beides möglich. Digital weiterleiten oder ausdrucken.' },
@@ -145,7 +366,11 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Preise?', a: 'Basic 89€, Beauty 119€ (Beliebt), Deluxe 149€. Partner ab 178€.' },
           { q: 'Gutschein bestellen ohne Account?', a: 'Online über Treuepay — schnell und sicher.' },
         ],
-        closing: { cta: 'Gutschein online bestellen' },
+        closing: {
+          headline: 'Digital bestellt — analog gespürt.',
+          text: 'E-Gutschein für Head Spa: sofort per E-Mail, einlösbar in Baesweiler. Ab 89€ — jetzt online sichern.',
+          cta: 'Gutschein online bestellen',
+        },
         relatedLinks: [
           { href: '/gutschein/last-minute', label: 'Last Minute', hint: 'Sofort verschenken' },
           { href: '/gutschein/geschenkidee', label: 'Geschenkidee', hint: 'Was wirklich ankommt' },
@@ -179,6 +404,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_KOPF,
+        emotionsEyebrow: 'Was echte Kopfmassage meint',
+        emotionsHeadline: 'Kein Add-on — ein eigenes Ritual',
+        journey: JOURNEY_RITUAL,
+        journeyEyebrow: 'Kopfmassage schenken',
+        journeyHeadline: 'Von der Wahl bis zum Wasserstrahl',
         recipients: REGION_RECIPIENTS,
         faq: [
           { q: 'Ist das eine echte Kopfmassage — oder Friseur-Zusatz?', a: 'Echtes Head Spa Ritual: 45–90 Min. fokussiert auf Kopf, Nacken und Stille — kein 5-Minuten-Add-on.' },
@@ -186,6 +417,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Sofort verfügbar?', a: 'Ja — Gutschein sofort per E-Mail. Print@Home oder digital.' },
           { q: 'Wo einlösbar?', a: 'Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen & NRW.' },
         ],
+        closing: {
+          headline: 'Kopfmassage, die den Namen verdient.',
+          text: 'Gutschein für 45–90 Min. Head Spa — kein Friseur-Anhang. Ab 89€, sofort online, einlösbar in Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/massage', label: 'Massage Gutschein', hint: 'Ritual mit Berührung' },
           { href: '/gutschein/entspannung', label: 'Entspannung Gutschein', hint: 'Ruhe verschenken' },
@@ -219,6 +454,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_MASSAGE,
+        emotionsEyebrow: 'Massage, die anders ankommt',
+        emotionsHeadline: 'Berührung mit Ritual — nicht nur Liege',
+        journey: JOURNEY_RITUAL,
+        journeyEyebrow: 'Massage-Gutschein Weg',
+        journeyHeadline: 'Wählen, schenken, spüren',
         recipients: REGION_RECIPIENTS,
         faq: [
           { q: 'Welche Art Massage ist das?', a: 'Head Spa: achtsame Kopf- und Nackenmassage mit Wasser und Dampf — 45–90 Min. Ritual, kein klassisches Rücken-Öl-Setting.' },
@@ -226,6 +467,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Für Wen geeignet?', a: 'Für alle, die Verspannung im Nacken kennen oder einfach echte Auszeit brauchen — geschlechtsneutral.' },
           { q: 'Sofort online?', a: 'Ja — Gutschein sofort per E-Mail, Print@Home oder digital weiterleiten.' },
         ],
+        closing: {
+          headline: 'Massage schenken — mit Tiefe.',
+          text: 'Head Spa Massage-Gutschein für Kopf und Nacken: ab 89€, Beauty 119€ als Favorit. Sofort digital, Reyplatz 10 Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/kopfmassage', label: 'Kopfmassage Gutschein', hint: 'Fokus Kopf & Nacken' },
           { href: '/gutschein/entspannung', label: 'Entspannung Gutschein', hint: 'Ruhe statt Dinge' },
@@ -259,6 +504,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_ENTSPANNUNG,
+        emotionsEyebrow: 'Was Entspannung hier heißt',
+        emotionsHeadline: 'Erlaubnis fürs Nervensystem',
+        journey: JOURNEY_RITUAL,
+        journeyEyebrow: 'Relax verschenken',
+        journeyHeadline: 'Von der Idee zur echten Pause',
         recipients: REGION_RECIPIENTS,
         faq: [
           { q: 'Was genau schenke ich mit einem Entspannung Gutschein?', a: '45–90 Min. Head Spa Ritual: Stille, Massage, Wasser und Dampf — echte Erholung statt Ding.' },
@@ -266,6 +517,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Unterschied zu Massage-Gutschein?', a: 'Hier steht die Auszeit im Vordergrund — Massage ist Teil des Rituals, nicht der einzige Fokus.' },
           { q: 'Wo einlösbar?', a: 'Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen & NRW.' },
         ],
+        closing: {
+          headline: 'Entspannung, die man einlösen kann.',
+          text: 'Relax-Gutschein für Head Spa in Baesweiler: 45–90 Min. Stille statt Dinge. Ab 89€, Beauty 119€ — sofort online.',
+        },
         relatedLinks: [
           { href: '/gutschein/zeit-schenken', label: 'Zeit schenken', hint: 'Me Time & Auszeit' },
           { href: '/gutschein/selbstfuersorge', label: 'Selbstfürsorge', hint: 'Self Care Geschenk' },
@@ -299,6 +554,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_IDEE,
+        emotionsEyebrow: 'Warum diese Idee trägt',
+        emotionsHeadline: 'Originell — ohne Umwege',
+        journey: JOURNEY_RECIPIENT,
+        journeyEyebrow: 'Idee umsetzen',
+        journeyHeadline: 'In Minuten von Idee zu Geschenk',
         recipients: {
           eyebrow: 'Für wen?',
           headline: 'Geschenkidee für …',
@@ -315,6 +576,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Sofort bestellbar?', a: 'Ja — Gutschein sofort per E-Mail, digital oder Print@Home.' },
           { q: 'Für welchen Anlass?', a: 'Geburtstag, Danke, Jahrestag, Weihnachten — oder einfach so, wenn Worte fehlen.' },
         ],
+        closing: {
+          headline: 'Die Idee, die bleibt.',
+          text: 'Besondere Geschenkidee: Head Spa Gutschein statt Kerze und Schal. Ab 89€, Beauty 119€ — sofort per E-Mail.',
+        },
         relatedLinks: [
           { href: '/gutschein/ueberraschung', label: 'Überraschungsgeschenk', hint: 'Unerwartet & stark' },
           { href: '/gutschein/fuer-mama', label: 'Geschenk für Mama', hint: 'Alltag, nicht nur Feiertag' },
@@ -348,12 +613,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_ZEIT,
+        emotionsEyebrow: 'Zeit in sechs Formen',
+        emotionsHeadline: 'Mehr als Minuten auf der Uhr',
+        journey: JOURNEY_SELF,
+        journeyEyebrow: 'Auszeit schenken',
+        journeyHeadline: 'Zeit blocken — Stille ermöglichen',
         faq: [
           { q: 'Solo oder zu zweit Zeit schenken?', a: 'Solo ab 89€. Partner-Pakete ab 178€ — Beauty zu zweit 238€ ist besonders beliebt.' },
           { q: 'Welches Paket für Me Time?', a: 'Beauty 119€ (60 Min.) trifft die meisten. Deluxe 149€ für tiefe Auszeit.' },
           { q: 'Sofort verfügbar?', a: 'Ja — Gutschein sofort per E-Mail.' },
           { q: 'Wo einlösen?', a: 'Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen & NRW.' },
         ],
+        closing: {
+          headline: 'Zeit, die man wirklich spürt.',
+          text: 'Me-Time-Gutschein: 45–90 Min. Head Spa — solo ab 89€, zu zweit ab 178€. Sofort online, Termin in Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/selbstfuersorge', label: 'Selbstfürsorge', hint: 'Self Care Geschenk' },
           { href: '/gutschein/paar', label: 'Gutschein zu zweit', hint: 'Partner ab 178€' },
@@ -386,12 +661,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_SELF,
+        emotionsEyebrow: 'Self Care ohne Floskeln',
+        emotionsHeadline: 'Empfangen — nicht nur funktionieren',
+        journey: JOURNEY_SELF,
+        journeyEyebrow: 'Selbstfürsorge greifbar',
+        journeyHeadline: 'Vom Vorsatz zum Termin',
         faq: [
           { q: 'Selbstfürsorge Gutschein — für wen?', a: 'Für alle, die ständig geben — und selten empfangen. Auch als Geschenk an dich selbst.' },
           { q: 'Welches Paket?', a: 'Beauty 119€ ist der sichere Favorit. Basic 89€ zum Einstieg, Deluxe 149€ für tiefe Pause. Partner ab 178€.' },
           { q: 'Muss ich den Termin sofort buchen?', a: 'Nein — Gutschein sofort, Termin später, wenn es passt.' },
           { q: 'Wo?', a: 'Wellnesstal, Reyplatz 10, Baesweiler.' },
         ],
+        closing: {
+          headline: 'Self Care, die einen Termin hat.',
+          text: 'Selbstfürsorge-Gutschein für Head Spa: Pause ohne Optimierungsdruck. Beauty 119€ — oder Deluxe 149€, wenn es tiefer sitzt.',
+        },
         relatedLinks: [
           { href: '/gutschein/zeit-schenken', label: 'Zeit schenken', hint: 'Me Time & Auszeit' },
           { href: '/gutschein/fuer-mama', label: 'Geschenk für Mama', hint: 'Ruhe im Alltag' },
@@ -424,6 +709,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_LUXUS,
+        emotionsEyebrow: 'Quiet Luxury in sechs Worten',
+        emotionsHeadline: 'Premium, das leise bleibt',
+        journey: JOURNEY_LUXUS,
+        journeyEyebrow: 'Deluxe schenken',
+        journeyHeadline: 'Von der Wahl zu 90 Minuten Tiefe',
         faq: [
           { q: 'Luxus Gutschein — welches Paket?', a: 'Deluxe 149€ (90 Min.) mit Kérastase & Babor. Partner Deluxe 298€ zu zweit.' },
           { q: 'Premium Geschenk ohne Deluxe?', a: 'Beauty 119€ ist starker Allrounder — Deluxe, wenn du maximale Tiefe willst.' },
@@ -431,6 +722,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Sofort online?', a: 'Ja — sofort per E-Mail.' },
           { q: 'Wo?', a: 'Wellnesstal, Reyplatz 10, Baesweiler.' },
         ],
+        closing: {
+          headline: 'Luxus ohne Lautstärke.',
+          text: 'Deluxe-Gutschein: 90 Min. mit Kérastase & Babor — solo 149€, zu zweit 298€. Sofort online, Studio Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/paar', label: 'Gutschein zu zweit', hint: 'Partner Deluxe 298€' },
           { href: '/gutschein/geschenkidee', label: 'Geschenkidee', hint: 'Was wirklich bleibt' },
@@ -463,6 +758,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_NRW,
+        emotionsEyebrow: 'NRW — nah und persönlich',
+        emotionsHeadline: 'Region schenken, nicht Anonymität',
+        journey: JOURNEY_REGION,
+        journeyEyebrow: 'Regionaler Gutschein-Weg',
+        journeyHeadline: 'Digital bestellt — lokal erlebt',
         recipients: {
           eyebrow: 'Städte',
           headline: 'Wellness Gutschein — deine Stadt',
@@ -480,6 +781,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Preise?', a: 'Basic 89€, Beauty 119€ (Beliebt), Deluxe 149€. Partner ab 178€.' },
           { q: 'Online bestellen?', a: 'Ja — sofort per E-Mail.' },
         ],
+        closing: {
+          headline: 'Wellness für die Region — ohne Therme-Gedränge.',
+          text: 'NRW-Gutschein für Head Spa in Baesweiler: nah aus Aachen & Umgebung. Ab 89€, sofort online verschenkbar.',
+        },
         relatedLinks: [
           { href: '/geschenk-aachen', label: 'Geschenk Aachen', hint: 'Head Spa für Aachen' },
           { href: '/geschenk-baesweiler', label: 'Geschenk Baesweiler', hint: 'Direkt vor Ort' },
@@ -514,6 +819,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_MAMA,
+        emotionsEyebrow: 'Was Mama wirklich spürt',
+        emotionsHeadline: 'Danke — einlösbar im Alltag',
+        journey: JOURNEY_RECIPIENT,
+        journeyEyebrow: 'Mama beschenken',
+        journeyHeadline: 'Kurz bestellt — lange gespürt',
         recipients: {
           eyebrow: 'Welche Mama?',
           headline: 'Geschenk für Mama — im echten Alltag',
@@ -530,6 +841,10 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
           { q: 'Sofort verfügbar?', a: 'Ja — Gutschein sofort per E-Mail.' },
           { q: 'Wo einlösbar?', a: 'Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen & NRW.' },
         ],
+        closing: {
+          headline: 'Für Mama — die gerade wieder alles trägt.',
+          text: 'Head Spa Gutschein für Mama im Alltag: Beauty 119€ als Favorit. Sofort per E-Mail — einlösbar in Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/muttertag', label: 'Muttertag Gutschein', hint: 'Für den Feiertag' },
           { href: '/gutschein/selbstfuersorge', label: 'Selbstfürsorge', hint: 'Me Time schenken' },
@@ -561,12 +876,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_PAPA,
+        emotionsEyebrow: 'Für Papa — ohne Kitsch',
+        emotionsHeadline: 'Ruhe statt Werkzeug und Krawatte',
+        journey: JOURNEY_RECIPIENT,
+        journeyEyebrow: 'Papa beschenken',
+        journeyHeadline: 'Klar wählen — überraschend ankommen',
         faq: [
           { q: 'Nehmen Papas Head Spa an?', a: 'Ja — viele kommen überrascht und kommen wieder. Geschlechtsneutral, Fokus Nacken und Kopf.' },
           { q: 'Welches Paket für Papa?', a: 'Basic 89€ oder Beauty 119€. Deluxe 149€ für besondere Anlässe. Partner ab 178€.' },
           { q: 'Vatertag oder Alltag?', a: 'Hier: Alltag & Geburtstag. Für den Feiertag siehe /gutschein/vatertag.' },
           { q: 'Sofort online?', a: 'Ja — Gutschein sofort per E-Mail.' },
         ],
+        closing: {
+          headline: 'Papa verdient Abschalten — nicht noch Dinge.',
+          text: 'Gutschein für Papa: Head Spa mit Fokus Nacken und Kopf. Basic 89€ oder Beauty 119€ — sofort online.',
+        },
         relatedLinks: [
           { href: '/gutschein/vatertag', label: 'Vatertag Gutschein', hint: 'Für den Feiertag' },
           { href: '/gutschein/fuer-freund', label: 'Geschenk für Freund', hint: 'Auch für Männer' },
@@ -598,12 +923,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_OMA,
+        emotionsEyebrow: 'Für Oma — warm und klar',
+        emotionsHeadline: 'Wertschätzung über Generationen',
+        journey: JOURNEY_RECIPIENT,
+        journeyEyebrow: 'Oma beschenken',
+        journeyHeadline: 'Sanft bestellt — respektvoll erlebt',
         faq: [
           { q: 'Ist Head Spa für Oma geeignet?', a: 'Ja — sanft, ruhig, angepasst. Basic 89€ oder Beauty 119€ sind oft ideal.' },
           { q: 'Preise?', a: 'Basic 89€, Beauty 119€ (Beliebt), Deluxe 149€. Partner ab 178€ — z. B. mit Tochter oder Enkelin.' },
           { q: 'Sofort verfügbar?', a: 'Ja — Gutschein sofort per E-Mail.' },
           { q: 'Wo?', a: 'Wellnesstal, Reyplatz 10, Baesweiler.' },
         ],
+        closing: {
+          headline: 'Für Oma — ein Danke, das man spürt.',
+          text: 'Sanfter Head Spa Gutschein für Oma: Basic 89€ oder Beauty 119€. Sofort per E-Mail, Studio Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/fuer-mama', label: 'Geschenk für Mama', hint: 'Alltag & Danke' },
           { href: '/gutschein/fuer-opa', label: 'Geschenk für Opa', hint: 'Ruhe für Opa' },
@@ -635,12 +970,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_OPA,
+        emotionsEyebrow: 'Für Opa — würdevoll klar',
+        emotionsHeadline: 'Aufmerksamkeit statt praktischem Ding',
+        journey: JOURNEY_RECIPIENT,
+        journeyEyebrow: 'Opa beschenken',
+        journeyHeadline: 'Einfach wählen — stark ankommen',
         faq: [
           { q: 'Nehmen Opas so ein Geschenk an?', a: 'Sehr oft ja — besonders, wenn es als echte Auszeit und nicht als „Wellness-Kram“ gerahmt wird.' },
           { q: 'Welches Paket?', a: 'Basic 89€ als Einstieg, Beauty 119€ für mehr Tiefe. Partner ab 178€.' },
           { q: 'Sofort online?', a: 'Ja — Gutschein sofort per E-Mail.' },
           { q: 'Wo einlösen?', a: 'Wellnesstal, Reyplatz 10, Baesweiler.' },
         ],
+        closing: {
+          headline: 'Für Opa — Ruhe mit Haltung.',
+          text: 'Head Spa Gutschein für Opa: Fokus Kopf und Nacken. Basic 89€ als Einstieg — sofort online, Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/fuer-papa', label: 'Geschenk für Papa', hint: 'Auch für Väter' },
           { href: '/gutschein/fuer-oma', label: 'Geschenk für Oma', hint: 'Für die Großeltern' },
@@ -672,12 +1017,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_FREUND,
+        emotionsEyebrow: 'Freundschaft in sechs Worten',
+        emotionsHeadline: 'Klar schenken — ohne Gadget-Falle',
+        journey: JOURNEY_RECIPIENT,
+        journeyEyebrow: 'Freund beschenken',
+        journeyHeadline: 'Modern wählen — echt ankommen',
         faq: [
           { q: 'Geschenk für Freund — kommt das an?', a: 'Ja — klar, modern, ohne Kitsch. Fokus Nacken, Kopf, Abschalten.' },
           { q: 'Welches Paket?', a: 'Basic 89€ oder Beauty 119€. Partner ab 178€, wenn ihr zu zweit kommt.' },
           { q: 'Sofort verfügbar?', a: 'Ja — Gutschein sofort per E-Mail.' },
           { q: 'Mehr Infos für Männer?', a: 'Siehe /ratgeber/head-spa-maenner.' },
         ],
+        closing: {
+          headline: 'Für den Freund, der selten pausiert.',
+          text: 'Head Spa Gutschein für Freunde: modern, ohne Kitsch. Basic 89€ oder Beauty 119€ — sofort per E-Mail.',
+        },
         relatedLinks: [
           { href: '/ratgeber/head-spa-maenner', label: 'Head Spa für Männer', hint: 'Ratgeber' },
           { href: '/gutschein/fuer-papa', label: 'Geschenk für Papa', hint: 'Ähnliche Richtung' },
@@ -709,6 +1064,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_COUPLE,
+        emotionsEyebrow: '25 Jahre in sechs Gefühlen',
+        emotionsHeadline: 'Silber — geteilte Stille',
+        journey: JOURNEY_COUPLE,
+        journeyEyebrow: 'Partner-Geschenk Weg',
+        journeyHeadline: 'Gemeinsam wählen — nebeneinander loslassen',
         partnerPackages: PARTNER_PACKAGES,
         secondaryCta: SECONDARY_PARTNER,
         faq: [
@@ -724,7 +1085,7 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
         closing: {
           headline: '25 Jahre Nähe — schenke gemeinsame Stille.',
-          text: 'Partner-Gutschein zur Silberhochzeit: nebeneinander loslassen, lange erinnern. Ab 178€, sofort online.',
+          text: 'Partner-Gutschein zur Silberhochzeit: nebeneinander loslassen, lange erinnern. Ab 178€, Beauty 238€ — sofort online.',
           cta: 'Partner-Gutschein bestellen',
         },
       },
@@ -753,12 +1114,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_SEASON,
+        emotionsEyebrow: 'Nikolaus — anders gedacht',
+        emotionsHeadline: 'Stiefel mit Stille statt nur Süßem',
+        journey: JOURNEY_SEASON,
+        journeyEyebrow: 'Nikolaus last minute',
+        journeyHeadline: 'Heute bestellt — morgen überrascht',
         faq: [
           { q: 'Noch rechtzeitig zum Nikolaus?', a: 'Ja — Gutschein sofort per E-Mail. Ideal am 5./6. Dezember.' },
           { q: 'Welches Paket?', a: 'Basic 89€ oder Beauty 119€. Partner ab 178€ zu zweit.' },
           { q: 'Für wen?', a: 'Mama, Papa, Partner, Freundin — alle, die Ruhe statt Süßes verdienen.' },
           { q: 'Wo einlösen?', a: 'Wellnesstal, Reyplatz 10, Baesweiler.' },
         ],
+        closing: {
+          headline: 'Nikolaus: Stille statt nur Schokolade.',
+          text: 'Originelles Nikolaus-Geschenk — Head Spa Gutschein sofort per E-Mail. Ab 89€, einlösbar in Baesweiler nach dem Trubel.',
+        },
         relatedLinks: [
           { href: '/gutschein/ueberraschung', label: 'Überraschungsgeschenk', hint: 'Wow-Moment' },
           { href: '/gutschein/last-minute', label: 'Last Minute', hint: 'Sofort verschenken' },
@@ -790,6 +1161,12 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_COUPLE,
+        emotionsEyebrow: 'Zum Ja — sechs Gefühle',
+        emotionsHeadline: 'Nähe vor dem Planungsrauschen',
+        journey: JOURNEY_COUPLE,
+        journeyEyebrow: 'Verlobungsgeschenk Weg',
+        journeyHeadline: 'Partner wählen — gemeinsam ankommen',
         partnerPackages: PARTNER_PACKAGES,
         secondaryCta: SECONDARY_PARTNER,
         faq: [
@@ -805,7 +1182,7 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
         closing: {
           headline: 'Zum Ja: Stille zu zweit schenken.',
-          text: 'Partner-Gutschein zur Verlobung — Nähe ohne Trubel. Ab 178€, sofort online.',
+          text: 'Partner-Gutschein zur Verlobung — Nähe ohne Trubel. Ab 178€, Beauty 238€ oder Deluxe 298€ — sofort online.',
           cta: 'Partner-Gutschein bestellen',
         },
       },
@@ -834,12 +1211,22 @@ const BUILDERS: Record<string, () => BuiltGiftPage> = {
         ],
       },
       {
+        emotions: EMOTIONS_SURPRISE,
+        emotionsEyebrow: 'Wow in sechs Worten',
+        emotionsHeadline: 'Unerwartet — und lange erinnert',
+        journey: JOURNEY_DIGITAL,
+        journeyEyebrow: 'Überraschung in Minuten',
+        journeyHeadline: 'Schnell bestellt — tief ankommend',
         faq: [
           { q: 'Gute Überraschung — wirklich?', a: 'Ja — Head Spa ist für viele neu und bleibt im Gedächtnis. Emotional starker Wow-Effekt.' },
           { q: 'Welches Paket?', a: 'Beauty 119€ als Favorit. Basic 89€, Deluxe 149€, Partner ab 178€.' },
           { q: 'Wie schnell?', a: 'Sofort per E-Mail — ideal last minute. Siehe auch /gutschein/last-minute.' },
           { q: 'Wo einlösen?', a: 'Wellnesstal, Reyplatz 10, Baesweiler.' },
         ],
+        closing: {
+          headline: 'Die Überraschung, die nachklingt.',
+          text: 'Wow-Geschenk ohne Standard: Head Spa Gutschein ab 89€, Beauty 119€ als Favorit. Sofort digital — Termin später in Baesweiler.',
+        },
         relatedLinks: [
           { href: '/gutschein/last-minute', label: 'Last Minute', hint: 'Sofort verschenken' },
           { href: '/gutschein/geschenkidee', label: 'Geschenkidee', hint: 'Ideen, die ankommen' },

@@ -16,7 +16,7 @@
     "headline": "Ihr sagt: Danke — gemeinsam, aber persönlich.",
     "paragraphs": [
       "Team-Geschenke sind oft laut — Events, wo niemand wirklich abschaltet. Head Spa ist das Gegenteil: leise, tief, individuell.",
-      "Jeder bekommt einen Gutschein — jeder wählt seinen Termin. Kein Gruppendruck, keine Smalltalk-Pflicht. Nur Ritual, Berührung und Ruhe.",
+      "Jeder Kollege bekommt einen eigenen Code — und wählt den Termin selbst. Kein Gruppendruck, keine Smalltalk-Pflicht. Nur Ritual, Berührung und Ruhe.",
       "Ob Projektabschluss, Weihnachten, Abschied oder einfach Danke — das Team-Geschenk, das wirklich ankommt."
     ]
   },
@@ -27,9 +27,9 @@
       { "word": "Wertschätzung", "headline": "Ihr seht euch.", "text": "Nicht Pflicht — echtes Danke für den Einsatz." },
       { "word": "Individualität", "headline": "Jeder für sich.", "text": "Kein Event — jeder bucht, wann es passt." },
       { "word": "Ruhe", "headline": "Endlich abschalten.", "text": "45–90 Min. ohne Kollegen, ohne Mail." },
-      { "word": "Stille", "headline": "Kopf leise.", "text": "Burnout-Prävention — ernst gemeint." },
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Echte Erholung — ernst gemeint, ohne Event-Lärm." },
       { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Verspannungen lösen sich — nach langen Projekten." },
-      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Bestes Team-Geschenk ever“ — hören wir oft." }
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "Das Team erinnert sich an Ruhe — nicht an den Bowlingabend." }
     ]
   },
   "recipients": {
@@ -60,7 +60,7 @@
   ],
   "closing": {
     "headline": "Team-Geschenk — Stille, die ankommt.",
-    "text": "Head Spa Gutschein für Wertschätzung, Ruhe und echtes Danke. Jetzt bestellen.",
+    "text": "Kollegen danken mit Einzel-Gutscheinen: jeder bucht selbst, jeder bekommt Ruhe. Jetzt bestellen.",
     "cta": "Team-Gutschein bestellen"
   }
 }

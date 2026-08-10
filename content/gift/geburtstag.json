@@ -15,8 +15,8 @@
     "eyebrow": "Was wirklich zählt",
     "headline": "Ein Geburtstag verdient mehr als Lärm — er verdient Stille.",
     "paragraphs": [
-      "Die besten Geburtstagsgeschenke landen nicht im Schrank. Sie landen im Nervensystem — als Leichtigkeit, Wärme und das Gefühl: Jemand sieht mich wirklich.",
-      "Head Spa ist der Rahmen. Was du schenkst: Zeit ohne Pflicht. Berührung ohne Erwartung. Ein Raum, in dem niemand etwas leisten muss.",
+      "Die besten Geburtstagsgeschenke landen nicht im Schrank. Sie bleiben als Gefühl: Leichtigkeit, Wärme und das Wissen — jemand hat mich wirklich gesehen.",
+      "Was du schenkst, ist Zeit ohne Pflicht: Head Spa Ritual mit Berührung, Wasser und Dampf — ein Raum, in dem niemand etwas leisten muss.",
       "Ob 30, 40, 50 oder 70 — Ruhe kennt kein Alter. Jeder verdient einen Moment, in dem der Kopf endlich loslässt."
     ]
   },
@@ -56,11 +56,11 @@
     { "q": "Last-Minute Geburtstagsgeschenk?", "a": "Ja — Gutschein sofort digital. Ausdrucken und mitbringen." },
     { "q": "Welches Paket schenken?", "a": "Beauty (119€) ist der Klassiker — Basic (89€) zum Einstieg, Deluxe (149€) für pure Verwöhnung." },
     { "q": "Für Männer geeignet?", "a": "Ja — Head Spa ist geschlechtsneutral. Entspannung für alle." },
-    { "q": "Wo einlösen?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+    { "q": "Wo einlösen?", "a": "Im Wellnesstal am Reyplatz 10 in Baesweiler — Termin in der Region Aachen." }
   ],
   "closing": {
     "headline": "Schenke Stille — nicht Staub.",
-    "text": "Das Geburtstagsgeschenk für Berührung, Ruhe und echte Entspannung. Jetzt bestellen.",
+    "text": "Geburtstag ohne Regalstaub: Head Spa Gutschein ab 89€ — sofort per E-Mail, Print@Home.",
     "cta": "Geburtstags-Gutschein bestellen"
   }
 }

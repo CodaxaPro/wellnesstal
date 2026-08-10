@@ -2,65 +2,65 @@
   "slug": "firmen-geschenk",
   "path": "/gutschein/firmen-geschenk",
   "seo": {
-    "title": "Firmengeschenk Wellness & Head Spa Gutschein | Mitarbeiter — Wellnesstal",
-    "description": "Firmengeschenk für Mitarbeiter: Head Spa Gutschein — Ruhe, Wertschätzung und echte Entspannung statt Standard-Prämie. Ab 89€, sofort online · Baesweiler & Region Aachen."
+    "title": "Firmengeschenk Head Spa Gutschein | Kunden & Partner — Wellnesstal",
+    "description": "Firmengeschenk für Kunden und Geschäftspartner: Head Spa Gutschein — professionelle Wertschätzung mit Ruhe statt Werbeartikel. Ab 89€, sofort online · Baesweiler & Region Aachen."
   },
   "hero": {
-    "eyebrow": "Firmen · Mitarbeiter",
+    "eyebrow": "Firmen · Kunden & Partner",
     "headline": "Keine Tasse mit Logo. Ein Gefühl, das bleibt.",
-    "subline": "Weihnachten, Jubiläum, Projektabschluss — wieder Gutscheine für Ketten oder Werbeartikel? Schenke Stille: Head Spa Gutschein für Mitarbeiter, die wirklich Ruhe brauchen.",
-    "trust": "4,7★ · Ab 89€ · Sofort per E-Mail · Ideal für Teams"
+    "subline": "Kundenbindung, Jahresabschluss, Projektübergabe — wieder Werbeartikel oder Ketten-Gutscheine? Schenke Stille: Head Spa Gutschein für Geschäftspartner, die echte Ruhe schätzen.",
+    "trust": "4,7★ · Ab 89€ · Sofort per E-Mail · Professionell & persönlich"
   },
   "essence": {
-    "eyebrow": "Mehr als Mitarbeiter-Benefit",
-    "headline": "Du sagst: Danke — und meinst es.",
+    "eyebrow": "Mehr als Werbegeschenk",
+    "headline": "Du sagst Danke an Kunden — und meinst es.",
     "paragraphs": [
-      "Firmengeschenke landen oft im Schrank. Head Spa landet im Nervensystem — als Leichtigkeit, Wertschätzung und das Gefühl, wirklich gesehen zu werden.",
-      "Ob ein Gutschein für die beste Kollegin, das ganze Team oder die Geschäftsführung — du schenkst 45 bis 90 Minuten, in denen der Kopf leise wird.",
-      "Region Aachen, Baesweiler, Heinsberg — gut erreichbar für Mitarbeiter aus der gesamten Städteregion."
+      "Firmengeschenke für Kunden landen oft im Schrank. Ein Head Spa Gutschein landet im Alltag als spürbare Wertschätzung — leise, professionell, ohne Logo-Druck.",
+      "Ob Stammkunde, Lieferant oder externe Partnerin: du schenkst 45 bis 90 Minuten dediziertes Ritual — Kopf, Nacken, Wasser, Dampf — nicht Friseur-Add-on.",
+      "Studio in Baesweiler am Reyplatz 10: gut erreichbar für Empfängerinnen und Empfänger aus Aachen, Heinsberg und der Städteregion."
     ]
   },
   "emotions": {
     "eyebrow": "Sechs Worte des Firmengeschenks",
-    "headline": "Wertschätzung — auf eine leise Art",
+    "headline": "Business-Danke — auf eine leise Art",
     "items": [
-      { "word": "Wertschätzung", "headline": "Du siehst sie.", "text": "Nicht Pflicht — echtes Danke für Einsatz und Loyalität." },
-      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die Verspannungen löst — nach langen Projekten." },
+      { "word": "Wertschätzung", "headline": "Beziehung pflegen.", "text": "Kein Werbeartikel — ein Zeichen echter Partnerschaft." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Kopf und Nacken loslassen — nach intensiven Projekten." },
       { "word": "Ruhe", "headline": "Endlich abschalten.", "text": "Kein Meeting, kein Deadline — nur Ritual." },
-      { "word": "Stille", "headline": "Kopf leise.", "text": "Burnout-Prävention beginnt mit echter Erholung." },
-      { "word": "Reinheit", "headline": "Frisch. Leicht.", "text": "Reset — physisch und mental." },
-      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Das beste Firmengeschenk ever“ — hören wir oft." }
+      { "word": "Stille", "headline": "Kopf leise.", "text": "Erholung, die professionell wirkt und persönlich bleibt." },
+      { "word": "Reinheit", "headline": "Frisch. Leicht.", "text": "Reset — klar und ohne Show." },
+      { "word": "Erinnerung", "headline": "Bleibt.", "text": "Jahre später erinnert man sich an das Geschenk — nicht an den Kugelschreiber." }
     ]
   },
   "recipients": {
     "eyebrow": "Für wen?",
-    "headline": "Firmengeschenk — flexibel",
+    "headline": "Firmengeschenk — B2B-klar",
     "items": [
-      { "title": "Einzelne Mitarbeiter", "text": "Beauty (119€) — sicherer Allrounder für Kolleginnen und Kollegen." },
-      { "title": "Das ganze Team", "text": "Mehrere Gutscheine — jeder wählt selbst den Termin." },
-      { "title": "Projektabschluss", "text": "Danke sagen — nach intensivem Einsatz, vor dem nächsten Sprint." },
-      { "title": "Weihnachten", "text": "Stille statt Wein — siehe auch /gutschein/weihnachten." }
+      { "title": "Stammkunden", "text": "Beauty (119€) — sicherer Allrounder, geschlechtsneutral." },
+      { "title": "Geschäftspartner", "text": "Deluxe (149€) — für besondere Zusammenarbeit." },
+      { "title": "Jahresabschluss", "text": "Danke an externe Partner — ohne Werbeaufdruck." },
+      { "title": "Mehrere Empfänger", "text": "Einzeln bestellen — jeder Code sofort per E-Mail." }
     ]
   },
   "journey": {
     "eyebrow": "Firmengeschenk bestellen",
     "headline": "In Minuten bestellt — lange erinnert",
     "steps": [
-      { "num": "01", "title": "Wählen", "text": "Basic, Beauty oder Deluxe — je nach Budget und Tiefe." },
-      { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — einzeln oder mehrfach." },
-      { "num": "03", "title": "Überreichen", "text": "Weihnachtsfeier, Team-Event oder persönlich — das Geschenk wirkt." },
-      { "num": "04", "title": "Wirken", "text": "Mitarbeiter erlebt Stille — und fühlt sich wertgeschätzt." }
+      { "num": "01", "title": "Wählen", "text": "Basic, Beauty oder Deluxe — je nach Budget und Beziehung." },
+      { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — einzeln oder mehrfach über Treuepay." },
+      { "num": "03", "title": "Überreichen", "text": "Per Mail, mit Karte oder persönlich beim Kundentermin." },
+      { "num": "04", "title": "Wirken", "text": "Der Empfänger bucht selbst — und spürt: das war kein Standard." }
     ]
   },
   "faq": [
-    { "q": "Als Firmengeschenk für Mitarbeiter?", "a": "Ja — sehr beliebt. Beauty (119€) oder Basic (89€) — geschlechtsneutral und professionell." },
-    { "q": "Mehrere Gutscheine?", "a": "Ja — einzeln bestellen, sofort per E-Mail. Ideal für Teams." },
+    { "q": "Als Firmengeschenk für Kunden?", "a": "Ja — Beauty (119€) oder Basic (89€) — geschlechtsneutral und professionell." },
+    { "q": "Mehrere Gutscheine?", "a": "Ja — einzeln bestellen, sofort per E-Mail. Ideal für Partnerlisten." },
     { "q": "Rechnung für Firma?", "a": "Online bestellen — bei Bedarf Rechnungsdaten angeben (Treuepay Checkout)." },
-    { "q": "Region?", "a": "Wellnesstal Baesweiler — gut erreichbar aus Aachen, Heinsberg, Eschweiler und der gesamten Region." }
+    { "q": "Region?", "a": "Empfänger lösen in Baesweiler ein — Reyplatz 10, gut erreichbar aus Aachen und Umgebung." }
   ],
   "closing": {
     "headline": "Firmengeschenk — Stille, die ankommt.",
-    "text": "Head Spa Gutschein für Wertschätzung, Ruhe und echte Entspannung. Jetzt bestellen.",
+    "text": "B2B-Gutschein für Kunden und Partner: Head Spa statt Werbeartikel. Jetzt bestellen.",
     "cta": "Firmen-Gutschein bestellen"
   }
 }

@@ -15,9 +15,9 @@
     "eyebrow": "Die bessere Geschenkidee",
     "headline": "Wellness-Gutscheine sind überall. Ruhe ist selten.",
     "paragraphs": [
-      "Thermen sind laut. Day Spas sind voll. Was bleibt, ist ein Gefühl von „schön, aber hektisch“. Wellnesstal ist das Gegenteil: ein dediziertes Ritual-Studio, in dem Stille geschützt wird.",
-      "Dein Wellness-Geschenk ist kein Eintritt — es ist Berührung ohne Warteschlange. Entspannung ohne fremde Blicke. Ein Moment, der wirklich dir gehört.",
-      "Head Spa ist unsere Form von Wellness: japanische Technik, deutsche Gründlichkeit, und das, was Gäste am meisten nennen — Geborgenheit."
+      "Thermen sind laut. Day Spas sind voll. Was oft bleibt: „schön, aber hektisch“. Wellnesstal ist das Gegenteil — ein dediziertes Ritual-Studio, in dem Stille geschützt wird.",
+      "Dein Wellness-Geschenk ist kein Eintritt: Berührung ohne Warteschlange, Entspannung ohne Massenbetrieb — ein Moment, der wirklich dem Beschenkten gehört.",
+      "Head Spa ist unsere Form von Wellness: japanisch inspiriertes Kopf-Ritual mit Wasser und Dampf — intim, klar, ohne Therme-Chaos."
     ]
   },
   "emotions": {
@@ -119,12 +119,12 @@
     },
     {
       "q": "Wo in der Region?",
-      "a": "Baesweiler, Reyplatz 10 — gut erreichbar aus Aachen, Heinsberg, Eschweiler und der gesamten Region."
+      "a": "Kein Bad, kein Massenbetrieb: Studio am Reyplatz 10 in Baesweiler — Aachen, Heinsberg, Eschweiler nah."
     }
   ],
   "closing": {
     "headline": "Wellness, das bleibt — nicht nur ein Tag.",
-    "text": "Schenke Ruhe, Berührung und Reinheit. Gutschein jetzt online — sofort per E-Mail.",
+    "text": "Wellness-Geschenk ohne Therme: privates Head Spa Ritual ab 89€ — sofort online.",
     "cta": "Wellness Geschenk bestellen"
   }
 }

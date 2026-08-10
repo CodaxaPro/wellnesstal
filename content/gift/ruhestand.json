@@ -16,7 +16,7 @@
     "headline": "Du schenkst Zeit — nicht noch ein Ding.",
     "paragraphs": [
       "Uhren, Blumen, Reisegutscheine — schön. Was wirklich ankommt: ein Moment nur für sie — oder für ihn. Ohne Pflicht, ohne Erwartung.",
-      "Head Spa ist der Rahmen: 45 bis 90 Minuten, in denen der Körper runterfahren darf. Nach Jahrzehnten des Gebens endlich empfangen.",
+      "Nach Jahrzehnten des Gebens endlich empfangen: 45 bis 90 Minuten Head Spa — Kopf, Nacken, Wasser, Dampf — sanft und ohne Programmdruck.",
       "Ob Mama, Papa, liebe Kollegin oder Mentor — Ruhestand verdient Stille, die man spürt."
     ]
   },
@@ -25,7 +25,7 @@
     "headline": "Glückwunsch — leise gesagt",
     "items": [
       { "word": "Freiheit", "headline": "Endlich du.", "text": "Kein Wecker, kein Meeting — nur Ritual." },
-      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die sagt: Du darfst ankommen." },
+      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Kopf und Nacken loslassen — der neue Abschnitt darf weich beginnen." },
       { "word": "Ruhe", "headline": "Nichts leisten.", "text": "45–90 Min. nur für sie — endlich." },
       { "word": "Stille", "headline": "Kopf leise.", "text": "Nach Jahrzehnten Trubel — endlich loslassen." },
       { "word": "Wertschätzung", "headline": "Du siehst sie.", "text": "Danke für alles — spürbar im Geschenk." },
@@ -56,11 +56,11 @@
     { "q": "Als Ruhestandsgeschenk?", "a": "Ja — sehr beliebt. Beauty (119€) oder Deluxe (149€) für besondere Wertschätzung." },
     { "q": "Für Mama oder Papa?", "a": "Ja — Head Spa ist für alle Altersgruppen. Sanft, ruhig, respektvoll." },
     { "q": "Sofort verfügbar?", "a": "Ja — ideal auch kurz vor der Abschiedsfeier." },
-    { "q": "Wo?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+    { "q": "Wo?", "a": "Das Ritual findet im Wellnesstal statt — Reyplatz 10, Baesweiler, Region Aachen." }
   ],
   "closing": {
     "headline": "Ruhestand — mit Stille, die bleibt.",
-    "text": "Head Spa Gutschein für Berührung, Ruhe und echte Wertschätzung. Jetzt bestellen.",
+    "text": "Zum Ruhestand: Auszeit ohne Pflicht — Head Spa Gutschein ab 89€. Jetzt bestellen.",
     "cta": "Ruhestands-Gutschein bestellen"
   }
 }

@@ -16,7 +16,7 @@
     "headline": "Kein Lieferstress. Kein leeres Gefühl.",
     "paragraphs": [
       "Last-Minute-Geschenke wirken oft hastig — weil sie es sind. Ein digitaler Head Spa Gutschein ist in Minuten da und fühlt sich trotzdem durchdacht an.",
-      "Du schenkst nicht einen Betrag — du schenkst Ruhe, Berührung und einen Moment, in dem der Kopf leise wird. Das wirkt persönlicher als jede Express-Lieferung.",
+      "Statt Express-Paket: ein Code für echte Auszeit — Basic, Beauty oder Deluxe, einlösbar wenn der Beschenkte Zeit hat.",
       "Ausdrucken, in eine Karte legen, überreichen — oder per WhatsApp senden. Der Beschenkte bucht seinen Termin in Ruhe."
     ]
   },
@@ -56,11 +56,11 @@
     { "q": "Wirklich sofort?", "a": "Ja — nach dem Kauf erhältst du den Gutschein digital per E-Mail." },
     { "q": "Ausdrucken nötig?", "a": "Empfohlen zum Überreichen — alternativ digital versenden." },
     { "q": "Welches Paket schnell schenken?", "a": "Beauty (119€) ist der Beliebteste — Basic (89€) geht auch." },
-    { "q": "Wo einlösen?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Termin online buchbar." }
+    { "q": "Wo einlösen?", "a": "Einlösung im Studio am Reyplatz 10, Baesweiler — Termin online oder per WhatsApp." }
   ],
   "closing": {
     "headline": "Last minute — aber nicht lieblos.",
-    "text": "Head Spa Gutschein in Minuten. Berührung, Stille, Entspannung — jetzt bestellen.",
+    "text": "Kein Lieferstress: Code in Minuten per E-Mail, ausdrucken, überreichen. Jetzt bestellen.",
     "cta": "Gutschein sofort bestellen"
   }
 }

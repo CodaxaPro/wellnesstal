@@ -16,7 +16,7 @@
     "headline": "Du sagst: Ich sehe, was du tust — und du verdienst Ruhe.",
     "paragraphs": [
       "Blumen welken, Pralinen werden gegessen, Karten landen in der Schublade. Was bleibt: ein Gefühl — Wärme, Leichtigkeit, das Wissen, wirklich gesehen zu werden.",
-      "Head Spa ist der Rahmen für dieses Danke. Kein lautes Geschenk — ein leises, tiefes: 45 bis 90 Minuten, in denen der Kopf leise wird.",
+      "Danke braucht keinen Anlass und keinen Abschied. Ein Head Spa Gutschein macht Wertschätzung spürbar: 45 bis 90 Minuten Ritual — Kopf, Nacken, Wasser, Dampf — ohne laute Show.",
       "Ob für die Kollegin, die immer einspringt, die Freundin, die zuhört, oder Mama — Danke klingt hier anders. Stiller. Echter."
     ]
   },
@@ -25,11 +25,11 @@
     "headline": "Ohne viele Worte — trotzdem alles gesagt",
     "items": [
       { "word": "Wertschätzung", "headline": "Du siehst sie.", "text": "Nicht Pflicht — echtes Gefühl, spürbar im Geschenk." },
-      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die sagt: Du darfst ankommen." },
+      { "word": "Berührung", "headline": "Du darfst ankommen.", "text": "Massage, die sagt: Danke — spürbar, nicht nur gesagt." },
       { "word": "Ruhe", "headline": "Endlich nichts leisten.", "text": "Ein Raum ohne Erwartung — nur Ritual." },
-      { "word": "Stille", "headline": "Kopf leise.", "text": "Abschalten — das größte Danke für Erschöpfte." },
-      { "word": "Reinheit", "headline": "Frisch. Leicht.", "text": "Kopfhaut und Geist — erfrischt von innen." },
-      { "word": "Erinnerung", "headline": "Bleibt.", "text": "Monate später: „Das war das schönste Danke.“" }
+      { "word": "Stille", "headline": "Das größte Danke.", "text": "Abschalten — genau das, was Erschöpfte brauchen." },
+      { "word": "Reinheit", "headline": "Erfrischt von innen.", "text": "Kopfhaut und Geist — leichter nach dem Ritual." },
+      { "word": "Erinnerung", "headline": "Schönstes Danke.", "text": "Monate später oft genau dieser Satz." }
     ]
   },
   "recipients": {
@@ -56,11 +56,11 @@
     { "q": "Als Dankeschön für Kollegin?", "a": "Ja — sehr beliebt. Beauty (119€) oder Basic (89€) — professionell und persönlich zugleich." },
     { "q": "Sofort verfügbar?", "a": "Ja — ideal auch last minute." },
     { "q": "Neutral genug?", "a": "Head Spa ist geschlechtsneutral — für alle, die Ruhe brauchen." },
-    { "q": "Wo?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+    { "q": "Wo?", "a": "Einlösung jederzeit: Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
   ],
   "closing": {
     "headline": "Danke, das bleibt — nicht verstaubt.",
-    "text": "Head Spa Gutschein für Berührung, Stille und echte Wertschätzung. Jetzt bestellen.",
+    "text": "Dankeschön ohne Anlass: Head Spa Gutschein für echte Wertschätzung. Sofort per E-Mail — jetzt bestellen.",
     "cta": "Danke-Gutschein bestellen"
   }
 }

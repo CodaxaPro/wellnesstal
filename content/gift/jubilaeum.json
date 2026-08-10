@@ -16,7 +16,7 @@
     "headline": "Ein Jubiläum verdient Ruhe — nicht nur Worte.",
     "paragraphs": [
       "Jahre zusammen bedeutet: viel getragen, viel gegeben, wenig Zeit nur für euch. Was fehlt, ist nicht noch ein Geschenk — sondern ein Moment ohne Pflicht.",
-      "Head Spa Partner-Gutschein ist der Rahmen: nebeneinander liegen, nebeneinander loslassen. Berührung, Wasser, Dampf — 45 bis 90 Minuten nur für euch zwei.",
+      "Zum Hochzeitstag oder Eltern-Jubiläum schenkst du gemeinsame Auszeit: zwei Head Spa Plätze, parallele Ruhe, Berührung ohne Alltagsdruck — ein Zeichen für die Jahre, die schon da sind.",
       "Ob Hochzeitstag, Kennenlerntag oder „einfach weil“ — Ruhe kennt kein Datum. Aber ein Jubiläum ist der perfekte Anlass."
     ]
   },
@@ -24,11 +24,11 @@
     "eyebrow": "Sechs Worte des Jubiläums",
     "headline": "Herzlichen Glückwunsch — leise gesagt",
     "items": [
-      { "word": "Nähe", "headline": "Nebeneinander.", "text": "Partner-Ritual — Stille teilen, ohne Worte." },
-      { "word": "Berührung", "headline": "Sanft. Bewusst.", "text": "Massage, die entspannt — Verbindung spürbar." },
+      { "word": "Nähe", "headline": "Stille teilen.", "text": "Partner-Ritual — ohne Worte, nebeneinander." },
+      { "word": "Berührung", "headline": "Verbindung spürbar.", "text": "Massage, die entspannt — Jahre spürbar machen." },
       { "word": "Ruhe", "headline": "Endlich nur ihr.", "text": "Kein Alltag, kein Termin — nur Ritual." },
-      { "word": "Stille", "headline": "Köpfe leise.", "text": "Abschalten zu zweit — selten, kostbar." },
-      { "word": "Erinnerung", "headline": "Bleibt.", "text": "„Unser schönstes Jubiläumsgeschenk“ — hören wir oft." },
+      { "word": "Stille", "headline": "Jahre, leise gefeiert.", "text": "Abschalten zu zweit — selten, kostbar." },
+      { "word": "Erinnerung", "headline": "Moment behalten.", "text": "Jahre feiern — mit einem Gefühl, das bleibt." },
       { "word": "Wertschätzung", "headline": "Ihr seid es wert.", "text": "Kein Standard — ein Gefühl, das ankommt." }
     ]
   },
@@ -38,7 +38,7 @@
     "items": [
       { "title": "Eure Eltern", "text": "25 oder 50 Jahre — schenke Ruhe statt Porzellan." },
       { "title": "Für euch zwei", "text": "Selbst schenken — Selbstfürsorge ist kein Luxus." },
-      { "title": "Freunde", "text": "Partner Beauty — 238€ für beide, perfekt als Gruppengeschenk." },
+      { "title": "Freunde", "text": "2× Headspa Beauty — 238€ für beide, perfekt als Gruppengeschenk." },
       { "title": "Großeltern", "text": "Deluxe Solo — 149€, sanft und tief." }
     ]
   },
@@ -46,26 +46,26 @@
     "eyebrow": "Jubiläum schenken",
     "headline": "In Minuten bestellt — lange erinnert",
     "steps": [
-      { "num": "01", "title": "Wählen", "text": "Partner Basic, Beauty oder Deluxe — oder Solo-Paket." },
+      { "num": "01", "title": "Wählen", "text": "2× Headspa Basic, Beauty oder Deluxe — oder Solo-Paket." },
       { "num": "02", "title": "Bestellen", "text": "Sofort per E-Mail — in die Karte oder digital." },
       { "num": "03", "title": "Überreichen", "text": "Am Jubiläum — oder als Überraschung danach." },
       { "num": "04", "title": "Erleben", "text": "Termin buchen — Stille, Berührung, Nähe." }
     ]
   },
   "partnerPackages": [
-    { "name": "Partner Basic", "price": 178, "duration": "45 Min. · je Person", "tagline": "Erstes Ritual zu zweit" },
-    { "name": "Partner Beauty", "price": 238, "duration": "60 Min. · je Person", "tagline": "Beliebt — ausgewogene Tiefe", "featured": true },
-    { "name": "Partner Deluxe", "price": 298, "duration": "90 Min. · je Person", "tagline": "Volles Ritual mit Markenpflege" }
+    { "name": "2× Headspa Basic", "price": 178, "duration": "45 Min. · je Person", "tagline": "Erstes Ritual zu zweit" },
+    { "name": "2× Headspa Beauty", "price": 238, "duration": "60 Min. · je Person", "tagline": "Beliebt — ausgewogene Tiefe", "featured": true },
+    { "name": "2× Headspa Deluxe", "price": 298, "duration": "90 Min. · je Person", "tagline": "Volles Ritual mit Markenpflege" }
   ],
   "faq": [
-    { "q": "Partner-Gutschein für Jubiläum?", "a": "Ja — Partner Basic 178€, Beauty 238€, Deluxe 298€." },
-    { "q": "Für Eltern zum Hochzeitstag?", "a": "Sehr beliebt — Partner Beauty als Gruppengeschenk von Kindern." },
+    { "q": "Partner-Gutschein für Jubiläum?", "a": "Ja — 2× Headspa Basic 178€, Beauty 238€, Deluxe 298€." },
+    { "q": "Für Eltern zum Hochzeitstag?", "a": "Sehr beliebt — 2× Headspa Beauty als Gruppengeschenk von Kindern." },
     { "q": "Solo-Geschenk?", "a": "Ja — Beauty (119€) oder Deluxe (149€) für eine Person." },
-    { "q": "Wo?", "a": "Wellnesstal, Reyplatz 10, Baesweiler — Region Aachen." }
+    { "q": "Wo?", "a": "Einlösung im Wellnesstal am Reyplatz 10 in Baesweiler — zentral in der Region Aachen." }
   ],
   "closing": {
     "headline": "Jubiläum — mit Stille, die bleibt.",
-    "text": "Head Spa Gutschein für Ruhe, Nähe und echte Wertschätzung. Jetzt bestellen.",
+    "text": "Jahre feiern mit Partner-Ritual: Head Spa Gutschein zum Hochzeitstag oder Eltern-Jubiläum. Jetzt bestellen.",
     "cta": "Jubiläums-Gutschein bestellen"
   },
   "secondaryCta": {
