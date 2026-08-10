@@ -4,6 +4,8 @@ import longformDeluxeBeauty from '../../content/longform/intent/deluxe-beauty-ba
 import longformDeluxeHair from '../../content/longform/intent/deluxe-hair-beauty.json'
 import longformGeschichte from '../../content/longform/intent/geschichte.json'
 import longformHeadspaAachen from '../../content/longform/intent/headspa-aachen.json'
+import longformKopfmassageAachen from '../../content/longform/intent/kopfmassage-aachen.json'
+import longformEntspannungAachen from '../../content/longform/intent/entspannung-aachen.json'
 
 import type { LongFormOverlay } from './money-page-types'
 
@@ -12,6 +14,8 @@ const intentLongForm: Partial<Record<string, LongFormOverlay>> = {
   'wellness-baesweiler': longformWellnessBaesweiler as LongFormOverlay,
   'wellness-aachen': longformWellnessAachen as LongFormOverlay,
   'headspa-aachen': longformHeadspaAachen as LongFormOverlay,
+  'kopfmassage-aachen': longformKopfmassageAachen as LongFormOverlay,
+  'entspannung-aachen': longformEntspannungAachen as LongFormOverlay,
   'deluxe-beauty-baesweiler': longformDeluxeBeauty as LongFormOverlay,
   'deluxe-hair-beauty': longformDeluxeHair as LongFormOverlay,
   geschichte: longformGeschichte as LongFormOverlay,
