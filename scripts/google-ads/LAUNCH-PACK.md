@@ -6,9 +6,13 @@
 - Kampanya 1 Head Spa → https://www.wellnesstal.de/headspa | €55/gün
 - Kampanya 2 Gutschein → https://www.wellnesstal.de/gutschein | €15/gün
 - Kampanya 3 Zu zweit → https://www.wellnesstal.de/headspa/partner | €10/gün
+- SEO Aachen (organik + Ads sitelink/opsiyonel): https://www.wellnesstal.de/headspa-aachen
+  - Kopfmassage: /kopfmassage-aachen · Entspannung: /entspannung-aachen · Wellness: /wellness-aachen
+  - Booking kısa: /head-spa-aachen
 - Semt semt kampanya YOK
 - Search partners / Display başta KAPALI
 - Presence: People in or regularly in your targeted locations
+- Negatif: friseur, nagel, pediküre, hotel, wellnesswochenende (marka hijyeni)
 
 ## LANDING UYUM ÖZETİ
 | Reklam vaadi | Landing karşılığı | Durum |

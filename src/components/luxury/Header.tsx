@@ -22,6 +22,7 @@ const menuSections = [
     title: 'Behandlungen',
     links: [
       { label: 'Head Spa — Übersicht', href: '/headspa' },
+      { label: 'Zu zweit — Partner', href: '/headspa/partner' },
       { label: 'Headspa Basic — 89€', href: '/headspa#pakete' },
       { label: 'Headspa Beauty — 119€', href: '/headspa#pakete' },
       { label: 'Headspa Deluxe — 149€', href: '/headspa#pakete' },
@@ -31,6 +32,8 @@ const menuSections = [
     title: 'Mehr',
     links: [
       { label: 'Gutschein', href: '/gutschein' },
+      { label: 'Gutschein zu zweit', href: '/gutschein/paar' },
+      { label: 'Head Spa Aachen', href: '/headspa-aachen' },
       { label: 'Standort', href: '/#location' },
       { label: 'FAQ', href: '/headspa#faq' },
     ],
@@ -99,6 +102,22 @@ export default function LuxuryHeader({ site }: { site: SiteContent }) {
               }`}
             >
               Head Spa
+            </Link>
+            <Link
+              href="/headspa/partner"
+              className={`eyebrow-luxury !tracking-wide transition-colors hover:text-gold ${
+                scrolled || !isHome ? 'text-ink' : 'text-ivory/90'
+              }`}
+            >
+              Zu zweit
+            </Link>
+            <Link
+              href="/gutschein"
+              className={`eyebrow-luxury !tracking-wide transition-colors hover:text-gold ${
+                scrolled || !isHome ? 'text-ink' : 'text-ivory/90'
+              }`}
+            >
+              Gutschein
             </Link>
             <a
               href={bookHref}
