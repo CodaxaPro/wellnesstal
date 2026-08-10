@@ -172,7 +172,10 @@ export function ProductsSection({ site }: { site: SiteContent }) {
 
 export function GiftSection({ site }: { site: SiteContent }) {
   const occasions = [
+    { href: '/gutschein/paar', label: 'Für Paare' },
+    { href: '/gutschein/head-spa', label: 'Head Spa' },
     { href: '/gutschein/online', label: 'Online' },
+    { href: '/gutschein/valentinstag', label: 'Valentinstag' },
     { href: '/gutschein/kopfmassage', label: 'Kopfmassage' },
     { href: '/gutschein/geschenkidee', label: 'Geschenkidee' },
     { href: '/gutschein/fuer-mama', label: 'Für Mama' },

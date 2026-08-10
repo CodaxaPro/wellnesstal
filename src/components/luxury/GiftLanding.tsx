@@ -247,6 +247,32 @@ export default function GiftLanding({ site, page, showOccasions = false }: Props
         </div>
       </section>
 
+      {page.relatedLinks && page.relatedLinks.length > 0 && (
+        <section className="section-space bg-beige border-t border-stone/60">
+          <div className="container-luxury max-w-4xl mx-auto">
+            <Reveal className="text-center mb-12">
+              <p className="eyebrow-luxury mb-4">Weiter</p>
+              <h2 className="headline-md">Passende Gutscheine & Seiten</h2>
+            </Reveal>
+            <div className="grid sm:grid-cols-2 gap-6">
+              {page.relatedLinks.map((link, i) => (
+                <Reveal key={link.href} delay={i * 0.06}>
+                  <Link
+                    href={link.href}
+                    className="group block border border-stone/60 p-6 hover:border-gold/40 transition-colors h-full"
+                  >
+                    <h3 className="font-display text-lg text-ink group-hover:text-gold transition-colors mb-2">
+                      {link.label}
+                    </h3>
+                    <p className="body-luxury text-sm">{link.hint}</p>
+                  </Link>
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Closing */}
       <section className="section-space bg-beige border-t border-stone/60">
         <div className="container-luxury max-w-2xl mx-auto text-center">

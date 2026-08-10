@@ -169,12 +169,14 @@ export function giftProductSchema(site: SiteContent, page: GiftPageContent) {
     ? Math.max(...partnerPrices)
     : Math.max(...site.services.map((s) => s.price))
   const offerCount = partnerPrices?.length ?? site.services.length
+  const pageUrl = `${SITE_URL}${page.path}`
 
   return {
     '@context': 'https://schema.org',
     '@type': 'Product',
-    name: page.hero.eyebrow,
+    name: page.seo.title.replace(/\s*\|\s*Wellnesstal.*$/i, '').trim() || page.hero.eyebrow,
     description: page.seo.description,
+    url: pageUrl,
     brand: {
       '@type': 'Brand',
       name: site.brand.name,
@@ -185,7 +187,7 @@ export function giftProductSchema(site: SiteContent, page: GiftPageContent) {
       highPrice,
       priceCurrency: 'EUR',
       offerCount,
-      url: site.brand.gutscheinUrl,
+      url: pageUrl,
     },
     aggregateRating: {
       '@type': 'AggregateRating',
@@ -383,12 +385,14 @@ export function guidePageSchemas(page: GuidePageContent) {
 }
 
 export function giftPageSchemas(site: SiteContent, page: GiftPageContent) {
+  const crumbName =
+    page.seo.title.replace(/\s*\|\s*Wellnesstal.*$/i, '').trim() || page.hero.eyebrow
   return [
     webPageSchema(page.seo.title, page.seo.description, page.path),
     breadcrumbSchema([
       { name: 'Start', path: '/' },
       { name: 'Gutschein', path: '/gutschein' },
-      { name: page.hero.eyebrow, path: page.path },
+      { name: crumbName, path: page.path },
     ]),
     localBusinessSchema(site),
     giftFaqSchema(page),

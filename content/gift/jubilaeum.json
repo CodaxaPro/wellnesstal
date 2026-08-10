@@ -9,7 +9,7 @@
     "eyebrow": "Jubiläum · Zeit zu zweit",
     "headline": "25 Jahre. 10 Jahre. Oder einfach: Ihr seid es wert.",
     "subline": "Jubiläumsgeschenke sind oft Dinge. Schenke Zeit — Head Spa Partner-Ritual: nebeneinander entspannen, nebeneinander ankommen. Stille statt Staub.",
-    "trust": "4,6★ · Partner ab 178€ · Sofort per E-Mail"
+    "trust": "4,7★ · Partner ab 178€ · Sofort per E-Mail"
   },
   "essence": {
     "eyebrow": "Mehr als eine Karte",
@@ -67,5 +67,16 @@
     "headline": "Jubiläum — mit Stille, die bleibt.",
     "text": "Head Spa Gutschein für Ruhe, Nähe und echte Wertschätzung. Jetzt bestellen.",
     "cta": "Jubiläums-Gutschein bestellen"
-  }
+  },
+  "secondaryCta": {
+    "href": "/headspa/partner",
+    "label": "Selbst Termin buchen",
+    "text": "Ihr kommt selbst zu zweit? Partner-Termin per WhatsApp."
+  },
+  "relatedLinks": [
+    { "href": "/gutschein/paar", "label": "Gutschein für Paare", "hint": "Partner-Gutschein — klar aufs Schenken zu zweit." },
+    { "href": "/gutschein/hochzeit", "label": "Hochzeitsgeschenk", "hint": "Fürs Brautpaar — Stille nach dem Ja." },
+    { "href": "/gutschein/silberhochzeit", "label": "Silberhochzeit", "hint": "25 Jahre — Partner-Ritual als Geschenk." },
+    { "href": "/headspa/partner", "label": "Partner-Termin", "hint": "Selbst kommen statt schenken?" }
+  ]
 }

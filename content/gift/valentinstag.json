@@ -9,7 +9,7 @@
     "eyebrow": "Valentinstag · Nähe schenken",
     "headline": "Rosen verblühen. Berührung bleibt.",
     "subline": "Schenke kein Standardgeschenk — schenke einen Moment der Stille, der Nähe und der achtsamen Berührung. Für euch zwei — oder pure Selbstliebe.",
-    "trust": "Partner-Termine · Solo-Ritual · 4,6★"
+    "trust": "Partner-Termine · Solo-Ritual · 4,7★"
   },
   "essence": {
     "eyebrow": "Liebe jenseits der Klischees",
@@ -122,9 +122,25 @@
       "a": "Beauty oder Deluxe — 60 oder 90 Minuten. Zeit genug, um wirklich anzukommen."
     }
   ],
+  "partnerPackages": [
+    { "name": "2× Headspa Basic", "price": 178, "duration": "45 Min. pro Person", "tagline": "Einstieg zu zweit" },
+    { "name": "2× Headspa Beauty", "price": 238, "duration": "60 Min. pro Person", "tagline": "Beliebt für Paare", "featured": true },
+    { "name": "2× Headspa Deluxe", "price": 298, "duration": "90 Min. pro Person", "tagline": "Volles Ritual zu zweit" }
+  ],
   "closing": {
     "headline": "Liebe schenken — in Stille und Berührung.",
     "text": "Valentinstag Gutschein: Nähe, Ruhe, Reinheit. Jetzt online bestellen.",
     "cta": "Valentinstag-Gutschein bestellen"
-  }
+  },
+  "secondaryCta": {
+    "href": "/headspa/partner",
+    "label": "Selbst Termin buchen",
+    "text": "Ihr kommt selbst zu zweit? Partner-Termin per WhatsApp."
+  },
+  "relatedLinks": [
+    { "href": "/gutschein/paar", "label": "Gutschein für Paare", "hint": "Partner-Gutschein ganzjährig — nicht nur Valentin." },
+    { "href": "/gutschein/hochzeit", "label": "Hochzeitsgeschenk", "hint": "Fürs Brautpaar — Stille zu zweit." },
+    { "href": "/headspa/partner", "label": "Partner-Termin", "hint": "Selbst kommen? Termin per WhatsApp." },
+    { "href": "/gutschein/freundin", "label": "Für die Freundin", "hint": "Solo-Ritual — wenn Nähe auch Freundschaft meint." }
+  ]
 }

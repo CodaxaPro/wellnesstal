@@ -2,14 +2,14 @@
   "slug": "hochzeit",
   "path": "/gutschein/hochzeit",
   "seo": {
-    "title": "Hochzeitsgeschenk Wellness & Head Spa Gutschein | Wellnesstal",
-    "description": "Hochzeitsgeschenk, das bleibt: Head Spa Gutschein für das Brautpaar — Ruhe, Berührung und Stille zu zweit. Partner ab 178€, sofort online · Baesweiler & Region Aachen."
+    "title": "Hochzeitsgeschenk Head Spa für 2 | Partner ab 178€ | Wellnesstal",
+    "description": "Hochzeitsgeschenk mit Wow: Head Spa zu zweit fürs Brautpaar. Partner-Gutschein ab 178€ — sofort online, Print@Home. Baesweiler · Region Aachen."
   },
   "hero": {
     "eyebrow": "Hochzeit · Zu zweit",
     "headline": "Nach dem Ja — endlich Stille zu zweit.",
     "subline": "Hochzeitsgeschenke sammeln Staub. Schenke dem Brautpaar etwas, das ankommt: Head Spa Partner-Ritual — nebeneinander entspannen, nebeneinander ankommen.",
-    "trust": "4,6★ · Partner ab 178€ · Sofort per E-Mail"
+    "trust": "4,7★ · Partner ab 178€ · Sofort per E-Mail"
   },
   "essence": {
     "eyebrow": "Mehr als Besteck",
@@ -67,5 +67,16 @@
     "headline": "Glückwunsch — mit Stille, die bleibt.",
     "text": "Head Spa Partner-Gutschein für Ruhe, Nähe und echte Wertschätzung. Jetzt bestellen.",
     "cta": "Hochzeits-Gutschein bestellen"
-  }
+  },
+  "secondaryCta": {
+    "href": "/headspa/partner",
+    "label": "Selbst Termin buchen",
+    "text": "Ihr kommt selbst zu zweit? Partner-Termin per WhatsApp."
+  },
+  "relatedLinks": [
+    { "href": "/gutschein/paar", "label": "Gutschein für Paare", "hint": "Partner-Gutschein — klar aufs Schenken zu zweit." },
+    { "href": "/gutschein/jubilaeum", "label": "Jubiläums-Gutschein", "hint": "Hochzeitstag & Jahrestag — Stille als Geschenk." },
+    { "href": "/headspa/partner", "label": "Partner-Termin", "hint": "Selbst kommen statt schenken? Termin per WhatsApp." },
+    { "href": "/gutschein/valentinstag", "label": "Valentinstag", "hint": "Nähe schenken — auch außerhalb der Hochzeit." }
+  ]
 }

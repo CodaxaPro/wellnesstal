@@ -111,6 +111,7 @@ export type GiftPageContent = {
   faq: { q: string; a: string }[]
   closing: { headline: string; text: string; cta: string }
   secondaryCta?: { href: string; label: string; text?: string }
+  relatedLinks?: { href: string; label: string; hint: string }[]
 }
 
 export type LocationPageContent = {

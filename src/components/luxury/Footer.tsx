@@ -25,7 +25,11 @@ export default function LuxuryFooter({ site }: { site: SiteContent }) {
                 </li>
               ))}
               <li><Link href="/headspa" className="hover:text-ivory transition-colors">Head Spa</Link></li>
+              <li><Link href="/headspa/partner" className="hover:text-ivory transition-colors">Zu zweit</Link></li>
               <li><Link href="/gutschein" className="hover:text-ivory transition-colors">Gutschein</Link></li>
+              <li><Link href="/gutschein/paar" className="hover:text-ivory transition-colors">Gutschein Paar</Link></li>
+              <li><Link href="/gutschein/online" className="hover:text-ivory transition-colors">Gutschein online</Link></li>
+              <li><Link href="/gutschein/head-spa" className="hover:text-ivory transition-colors">Head Spa Gutschein</Link></li>
               <li><Link href="/ratgeber" className="hover:text-ivory transition-colors">Ratgeber</Link></li>
               <li><Link href="/geschichte" className="hover:text-ivory transition-colors">Unsere Geschichte</Link></li>
               <li><Link href="/deluxe-beauty-baesweiler" className="hover:text-ivory transition-colors">Deluxe Beauty</Link></li>
