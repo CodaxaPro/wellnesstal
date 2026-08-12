@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import FloatingBook from '@/components/luxury/FloatingBook'
 import LuxuryFooter from '@/components/luxury/Footer'
 import LuxuryHeader from '@/components/luxury/Header'
+import MetaPixel from '@/components/MetaPixel'
 import MobileBookBar from '@/components/luxury/MobileBookBar'
 import { getSite } from '@/lib/content'
 import { localBusinessSchema } from '@/lib/schema'
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       </head>
       <body className="pb-20 md:pb-0">
+        <MetaPixel />
         <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100] focus:bg-ink focus:text-ivory focus:px-4 focus:py-2">
           Zum Inhalt springen
         </a>
