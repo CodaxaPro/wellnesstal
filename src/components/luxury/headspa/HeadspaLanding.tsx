@@ -4,11 +4,13 @@ import Image from 'next/image'
 
 import type { HeadspaContent } from '@/lib/content'
 import type { SiteContent } from '@/lib/content'
+import { getTestimonials } from '@/lib/content'
+import { packageBookHref } from '@/lib/package-book-href'
 
 import LuxuryButton from '../LuxuryButton'
 import BookingPanel from '../BookingPanel'
 import TestimonialsCarousel from '../TestimonialsCarousel'
-import { getTestimonials } from '@/lib/content'
+import StickyBookCta from '../StickyBookCta'
 import { Reveal } from '../Reveal'
 
 type Props = { site: SiteContent; headspa: HeadspaContent }
@@ -20,29 +22,60 @@ const phaseImages = [
   '/images/services/beauty.jpg',
 ]
 
+const FAQ_PRIMARY_COUNT = 4
+
 export default function HeadspaLanding({ site, headspa }: Props) {
   const { brand, media } = site
   const testimonials = getTestimonials()
   const serviceImages: Record<string, string> = Object.fromEntries(
     site.services.map((s) => [s.id, s.image]),
   )
+  const proofQuote = testimonials.items[0]
+  const faqPrimary = headspa.faq.items.slice(0, FAQ_PRIMARY_COUNT)
+  const faqMore = headspa.faq.items.slice(FAQ_PRIMARY_COUNT)
+  const addressLine = `${brand.address.street}, ${brand.address.postalCode} ${brand.address.city}`
+  const heroAlt = `${brand.name} — ${headspa.hero.title}`
 
   return (
     <>
-      {/* Hero */}
-      <section className="relative min-h-[90svh] flex items-end bg-ink overflow-hidden">
-        <Image src={media.heroPoster} alt="" fill className="object-cover opacity-50" priority sizes="100vw" />
-        <div className="video-overlay absolute inset-0" />
+      <section
+        id="landing-slot-hero"
+        className="relative min-h-[90svh] flex items-end overflow-hidden bg-stone"
+      >
+        <Image
+          src={media.heroPoster}
+          alt={heroAlt}
+          fill
+          className="object-cover z-0 brightness-[1.22] contrast-[1.05] saturate-[1.08]"
+          priority
+          sizes="100vw"
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 z-[1] h-[55%] bg-gradient-to-t from-black/55 via-black/20 to-transparent"
+          aria-hidden
+        />
         <div className="relative z-10 w-full pb-20 md:pb-28 pt-28 md:pt-32">
           <div className="container-luxury max-w-3xl">
             <Reveal>
-              <p className="eyebrow-luxury !text-gold mb-4 md:mb-6">{headspa.hero.eyebrow}</p>
-              <h1 className="headline-hero text-ivory">{headspa.hero.title}</h1>
-              <p className="mt-5 md:mt-6 body-luxury !text-ivory/75 text-base md:text-lg max-w-xl">{headspa.hero.subtitle}</p>
-              <p className="mt-4 md:mt-5 eyebrow-luxury !text-ivory/50">{headspa.hero.trust}</p>
+              <p className="eyebrow-luxury !text-gold mb-4 md:mb-6 [text-shadow:0_2px_12px_rgba(0,0,0,0.55)]">
+                {headspa.hero.eyebrow}
+              </p>
+              <h1 className="headline-hero text-ivory [text-shadow:0_2px_20px_rgba(0,0,0,0.65)]">
+                {headspa.hero.title}
+              </h1>
+              <p className="mt-5 md:mt-6 body-luxury !text-ivory text-base md:text-lg max-w-xl [text-shadow:0_2px_14px_rgba(0,0,0,0.6)]">
+                {headspa.hero.subtitle}
+              </p>
+              <p className="mt-4 md:mt-5 eyebrow-luxury !text-ivory [text-shadow:0_2px_12px_rgba(0,0,0,0.55)]">
+                {headspa.hero.trust}
+              </p>
               <div className="mt-8 md:mt-10 flex flex-col sm:flex-row gap-4">
                 <LuxuryButton href={brand.bookingUrl}>{headspa.hero.ctaPrimary}</LuxuryButton>
-                <LuxuryButton href="#ablauf" variant="outline" className="!border-ivory/30 !text-ivory hover:!bg-ivory hover:!text-ink">
+                <LuxuryButton
+                  href="#pakete"
+                  variant="outline"
+                  className="!border-ivory/70 !text-ivory !bg-black/35 backdrop-blur-[2px] hover:!bg-ivory hover:!text-ink"
+                >
                   {headspa.hero.ctaSecondary}
                 </LuxuryButton>
               </div>
@@ -51,7 +84,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Pain */}
       <section className="section-space bg-ivory">
         <div className="container-luxury grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <Reveal className="lg:col-span-5">
@@ -60,9 +92,13 @@ export default function HeadspaLanding({ site, headspa }: Props) {
           </Reveal>
           <Reveal className="lg:col-span-7 space-y-6" delay={0.1}>
             {headspa.pain.paragraphs.map((p) => (
-              <p key={p} className="body-luxury text-base md:text-lg">{p}</p>
+              <p key={p} className="body-luxury text-base md:text-lg">
+                {p}
+              </p>
             ))}
-            <p className="font-display text-2xl md:text-3xl font-light text-ink pt-4">{headspa.pain.closing}</p>
+            <p className="font-display text-2xl md:text-3xl font-light text-ink pt-4">
+              {headspa.pain.closing}
+            </p>
           </Reveal>
         </div>
       </section>
@@ -85,12 +121,17 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Personalization — pattern from Aoyama, Esthetique, Haru (18/50 sites) */}
       <section className="section-space bg-ivory border-t border-stone/60">
         <div className="container-luxury grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <Reveal className="lg:col-span-5">
             <div className="relative aspect-[4/5] overflow-hidden bg-stone">
-              <Image src={media.experience} alt="Personalisiertes Head Spa Ritual" fill className="object-cover" sizes="40vw" />
+              <Image
+                src={media.experience}
+                alt="Personalisiertes Head Spa Ritual"
+                fill
+                className="object-cover"
+                sizes="40vw"
+              />
             </div>
           </Reveal>
           <Reveal className="lg:col-span-7" delay={0.1}>
@@ -108,7 +149,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* First visit — reduces intangibility anxiety */}
       <section className="section-space bg-beige border-t border-stone/60">
         <div className="container-luxury max-w-3xl mx-auto">
           <Reveal className="text-center mb-16">
@@ -119,7 +159,9 @@ export default function HeadspaLanding({ site, headspa }: Props) {
             {headspa.firstVisit.steps.map((step, i) => (
               <Reveal key={step} delay={i * 0.06}>
                 <li className="flex gap-6 items-start">
-                  <span className="font-display text-3xl text-gold/50 shrink-0 w-10">{String(i + 1).padStart(2, '0')}</span>
+                  <span className="font-display text-3xl text-gold/50 shrink-0 w-10">
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                   <p className="body-luxury text-base md:text-lg pt-1">{step}</p>
                 </li>
               </Reveal>
@@ -128,8 +170,111 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Phases */}
-      <section id="ablauf" className="section-space bg-ivory">
+      <section id="pakete" className="section-space bg-ivory border-t border-stone/60">
+        <div className="container-luxury">
+          <Reveal className="max-w-2xl mb-10">
+            <p className="eyebrow-luxury mb-4">{headspa.packages.eyebrow}</p>
+            <h2 className="headline-lg mb-6">{headspa.packages.headline}</h2>
+            <p className="body-luxury">{headspa.packages.intro}</p>
+          </Reveal>
+
+          {proofQuote ? (
+            <Reveal className="max-w-2xl mb-12 border-l border-gold pl-6">
+              <p className="font-display text-xl md:text-2xl font-light text-ink leading-snug">
+                &ldquo;{proofQuote.text.slice(0, 160)}
+                {proofQuote.text.length > 160 ? '…' : ''}&rdquo;
+              </p>
+              <p className="eyebrow-luxury mt-4 !text-charcoal/50">
+                {proofQuote.name}
+                {testimonials.rating ? ` · ${testimonials.rating}` : ''}
+              </p>
+            </Reveal>
+          ) : null}
+
+          <div className="grid lg:grid-cols-3 gap-8 lg:gap-6">
+            {headspa.packages.items.map((pkg, i) => (
+              <Reveal key={pkg.id} delay={i * 0.1}>
+                <article
+                  className={`card-depth flex h-full flex-col border bg-stone/20 p-8 md:p-10 ${
+                    pkg.featured ? 'border-gold/50 lg:-mt-4' : 'border-stone/80'
+                  }`}
+                >
+                  {pkg.featured && (
+                    <span className="eyebrow-luxury bg-ink text-ivory px-4 py-2 self-start mb-6">
+                      Beliebt
+                    </span>
+                  )}
+                  <div className="relative aspect-[4/3] overflow-hidden mb-8 -mx-2 md:-mx-4">
+                    <Image
+                      src={serviceImages[pkg.id] ?? media.ritualPoster}
+                      alt={pkg.name}
+                      fill
+                      className="object-cover"
+                      sizes="33vw"
+                    />
+                  </div>
+                  <p className="eyebrow-luxury mb-2">{pkg.duration}</p>
+                  <h3 className="headline-md mb-3">{pkg.name}</h3>
+                  <p className="body-luxury mb-6">{pkg.tagline}</p>
+                  <p className="font-display text-4xl text-ink mb-8">
+                    {pkg.price}
+                    <span className="text-xl"> €</span>
+                  </p>
+                  <ul className="space-y-3 mb-10 flex-1">
+                    {pkg.includes.map((inc) => (
+                      <li key={inc} className="flex gap-3 body-luxury text-sm">
+                        <span className="text-gold shrink-0">✓</span>
+                        {inc}
+                      </li>
+                    ))}
+                  </ul>
+                  <LuxuryButton href={packageBookHref(pkg.bookSlug, brand.bookingUrl)}>
+                    Jetzt buchen
+                  </LuxuryButton>
+                  <p className="body-luxury text-xs opacity-60 mt-4">
+                    Live-Verfügbarkeit im Buchungssystem · Sichere Zahlung über TreuePay
+                  </p>
+                </article>
+              </Reveal>
+            ))}
+          </div>
+
+          <Reveal className="mt-24 md:mt-32 pt-16 border-t border-stone">
+            <div className="grid lg:grid-cols-2 gap-12 items-start">
+              <div>
+                <p className="eyebrow-luxury mb-4">{headspa.packages.partner.eyebrow}</p>
+                <h3 className="headline-md mb-4">{headspa.packages.partner.headline}</h3>
+                <p className="body-luxury mb-4">{headspa.packages.partner.text}</p>
+                <p className="body-luxury text-sm opacity-70">{headspa.packages.partner.note}</p>
+                <div className="mt-8 flex flex-col sm:flex-row gap-4">
+                  <LuxuryButton href={headspa.packages.partner.href}>
+                    Partner-Termin entdecken
+                  </LuxuryButton>
+                  <LuxuryButton href={headspa.packages.partner.whatsapp} variant="outline">
+                    WhatsApp Kontakt
+                  </LuxuryButton>
+                </div>
+              </div>
+              <div className="space-y-4">
+                {headspa.packages.partner.items.map((p) => (
+                  <div
+                    key={p.name}
+                    className="flex justify-between items-baseline gap-4 py-6 border-b border-stone"
+                  >
+                    <div>
+                      <p className="headline-md text-lg">{p.name}</p>
+                      <p className="body-luxury text-sm">{p.duration}</p>
+                    </div>
+                    <p className="font-display text-3xl text-ink shrink-0">{p.price} €</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      <section id="ablauf" className="section-space bg-beige">
         <div className="container-luxury">
           <Reveal className="max-w-2xl mb-20">
             <p className="eyebrow-luxury mb-4">{headspa.phases.eyebrow}</p>
@@ -139,10 +284,16 @@ export default function HeadspaLanding({ site, headspa }: Props) {
           <div className="space-y-24 md:space-y-32">
             {headspa.phases.items.map((phase, i) => (
               <Reveal key={phase.num}>
-                <div className={`grid lg:grid-cols-12 gap-10 lg:gap-16 items-center ${i % 2 === 1 ? '' : ''}`}>
+                <div className="grid lg:grid-cols-12 gap-10 lg:gap-16 items-center">
                   <div className={`lg:col-span-5 ${i % 2 === 1 ? 'lg:order-2' : ''}`}>
                     <div className="relative aspect-[4/5] overflow-hidden bg-stone">
-                      <Image src={phaseImages[i] ?? media.experience} alt={phase.title} fill className="object-cover" sizes="(max-width:1024px) 100vw, 40vw" />
+                      <Image
+                        src={phaseImages[i] ?? media.ritualPoster}
+                        alt={phase.title}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width:1024px) 100vw, 40vw"
+                      />
                     </div>
                   </div>
                   <div className={`lg:col-span-7 ${i % 2 === 1 ? 'lg:order-1' : ''}`}>
@@ -165,7 +316,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Outcomes */}
       <section className="section-space bg-ink text-ivory">
         <div className="container-luxury">
           <Reveal className="text-center max-w-2xl mx-auto mb-20">
@@ -183,87 +333,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Packages */}
-      <section id="pakete" className="section-space bg-beige">
-        <div className="container-luxury">
-          <Reveal className="max-w-2xl mb-16">
-            <p className="eyebrow-luxury mb-4">{headspa.packages.eyebrow}</p>
-            <h2 className="headline-lg mb-6">{headspa.packages.headline}</h2>
-            <p className="body-luxury">{headspa.packages.intro}</p>
-          </Reveal>
-
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-6">
-            {headspa.packages.items.map((pkg, i) => (
-              <Reveal key={pkg.id} delay={i * 0.1}>
-                <article
-                  className={`card-depth flex h-full flex-col border bg-stone/20 p-8 md:p-10 ${
-                    pkg.featured ? 'border-gold/50 lg:-mt-4' : 'border-stone/80'
-                  }`}
-                >
-                  {pkg.featured && (
-                    <span className="eyebrow-luxury bg-ink text-ivory px-4 py-2 self-start mb-6">Beliebt</span>
-                  )}
-                  <div className="relative aspect-[4/3] overflow-hidden mb-8 -mx-2 md:-mx-4">
-                    <Image
-                      src={serviceImages[pkg.id] ?? media.experience}
-                      alt={pkg.name}
-                      fill
-                      className="object-cover"
-                      sizes="33vw"
-                    />
-                  </div>
-                  <p className="eyebrow-luxury mb-2">{pkg.duration}</p>
-                  <h3 className="headline-md mb-3">{pkg.name}</h3>
-                  <p className="body-luxury mb-6">{pkg.tagline}</p>
-                  <p className="font-display text-4xl text-ink mb-8">
-                    {pkg.price}<span className="text-xl"> €</span>
-                  </p>
-                  <ul className="space-y-3 mb-10 flex-1">
-                    {pkg.includes.map((inc) => (
-                      <li key={inc} className="flex gap-3 body-luxury text-sm">
-                        <span className="text-gold shrink-0">✓</span>
-                        {inc}
-                      </li>
-                    ))}
-                  </ul>
-                  <LuxuryButton href={brand.bookingUrl}>Jetzt buchen</LuxuryButton>
-                </article>
-              </Reveal>
-            ))}
-          </div>
-
-          {/* Partner */}
-          <Reveal className="mt-24 md:mt-32 pt-16 border-t border-stone">
-            <div className="grid lg:grid-cols-2 gap-12 items-start">
-              <div>
-                <p className="eyebrow-luxury mb-4">{headspa.packages.partner.eyebrow}</p>
-                <h3 className="headline-md mb-4">{headspa.packages.partner.headline}</h3>
-                <p className="body-luxury mb-4">{headspa.packages.partner.text}</p>
-                <p className="body-luxury text-sm opacity-70">{headspa.packages.partner.note}</p>
-                <div className="mt-8 flex flex-col sm:flex-row gap-4">
-                  <LuxuryButton href={headspa.packages.partner.href}>Partner-Termin entdecken</LuxuryButton>
-                  <LuxuryButton href={headspa.packages.partner.whatsapp} variant="outline">
-                    WhatsApp Kontakt
-                  </LuxuryButton>
-                </div>
-              </div>
-              <div className="space-y-4">
-                {headspa.packages.partner.items.map((p) => (
-                  <div key={p.name} className="flex justify-between items-baseline gap-4 py-6 border-b border-stone">
-                    <div>
-                      <p className="headline-md text-lg">{p.name}</p>
-                      <p className="body-luxury text-sm">{p.duration}</p>
-                    </div>
-                    <p className="font-display text-3xl text-ink shrink-0">{p.price} €</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* Video */}
       <section className="section-space bg-ivory overflow-hidden">
         <div className="container-luxury grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <Reveal>
@@ -273,7 +342,14 @@ export default function HeadspaLanding({ site, headspa }: Props) {
           </Reveal>
           <Reveal delay={0.1}>
             <div className="relative aspect-[9/16] max-w-md mx-auto lg:ml-auto overflow-hidden bg-ink shadow-2xl">
-              <video autoPlay muted loop playsInline poster={media.ritualPoster} className="h-full w-full object-cover">
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                poster={media.ritualPoster}
+                className="h-full w-full object-cover"
+              >
                 <source src={media.ritualVideo} type="video/mp4" />
               </video>
               <div className="video-overlay absolute inset-0 opacity-40" />
@@ -282,7 +358,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Expertise — founder/trust pattern Royal, Aoyama */}
       <section className="section-space bg-ink text-ivory">
         <div className="container-luxury grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <Reveal className="lg:col-span-6">
@@ -296,7 +371,9 @@ export default function HeadspaLanding({ site, headspa }: Props) {
             {'role' in headspa.expertise && headspa.expertise.role ? (
               <p className="eyebrow-luxury !text-ivory/50 mb-8">{headspa.expertise.role}</p>
             ) : null}
-            <p className="body-luxury !text-ivory/70 text-base md:text-lg mb-10">{headspa.expertise.text}</p>
+            <p className="body-luxury !text-ivory/70 text-base md:text-lg mb-10">
+              {headspa.expertise.text}
+            </p>
             <ul className="space-y-5">
               {headspa.expertise.points.map((point) => (
                 <li key={point} className="flex gap-4 body-luxury !text-ivory/80">
@@ -309,7 +386,11 @@ export default function HeadspaLanding({ site, headspa }: Props) {
           <Reveal className="lg:col-span-6" delay={0.1}>
             <div className="relative aspect-[4/5] overflow-hidden">
               <Image
-                src={'image' in headspa.expertise && headspa.expertise.image ? headspa.expertise.image : media.ritualPoster}
+                src={
+                  'image' in headspa.expertise && headspa.expertise.image
+                    ? headspa.expertise.image
+                    : media.ritualPoster
+                }
                 alt="Wellnesstal Head Spa Studio"
                 fill
                 className="object-cover"
@@ -320,7 +401,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section id="testimonials" className="section-space bg-beige">
         <div className="container-luxury">
           <Reveal className="mb-6">
@@ -339,7 +419,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Gift */}
       <section className="section-space bg-stone">
         <div className="container-luxury text-center max-w-2xl mx-auto">
           <Reveal>
@@ -351,7 +430,6 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* FAQ */}
       <section id="faq" className="section-space bg-ivory">
         <div className="container-luxury max-w-3xl">
           <Reveal className="mb-16 text-center">
@@ -359,7 +437,7 @@ export default function HeadspaLanding({ site, headspa }: Props) {
             <h2 className="headline-lg">{headspa.faq.headline}</h2>
           </Reveal>
           <dl>
-            {headspa.faq.items.map((item, i) => (
+            {faqPrimary.map((item, i) => (
               <Reveal key={item.q} delay={i * 0.05}>
                 <div className="py-8 border-t border-stone">
                   <dt className="headline-md text-lg mb-3">{item.q}</dt>
@@ -368,10 +446,24 @@ export default function HeadspaLanding({ site, headspa }: Props) {
               </Reveal>
             ))}
           </dl>
+          {faqMore.length > 0 ? (
+            <details className="mt-4 border border-stone/60 bg-beige/40">
+              <summary className="cursor-pointer list-none px-6 py-5 eyebrow-luxury !text-charcoal/70 hover:!text-ink">
+                Weitere Fragen ({faqMore.length})
+              </summary>
+              <dl className="px-6 pb-4">
+                {faqMore.map((item) => (
+                  <div key={item.q} className="py-6 border-t border-stone">
+                    <dt className="headline-md text-lg mb-3">{item.q}</dt>
+                    <dd className="body-luxury">{item.a}</dd>
+                  </div>
+                ))}
+              </dl>
+            </details>
+          ) : null}
         </div>
       </section>
 
-      {/* Closing CTA */}
       <section className="section-space bg-ink">
         <div className="container-luxury text-center max-w-2xl mx-auto">
           <Reveal>
@@ -383,22 +475,23 @@ export default function HeadspaLanding({ site, headspa }: Props) {
         </div>
       </section>
 
-      {/* Booking */}
-      <section id="buchung" className="section-space bg-beige pb-32">
-        <div className="container-luxury">
+      <section id="landing-slot-booking" className="section-space bg-beige pb-32">
+        <div id="buchung" className="container-luxury">
           <Reveal className="text-center mb-12">
             <p className="eyebrow-luxury mb-4">{headspa.booking.eyebrow}</p>
             <h2 className="headline-lg">{headspa.booking.headline}</h2>
-            <p className="body-luxury mt-4">{brand.address.street}, {brand.address.postalCode} {brand.address.city}</p>
+            <p className="body-luxury mt-4">{addressLine}</p>
             <p className="body-luxury mt-3 text-sm opacity-70">{headspa.booking.microcopy}</p>
           </Reveal>
           <Reveal delay={0.1}>
             <BookingPanel site={site} theme="light" />
+            <p className="mt-6 max-w-xl mx-auto text-center body-luxury text-xs opacity-60">
+              Live-Verfügbarkeit im Buchungssystem · Sichere Zahlung über TreuePay
+            </p>
           </Reveal>
         </div>
       </section>
 
-      {/* Local SEO — pattern Royal, House of Headspa (19/50) */}
       <section className="py-16 bg-stone/50 border-t border-stone">
         <div className="container-luxury text-center">
           <p className="eyebrow-luxury mb-6">{headspa.localSeo.headline}</p>
@@ -407,6 +500,8 @@ export default function HeadspaLanding({ site, headspa }: Props) {
           </p>
         </div>
       </section>
+
+      <StickyBookCta href={brand.bookingUrl} />
     </>
   )
 }
